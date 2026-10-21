@@ -1,5 +1,5 @@
-import {careerModelFieldViews} from './career-model-views.mjs?v=military-pay-1';
-import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=military-pay-1';
+import {careerModelFieldViews} from './career-model-views.mjs?v=life-health-1';
+import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=life-health-1';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],

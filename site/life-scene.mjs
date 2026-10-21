@@ -1,5 +1,5 @@
-import {displayCopy} from './ui-copy.mjs?v=military-pay-1';
-import {deriveLifeScene} from './life-scene-model.mjs?v=military-pay-1';
+import {displayCopy} from './ui-copy.mjs?v=life-health-1';
+import {deriveLifeScene} from './life-scene-model.mjs?v=life-health-1';
 
 const AGE_FRAMES = Object.freeze({baby:0,toddler:1,child:2,teen:3,young:4,adult:5,senior:6});
 const ROLE_FRAMES = Object.freeze({school:7,office:8,field:9,shop:10,military:11});

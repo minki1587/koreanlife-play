@@ -1,4 +1,4 @@
-import {currentFamilyIncome} from './parent-careers.mjs?v=military-pay-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=life-health-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -31,6 +31,7 @@ export function effectiveHobbyAge(s,row){return hasHouseholdSupport(s)?s.househo
 const familyBase=s=>s.profile.birthFamily.household;
 const allowanceFor=s=>s.householdFinance.rules.allowances.filter(a=>a.minimumAge<=s.age).at(-1).monthlyWan;
 export function personalLivingWan(s,{university=false}={}){
+  if(s.service?.active)return 0;
   const living=s.age<7?40:s.age<19?60:s.retired?70:75;
   if(s.age<19)return living;
   const housing=university?30:s.residence?.housing==='기숙사'?30:s.residence?.housing==='보호자 집'||s.residence?.housing==='가족·지인과 동거'?15:s.residence?.region==='서울'?70:s.residence?.region==='부산'?50:40;

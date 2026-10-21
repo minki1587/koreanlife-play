@@ -1,9 +1,9 @@
-import {renderEstateDetails} from './estate-views.mjs?v=military-pay-1';
-import {currentParents} from './parent-careers.mjs?v=military-pay-1';
-import {householdSummary} from './household-finance.mjs?v=military-pay-1';
-import {householdFacts} from './household-views.mjs?v=military-pay-1';
-import {formatMoney} from './spending.mjs?v=military-pay-1';
-import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=military-pay-1';
+import {renderEstateDetails} from './estate-views.mjs?v=life-health-1';
+import {currentParents} from './parent-careers.mjs?v=life-health-1';
+import {householdSummary} from './household-finance.mjs?v=life-health-1';
+import {householdFacts} from './household-views.mjs?v=life-health-1';
+import {formatMoney} from './spending.mjs?v=life-health-1';
+import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=life-health-1';
 const money=n=>formatMoney(n);
 export function familyLocationLabel(place,profiles){
  const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;

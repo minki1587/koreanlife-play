@@ -48,3 +48,14 @@
 .military-savings h5{margin:18px 0 10px;padding-top:12px;border-top:1px solid var(--line);font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--green)}
 #military-settlement{padding:0 10px 1px;border:1px solid var(--line);border-radius:6px;background:var(--sage)}
 #military-settlement h5{border-top:0;margin-top:0}
+
+.health-status-panel,.ending-health-panel{padding:16px;border:1px solid var(--line);border-radius:8px;background:var(--paper);margin-top:14px}
+.health-status-panel h3,.ending-health-panel h3{margin:0;font-size:calc(13px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.health-status-panel .finance-facts{margin-bottom:8px}
+.health-history-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px;max-height:320px;overflow:auto}
+.health-history-list>li{padding:10px 0;border-top:1px solid var(--line);display:grid;gap:6px}
+.health-history-list span{color:var(--muted);font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.health-history-list b,.health-history-list ul{font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.65;overflow-wrap:anywhere}
+.health-history-list ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.ending-cause{color:var(--green);font-weight:600}.ending-health-panel{text-align:left}
+#changes{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
