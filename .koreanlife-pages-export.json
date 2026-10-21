@@ -1,7 +1,7 @@
 {
   "scope": "browser game deployment only",
   "files": {
-    "app.mjs": "c17be3fedc394473c1ca1011839529409a7af002c827abe16d60a4db5e2989b7",
+    "app.mjs": "68d8e60c2e3eca7d2d73271315544feb1df2bc51903c13423a5fcb376829236d",
     "birth-presentation.mjs": "0c557659ca6872f4e6d93f950688cebaa58d860d5633b2783d23898289c9ba01",
     "career-browser.css": "914d9a672eea7d8aeea60d98bfa46f1f9b0d51a6929df303785e763b8383b65e",
     "career-browser.mjs": "e4fa0794e13a5d9cb2e7aa768757fff471aac4fa342afccfddfafc2a83f9b2bf",
@@ -17,7 +17,7 @@
     "game-data.json": "8e8c2c20906134bf308776f7f9e79df5de354320cb9e0f42e645c11f2b467623",
     "hobbies.json": "c21ef62a375d3e909aca91ceb6203d25423d5702775bd3b7d81c791dfdc4d41a",
     "hobby-rules.mjs": "e203e32555c8cea18a2ac40f6007455907679fcc57d6561f50907b06766bcd71",
-    "index.html": "00737fbd57717eb1ff56c3591f9e0078200296272edd516a971549cdbeb08f33",
+    "index.html": "6fc2bfe71bf6afab230d046f9d6ad4e79696caac2555d1b2a5ec96948fb83ab7",
     "life-scene-model.mjs": "ba6b825cfee1d4f5dda0adccf2694196c0cfee33ab4e68c9b2791ff04c3114b4",
     "life-scene.css": "56489849d58fe6a50158a6cb0127df7a8644ebcd72395c021f4e7be880e3dac8",
     "life-scene.mjs": "53207ad6c964351c32d4a1c2142479a41c16050624b578aa320921f682e85c3f",
@@ -32,7 +32,7 @@
     "responsive.mjs": "e650960da5ae0cc2927a720758c2af4835298ab548a027944e86e4b5ee05bfe6",
     "spending.json": "b8f437080dad264ab10bf9a5e119552df5d1c7d2ac644ba26f2dd19bc8b06fc4",
     "spending.mjs": "16d96ee3b71d63eb2c3e9f84a4af1664a59673f93324370097fbdf2696fdf6de",
-    "style.css": "9ed191ac931b78970b6df898662476002b1a145014207abed4da3b20131bcf2f",
+    "style.css": "c91c989205db155d89d5582652f3bd86952f4f607fbc6bc1afde54d7a19c6326",
     "text-size.css": "958f1afc34c7bab56f8dbb85f2fc50cbf82711adf7f256807a37f112f19d6c75",
     "text-size.mjs": "be6007451c54f6f07d0f181e518ac79f81f141363de236a6146a724b586062d5",
     "assets/city-maps-manifest.json": "829773369ea02f156b747d9a8f0fe2bcd1d4b1650d7a28b49197af0a63687584",
