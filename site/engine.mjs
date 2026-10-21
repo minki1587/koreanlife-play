@@ -1,0 +1,175 @@
+export const VERSION = 2;
+export const clamp = (n,lo=0,hi=100) => Math.min(hi,Math.max(lo,n));
+const round=n=>Math.round(n*100)/100, clone=value=>structuredClone(value);
+const FOCUSES=['balance','learning','career','health','relationships'];
+const FOCUS_NAMES={balance:'균형',learning:'배움',career:'일',health:'건강',relationships:'관계'};
+const WORKING=new Set(['재직','계약직','시간제']);
+const METRICS=['health','learn','bond','joy'], LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족'};
+const RULE_NOTE='임금·생활비·점수·사건은 가상 규칙이며 실제 개인의 미래 확률이 아닙니다.';
+export function random(seed){let h=2166136261;for(const c of String(seed))h=Math.imul(h^c.charCodeAt(0),16777619);return()=>{h+=0x6D2B79F5;let t=Math.imul(h^h>>>15,1|h);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296;};}
+const monthRandom=(s,purpose)=>random(`${s.seed}|${s.totalMonths}|${purpose}`);
+const cleanLifeSeed=seed=>String(seed??'1').slice(0,64)||'1';
+const CITY_KEYS=['id','name','region','population','probability','totalPopulation','features'];
+const RATE_METRIC='mean-crude-birth-rate';
+const RATE_KEYS=['id','name','region','metric','weight','probability','totalWeight','periodStart','periodEnd','observedYears','features'];
+const birthKeys=city=>city?.metric===RATE_METRIC?RATE_KEYS:CITY_KEYS;
+const rateNumber=value=>typeof value==='number'&&Number.isFinite(value)&&value>=0;
+function validRatePeriod(row){return Number.isInteger(row.periodStart)&&row.periodStart>=1945&&Number.isInteger(row.periodEnd)&&row.periodEnd>=row.periodStart&&Number.isInteger(row.observedYears)&&row.observedYears>0&&row.observedYears<=row.periodEnd-row.periodStart+1;}
+function cityRows(data){
+  if(!data||!Object.prototype.hasOwnProperty.call(data,'birthCities'))return null;
+  if(!Array.isArray(data.birthCities)||!data.birthCities.length)throw new TypeError('출생도시 자료가 비어 있거나 올바른 배열이 아닙니다.');
+  const metric=data.birthCitySource?.metric;
+  if(metric!==undefined&&metric!==RATE_METRIC&&metric!=='population-share')throw new TypeError('확인되지 않은 출생지역 추첨 기준입니다.');
+  const isRate=metric===RATE_METRIC,ids=new Set(),rows=[],regions=Array.isArray(data.regions)?new Set(data.regions):null;
+  let total=0;
+  for(const row of data.birthCities){
+    if(!row||!['id','name','region'].every(key=>typeof row[key]==='string'&&row[key].trim()))throw new TypeError('출생도시 코드·이름·시도 자료가 올바르지 않습니다.');
+    if(ids.has(row.id))throw new TypeError('출생도시 코드가 중복되었습니다.');
+    ids.add(row.id);
+    if(regions&&!regions.has(row.region))throw new TypeError('출생도시의 시도가 게임의 지역 목록과 일치하지 않습니다.');
+    if(isRate?(!rateNumber(row.weight)||!validRatePeriod(row)):(!Number.isSafeInteger(row.population)||row.population<0))throw new TypeError('출생지역 가중치 또는 관측기간이 올바르지 않습니다.');
+    if(row.sourceRegion!==undefined&&(typeof row.sourceRegion!=='string'||!row.sourceRegion.trim()))throw new TypeError('도시 원천 시도 이름이 올바르지 않습니다.');
+    const features=row.features===undefined?[]:row.features;
+    if(!Array.isArray(features)||!features.every(value=>typeof value==='string'))throw new TypeError('도시 특징은 문자열 배열이어야 합니다.');
+    const weight=isRate?row.weight:row.population;
+    total+=weight;
+    if(!Number.isFinite(total)||total>Number.MAX_SAFE_INTEGER||(!isRate&&!Number.isSafeInteger(total)))throw new TypeError('출생지역 가중치 합계가 안전한 범위를 넘었습니다.');
+    if(weight>0)rows.push({id:row.id,name:row.name,region:row.region,...(isRate?{metric:RATE_METRIC,weight,periodStart:row.periodStart,periodEnd:row.periodEnd,observedYears:row.observedYears}:{population:weight}),features:[...features],...(row.sourceRegion!==undefined?{sourceRegion:row.sourceRegion}:{})});
+  }
+  if(!total)throw new TypeError('추첨 가능한 출생도시 인구가 없습니다.');
+  rows.sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0);
+  total=rows.reduce((sum,row)=>sum+(isRate?row.weight:row.population),0);
+  return{rows,total,isRate};
+}
+export function drawBirthCity(seed,data){
+  const available=cityRows(data);if(!available)return null;
+  const{rows,total,isRate}=available;let point=random(`birth-city|${cleanLifeSeed(seed)}`)()*total,chosen=rows.at(-1);
+  for(const row of rows){point-=isRate?row.weight:row.population;if(point<0){chosen=row;break;}}
+  return{id:chosen.id,name:chosen.name,region:chosen.region,...(isRate?{metric:RATE_METRIC,weight:chosen.weight,totalWeight:total,periodStart:chosen.periodStart,periodEnd:chosen.periodEnd,observedYears:chosen.observedYears}:{population:chosen.population,totalPopulation:total}),probability:(isRate?chosen.weight:chosen.population)/total,features:[...chosen.features],...(chosen.sourceRegion!==undefined?{sourceRegion:chosen.sourceRegion}:{})};
+}
+function sameBirthCity(a,b){
+  if(a===null||b===null)return a===b;
+  const hasSource=Object.prototype.hasOwnProperty.call(b||{},'sourceRegion'),keys=birthKeys(b);
+  return!!a&&!!b&&!Array.isArray(a)&&Object.keys(a).length===keys.length+(hasSource?1:0)&&keys.every(key=>Object.prototype.hasOwnProperty.call(a,key))&&Object.prototype.hasOwnProperty.call(a,'sourceRegion')===hasSource&&(!hasSource||a.sourceRegion===b.sourceRegion)&&keys.filter(key=>key!=='features').every(key=>a[key]===b[key])&&Array.isArray(a.features)&&a.features.length===b.features.length&&a.features.every((value,index)=>value===b.features[index]);
+}
+function cityFingerprint(seed,city){
+  // Local snapshot damage detection only; this is not a server signature.
+  const value=JSON.stringify([cleanLifeSeed(seed),...birthKeys(city).map(key=>city[key]),...(Object.prototype.hasOwnProperty.call(city,'sourceRegion')?['sourceRegion',city.sourceRegion]:[])]);let hash=2166136261;
+  for(let i=0;i<value.length;i++)hash=Math.imul(hash^value.charCodeAt(i),16777619);
+  return`birth-city-v1-${(hash>>>0).toString(16).padStart(8,'0')}`;
+}
+function validBirthCity(city){
+  const hasSource=!!city&&Object.prototype.hasOwnProperty.call(city,'sourceRegion'),keys=birthKeys(city),isRate=city?.metric===RATE_METRIC;
+  return!!city&&!Array.isArray(city)&&Object.keys(city).length===keys.length+(hasSource?1:0)&&keys.every(key=>Object.prototype.hasOwnProperty.call(city,key))&&(!hasSource||(typeof city.sourceRegion==='string'&&!!city.sourceRegion.trim()))&&['id','name','region'].every(key=>typeof city[key]==='string'&&city[key].trim())&&(isRate?(rateNumber(city.weight)&&city.weight>0&&rateNumber(city.totalWeight)&&city.totalWeight>=city.weight&&validRatePeriod(city)&&city.probability===city.weight/city.totalWeight):(Number.isSafeInteger(city.population)&&city.population>0&&Number.isSafeInteger(city.totalPopulation)&&city.totalPopulation>=city.population&&city.probability===city.population/city.totalPopulation))&&typeof city.probability==='number'&&Array.isArray(city.features)&&city.features.every(value=>typeof value==='string');
+}
+export const decisions=Object.freeze([
+{id:'school-ready',age:6,chapter:'학교를 기다리며',title:'처음 만날 교실을 생각한다',text:'입학을 준비하며 좋아하는 습관 하나를 고른다. 이후에도 매달 자라고 배운다.'},
+{id:'school-path',age:15,chapter:'나를 알아가는 시간',title:'어떤 배움을 이어갈까',text:'진로 준비의 방향을 정한다. 배움과 경험은 다음 일자리와 일상에 계속 영향을 준다.'},
+{id:'education',age:19,chapter:'내가 고른 방향',title:'학교와 현장 사이에서',text:'공개된 연간 등록금을 참고하되 입학·4년 학업은 가상 경로다. 등록금은 재학 중 매월 나누어 내고 학교 지역으로 이동한다.'},
+{id:'service',age:21,chapter:'잠시 다른 시간',title:'지금의 시간을 어디에 쓸까',text:'복무 경로는 대상이라는 가정으로 선택한다. 공개 복무개월을 적용하며 복무 중 학업·등록금·기존 근로소득은 잠시 멈춘다.'},
+{id:'first-job',age:25,chapter:'첫 번째 명함',title:'어떤 일을 시작할까',text:'직무와 연소득은 게임용 가정이다. 선택한 일의 소득은 이후 매월 들어오고 경험과 생활 방향에 따라 성장한다.'},
+{id:'residence',age:29,chapter:'퇴근하고 돌아갈 곳',title:'어느 지역에서 살아갈까',text:'실제 지역을 고르되 이사비·주거비는 가상 예산이다. 이사는 현재 거주지와 매월 지출을 바꾼다. 보증금·집값은 계산하지 않는다.'},
+{id:'relationships',age:33,chapter:'함께라는 말',title:'내 곁의 사람들에게 시간을 쓴다',text:'동반자·친구·혼자만의 생활 중 원하는 관계를 만든다. 특정 가족 형태를 삶의 성공 기준으로 삼지 않는다.'},
+{id:'sustainable-work',age:38,chapter:'오래 갈 수 있는 일상',title:'일과 몸이 보내는 신호',text:'소득을 넓히거나 건강과 공부에 시간을 쓸 수 있다. 선택한 습관은 그날과 이후 월별 변화에 함께 반영된다.'},
+{id:'unexpected-cost',age:45,chapter:'예상 밖의 하루',title:'생활을 다시 정리해야 한다',text:'수리와 생활 정비가 필요한 가상 사건이다. 비용은 선택할 때 한 번만 처리한다. 가까운 사람과 나누거나 거주지를 바꿀 수 있다.'},
+{id:'care',age:54,chapter:'서로의 일상을 돌보며',title:'돌봄과 나의 생활을 함께 생각한다',text:'가까운 사람을 돕는 5년짜리 가상 상황이다. 지원 방식에 따라 매월 비용과 관계·건강의 부담이 달라진다.'},
+{id:'later-work',age:60,chapter:'새로운 속도',title:'다음 일의 속도를 고른다',text:'현재 일을 줄이거나 새로운 기술을 배우고 휴식을 늘릴 수 있다. 법정 정년·연금 수급액을 예측하지 않는다.'},
+{id:'retirement',age:66,chapter:'길어진 오후',title:'일과 여가의 비중을 바꾼다',text:'가상 노후 모드로 전환한다. 가벼운 일 외에는 근로소득이 멈추고 자금을 나누어 쓴다. 실제 연금·세금 계산은 포함하지 않는다.'},
+{id:'late-life',age:73,chapter:'남아 있는 계절',title:'오늘의 작은 즐거움을 고른다',text:'이 선택 뒤에도 일상은 매달 이어진다. 80세는 게임의 기록 종료 시점이며 사망이나 실제 수명을 뜻하지 않는다.'}
+].map(e=>Object.freeze(e)));
+export function nextDecision(s){if(!s||s.phase==='ended')return null;return s.pendingDecision?decisions.find(e=>e.id===s.pendingDecision)||null:decisions[s.decisionIndex]||null;}
+function log(s,type,title,text,changes=[]){s.timeline.push({id:`${type}-${s.totalMonths}-${s.logSerial++}`,age:s.age,month:s.month,type,title,text,changes:changes.map(String)});if(s.timeline.length>120)s.timeline.splice(0,s.timeline.length-120);}
+function ledger(start){return{yearStartMonth:start,months:0,income:0,expenses:0,tuition:0,interest:0,debtPaid:0,support:0};}
+function job(s,title,status,income,occupationId){s.salary=round(Math.max(0,income));s.job={title,status,income:s.salary,...(typeof occupationId==='string'?{occupationId}:{})};}
+function careerOptions(options,data){
+  if(!Array.isArray(data?.careerPaths))return options;
+  return options.map((option,index)=>{const entry=data.careerPaths.find(row=>row.optionIndex===index);if(!entry)return option;if(!/^know-[0-9]{6}$/.test(entry.id)||typeof entry.name!=='string'||!entry.name.trim())throw new TypeError('직업 분류 연결이 올바르지 않습니다.');return[`${entry.name} 일을 시작한다`,`${option[1]} · 가상 입직 경로, 실제 자격 판정 없음`,{...option[2],jobTitle:entry.name,occupationId:entry.id}];});
+}
+function cityFor(region){return({서울:'서울특별시',부산:'부산광역시',대구:'대구광역시',인천:'인천광역시',광주:'광주광역시',대전:'대전광역시',울산:'울산광역시',세종:'세종특별자치시'})[region]||`${region} 지역(도시 미기록)`;}
+function move(s,region,housing){const home=['보호자 집','가족·지인과 동거'].includes(housing)&&s.profile?.birthCity?.region===region;s.residence={region,city:home?s.profile.birthCity.name:cityFor(region),housing};}
+function metricChanges(a,b){return METRICS.filter(k=>round(b[k]-a[k])!==0).map(k=>`${LABELS[k]} ${b[k]-a[k]>=0?'+':''}${round(b[k]-a[k])}`);}
+function cover(s){if(s.cash<0){s.debt=round(s.debt-s.cash);s.cash=0;}s.cash=round(s.cash);s.debt=round(s.debt);}
+function pay(s,amount){if(!amount)return;s.cash-=amount;if(amount>0)s.ledger.expenses=round(s.ledger.expenses+amount);else s.ledger.income=round(s.ledger.income-amount);cover(s);}
+function schoolName(s){return s.schooling?.school?.name||'';}
+function labels(s){
+if(s.schooling?.status==='enrolled')s.education=`${schoolName(s)} ${s.service.active?'휴학 중':'재학 중'}`;
+else if(s.schooling?.status==='graduated')s.education=`대학 졸업 · ${schoolName(s)}`;
+else if(s.paths.studyTrack==='technical'&&s.age>=19)s.education='고교 졸업 · 현장 기술 학습';
+else if(s.age<7)s.education='미취학 · 입학 준비';else if(s.age<13)s.education='초등학교 재학';else if(s.age<16)s.education='중학교 재학';else if(s.age<19)s.education=s.paths.studyTrack==='technical'?'직업계 고교 경로':s.paths.studyTrack==='creative'?'고교 · 창작 활동':'일반계 고교 경로';else s.education='고교 졸업';
+s.relationship=s.paths.relationship==='partner'?'동반자와 함께':s.paths.relationship==='friends'?'친구들과 교류':s.paths.relationship==='solo'?'혼자만의 생활과 교류':s.age<19?'보호자와 함께':'가까운 사람들과 교류';
+s.status=[s.age<7?'영유아기':s.age<19?'성장기':s.retired?'노후 생활':'성인 생활',s.education,s.relationship];
+if(s.service.active)s.status.push(`${s.service.branch} 복무 중 · ${s.service.remainingMonths}개월 남음`);if(s.care.remainingMonths>0)s.status.push('가까운 사람 돌봄');if(s.health<45)s.status.push('건강 회복 관리');else if(s.health<60)s.status.push('건강을 살피는 중');if(s.debt>0)s.status.push('가상 차입금 상환 중');s.job.income=s.salary;
+}
+function pickSchool(data,type,rng){const rows=(data?.tuition||[]).filter(x=>x?.type===type&&typeof x.name==='string'&&Number.isFinite(x.annual)&&x.annual>0);if(!rows.length)throw new TypeError(`등록금 자료가 없습니다: ${type}`);return clone(rows[Math.floor(rng()*rows.length)]);}
+export function createLife(seed,data,name='한 사람',options={}){
+const cleanSeed=cleanLifeSeed(seed),rng=random(cleanSeed),rows=(data?.birthRegions||[]).filter(x=>typeof x?.name==='string'&&Number.isFinite(x.births)&&x.births>0);let region,birthRegionSource;
+if(!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(key=>key!=='birthCity'))throw new TypeError('삶의 시작 옵션이 올바르지 않습니다.');
+const drawnCity=drawBirthCity(cleanSeed,data);
+if(Object.prototype.hasOwnProperty.call(options,'birthCity')&&!sameBirthCity(options.birthCity,drawnCity))throw new TypeError('미리 추첨한 도시는 같은 삶의 번호와 공식 자료의 결과와 일치해야 합니다.');
+if(drawnCity){region=drawnCity.region;birthRegionSource=drawnCity.metric===RATE_METRIC?'공개 연간 조출생률의 관측기간 단순평균을 가중치로 사용한 가상 출생지역':'이전 버전의 공개 주민등록인구 비중을 사용한 가상 출생도시';}else if(rows.length){let point=rng()*rows.reduce((n,x)=>n+x.births,0);region=rows.at(-1).name;for(const x of rows){point-=x.births;if(point<0){region=x.name;break;}}birthRegionSource='공개 출생아 수의 지역 비중';}else{const regions=data?.regions?.filter(x=>typeof x==='string'&&x)||['서울'];region=regions[Math.floor(rng()*regions.length)]||'서울';birthRegionSource='지역 비중 자료가 없어 균등 추첨한 가상 설정';}
+const backgrounds=['차분한 일상이 있는','서로 기대며 살아가는','새로운 기회를 찾는'];
+const s={version:VERSION,seed:cleanSeed,name:Array.from(String(name).trim()||'한 사람').slice(0,16).join(''),dataVersion:String(data?.version||''),age:0,month:0,totalMonths:0,phase:'running',pendingDecision:null,decisionIndex:0,step:0,focus:'balance',cash:[1200,400,2400][Math.floor(rng()*3)],debt:0,health:75,learn:35,bond:50,joy:55,salary:0,saving:.18,skill:0,retired:false,careerMonths:0,job:{title:'아직 일을 하지 않음',status:'미취업',income:0},residence:{region,city:cityFor(region),housing:'보호자 집'},education:'미취학 · 입학 준비',relationship:'보호자와 함께',status:[],tags:[],history:[],timeline:[],logSerial:0,profile:{region,birthRegion:region,birthRegionSource,background:backgrounds[Math.floor(rng()*backgrounds.length)],publicSchool:pickSchool(data,'국공립',rng),privateSchool:pickSchool(data,'사립',rng)},paths:{habit:'balance',studyTrack:'general',relationship:'family',wellness:'balance'},schooling:null,service:{active:false,branch:null,remainingMonths:0,previousJob:null},care:{remainingMonths:0,annualCost:0,mode:null},ledger:ledger(0),lastYearLedger:null,legacyHistory:[],legacySkippedDecisions:0,migration:null,rules:{moneyUnit:'만원',tuition:'실제 연간 등록금÷12를 재학한 학업개월마다 지급; 48개월 학업 가정, 복무 중 납부·학업 정지',incomeCosts:RULE_NOTE,familyBudget:'19세 전 생활비는 보호자 지원으로 상쇄하는 가상 가계 예산',city:drawnCity?.metric===RATE_METRIC?'공식 지역별 연간 조출생률의 관측기간 단순평균을 가중치로 추첨한다. 실제 출생아 지역 분포 확률과는 다르다. 이전 출생기록은 재추첨하지 않는다.':'이전 인구 기준 출생기록. 도시가 없는 이전 기록에는 도시를 추정해 채우지 않는다.',ending:'80세는 기록 종료 시점. 사망확률·개인 기대수명 계산 없음'}};
+if(drawnCity){s.profile.birthCity=clone(drawnCity);s.profile.birthCityFingerprint=cityFingerprint(cleanSeed,drawnCity);s.profile.birthCitySource=clone(data.birthCitySource??null);s.residence.city=drawnCity.name;}
+labels(s);log(s,'birth',`${drawnCity?drawnCity.name:region}에서 삶을 시작했다`,`${s.name}의 일상이 시작되었다. 출생지역은 ${birthRegionSource}, 가구 배경과 초기 여유자금은 가상 설정이다.`,['0세 0개월',RULE_NOTE]);return s;
+}
+export function choicesFor(s,data){
+if(!s||s.phase!=='decision'||!s.pendingDecision)return[];const event=nextDecision(s);if(!event)return[];
+switch(event.id){
+case'school-ready':return[['먼저 친구에게 인사한다','관계 +7 · 이후 교류 습관',{bond:7,joy:3,habit:'friends'}],['책 읽는 습관을 만든다','배움 +8 · 이후 공부 습관',{learn:8,joy:2,habit:'study'}],['몸을 움직이며 논다','건강 +7 · 이후 운동 습관',{health:7,joy:3,habit:'sports'}]];
+case'school-path':return[['진학 공부를 준비한다','배움 +9 · 일반계 고교 경로',{learn:9,joy:-2,studyTrack:'general'}],['직업 기술을 배워본다','기술 +1 · 직업계 고교 경로',{learn:5,skill:1,studyTrack:'technical'}],['창작과 협업을 경험한다','배움·관계 +5 · 창작 활동',{learn:5,bond:5,joy:4,studyTrack:'creative'}]];
+case'education':return['public','private'].map((kind,i)=>{const school=s.profile[i?'privateSchool':'publicSchool'];return[i?'사립대 진학':'국공립대 진학',`${school.name} · ${school.region||s.profile.region} 지역으로 이동 · 연 ${Math.round(school.annual/10000)}만원을 월납(4년 가정)`,{action:'college',kind,learn:8,tag:i?'사립대 경로':'국공립대 경로'}];}).concat([['기술을 익히며 일한다','가상 교육비 300만원 · 현장 연소득 1,800만원 가정',{action:'apprentice',learn:5,skill:1,cost:300,tag:'기술과 현장 경로'}]]);
+case'service':{const service=data?.service||{};return[['army','육군',18],['navy','해군',20],['airforce','공군',21]].map(([key,label,fallback])=>{const months=Number.isInteger(service[key])&&service[key]>0&&service[key]<=36?service[key]:fallback;return[`${label} 복무 경로`,`${months}개월 · 대상이라는 가정, 복무 중 휴학·기존 소득 정지`,{action:'service',branch:label,months,bond:4,learn:2,tag:`${label} ${months}개월`}];}).concat([['학업·일 경험을 이어간다','복무하지 않는 가상 경로 · 현재 학업과 근로 계속',{learn:5,joy:3,tag:'다른 경험의 시간'}]]);}
+case'first-job':return careerOptions([['사무·운영 일을 시작한다','가상 연소득 3,200만원부터 · 학업·기술 경험 일부 반영',{action:'job',jobTitle:'사무·운영직',jobStatus:'재직',income:3200,joy:2}],['기술을 살리는 일을 시작한다','가상 연소득 3,500만원부터 · 기술 경험 반영',{action:'job',jobTitle:'기술·설비직',jobStatus:'재직',income:3500,learn:3}],['프로젝트 계약 일을 시작한다','가상 연소득 2,900만원부터 · 협업 활동',{action:'job',jobTitle:'프로젝트 계약직',jobStatus:'계약직',income:2900,bond:4,joy:6}]],data);
+case'residence':return[['서울에서 독립한다','서울특별시로 이동 · 가상 월 주거비 70만원 · 이사·가구비 300만원',{action:'move',region:'서울',housing:'월세 독립',cost:300,joy:5}],['부산에서 독립한다','부산광역시로 이동 · 가상 월 주거비 50만원 · 이사·가구비 240만원',{action:'move',region:'부산',housing:'월세 독립',cost:240,joy:5}],[`출생지역 ${s.profile.region}에서 함께 산다`,'가족·지인과 동거 · 가상 월 분담 15만원 · 생활 정비비 100만원',{action:'move',region:s.profile.region,housing:'가족·지인과 동거',cost:100,bond:5,saving:.05}]];
+case'relationships':return[['동반자와 생활을 의논한다','관계 +9 · 이후 교류와 주거비 분담 가정',{relationship:'partner',bond:9,joy:4,cost:100,tag:'동반자와 함께'}],['친구들과 자주 안부를 나눈다','관계 +8 · 이후 친구들과 교류',{relationship:'friends',bond:8,joy:5,tag:'오랜 친구'}],['나만의 리듬을 지킨다','만족 +9 · 독립적인 생활과 교류',{relationship:'solo',joy:9,learn:3,tag:'나만의 리듬'}]];
+case'sustainable-work':return[['역할을 넓히고 승진에 도전한다','현재 연소득 +18% · 건강 -5 · 이후 일 중심',{salaryRate:.18,health:-5,wellness:'career',tag:'경험을 넓힌 사람'}],['운동과 휴식을 일정에 넣는다','건강 +10 · 이후 회복 습관',{health:10,joy:4,wellness:'exercise',tag:'지속하는 운동'}],['새로운 공부를 시작한다','배움 +12 · 가상 비용 200만원 · 이후 학습 습관',{learn:12,cost:200,wellness:'learning',skill:1,tag:'평생 배우는 사람'}]];
+case'unexpected-cost':return[['예비 자금으로 수리한다','가상 비용 300만원 · 만족 +3',{cost:300,joy:3}],['가까운 사람과 해결책을 나눈다','가상 비용 220만원 · 관계 +6',{cost:220,bond:6}],[`${s.profile.region}의 함께 사는 집으로 옮긴다`,'가상 이사·정비비 450만원 · 이후 동거 주거비',{action:'move',region:s.profile.region,housing:'가족·지인과 동거',cost:450,bond:3,saving:.03}]];
+case'care':return[['직접 시간을 내어 돌본다','5년간 가상 월 30만원 · 관계 +8 · 건강 -3',{action:'care',mode:'direct',annualCost:360,bond:8,health:-3}],['지원과 역할을 함께 나눈다','5년간 가상 월 20만원 · 배움·관계 +5',{action:'care',mode:'shared',annualCost:240,bond:5,learn:5}],['내 생활도 지키며 오래 돕는다','5년간 가상 월 15만원 · 건강 +5 · 관계 +3',{action:'care',mode:'balanced',annualCost:180,health:5,bond:3}]];
+case'later-work':return[['일을 줄이고 계속한다','현재 연소득 70% · 시간제 근무로 전환',{action:'later-work',salaryRate:-.3,joy:6}],['다음 일을 위한 기술을 배운다','현재 연소득 85% · 가상 비용 150만원 · 기술 +1',{action:'later-work',salaryRate:-.15,cost:150,learn:8,skill:1,wellness:'learning'}],['휴식과 관계에 무게를 둔다','현재 연소득 50% · 시간제 근무 · 건강·관계 +5',{action:'later-work',salaryRate:-.5,health:5,bond:5,joy:8}]];
+case'retirement':return[['가벼운 일을 이어간다','시간제 일 · 가상 연소득 1,000만원',{action:'retirement',income:1000,joy:3,tag:'가벼운 일과 함께'}],['동네 활동에 참여한다','근로소득 종료 · 이후 지역 교류',{action:'retirement',income:0,bond:9,joy:6,relationship:'friends',tag:'동네에서 만난 사람들'}],['운동과 산책을 습관으로 만든다','근로소득 종료 · 건강 +9 · 이후 운동 습관',{action:'retirement',income:0,health:9,joy:5,wellness:'exercise',tag:'걷는 일상'}]];
+case'late-life':return[['보고 싶은 사람을 만난다','관계 +7 · 만족 +5',{bond:7,joy:5,relationship:'friends'}],['사진과 이야기를 기록한다','배움 +5 · 만족 +7',{learn:5,joy:7,tag:'이야기를 남긴 사람'}],['처음 가보는 길을 걸어본다','가상 여가비 80만원 · 건강·만족 +5',{health:5,joy:5,cost:80,wellness:'exercise'}]];
+default:return[];}}
+function housingAnnual(s){if(s.age<19||s.residence.housing==='보호자 집')return s.age<19?0:180;let n=s.residence.housing==='기숙사'?360:s.residence.housing==='가족·지인과 동거'?180:s.residence.region==='서울'?840:s.residence.region==='부산'?600:480;if(s.paths.relationship==='partner')n*=.8;return n;}
+function moneyMonth(s){const income=s.service.active?0:s.salary/12,living=(s.age<7?480:s.age<19?720:s.retired?840:900)/12,discretionary=s.age>=19?income*(1-s.saving)*.35:0,tuition=s.schooling?.status==='enrolled'&&!s.service.active?s.schooling.annualTuitionWan/12:0,care=s.care.remainingMonths>0?s.care.annualCost/12:0,expense=living+housingAnnual(s)/12+discretionary+tuition+care,support=s.age<19?expense:0,interest=s.debt*.035/12,surplus=income+support-expense-interest,repayment=surplus>0?Math.min(s.debt,surplus*.6):0;s.cash+=surplus-repayment;s.debt-=repayment;cover(s);for(const[k,v]of Object.entries({income:income+support,expenses:expense,tuition,interest,debtPaid:repayment,support}))s.ledger[k]=round(s.ledger[k]+v);s.ledger.months++;}
+function habits(s){const learn=s.focus==='learning',health=s.focus==='health',social=s.focus==='relationships',career=s.focus==='career';s.health=clamp(s.health+((health?1.6:0)+(s.paths.habit==='sports'?.35:0)+(s.paths.wellness==='exercise'?1:0)-(s.age>=60?.9:s.age>=40?.4:.08)-(s.paths.wellness==='career'?.2:0)-(s.care.remainingMonths>0&&s.care.mode==='direct'?.35:0))/12);s.learn=clamp(s.learn+((s.age<19?1:s.schooling?.status==='enrolled'&&!s.service.active?1.4:.08)+(learn?1.4:0)+(s.paths.habit==='study'?.3:0)+(s.paths.wellness==='learning'?.65:0))/12);s.bond=clamp(s.bond+((social?1.4:0)+(s.paths.relationship==='partner'||s.paths.relationship==='friends'?.35:.05)+(s.paths.habit==='friends'?.25:0)+(s.care.remainingMonths>0?.3:0)-(career?.15:0))/12);s.joy=clamp(s.joy+((s.focus==='balance'?.6:.2)+(s.paths.relationship==='solo'?.15:0)-(s.debt>s.cash+5000?.5:0))/12);if(WORKING.has(s.job.status)&&!s.service.active){s.careerMonths++;s.salary=round(s.salary*(1+(.012+(career?.012:0)+(learn?.004:0)+Math.min(s.skill,5)*.001)/12));}s.job.income=s.salary;}
+function transitions(s){if(s.service.active){s.service.remainingMonths--;if(!s.service.remainingMonths){s.service.active=false;const j=s.service.previousJob;job(s,j?.title||'다음 경험 준비',j?.status||'미취업',j?.income||0);log(s,'milestone',`${s.service.branch} 복무를 마쳤다`,'정해진 복무개월이 지났다. 휴학 중이었다면 다음 달부터 학업과 월별 등록금을 다시 이어간다.',['복무 종료',s.schooling?.status==='enrolled'?'복학':'다음 일상으로']);}}else if(s.schooling?.status==='enrolled'){s.schooling.progressMonths++;if(s.schooling.progressMonths>=48){s.schooling.status='graduated';const dormExit=s.residence.housing==='기숙사';if(dormExit)s.residence.housing='월세 독립';if(s.job.status==='재학')job(s,'첫 일자리 준비','미취업',0);log(s,'milestone',`${schoolName(s)}의 학업을 마쳤다`,'48개월 학업을 마쳤다. 졸업·취업 가능성은 가상 경로이며 등록금 납부는 끝난다.',['대학 졸업','월별 등록금 납부 종료',...(dormExit?['기숙사 퇴실·같은 지역 월세 생활']:[])]);}}if(s.care.remainingMonths>0&&!--s.care.remainingMonths)log(s,'milestone','돌봄의 역할을 다시 나누었다','5년의 가상 돌봄 구간이 끝나 지원 방식과 일상을 조정했다. 사망이나 질병의 예측이 아니다.',['정기 돌봄비 종료']);}
+function annual(s){const l=clone(s.ledger);l.endMonth=s.totalMonths;s.lastYearLedger=l;log(s,'annual',`${s.age}세의 일상에 도착했다`,`${s.residence.city}에서 일상을 이어갔다. 현재 활동: ${s.job.title}. 월별 처리한 12개월의 가상 예산을 정리한다.`,[`근로수입 ${Math.round(l.income-l.support)}만원`,`보호자지원 ${Math.round(l.support)}만원`,`생활·주거·학비 등 ${Math.round(l.expenses)}만원`,`등록금(지출에 포함) ${Math.round(l.tuition)}만원`,`이자 ${Math.round(l.interest)}만원`,`부채 상환 ${Math.round(l.debtPaid)}만원`]);s.ledger=ledger(s.totalMonths);if([7,13,16,19].includes(s.age))log(s,'milestone',s.age===7?'초등학교 생활이 시작되었다':s.age===13?'중학교 생활이 시작되었다':s.age===16?'다음 배움의 교실로 옮겼다':'고교 시기의 배움을 마무리했다','입학·진급 시기는 게임에서 단순화한 가상 연령 규칙이다. 실제 출생월과 학년을 계산한 결과가 아니다.',[]);if(s.age>=25&&s.age<76){const rng=monthRandom(s,'annual-environment'),draw=rng();if(draw<.13){const cost=80+Math.floor(rng()*121);pay(s,cost);log(s,'event','예상 밖의 생활 지출이 생겼다','수리·교통·생활 정비를 묶은 가상 사건이다. 실제 발생률·평균 비용을 뜻하지 않는다.',[`일회 지출 ${cost}만원`]);}else if(draw>.88){s.bond=clamp(s.bond+2);s.joy=clamp(s.joy+2);log(s,'event','반가운 안부가 도착했다','오래 연락하지 못한 사람과 이야기를 나누었다. 가상 환경 사건이다.',['관계 +2','만족 +2']);}}}
+export function advanceLife(original,data,months=3){if(!Number.isInteger(months)||months<1||months>960)throw new RangeError('진행 개월은 1~960 정수여야 합니다.');if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');const s=clone(original);if(s.phase!=='running')return s;for(let i=0;i<months&&s.phase==='running';i++){moneyMonth(s);habits(s);s.totalMonths++;s.age=Math.floor(s.totalMonths/12);s.month=s.totalMonths%12;transitions(s);if(!s.month)annual(s);labels(s);if(s.totalMonths>=960){s.phase='ended';s.pendingDecision=null;log(s,'ending','80세까지의 기록을 마쳤다','정해진 게임 기록 구간의 끝이며 사망을 뜻하지 않는다. 함께한 사람들과 고른 일상이 하나의 이야기가 되었다.',['80세 0개월','기록 종료']);break;}const e=decisions[s.decisionIndex];if(e&&s.totalMonths===e.age*12){s.phase='decision';s.pendingDecision=e.id;}}return s;}
+export function choose(original,index,data){if(!validSave(original)||original.phase!=='decision')throw new Error('결정을 기다리는 갈림길이 없습니다.');const options=choicesFor(original,data);if(!Number.isInteger(index)||index<0||index>=options.length)throw new RangeError('유효하지 않은 선택입니다.');const s=clone(original),e=nextDecision(s),[title,,fx]=options[index],before=clone(s),changes=[];for(const k of METRICS)s[k]=clamp(s[k]+(fx[k]||0));s.skill+=fx.skill||0;s.saving=clamp(s.saving+(fx.saving||0),.05,.45);for(const k of['habit','studyTrack','relationship','wellness'])if(fx[k])s.paths[k]=fx[k];if(fx.cost){pay(s,fx.cost);changes.push(`일회 지출 ${fx.cost}만원`);}if(fx.tag&&!s.tags.includes(fx.tag))s.tags.push(fx.tag);
+switch(fx.action){
+case'college':{const school=clone(s.profile[fx.kind==='public'?'publicSchool':'privateSchool']);s.schooling={school,status:'enrolled',progressMonths:0,durationMonths:48,annualTuitionWan:school.annual/10000};move(s,school.region||s.profile.region,'기숙사');job(s,'대학에서 배우는 중','재학',0);changes.push(`${school.name} 재학`,`${s.residence.region} · 기숙사`,`연 등록금 ${Math.round(school.annual/10000)}만원을 학업개월에 월납`);break;}
+case'apprentice':s.paths.studyTrack='technical';s.schooling=null;job(s,'현장 기술 수습','재직',1800);changes.push('현장 학습 시작','연소득 1,800만원(가상)');break;
+case'service':s.service={active:true,branch:fx.branch,remainingMonths:fx.months,previousJob:clone(s.job)};job(s,`${fx.branch} 복무`,'복무',0);changes.push(`${fx.branch} ${fx.months}개월`,'기존 근로소득 정지',s.schooling?.status==='enrolled'?'휴학·등록금 납부 정지':'복무 후 이전 일상 복귀');break;
+case'job':{const income=fx.income+(s.schooling?.status==='graduated'?200:0)+s.skill*100;job(s,fx.jobTitle,fx.jobStatus,income,fx.occupationId);changes.push(`${fx.jobTitle} 시작`,`연소득 ${income}만원(가상)`,...(fx.occupationId?['공개 직업분류 연결 · 실제 평균연봉·취업 자격을 뜻하지 않음']:[]));break;}
+case'move':move(s,fx.region,fx.housing);changes.push(`${s.residence.region} · ${s.residence.city}로 이동`,s.residence.housing);break;
+case'care':s.care={remainingMonths:60,annualCost:fx.annualCost,mode:fx.mode};changes.push('5년간 돌봄 역할',`월 ${fx.annualCost/12}만원(가상)`);break;
+case'later-work':s.job.status='시간제';s.job.title='경험을 이어가는 시간제 일';break;
+case'retirement':s.retired=true;job(s,fx.income?'가벼운 시간제 일':'지역과 나의 일상',fx.income?'시간제':'은퇴',fx.income);changes.push('가상 노후 모드',`근로 연소득 ${fx.income}만원`);break;
+}
+if(fx.salaryRate){s.salary=round(s.salary*(1+fx.salaryRate));s.job.income=s.salary;changes.push(`현재 연소득 ${Math.round(s.salary)}만원(가상)`);}labels(s);changes.push(...metricChanges(before,s));s.history.push({id:`choice-${e.id}`,eventId:e.id,age:s.age,month:s.month,title:e.title,choice:title,label:title,changes:clone(changes),cash:round(s.cash),debt:round(s.debt)});log(s,'decision',title,`‘${e.title}’의 갈림길에서 이 방향을 골랐다. 이 선택을 품고 다음 계절을 맞이한다.`,changes);s.decisionIndex++;s.step=s.decisionIndex;s.pendingDecision=null;s.phase='running';return s;}
+export function setFocus(original,focus){if(!FOCUSES.includes(focus))throw new RangeError('유효하지 않은 생활 방향입니다.');if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');const s=clone(original);if(s.focus!==focus){s.focus=focus;log(s,'focus',`${FOCUS_NAMES[focus]}에 시간을 더 쓰기로 했다`,'시간을 건너뛰지 않고 다음 월부터 생활 습관과 일의 성장에 반영한다.',[`${FOCUS_NAMES[focus]} 중심`]);}return s;}
+const finite=x=>typeof x==='number'&&Number.isFinite(x);
+const goodSchool=x=>!!x&&typeof x.name==='string'&&finite(x.annual)&&x.annual>0;
+function goodLedger(l){return!!l&&Number.isInteger(l.yearStartMonth)&&l.yearStartMonth>=0&&Number.isInteger(l.months)&&l.months>=0&&l.months<=12&&['income','expenses','tuition','interest','debtPaid','support'].every(k=>finite(l[k])&&l[k]>=0);}
+export function validSave(s){try{
+if(!s||s.version!==VERSION||typeof s.seed!=='string'||!s.seed||s.seed.length>64||typeof s.name!=='string'||!s.name||!Number.isInteger(s.totalMonths)||s.totalMonths<0||s.totalMonths>960||s.age!==Math.floor(s.totalMonths/12)||s.month!==s.totalMonths%12)return false;
+if(!Number.isInteger(s.decisionIndex)||s.decisionIndex<0||s.decisionIndex>decisions.length||s.step!==s.decisionIndex||!FOCUSES.includes(s.focus)||!['running','decision','ended'].includes(s.phase))return false;
+if(!['cash','debt','salary','saving','skill','careerMonths',...METRICS].every(k=>finite(s[k]))||['cash','debt','salary','skill','careerMonths'].some(k=>s[k]<0)||METRICS.some(k=>s[k]<0||s[k]>100)||s.saving<.05||s.saving>.45)return false;
+if(!s.job||typeof s.job.title!=='string'||typeof s.job.status!=='string'||s.job.income!==s.salary||!s.residence||!['region','city','housing'].every(k=>typeof s.residence[k]==='string')||typeof s.education!=='string'||typeof s.relationship!=='string'||!Array.isArray(s.status)||!s.status.every(x=>typeof x==='string'))return false;
+if(Object.hasOwn(s.job,'occupationId')&&(typeof s.job.occupationId!=='string'||!/^know-[0-9]{6}$/.test(s.job.occupationId)))return false;
+if(!s.profile||typeof s.profile.region!=='string'||typeof s.profile.birthRegion!=='string'||!goodSchool(s.profile.publicSchool)||!goodSchool(s.profile.privateSchool)||!s.paths||!s.service||typeof s.service.active!=='boolean'||!Number.isInteger(s.service.remainingMonths)||s.service.remainingMonths<0||(s.service.active&&s.service.remainingMonths===0)||!s.care||!Number.isInteger(s.care.remainingMonths)||s.care.remainingMonths<0||!finite(s.care.annualCost)||s.care.annualCost<0)return false;
+if(Object.prototype.hasOwnProperty.call(s.profile,'birthCity')){const city=s.profile.birthCity;if(!validBirthCity(city)||s.profile.region!==city.region||s.profile.birthRegion!==city.region||s.profile.birthCityFingerprint!==cityFingerprint(s.seed,city))return false;}else if(Object.prototype.hasOwnProperty.call(s.profile,'birthCityFingerprint'))return false;
+if(s.schooling&&(!goodSchool(s.schooling.school)||!['enrolled','graduated'].includes(s.schooling.status)||!Number.isInteger(s.schooling.progressMonths)||s.schooling.progressMonths<0||s.schooling.durationMonths!==48||s.schooling.progressMonths>48||!finite(s.schooling.annualTuitionWan)||s.schooling.annualTuitionWan<0))return false;
+if(!goodLedger(s.ledger)||s.ledger.months!==s.month||s.ledger.yearStartMonth!==s.totalMonths-s.month||(s.lastYearLedger!==null&&!goodLedger(s.lastYearLedger)))return false;
+if(!Array.isArray(s.tags)||!s.tags.every(x=>typeof x==='string')||!Array.isArray(s.legacyHistory)||!Number.isInteger(s.legacySkippedDecisions)||s.legacySkippedDecisions<0||s.legacySkippedDecisions>s.decisionIndex||!Array.isArray(s.history)||s.history.length+s.legacySkippedDecisions!==s.decisionIndex)return false;
+if(!s.history.every((h,i)=>h?.eventId===decisions[i+s.legacySkippedDecisions].id&&h.age===decisions[i+s.legacySkippedDecisions].age&&h.month===0&&typeof h.choice==='string'&&Array.isArray(h.changes)))return false;
+if(!Array.isArray(s.timeline)||s.timeline.length>120||!Number.isInteger(s.logSerial)||s.logSerial<s.timeline.length||!s.timeline.every(h=>h&&typeof h.id==='string'&&Number.isInteger(h.age)&&h.age>=0&&h.age<=s.age&&Number.isInteger(h.month)&&h.month>=0&&h.month<=11&&h.age*12+h.month<=s.totalMonths&&typeof h.type==='string'&&typeof h.title==='string'&&typeof h.text==='string'&&Array.isArray(h.changes)&&h.changes.every(x=>typeof x==='string')))return false;
+if(s.phase==='ended')return s.totalMonths===960&&s.pendingDecision===null&&s.decisionIndex===decisions.length;if(s.totalMonths===960)return false;const e=decisions[s.decisionIndex];if(s.phase==='decision')return!!e&&s.pendingDecision===e.id&&s.totalMonths===e.age*12;return s.pendingDecision===null&&(!e||s.totalMonths<e.age*12);
+}catch{return false;}}
+export function migrateSave(old,data){try{
+if(validSave(old))return clone(old);
+if(!old||old.version!==1||typeof old.seed!=='string'||typeof old.name!=='string'||!Number.isInteger(old.step)||old.step<0||old.step>15||!Array.isArray(old.history)||old.history.length!==old.step||!Number.isInteger(old.age)||old.age<0||old.age>80||!['cash','debt','salary','saving','skill',...METRICS].every(k=>finite(old[k]))||old.cash<0||old.debt<0||old.salary<0||METRICS.some(k=>old[k]<0||old[k]>100)||!old.profile||!goodSchool(old.profile.publicSchool)||!goodSchool(old.profile.privateSchool))return null;
+const legacyData={...data};delete legacyData.birthCities;const s=createLife(old.seed,legacyData,old.name);s.profile={...clone(s.profile),...clone(old.profile),birthRegion:old.profile.region};delete s.profile.birthCity;delete s.profile.birthCityFingerprint;delete s.profile.birthCitySource;s.age=old.age;s.month=0;s.totalMonths=old.age*12;for(const k of['cash','debt','salary','skill',...METRICS])s[k]=old[k];s.saving=clamp(old.saving,.05,.45);s.retired=!!old.retired;s.tags=Array.isArray(old.tags)?old.tags.filter(x=>typeof x==='string'):[];s.legacyHistory=clone(old.history);s.legacySkippedDecisions=decisions.filter(e=>e.age<=old.age).length;s.decisionIndex=s.legacySkippedDecisions;s.step=s.decisionIndex;s.history=[];s.phase=old.age===80?'ended':'running';s.pendingDecision=null;s.ledger=ledger(s.totalMonths);s.lastYearLedger=null;move(s,s.profile.region,old.age<19?'보호자 집':'가족·지인과 동거');job(s,old.salary>0?'이전 기록에서 이어온 일':old.age<19?'아직 일을 하지 않음':old.retired?'나의 일상':'다음 경험 준비',old.salary>0?(old.retired?'시간제':'재직'):(old.retired?'은퇴':'미취업'),old.salary);
+const college=s.tags.includes('사립대 경로')?'privateSchool':s.tags.includes('국공립대 경로')?'publicSchool':null;if(college){const progress=clamp((old.age-19)*12,0,48);s.schooling={school:clone(s.profile[college]),status:progress>=48?'graduated':'enrolled',progressMonths:progress,durationMonths:48,annualTuitionWan:0,legacyPrepaid:true};}else if(s.tags.includes('기술과 현장 경로'))s.paths.studyTrack='technical';if(s.tags.includes('동반자'))s.paths.relationship='partner';else if(s.tags.includes('오랜 친구'))s.paths.relationship='friends';else if(s.tags.includes('나만의 리듬'))s.paths.relationship='solo';s.migration={fromVersion:1,atAge:old.age,legacyTuitionPrepaid:!!college,note:'이전 선택기록·잔액을 보존하고 지난 갈림길을 다시 과금하지 않음. 이전 일시납 등록금도 다시 청구하지 않음.'};labels(s);log(s,'migration','이전 삶의 기록을 이어받았다',s.migration.note,[`${old.age}세부터 월별 흐름으로 이어가기`,`이전 선택 ${old.history.length}개 별도 보존`]);return validSave(s)?s:null;
+}catch{return null;}}
+export function headline(s){return s.joy>=75?'내가 좋아하는 삶의 모양을 찾았다':s.bond>=75?'함께한 사람들이 나의 이야기가 되었다':s.learn>=75?'새로운 것을 배우는 마음으로 살아왔다':'작은 선택들이 모여 나의 삶이 되었다';}
