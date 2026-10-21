@@ -35,7 +35,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .primary,.secondary{height:auto;min-height:48px}
 .birth{width:100%;min-height:0;max-width:760px}
 .city-stage{display:grid;grid-template-columns:minmax(0,1fr);width:100%;max-width:680px;gap:10px;min-height:0;margin:12px auto 18px}
-.city-map-wrap{width:100%;max-width:260px;margin-inline:auto}
+.city-map-wrap{width:100%;max-width:300px;margin-inline:auto}
 #city-map{height:auto;aspect-ratio:4/3;max-height:230px;overflow:visible}
 .city-label{min-width:0}
 .city-label h1{font-size:calc(clamp(24px,5vw,42px) * 1.2 * var(--user-text-scale,1));line-height:1.35;min-height:0;overflow-wrap:anywhere}
@@ -143,8 +143,8 @@ dialog{width:calc(100% - max(12px,env(safe-area-inset-left,0px)) - max(12px,env(
   main{padding-top:28px}
   .clock-actions{width:auto;flex:1 1 460px}
   #pause,#next{flex:0 1 auto}
-  .city-stage{grid-template-columns:minmax(180px,240px) minmax(0,1fr);align-items:center;gap:18px}
-  .city-map-wrap{max-width:240px}
+  .city-stage{grid-template-columns:minmax(180px,300px) minmax(0,1fr);align-items:center;gap:18px}
+  .city-map-wrap{max-width:300px}
   .birth-details{padding:18px 21px}
   .story-card{padding:26px}
   .life-scene-placard{display:block}

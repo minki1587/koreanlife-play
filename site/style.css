@@ -81,3 +81,5 @@ header .header-action{min-height:44px;padding:10px 16px;background:var(--paper);
   #game .game-grid.game-layout{grid-template-columns:minmax(200px,220px) minmax(0,1fr)}
   #game .game-grid.game-layout>.timeline-panel{grid-column:1/-1;grid-row:5;position:static;height:auto;max-height:none;overflow:visible}
 }
+
+.city-map-legend{display:flex;justify-content:center;flex-wrap:wrap;gap:5px 14px;margin:7px 0 0;color:var(--muted);font-size:calc(10px * 1.2 * var(--user-text-scale,1));line-height:1.6}.city-map-legend>span{display:inline-flex;align-items:center;gap:5px}.city-map-legend i{display:inline-block;flex:none;width:12px;height:12px;border:1px solid #000;background:#c8d8b8}.city-map-legend .map-key-neighbor{background:#e5e7e2;border-color:#92998e}
