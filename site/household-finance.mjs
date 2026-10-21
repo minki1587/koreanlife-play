@@ -1,4 +1,5 @@
-import {currentFamilyIncome} from './parent-careers.mjs?v=life-health-1';
+import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=injury-care-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=injury-care-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -49,7 +50,7 @@ export function monthlyFamilyCapacity(s,{living=personalLivingWan(s),university=
 export function activeHobbyCost(s,catalog){
   if(!s.hobbies?.active)return 0;const rows=Array.isArray(catalog)?catalog:catalog?.hobbies;
   if(!Array.isArray(rows))return 0;let cost=0;
-  for(const id of s.hobbies.selectedIds){const row=rows.find(r=>r.id===id);if(!row||s.age<effectiveHobbyAge(s,row))return 0;cost+=row.monthlyCostWan;}
+  for(const id of s.hobbies.selectedIds){const row=rows.find(r=>r.id===id);if(!row||s.age<effectiveHobbyAge(s,row))return 0;if(hobbyInjuryAllowed(s,row))cost+=row.monthlyCostWan;}
   return round(cost);
 }
 
@@ -61,7 +62,7 @@ export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostW
 }
 export function hobbyFunding(s,costWan){
   if(!hasHouseholdSupport(s))return {eligible:s.cash+1e-9>=costWan,familyMonthlyWan:0,personalMonthlyWan:costWan,reason:s.cash+1e-9>=costWan?'':'보유 현금이 월 취미비보다 적습니다.'};
-  const tuition=s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0,income=s.service?.active?0:s.salary/12,living=personalLivingWan(s),other=(s.age>=19?income*(1-s.saving)*.35:0)+(s.care?.remainingMonths>0?s.care.annualCost/12:0)+s.debt*.035/12;
+  const tuition=s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0,income=s.service?.active?0:s.salary/12*injuryImpact(s).workFactor,living=personalLivingWan(s),other=(s.age>=19?income*(1-s.saving)*.35:0)+(s.care?.remainingMonths>0?s.care.annualCost/12:0)+s.debt*.035/12;
   const plan=settleHouseholdMonth(s,{livingWan:living,tuitionWan:tuition,hobbyWan:costWan,personalIncomeWan:income,otherPersonalCostWan:other}),family=plan.finance.lastMonth.hobbyWan,own=round(costWan-family),projected=s.cash+income+plan.supportWan-living-other-(plan.tuitionFunded?tuition:0),eligible=projected+1e-7>=costWan;
   return {eligible,familyMonthlyWan:round(family),personalMonthlyWan:own,reason:eligible?'':`가구 취미 지원 여력 ${round(family)}만원과 내 현금 ${s.cash}만원으로 월 ${costWan}만원을 마련할 수 없습니다.`};
 }

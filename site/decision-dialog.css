@@ -18,3 +18,5 @@
   .decision-dialog .story-card,.decision-dialog .story-card.waiting{padding:16px}
   .decision-dialog-top{padding:10px 14px}
 }
+
+#injury-care-choices{display:grid;gap:18px}#injury-care-choices section{border:1px solid var(--line);border-radius:8px;padding:14px}#injury-care-choices ul{display:grid;gap:6px;margin-bottom:0;padding-left:22px}#injury-care-choices button{min-height:48px;width:100%}

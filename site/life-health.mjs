@@ -1,3 +1,4 @@
+import {applyCareRecord} from './injury-care.mjs?v=injury-care-1';
 // Explicit game rules. No medical diagnosis, external data, DOM or I/O.
 export const LIFE_HEALTH_RULES=Object.freeze({version:'life-health-v1',monthlyFatalProbability:.00001,monthlyInjuryProbability:.01,severities:Object.freeze([
  Object.freeze({id:'minor',label:'경상',probability:.85,healthLoss:8,recoveryMonths:2}),
@@ -30,7 +31,7 @@ function step(seed,atMonth,context,before,currentInjury){
  if(before<=0){type='death';deathCause='health';}
  else if(draw.fatal){type='death';deathCause='accident';}
  else if(recovering){
-  const done=injury.recoveryMonths-injury.remainingRecoveryMonths+1,target=injury.healthLoss*done/injury.recoveryMonths;
+  const target=injury.allocatedHealth+(injury.healthLoss-injury.allocatedHealth)/injury.remainingRecoveryMonths;
   plannedRecovery=target-injury.allocatedHealth;after=clamp(before+plannedRecovery);actualRecovery=after-before;
   injury.allocatedHealth=target;injury.recoveredHealth+=actualRecovery;injury.remainingRecoveryMonths--;
   type=injury.remainingRecoveryMonths?'recovery':'recovered';incidentId=injury.id;severity=injury.severity;
@@ -59,6 +60,7 @@ export function progressLifeHealth(state,atMonth=state.totalMonths,{context=stat
  if(atMonth<=medical.lastProcessedMonth)return null;
  if(atMonth!==medical.lastProcessedMonth+1)throw new RangeError('몸 상태 기록의 월이 이어지지 않습니다.');
  const result=step(state.seed,atMonth,context,state.health,medical.injury);medical.injury=result.injury;medical.records.push(result.record);medical.lastProcessedMonth=atMonth;
+ if(medical.careEnabledAtMonth!==undefined)medical.pendingCare=result.record.type==='injury'?result.injury.id:null;
  const event=result.record.type==='none'?null:presentation(result.record),death=result.record.type==='death'?{type:'death',cause:result.record.deathCause,context,incidentId:result.record.incidentId,modelVersion:medical.version,atMonth,age:Math.floor(atMonth/12)}:null;
  return{lifeHealth:medical,health:result.record.healthAfter,event,death};
 }
@@ -66,12 +68,18 @@ export function progressLifeHealth(state,atMonth=state.totalMonths,{context=stat
 function validated(state){
  const m=state?.lifeHealth;if(!m)return null;
  if(!seedOk(state.seed)||!month(state.totalMonths)||!m||m.version!==LIFE_HEALTH_RULES.version||!same(m.rulesSnapshot,LIFE_HEALTH_RULES)||m.fingerprint!==fingerprint(state.seed)||!month(m.activatedAtMonth)||m.activatedAtMonth>state.totalMonths||!Array.isArray(m.records)||m.records.length>1800||m.lastProcessedMonth!==m.activatedAtMonth+m.records.length||m.lastProcessedMonth!==state.totalMonths)return null;
- let injury=null,death=null;
+ const care=m.careEnabledAtMonth!==undefined;
+ if(care&&(!month(m.careEnabledAtMonth)||m.careEnabledAtMonth<m.activatedAtMonth||m.careEnabledAtMonth>state.totalMonths||!Array.isArray(m.careActions)||m.careActions.length>m.records.length))return null;
+ if(!care&&(m.careActions!==undefined||m.pendingCare!==undefined))return null;
+ let injury=null,death=null,pending=null,actionIndex=0;
  for(let i=0;i<m.records.length;i++){
   const record=m.records[i],atMonth=m.activatedAtMonth+i+1;if(!record||record.atMonth!==atMonth||!contextOk(record.context)||!health(record.healthBefore)||death)return null;
   const expected=step(state.seed,atMonth,record.context,record.healthBefore,injury);if(!same(record,expected.record))return null;injury=expected.injury;if(record.type==='death')death=record;
+  if(care&&atMonth>m.careEnabledAtMonth&&record.type==='injury')pending=injury.id;
+  const action=m.careActions?.[actionIndex];if(action?.atMonth===atMonth){if(!pending||action.healthBefore!==record.healthAfter)return null;try{injury=applyCareRecord(injury,action);}catch{return null;}pending=null;actionIndex++;}
+  if(pending&&i<m.records.length-1)return null;
  }
- if(!same(m.injury,injury))return null;
+ if(!same(m.injury,injury)||care&&(actionIndex!==m.careActions.length||m.pendingCare!==(state.phase==='ended'?null:pending)))return null;
  return{medical:m,death};
 }
 
@@ -90,6 +98,6 @@ export function validLifeHealth(state){try{
 
 export function lifeHealthSummary(state){
  const m=state?.lifeHealth;if(!m)return null;
- const injury=m.injury,incidentHistory=m.records.filter(row=>row.type!=='none').map(presentation),lastIncident=incidentHistory.at(-1)||null,ended=state.phase==='ended',dead=lastIncident?.type==='death',recovering=!!injury&&injury.remainingRecoveryMonths>0&&!ended;
+ const injury=m.injury,incidentHistory=[...m.records.filter(row=>row.type!=='none').map(presentation),...(m.careActions||[]).map(a=>({id:`${a.injuryId}-care`,atMonth:a.atMonth,type:'care',title:`${({treatment:'치료를',rest:'휴식을',rehab:'재활을'})[a.mode]} 선택했다`,context:m.records.find(r=>r.atMonth===a.atMonth)?.context||'daily',healthDelta:a.healthAfter-a.healthBefore}))].sort((a,b)=>a.atMonth-b.atMonth),lastIncident=incidentHistory.at(-1)||null,ended=state.phase==='ended',dead=lastIncident?.type==='death',recovering=!!injury&&injury.remainingRecoveryMonths>0&&!ended;
  return{active:!ended,statusLabel:dead?(lastIncident.cause==='health'?'건강 소진으로 사망':lastIncident.cause==='injury'?'부상으로 사망':'사고로 사망'):ended?(state.ending?.type==='death'?'사망':injury?.remainingRecoveryMonths?'회복 중단':'기록 종료'):recovering?'회복 중':injury?'회복 완료':'이상 없음',context:ended?m.records.at(-1)?.context||'daily':state.service?.active?'military':'daily',injuryLabel:injury?.label||'없음',remainingRecoveryMonths:ended?0:injury?.remainingRecoveryMonths||0,healthLoss:injury?.healthLoss||0,recoveredHealth:injury?.recoveredHealth||0,incidentHistory:clone(incidentHistory),lastIncident:lastIncident?clone(lastIncident):null,modelVersion:m.version,activatedAtMonth:m.activatedAtMonth,lastProcessedMonth:m.lastProcessedMonth};
 }

@@ -1,3 +1,4 @@
+import {pendingInjuryCare} from './injury-care.mjs?v=injury-care-1';
 // All prices/effects are fictional game settings. This module does no I/O.
 export const EFFECT_LIMITS=Object.freeze({health:Object.freeze([-5,8]),learn:Object.freeze([0,8]),bond:Object.freeze([0,8]),joy:Object.freeze([-3,10]),skill:Object.freeze([0,.5])});
 const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');
@@ -86,6 +87,7 @@ export function spendingStatus(state,row){
  const activity=spendingActivity(row);
  const reasons=[],current=int(state?.totalMonths,0,1440)?state.totalMonths:0,s=state?.spending||blank();
  if(!ready(state))return{eligible:false,reasons:['저장한 생활 기록을 확인해주세요.'],remainingMonths:0,costWan:activity.costWan,cashAvailable:money(state?.cash)?state.cash:0};
+ if(pendingInjuryCare(state))reasons.push('부상 대응을 먼저 선택해 주세요.');
  if(state.phase!=='running')reasons.push(state.phase==='ended'?'마친 삶에서는 소비할 수 없습니다.':'기다리는 갈림길을 먼저 결정해주세요.');
  if(state.age<row.minAge)reasons.push(`${row.minAge}세부터 선택할 수 있습니다.`);
  if(row.costWan>0&&state.age<19)reasons.push('19세 전 보호자 지원 예산은 유료 소비에 사용할 수 없습니다.');
