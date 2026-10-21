@@ -1,4 +1,4 @@
-import {estateSummary} from './family-estate.mjs?v=daily-layout-1';
+import {estateSummary} from './family-estate.mjs?v=decision-popup-1';
 import {formatMoney} from './spending.mjs';
 const percent=n=>`${(n*100).toLocaleString('ko-KR',{maximumFractionDigits:4})}%`;
 export function renderEstateDetails(s,{document=globalThis.document}={}){

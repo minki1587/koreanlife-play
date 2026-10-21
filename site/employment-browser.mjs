@@ -1,7 +1,7 @@
 import {formatMoney} from './spending.mjs';
 import {searchOccupations} from './career-browser.mjs';
 import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=daily-layout-1';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=decision-popup-1';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

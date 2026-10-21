@@ -1,5 +1,5 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=daily-layout-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=daily-layout-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=decision-popup-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=decision-popup-1';
 import {formatMoney} from './spending.mjs';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}

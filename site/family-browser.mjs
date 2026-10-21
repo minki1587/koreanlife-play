@@ -1,7 +1,7 @@
-import {renderEstateDetails} from './estate-views.mjs?v=daily-layout-1';
-import {currentParents} from './parent-careers.mjs?v=daily-layout-1';
-import {householdSummary} from './household-finance.mjs?v=daily-layout-1';
-import {householdFacts} from './household-views.mjs?v=daily-layout-1';
+import {renderEstateDetails} from './estate-views.mjs?v=decision-popup-1';
+import {currentParents} from './parent-careers.mjs?v=decision-popup-1';
+import {householdSummary} from './household-finance.mjs?v=decision-popup-1';
+import {householdFacts} from './household-views.mjs?v=decision-popup-1';
 import {formatMoney} from './spending.mjs';
 import {familySummary} from './birth-family.mjs';
 

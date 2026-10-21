@@ -1,5 +1,5 @@
-import {parentDeathCheck} from './family-estate.mjs?v=daily-layout-1';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=daily-layout-1';
+import {parentDeathCheck} from './family-estate.mjs?v=decision-popup-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=decision-popup-1';
 import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;

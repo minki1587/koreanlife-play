@@ -1,0 +1,20 @@
+.decision-dialog{width:min(700px,calc(100% - 28px));max-width:none;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid #a5b49b;border-radius:12px;background:var(--paper);color:var(--ink);overflow:auto;overscroll-behavior:contain;box-shadow:0 16px 70px #18251b40}
+.decision-dialog::backdrop{background:rgba(17,27,20,.64)}
+.decision-dialog-top{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 18px;background:var(--paper);border-bottom:1px solid var(--line)}
+.decision-dialog-top>span{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-weight:600}
+.decision-dialog-top button{min-height:44px;padding:9px 12px}
+.decision-dialog .story-card,.decision-dialog .story-card.waiting{min-height:0;margin:0;padding:22px;border:0;border-radius:0;box-shadow:none;background:var(--paper)}
+.decision-dialog .story-card h2{font-size:calc(clamp(22px,3.2vw,28px) * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.4;overflow-wrap:anywhere}
+.decision-dialog .story-card>p{overflow-wrap:anywhere}
+.decision-reminder{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 16px;margin:0 0 18px;border:1px solid #b5c6a8;border-radius:8px;background:#edf2e6}
+.decision-reminder span{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6}
+.decision-reminder button{min-height:44px}
+.daily-stats>div{flex-direction:row;align-items:baseline;gap:6px}
+.daily-stats>div>span,.daily-stats>div>strong{white-space:nowrap}
+.daily-stats meter{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);border:0}
+.daily-life-panel .focus-panel{display:block}
+.daily-life-panel .focus-group{padding-block:0 5px}
+@media(max-width:480px){
+  .decision-dialog .story-card,.decision-dialog .story-card.waiting{padding:16px}
+  .decision-dialog-top{padding:10px 14px}
+}
