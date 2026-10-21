@@ -1,7 +1,8 @@
+import {educationFunding,activeHobbyCost} from './household-finance.mjs';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([
-  {id:'school-primary',stage:'primary',age:7,title:'어떤 초등학교 생활을 시작할까',text:'국공립·사립 초등학교 경로를 고른다. 실제 학교 배정·모집을 재현하지 않는 게임 선택이며 19세 전 수업료는 보호자 지원 범위로 기록한다.'},
+  {id:'school-primary',stage:'primary',age:7,title:'어떤 초등학교 생활을 시작할까',text:'국공립·사립 초등학교 경로를 고른다. 실제 학교 배정·모집을 재현하지 않는 게임 선택이며 학교별 학비와 지원 예산을 확인할 수 있다.'},
   {id:'school-middle',stage:'middle',age:13,title:'새로운 중학교의 교실',text:'국공립 또는 일반 사립중 경로를 고른다. 의무교육 위탁의 일반 사립중을 모든 사립중의 별도학비 경로와 혼동하지 않는다.'},
   {id:'school-high',stage:'high',age:16,title:'다음 배움의 방향을 고른다',text:'공립·사립 일반고, 자사고, 공립·사립 외고 경로를 고른다. 선발형 경로의 배움 점수와 합격식은 게임 가정이며 실패해도 일반고 경로를 선택할 수 있다.'}
 ].map(Object.freeze));
@@ -21,8 +22,8 @@ function applicantReasons(s,row,stage){
   const rejected=applications.filter(a=>a.status==='rejected');if(rejected.length&&!row.guaranteed&&row.learningThreshold>=Math.min(...rejected.map(a=>a.learningThreshold)))reasons.push('불합격 후에는 더 낮은 게임 문턱의 경로로 지원하거나 유예해 주세요.');
   return reasons;
 }
-function displayRow(s,row,stage){const reasons=applicantReasons(s,row,stage);return{...clone(row),label:row.name,ownershipLabel:row.ownership==='public'?'국공립':'사립',admissionChance:chanceFor(s,row,stage),eligible:reasons.length===0,reasons,note:'합격식·입학 연령·비용·학습 효과는 게임 설정입니다. 실제 개인의 합격확률·성적·학교 등급을 나타내지 않습니다.'};}
-export function schoolChoices(s,data){const event=educationEvent(s?.pendingDecision);if(!event)return[];return catalog(data).schoolOptions.filter(r=>r.stage===event.stage).map(r=>displayRow(s,r,event.stage));}
+function displayRow(s,row,stage,data){const reasons=applicantReasons(s,row,stage),funding=educationFunding(s,row.annualTuitionWan,{university:stage==='university',hobbyCostWan:activeHobbyCost(s,data?.hobbyCatalog)});reasons.push(...funding.reasons);return{...clone(row),funding,label:row.name,ownershipLabel:row.ownership==='public'?'국공립':'사립',admissionChance:chanceFor(s,row,stage),eligible:reasons.length===0,reasons,note:'합격식·입학 연령·비용·학습 효과는 게임 설정입니다. 실제 개인의 합격확률·성적·학교 등급을 나타내지 않습니다.'};}
+export function schoolChoices(s,data){const event=educationEvent(s?.pendingDecision);if(!event)return[];return catalog(data).schoolOptions.filter(r=>r.stage===event.stage).map(r=>displayRow(s,r,event.stage,data));}
 function stableIndex(key,length){let h=2166136261;for(const ch of key)h=Math.imul(h^ch.charCodeAt(0),16777619);return(h>>>0)%length;}
 export function universityOptions(s,filters={},data){
   const c=catalog(data),result=[];
@@ -31,7 +32,7 @@ export function universityOptions(s,filters={},data){
     const type=ownership==='public'?'국공립':'사립',rows=(data?.tuition||[]).filter(r=>r.type===type&&finite(r.annual)&&r.annual>0&&typeof r.region==='string'&&(location==='seoul'?r.region==='서울':r.region!=='서울'));
     if(!rows.length)continue;const mean=rows.reduce((sum,r)=>sum+r.annual,0)/rows.length,regions=[...new Set(rows.map(r=>r.region))].sort(),id=`university-${ownership}-${location}-${field.id}`,region=regions[stableIndex(id,regions.length)],annualTuitionWan=Math.round(mean/10000*field.tuitionMultiplier*100)/100;
     const locationLabel=location==='seoul'?'서울':'서울 외 지역',name=`${type} · ${locationLabel} · ${field.label} 게임 과정`,row={id,stage:'university',name,ownership,location,locationLabel,field:field.id,fieldLabel:field.label,region,durationMonths:field.durationMonths,annualTuitionWan,learningThreshold:field.learningThreshold+(ownership==='public'?3:0)+(location==='seoul'?8:0),guaranteed:false,costNote:'수집한 대학의 설립별×서울/서울외 연간 등록금 평균에 가상 전공 배율을 적용한 게임 학비. 특정 학교·학과의 실제 등록금이 아님.',tuitionBasis:{kind:'observed-average-with-game-multiplier',sampleSchools:rows.length,averageAnnualWon:mean,fieldMultiplier:field.tuitionMultiplier},fieldNote:field.note||'게임 전공 경로이며 특정 자격을 자동 부여하지 않음'};
-    result.push(displayRow(s,row,'university'));
+    result.push(displayRow(s,row,'university',data));
   }
   return result;
 }
@@ -43,7 +44,7 @@ export function progressSchoolJourney(s){
 }
 export function schoolTuitionMonth(s){return s.schoolJourney?.current&&!s.service?.active?s.schoolJourney.current.annualTuitionWan/12:0;}
 export function schoolLearningMonth(s){return s.schoolJourney?.current&&!s.service?.active?s.schoolJourney.current.annualLearningBonus/12:0;}
-export function schoolJourneyLabel(s){const j=s.schoolJourney;if(!j)return null;if(s.schooling?.status==='enrolled')return`${s.schooling.majorLabel?`${s.schooling.majorLabel} · `:''}${s.schooling.school.name} ${s.service.active?'휴학 중':'재학 중'}`;if(s.schooling?.status==='graduated')return`대학 졸업 · ${s.schooling.majorLabel||s.schooling.school.name}`;if(j.current)return`${j.current.name} 재학`;return j.highestLevel>=3?'고교 과정 졸업':j.highestLevel===2?'중학교 과정 졸업':j.highestLevel===1?'초등학교 과정 졸업':'미취학 · 입학 준비';}
+export function schoolJourneyLabel(s){const j=s.schoolJourney;if(!j)return null;if(s.schooling?.status==='enrolled')return`${s.schooling.majorLabel?`${s.schooling.majorLabel} · `:''}${s.schooling.school.name} ${s.service.active?'휴학 중':s.schooling.fundingPaused?'학비 준비 휴학 중':'재학 중'}`;if(s.schooling?.status==='graduated')return`대학 졸업 · ${s.schooling.majorLabel||s.schooling.school.name}`;if(j.current)return`${j.current.name} 재학`;return j.highestLevel>=3?'고교 과정 졸업':j.highestLevel===2?'중학교 과정 졸업':j.highestLevel===1?'초등학교 과정 졸업':'미취학 · 입학 준비';}
 export function validSchoolJourney(s){
   const j=s?.schoolJourney;if(j===undefined)return true;if(!j||j.schemaVersion!==1||typeof j.modelVersion!=='string'||!Number.isInteger(j.highestLevel)||j.highestLevel<0||j.highestLevel>4||!Array.isArray(j.completedStages)||j.completedStages.length>3||j.completedStages.some((stage,i)=>stage!==STAGES[i])||j.highestLevel<j.completedStages.length||!Array.isArray(j.applications)||j.applications.length>500)return false;
   if(!j.applications.every(a=>a&&[...STAGES,'university'].includes(a.stage)&&Number.isInteger(a.cycle)&&a.cycle>=7&&a.cycle<=s.age&&typeof a.optionId==='string'&&typeof a.label==='string'&&['accepted','rejected','deferred'].includes(a.status)&&Number.isInteger(a.atMonth)&&a.atMonth>=0&&a.atMonth<=s.totalMonths&&(a.status==='deferred'||finite(a.chance)&&a.chance>=0&&a.chance<=1&&finite(a.learn)&&a.learn>=0&&a.learn<=100&&finite(a.learningThreshold))))return false;

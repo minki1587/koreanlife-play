@@ -30,7 +30,7 @@ export function evaluateEmployment(s,row){
   const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[];
   const add=(label,value,met,kind='game_assumption')=>{requirements.push({label,value,met,kind});if(met===false)reasons.push(`${label}: ${value}`);};
   add('지원 나이','16세 이상 · 게임 규칙',s?.age>=16);
-  add('현재 학업','정규 재학·복무를 마친 뒤 지원',!s?.schoolJourney?.current&&s?.schooling?.status!=='enrolled'&&s?.job?.status!=='재학');
+  add('현재 학업','정규 재학·복무를 마친 뒤 지원',!s?.schoolJourney?.current&&(s?.schooling?.status!=='enrolled'||s?.schooling?.fundingPaused===true)&&s?.job?.status!=='재학');
   add('이달 지원','성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
   add('현재 직업','현재 직업에 중복 지원할 수 없음',s?.job?.occupationId!==row.id);
   add('게임 학위',`${rules.educationLabel} 이수 이상 · 실제 법정 학력 판정 아님`,profile.educationLevel>=rules.educationLevel);
@@ -66,7 +66,7 @@ export function careerTrainingPlan(s,request,row){
   throw new TypeError('지원하지 않는 훈련입니다.');
 }
 export function progressCareerTraining(s){
-  if(!s.employment?.training||s.service?.active||s.schoolJourney?.current||s.schooling?.status==='enrolled')return null;
+  if(!s.employment?.training||s.service?.active||s.schoolJourney?.current||(s.schooling?.status==='enrolled'&&!s.schooling?.fundingPaused))return null;
   const employment=employmentState(s),t=employment.training;t.remainingMonths--;if(t.remainingMonths>0)return{employment,completed:null};
   if(t.type==='ability')employment.abilities[t.ability]=clamp(employment.abilities[t.ability]+t.gain);
   else if(t.type==='education')employment.educationLevel=Math.max(employment.educationLevel,t.targetLevel);

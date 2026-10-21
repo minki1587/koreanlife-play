@@ -1,0 +1,32 @@
+{
+  "version": "household-support-1",
+  "kind": "game_assumption",
+  "reserveMonths": 3,
+  "commitmentMonths": 12,
+  "incomeBudgetShare": 0.7,
+  "otherMemberLivingWan": 35,
+  "maximumStudentAge": 28,
+  "allowances": [
+    {"minimumAge":0,"monthlyWan":0},
+    {"minimumAge":7,"monthlyWan":2},
+    {"minimumAge":13,"monthlyWan":4},
+    {"minimumAge":16,"monthlyWan":6},
+    {"minimumAge":19,"monthlyWan":10}
+  ],
+  "childHobbyAges": {
+    "hobby-pencil-drawing": 6,
+    "hobby-watercolor": 8,
+    "hobby-english": 10,
+    "hobby-chinese": 12,
+    "hobby-japanese": 12,
+    "hobby-guitar": 10,
+    "hobby-ukulele": 8,
+    "hobby-ocarina": 8,
+    "hobby-violin": 8,
+    "hobby-swimming": 8,
+    "hobby-table-tennis": 10,
+    "hobby-badminton": 10,
+    "hobby-kpop-dance": 10
+  },
+  "note": "가구 소득·금융자산·주거비를 사용하는 게임 지원 계정입니다. 주택·보증금은 매각하거나 현금처럼 쓰지 않습니다. 비용·준비금·용돈·지원 연령·아동 취미 연령은 실제 금융·복지·시설 이용 기준이 아닌 게임 설정입니다."
+}

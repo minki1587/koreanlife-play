@@ -1,3 +1,5 @@
+import {householdSummary} from './household-finance.mjs';
+import {householdFacts} from './household-views.mjs';
 import {formatMoney} from './spending.mjs';
 import {familySummary} from './birth-family.mjs';
 
@@ -8,7 +10,7 @@ export function familyLocationLabel(place,profiles){
   return current.length?`${original} (현재: ${current.join(' · ')})`:original;
 }
 
-export function createFamilyBrowser({profiles,onOpen=()=>{},onClose=()=>{},document=globalThis.document}={}){
+export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},onClose=()=>{},document=globalThis.document}={}){
   const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
   const dialog=el('dialog','family-dialog');dialog.id='family-dialog';dialog.setAttribute('aria-labelledby','family-title');
   const top=el('div','family-dialog-top'),heading=el('h2','', '태어난 집의 이야기');heading.id='family-title';heading.tabIndex=-1;
@@ -20,6 +22,7 @@ export function createFamilyBrowser({profiles,onOpen=()=>{},onClose=()=>{},docum
   function render(f){
     body.replaceChildren();
     if(!f){body.append(el('p','family-empty','이전 삶에는 출생 가족 정보가 저장되지 않았습니다. 새 삶부터 가족 배경을 확인할 수 있습니다.'));return;}
+    const state=getState(),live=state?.profile?.birthFamily?.fingerprint===f.fingerprint?householdSummary(state):null;if(live){body.append(card('현재 가구 지원 계정',householdFacts(state)));body.append(el('p','family-note','가구 금융자산은 실제 지원 때 줄고 소득 예산의 잔액은 남습니다. 주택·보증금은 현금화하지 않습니다. 지원 정산은 미성년 기간과 만 28세 이하 대학 재학·학비 준비 기간에 적용하며, 복무 중에는 멈춥니다.'));}
     const tag=el('p','family-kicker','출생 당시의 가족 기록'),summary=el('p','family-summary',familySummary(f));body.append(tag,summary);
     const people=el('div','family-people');
     for(const g of f.guardians){
@@ -49,13 +52,13 @@ export function createFamilyBrowser({profiles,onOpen=()=>{},onClose=()=>{},docum
       ['주소',familyLocationLabel(h.housing.address,profiles)],['주거 형태',`${h.housing.tenure} · ${h.housing.homeType}`],
       [h.housing.assetKind,money(h.housingAssetWan)],['월 주거비 · 게임 설정',money(h.housing.monthlyWan)]
     ]));
-    body.append(card('가구 경제 · 게임 설정',[
+    body.append(card('출생 당시 가구 경제 · 참고 기록',[
       ['보호자 연 소득 합계',money(h.annualIncomeWan)],['월 소득 기반 생활예산',money(h.incomeBudgetWan)],
-      ['월 가상 돌봄 생활지원',money(h.careSupportWan)],['월 총 생활예산',money(h.monthlyBudgetWan)],
-      ['월 기본 지출·상환',money(h.essentialMonthlyWan)],['월 추가 자녀지원 여유',money(h.childSupportWan)],
+
+      ['월 기본 지출·상환',money(h.essentialMonthlyWan)],
       ['가구 금융자산',money(h.liquidAssetsWan)],['가구 부채',money(h.debtWan)],['가구 순자산',money(h.netAssetsWan)]
     ]));
-    body.append(el('p','family-note','출생 당시의 가상 가족 배경입니다. 가구 자산과 부모 소득은 내 소지금에 합산하지 않으며, 기존 보호자 생활비 지원 규칙을 따릅니다. 조합·금액의 근거와 가정은 서비스 안내에서 확인할 수 있습니다.'));
+    body.append(el('p','family-note','출생 기록과 현재 지원 계정은 별도입니다. 가구 자산은 내 소지금에 합산하지 않으며, 실제 지원할 때만 가구에서 출금하고 개인 장부에 반영합니다. 조합·지원·금액의 게임 가정은 서비스 안내에서 확인할 수 있습니다.'));
   }
   close.addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
