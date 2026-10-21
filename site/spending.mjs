@@ -4,6 +4,8 @@ const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');
 const finite=n=>typeof n==='number'&&Number.isFinite(n),plain=x=>!!x&&typeof x==='object'&&!Array.isArray(x)&&(Object.getPrototypeOf(x)===Object.prototype||Object.getPrototypeOf(x)===null);
 const money=n=>finite(n)&&n>=0&&n<=Number.MAX_SAFE_INTEGER/100;
 const round=n=>Math.round((n+Number.EPSILON)*100)/100;
+// A 만원 amount needs four decimals to preserve an existing one-won balance.
+const walletMoney=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const idOk=id=>typeof id==='string'&&/^spend-\d{3}$/.test(id)&&Number(id.slice(6))>=1&&Number(id.slice(6))<=300;
 const text=(s,max=100)=>typeof s==='string'&&s.trim()===s&&s.length>0&&Array.from(s).length<=max&&!/[\x00-\x1f\x7f]/.test(s);
 const categoryOk=s=>typeof s==='string'&&/^[a-z][a-z-]{0,39}$/.test(s);
@@ -26,6 +28,15 @@ export function formatMoney(n){
  const tenths=Math.round((Math.abs(n)+Number.EPSILON)*10),negative=n<0&&tenths>0?'-':'',eok=Math.floor(tenths/100000),wan=(tenths%100000)/10;
  const show=value=>value.toLocaleString('ko-KR',{minimumFractionDigits:0,maximumFractionDigits:1});
  return eok?`${negative}${show(eok)}억${wan?` ${show(wan)}만원`:'원'}`:`${negative}${show(wan)}만원`;
+}
+
+/** Keep the source catalog/save IDs intact; new actions are one-month activities. */
+export function spendingActivity(row){
+ validateRow(row);
+ if(!row.asset)return{...row,description:row.description.replace(/가상으로\s*/gu,'').replace(/가상의?\s*/gu,'')};
+ const title=row.title.replace(/\s*구입$/u,'')+' 한 달 '+(row.asset.kind==='home'?'살아보기':'이용하기');
+ const costWan=round(Math.max(1,row.costWan*(row.asset.kind==='home'?.003:.01)));
+ return{...row,title,costWan,description:row.asset.kind==='home'?'한 달 동안 다른 주거 공간에서 생활해본다. 이번 달 이용비와 수치 변화를 한 번 반영하며, 현재 주소나 소유 자산은 바뀌지 않는다.':'한 달 동안 이동수단을 이용해본다. 이번 달 이용비와 수치 변화를 한 번 반영하며, 소유 자산은 추가되지 않는다.'};
 }
 
 /** Fail closed on count/schema drift, duplicate choices or non-game prices. */
@@ -61,7 +72,7 @@ export function validSpendingState(state){try{
  if(round(total)>round(s.totalSpentWan)||[...latest].some(([id,month])=>s.lastById[id]!==month))return false;
  const owned=new Set();let assetCosts=0;
  for(const a of s.ownedAssets){
-  if(!plain(a)||!idOk(a.id)||owned.has(a.id)||!text(a.title,80)||!['home','vehicle'].includes(a.kind)||a.category!==(a.kind==='home'?'housing-asset':'vehicle-asset')||a.slot!==a.category||!int(a.purchasedMonth,228,state.totalMonths)||s.lastById[a.id]!==a.purchasedMonth||!money(a.purchaseCostWan)||a.purchaseCostWan<=0)return false;
+  if(!plain(a)||!idOk(a.id)||owned.has(a.id)||!text(a.title,80)||!['home','vehicle'].includes(a.kind)||a.category!==(a.kind==='home'?'housing-asset':'vehicle-asset')||a.slot!==a.category||!int(a.purchasedMonth,228,state.totalMonths)||!int(s.lastById[a.id],a.purchasedMonth,state.totalMonths)||!money(a.purchaseCostWan)||a.purchaseCostWan<=0)return false;
   owned.add(a.id);assetCosts+=a.purchaseCostWan;
  }
  return round(assetCosts)<=round(s.totalSpentWan);
@@ -72,18 +83,17 @@ const blank=()=>({version:1,lastActionMonth:-1,lastById:{},totalSpentWan:0,owned
 
 /** No mutation. Availability reasons are user-facing Korean strings. */
 export function spendingStatus(state,row){
- validateRow(row);
+ const activity=spendingActivity(row);
  const reasons=[],current=int(state?.totalMonths,0,1440)?state.totalMonths:0,s=state?.spending||blank();
- if(!ready(state))return{eligible:false,reasons:['저장한 생활 기록을 확인해주세요.'],remainingMonths:0,costWan:row.costWan,cashAvailable:money(state?.cash)?state.cash:0};
+ if(!ready(state))return{eligible:false,reasons:['저장한 생활 기록을 확인해주세요.'],remainingMonths:0,costWan:activity.costWan,cashAvailable:money(state?.cash)?state.cash:0};
  if(state.phase!=='running')reasons.push(state.phase==='ended'?'마친 삶에서는 소비할 수 없습니다.':'기다리는 갈림길을 먼저 결정해주세요.');
  if(state.age<row.minAge)reasons.push(`${row.minAge}세부터 선택할 수 있습니다.`);
  if(row.costWan>0&&state.age<19)reasons.push('19세 전 보호자 지원 예산은 유료 소비에 사용할 수 없습니다.');
- if(state.cash<row.costWan)reasons.push('보유 현금이 부족합니다. 이 선택은 자동으로 빚을 내지 않습니다.');
+ if(state.cash<activity.costWan)reasons.push('보유 현금이 부족합니다. 이 선택은 자동으로 빚을 내지 않습니다.');
  const last=Object.hasOwn(s.lastById,row.id)?s.lastById[row.id]:null,remaining=Math.max(0,last===null?0:last+row.cooldownMonths-current),monthly=s.lastActionMonth===current;
  if(monthly)reasons.push('이번 달에는 이미 생활 선택을 사용했습니다. 다음 달에 다시 선택해주세요.');
  if(remaining>0)reasons.push(`이 선택은 ${remaining}개월 뒤에 다시 할 수 있습니다.`);
- if(row.asset&&s.ownedAssets.some(a=>a.id===row.id))reasons.push('이미 소유 목록에 있는 항목입니다. 같은 항목을 다시 구입할 수 없습니다.');
- return{eligible:reasons.length===0,reasons,remainingMonths:Math.max(remaining,monthly?1:0),costWan:row.costWan,cashAvailable:state.cash};
+ return{eligible:reasons.length===0,reasons,remainingMonths:Math.max(remaining,monthly?1:0),costWan:activity.costWan,cashAvailable:state.cash};
 }
 
 function sameRow(a,b){return ['id','title','category','costWan','minAge','cooldownMonths','description'].every(k=>a[k]===b[k])&&KEYS.every(k=>a.effects[k]===b.effects[k])&&Boolean(a.asset)===Boolean(b.asset)&&(!a.asset||(a.asset.kind===b.asset.kind&&a.asset.slot===b.asset.slot));}
@@ -94,19 +104,17 @@ export function spend(original,row,catalog){
  if(catalog!==undefined){validateCatalog(catalog);const approved=catalog.choices.find(r=>r.id===row.id);require(approved&&sameRow(row,approved),'승인한 카탈로그와 다른 소비 선택입니다.');}
  const status=spendingStatus(original,row);
  if(!status.eligible)throw new Error(status.reasons.join(' '));
- const next=structuredClone(original),s=next.spending?next.spending:blank(),effects={};
+ const activity=spendingActivity(row),next=structuredClone(original),s=next.spending?next.spending:blank(),effects={};
  next.spending=s;
- next.cash=round(next.cash-row.costWan);
+ next.cash=walletMoney(next.cash-activity.costWan);
  if(next.cash<0)throw new Error('보유 현금 범위 안에서만 선택할 수 있습니다.');
- next.ledger.expenses=round(next.ledger.expenses+row.costWan);
+ next.ledger.expenses=walletMoney(next.ledger.expenses+activity.costWan);
  for(const key of KEYS){const before=next[key];next[key]=key==='skill'?Math.max(before,Math.min(100,before+row.effects[key])):Math.max(0,Math.min(100,before+row.effects[key]));effects[key]=round(next[key]-before);}
- s.lastActionMonth=next.totalMonths;s.lastById[row.id]=next.totalMonths;s.totalSpentWan=round(s.totalSpentWan+row.costWan);
- const history={id:row.id,title:row.title,category:row.category,month:next.totalMonths,costWan:row.costWan,effects};
+ s.lastActionMonth=next.totalMonths;s.lastById[row.id]=next.totalMonths;s.totalSpentWan=round(s.totalSpentWan+activity.costWan);
+ const history={id:row.id,title:activity.title,category:row.category,month:next.totalMonths,costWan:activity.costWan,effects};
  s.history.push(history);if(s.history.length>100)s.history.splice(0,s.history.length-100);
- if(row.asset)s.ownedAssets.push({id:row.id,title:row.title,category:row.category,kind:row.asset.kind,slot:row.asset.slot,purchaseCostWan:row.costWan,purchasedMonth:next.totalMonths});
- const labels={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'숙련'},changes=[`현금 지출 ${formatMoney(row.costWan)}`,...KEYS.filter(k=>effects[k]!==0).map(k=>`${labels[k]} ${effects[k]>0?'+':''}${effects[k]}`)];
- if(row.asset)changes.push('소유 목록에 기록 · 현재 시장가치·수익은 계산하지 않음');
- next.timeline.push({id:`spending-${next.totalMonths}-${next.logSerial++}`,age:next.age,month:next.month,type:'spending',title:row.title,text:row.description+' 비용과 효과는 게임 설정입니다.',changes});
+ const labels={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'숙련'},changes=[`현금 지출 ${formatMoney(activity.costWan)}`,...KEYS.filter(k=>effects[k]!==0).map(k=>`${labels[k]} ${effects[k]>0?'+':''}${effects[k]}`)];
+ next.timeline.push({id:`spending-${next.totalMonths}-${next.logSerial++}`,age:next.age,month:next.month,type:'spending',title:activity.title,text:activity.description,changes});
  if(next.timeline.length>120)next.timeline.splice(0,next.timeline.length-120);
  require(validSpendingState(next),'소비 기록의 저장 정합성을 확인할 수 없습니다.');
  return next;

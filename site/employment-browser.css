@@ -7,3 +7,11 @@
 .employment-requirements{list-style:none;padding:0;display:grid;gap:9px}.employment-requirements li{padding:10px;background:#f4f5ef;border-radius:6px;display:grid;grid-template-columns:1fr;gap:5px}.employment-requirements li[data-met=false]{background:#fff3dd}.employment-requirements small{color:var(--muted)}.employment-reasons{padding-left:20px;line-height:1.8;color:#7b521f}.employment-actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.employment-pager{display:flex;justify-content:space-between;gap:10px;margin:16px 0}.employment-training-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.employment-training-card{padding:16px;border:1px solid var(--line);border-radius:9px;min-width:0}.employment-training-card h4{margin:0 0 10px}.employment-training-card button{margin-top:12px}.employment-training-progress{font-weight:700;color:#7b521f}
 @media(max-width:700px){.employment-dialog{width:calc(100% - max(8px,env(safe-area-inset-left,0px)) - max(8px,env(safe-area-inset-right,0px)));max-height:calc(94dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}.employment-tabs,.employment-summary,.employment-status,.employment-body{padding:12px 14px}.employment-search,.employment-job-layout,.employment-training-grid{grid-template-columns:1fr}.employment-job-list{max-height:32dvh;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.employment-job{padding:10px}.employment-tabs button{flex:1 1 auto}.employment-job-detail{padding:14px}}
 @media(max-width:360px){.employment-job-list{grid-template-columns:1fr}}
+.employment-facts{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;margin:12px 0}
+.employment-facts>div{display:grid;grid-template-columns:minmax(100px,.55fr) minmax(0,1fr);gap:4px 12px;min-width:0}
+.employment-facts dt{color:var(--muted);font-size:.88em;overflow-wrap:anywhere}
+.employment-facts dd{margin:0;min-width:0;overflow-wrap:anywhere;line-height:1.7}
+.employment-facts dd ul,.employment-notes,.employment-requirement-values{display:grid;gap:6px;padding-left:20px;margin:5px 0;line-height:1.75;overflow-wrap:anywhere}
+.employment-notes{font-size:.9em;margin:12px 0}
+.employment-requirement-values{font-weight:600}
+@media(max-width:539px){.employment-facts>div{grid-template-columns:minmax(0,1fr);gap:3px}}

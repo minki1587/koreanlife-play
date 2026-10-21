@@ -1,75 +1,56 @@
-import {renderEstateDetails} from './estate-views.mjs?v=decision-popup-1';
-import {currentParents} from './parent-careers.mjs?v=decision-popup-1';
-import {householdSummary} from './household-finance.mjs?v=decision-popup-1';
-import {householdFacts} from './household-views.mjs?v=decision-popup-1';
-import {formatMoney} from './spending.mjs';
-import {familySummary} from './birth-family.mjs';
-
+import {renderEstateDetails} from './estate-views.mjs?v=economy-ui-1';
+import {currentParents} from './parent-careers.mjs?v=economy-ui-1';
+import {householdSummary} from './household-finance.mjs?v=economy-ui-1';
+import {householdFacts} from './household-views.mjs?v=economy-ui-1';
+import {formatMoney} from './spending.mjs?v=economy-ui-1';
+import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=economy-ui-1';
 const money=n=>formatMoney(n);
 export function familyLocationLabel(place,profiles){
-  const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;
-  const current=profiles?.get(place.id)?.currentAreas||[];
-  return current.length?`${original} (현재: ${current.join(' · ')})`:original;
+ const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;
+ const current=profiles?.get(place.id)?.currentAreas||[];
+ return current.length?`${original} (현재: ${current.join(' · ')})`:original;
 }
-
 export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},onClose=()=>{},document=globalThis.document}={}){
-  const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
-  const dialog=el('dialog','family-dialog');dialog.id='family-dialog';dialog.setAttribute('aria-labelledby','family-title');
-  const top=el('div','family-dialog-top'),heading=el('h2','', '가족의 현재와 시작');heading.id='family-title';heading.tabIndex=-1;
-  const close=el('button','family-close','×');close.type='button';close.setAttribute('aria-label','가족 정보 닫기');
-  const body=el('div','family-dialog-body');top.append(heading,close);dialog.append(top,body);document.body.append(dialog);
-  let opener=null;
-  const pair=(list,label,value)=>{const group=el('div','family-fact'),dt=el('dt','',label),dd=el('dd','',value);group.append(dt,dd);list.append(group);};
-  const card=(title,pairs)=>{const section=el('section','family-section'),h=el('h3','',title),dl=el('dl','family-facts');for(const [label,value]of pairs)pair(dl,label,value);section.append(h,dl);return section;};
-  function render(f){
-    body.replaceChildren();
-    if(!f){body.append(el('p','family-empty','이전 삶에는 출생 가족 정보가 저장되지 않았습니다. 새 삶부터 가족 배경을 확인할 수 있습니다.'));return;}
-    const state=getState(),sameFamily=state?.profile?.birthFamily?.fingerprint===f.fingerprint;if(sameFamily&&state.familyLife){const current=el('section','family-current');current.id='family-current';current.append(el('h3','',`현재 부모·보호자 · ${state.age}세 ${state.month}개월의 가족`));const people=el('div','family-people');for(const p of currentParents(state)){people.append(card(`${p.role} · ${p.name}`, [[p.status==='deceased'?'사망 당시 나이':'현재 나이',`${p.age}세 ${p.month}개월`],['현재 상태',p.statusLabel],['현재 직업',p.occupation?.name||'근로 직업 없음'],['연 근로소득 · 게임 추정',money(p.annualIncomeWan)],['월 근로소득 · 게임 추정',money(p.annualIncomeWan/12)],['학력',p.education.label],...(p.death?[['사망 시점',`내 나이 ${Math.floor(p.death.atMonth/12)}세 ${p.death.atMonth%12}개월`],['적용 연간 사망확률',`${(p.death.annualQx*100).toLocaleString('ko-KR',{maximumFractionDigits:3})}% · 연령대 평균`]]:[]),...(p.occupation?[['직무 경력',`${Math.floor(p.occupation.experienceMonths/12)}년 ${p.occupation.experienceMonths%12}개월`],['근무형태',p.occupation.employmentType],['근무지',familyLocationLabel(p.occupation.workplace,profiles)]]:[])]));}current.append(people);const events=state.familyLife.events.slice(-10).reverse();current.append(el('h3','', '최근 가족의 변화'));if(events.length){const list=el('ul','family-career-history');for(const e of events)list.append(el('li','',`${Math.floor(e.atMonth/12)}세 ${e.atMonth%12}개월 · ${e.title} · 연 근로소득 ${money(e.annualIncomeWan)}`));current.append(list);}else current.append(el('p','family-note','이 시점부터 부모의 고용 변화를 기록합니다.'));current.append(el('p','family-note','나이는 매달 증가합니다. 취업·실직·이직 확률과 65세 은퇴는 게임 규칙이며 실제 고용통계·법정 정년이 아닙니다. 은퇴·사망하면 근로소득은 종료됩니다. 부모 사망은 수집한 연령대별 연간 확률을 월 확률로 환산해 추첨합니다.'));body.append(current);const estate=renderEstateDetails(state,{document});if(estate)body.append(estate);}const live=state?.profile?.birthFamily?.fingerprint===f.fingerprint?householdSummary(state):null;if(live){body.append(card('현재 가구 지원 계정',householdFacts(state)));body.append(el('p','family-note','가구 금융자산은 실제 지원 때 줄고 소득 예산의 잔액은 남습니다. 평소 주택·보증금은 현금화하지 않으며 사망한 보호자의 유산 지분만 평가액으로 현금 정산합니다. 자녀 지원은 미성년 기간과 만 28세 이하 대학 재학·학비 준비 기간에 적용하며, 복무 중에는 멈춥니다. 부모 생애가 시작된 기록은 자녀 지원이 없는 달에도 가구 소득·기본 지출을 정산합니다.'));}
-    const tag=el('p','family-kicker','출생 당시의 가족 기록'),summary=el('p','family-summary',familySummary(f));body.append(tag,summary);
-    const people=el('div','family-people');
-    for(const g of f.guardians){
-      const section=el('section','guardian-card'),title=el('h3','guardian-title',`${g.role} · ${g.name}`),meta=el('p','guardian-meta',`출생 당시 ${g.ageAtBirth}세`),dl=el('dl','family-facts');
-      pair(dl,'직업·상태',g.occupation?g.occupation.name:g.activity);
-      pair(dl,'고향',familyLocationLabel(g.hometown,profiles));
-      pair(dl,'학력',g.education.label);
-      pair(dl,'연 소득 · 게임 추정',money(g.occupation?.annualIncomeWan||0));
-      if(g.occupation){const o=g.occupation;
-        pair(dl,'직무 경력',`${Math.floor(o.experienceMonths/12)}년 ${o.experienceMonths%12}개월`);
-        pair(dl,'근무형태',`${o.employmentType} · ${o.shift}`);
-        pair(dl,'근무시간 참고',o.weeklyHours===null?'미설정':`주 ${o.weeklyHours}시간 · 직종 모형`);
-        pair(dl,'근무지',familyLocationLabel(o.workplace,profiles));pair(dl,'생활 일정',o.workArrangement);pair(dl,'자격 준비',o.qualification);
-      }
-      pair(dl,'함께 사는 곳',familyLocationLabel(g.residence,profiles));pair(dl,'가족을 대하는 방식',g.parentingStyle+' 보호자');
-      section.append(title,meta,dl);people.append(section);
-    }
-    body.append(people);
-    const h=f.household;
-    body.append(card('함께 사는 가족',[
-      ['가구 구성',`${h.members}명 · 보호자 ${f.guardians.length}명 · 형제자매 ${f.siblings.length}명 · 나`],
-      ['나의 출생 순서',`${f.birthOrder}번째 아이`],
-      ['형제자매',f.siblings.length?f.siblings.map(s=>`${s.name} · 출생 당시 ${s.ageAtBirth}세`).join(' / '):'없음'],
-      ['돌봄',h.carePlan]
-    ]));
-    body.append(card('첫 주거 환경',[
-      ['주소',familyLocationLabel(h.housing.address,profiles)],['주거 형태',`${h.housing.tenure} · ${h.housing.homeType}`],
-      [h.housing.assetKind,money(h.housingAssetWan)],['월 주거비 · 게임 설정',money(h.housing.monthlyWan)]
-    ]));
-    body.append(card('출생 당시 가구 경제 · 참고 기록',[
-      ['보호자 연 소득 합계',money(h.annualIncomeWan)],['월 소득 기반 생활예산',money(h.incomeBudgetWan)],
-
-      ['월 기본 지출·상환',money(h.essentialMonthlyWan)],
-      ['가구 금융자산',money(h.liquidAssetsWan)],['가구 부채',money(h.debtWan)],['가구 순자산',money(h.netAssetsWan)]
-    ]));
-    body.append(el('p','family-note','출생 기록과 현재 지원 계정은 별도입니다. 가구 자산은 내 소지금에 합산하지 않으며, 실제 지원할 때만 가구에서 출금하고 개인 장부에 반영합니다. 조합·지원·금액의 게임 가정은 서비스 안내에서 확인할 수 있습니다.'));
+ const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=displayCopy(value);return n;};
+ const dialog=el('dialog','family-dialog');dialog.id='family-dialog';dialog.setAttribute('aria-labelledby','family-title');
+ const top=el('div','family-dialog-top'),heading=el('h2','','가족의 현재와 시작');heading.id='family-title';heading.tabIndex=-1;
+ const close=el('button','family-close','×');close.type='button';close.setAttribute('aria-label','가족 정보 닫기');
+ const body=el('div','family-dialog-body');top.append(heading,close);dialog.append(top,body);document.body.append(dialog);
+ let opener=null;
+ const facts=(host,pairs)=>appendUiFacts(document,host,pairs,'family-facts');
+ const card=(title,pairs)=>{const section=el('section','family-section');section.append(el('h3','',title));facts(section,pairs);return section;};
+ function render(f){
+  body.replaceChildren();
+  if(!f){body.append(el('p','family-empty','이전 삶에는 출생 가족 정보가 저장되지 않았습니다. 새 삶부터 가족 배경을 확인할 수 있습니다.'));return;}
+  const state=getState(),sameFamily=state?.profile?.birthFamily?.fingerprint===f.fingerprint;
+  if(sameFamily&&state.familyLife){
+   const current=el('section','family-current');current.id='family-current';current.append(el('h3','','현재 부모·보호자'));facts(current,[['내 나이',`${state.age}세 ${state.month}개월`]]);
+   const people=el('div','family-people');
+   for(const p of currentParents(state))people.append(card(`${p.role} ${p.name}`,[[p.status==='deceased'?'사망 당시 나이':'현재 나이',`${p.age}세 ${p.month}개월`],['현재 상태',p.statusLabel],['현재 직업',p.occupation?.name||'근로 직업 없음'],['연 근로소득',money(p.annualIncomeWan)],['월 근로소득',money(p.annualIncomeWan/12)],['학력',p.education.label],...(p.death?[['사망 시점',`내 나이 ${Math.floor(p.death.atMonth/12)}세 ${p.death.atMonth%12}개월`],['연간 사망확률',`${(p.death.annualQx*100).toLocaleString('ko-KR',{maximumFractionDigits:3})}%`]]:[]),...(p.occupation?[['직무 경력',`${Math.floor(p.occupation.experienceMonths/12)}년 ${p.occupation.experienceMonths%12}개월`],['근무형태',p.occupation.employmentType],['근무지',familyLocationLabel(p.occupation.workplace,profiles)]]:[])]));
+   current.append(people,el('h3','','최근 가족의 변화'));const events=state.familyLife.events.slice(-10).reverse();
+   if(events.length){const list=el('ul','family-career-history');for(const e of events){const item=el('li');item.append(el('strong','',e.title));facts(item,[['시점',`${Math.floor(e.atMonth/12)}세 ${e.atMonth%12}개월`],['연 근로소득',money(e.annualIncomeWan)]]);list.append(item);}current.append(list);}else current.append(el('p','family-note','아직 부모의 고용 변화가 없습니다.'));
+   body.append(current);const estate=renderEstateDetails(state,{document});if(estate)body.append(estate);
   }
-  close.addEventListener('click',()=>dialog.close());
-  dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
-  dialog.addEventListener('close',()=>{onClose();if(opener?.isConnected&&opener.getClientRects().length)opener.focus({preventScroll:true});});
-  return{get isOpen(){return dialog.open;},open(f){opener=document.activeElement;render(f);if(!dialog.open){onOpen();dialog.showModal();}dialog.scrollTop=0;heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
+  const live=sameFamily?householdSummary(state):null;
+  if(live)body.append(card('현재 가구 지원 계정',householdFacts(state)));
+  body.append(el('p','family-kicker','출생 당시의 가족 기록'));
+  const people=el('div','family-people');
+  for(const g of f.guardians){
+   const pairs=[['출생 당시 나이',`${g.ageAtBirth}세`],['직업·상태',g.occupation?g.occupation.name:g.activity],['고향',familyLocationLabel(g.hometown,profiles)],['학력',g.education.label],['연 소득',money(g.occupation?.annualIncomeWan||0)]];
+   if(g.occupation){const o=g.occupation;pairs.push(['직무 경력',`${Math.floor(o.experienceMonths/12)}년 ${o.experienceMonths%12}개월`],['근무형태',o.employmentType],['근무 일정',o.shift],['근무시간',o.weeklyHours===null?'미설정':`주 ${o.weeklyHours}시간`],['근무지',familyLocationLabel(o.workplace,profiles)],['생활 일정',o.workArrangement],['자격 준비',o.qualification]);}
+   pairs.push(['함께 사는 곳',familyLocationLabel(g.residence,profiles)],['가족을 대하는 방식',g.parentingStyle+' 보호자']);people.append(card(`${g.role} ${g.name}`,pairs));
+  }
+  body.append(people);const h=f.household;
+  body.append(card('함께 사는 가족',[['가구 인원',`${h.members}명`],['보호자',`${f.guardians.length}명`],['형제자매 수',`${f.siblings.length}명`],['나의 출생 순서',`${f.birthOrder}번째 아이`],['형제자매',f.siblings.length?f.siblings.map(s=>`${s.name} (출생 당시 ${s.ageAtBirth}세)`):'없음'],['돌봄',h.carePlan]]));
+  body.append(card('첫 주거 환경',[['주소',familyLocationLabel(h.housing.address,profiles)],['점유 형태',h.housing.tenure],['주거 형태',h.housing.homeType],[h.housing.assetKind,money(h.housingAssetWan)],['월 주거비',money(h.housing.monthlyWan)]]));
+  body.append(card('출생 당시 가구 경제',[['보호자 연 소득 합계',money(h.annualIncomeWan)],['월 소득 기반 생활예산',money(h.incomeBudgetWan)],['월 기본 지출·상환',money(h.essentialMonthlyWan)],['가구 금융자산',money(h.liquidAssetsWan)],['가구 부채',money(h.debtWan)],['가구 순자산',money(h.netAssetsWan)]]));
+ }
+ close.addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
+ dialog.addEventListener('close',()=>{onClose();if(opener?.isConnected&&opener.getClientRects().length)opener.focus({preventScroll:true});});
+ return{get isOpen(){return dialog.open;},open(f){opener=document.activeElement;render(f);if(!dialog.open){onOpen();dialog.showModal();}dialog.scrollTop=0;heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
 }
-
 export function renderFamilyPreview(host,f,{profiles,onOpen,document=host.ownerDocument}){
-  host.replaceChildren();host.className='birth-family';
-  const make=(tag,cls,value)=>{const n=document.createElement(tag);n.className=cls;n.textContent=value;return n;};
-  const button=make('button','secondary family-details-button','가족 정보 ↗');button.id='birth-family-open';button.type='button';button.setAttribute('aria-haspopup','dialog');button.addEventListener('click',()=>onOpen(f));host.append(button);
+ host.replaceChildren();host.className='birth-family';
+ const button=document.createElement('button');button.className='secondary family-details-button';button.textContent='가족 정보 ↗';button.id='birth-family-open';button.type='button';button.setAttribute('aria-haspopup','dialog');button.addEventListener('click',()=>onOpen(f));host.append(button);
 }

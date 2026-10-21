@@ -1,4 +1,5 @@
-import {deriveLifeScene} from './life-scene-model.mjs';
+import {displayCopy} from './ui-copy.mjs?v=economy-ui-1';
+import {deriveLifeScene} from './life-scene-model.mjs?v=economy-ui-1';
 
 const AGE_FRAMES = Object.freeze({baby:0,toddler:1,child:2,teen:3,young:4,adult:5,senior:6});
 const ROLE_FRAMES = Object.freeze({school:7,office:8,field:9,shop:10,military:11});
@@ -212,10 +213,9 @@ export function createLifeScene(host) {
   for (const decoration of [background,ground,home,activity,character,placard,inset]) decoration.setAttribute('aria-hidden','true');
   visual.append(background,ground,home,activity,character,placard,inset);
   const caption = make('div','life-scene-caption');
-  const current = make('p','life-scene-current');
-  const address = make('p','life-scene-address');
-  const note = make('p','life-scene-note','배경과 소품은 가상의 대표 풍경이며 실제 동네 모습과 다를 수 있습니다.');
-  caption.append(current,address,note);
+  const current = make('ul','life-scene-current');
+  const address = make('ul','life-scene-address');
+  caption.append(current,address);
   host.classList.add('life-scene');
   host.replaceChildren(heading,visual,caption);
   let previousKey = null;
@@ -244,9 +244,9 @@ export function createLifeScene(host) {
       const month=Number.isInteger(state.month)&&state.month>=0&&state.month<12?state.month:0;
       stage.textContent=scene.ageLabel;
       placard.textContent=scene.jobLabel;placard.title=scene.jobLabel;
-      current.textContent=`${scene.age}세 ${month}개월 · ${scene.jobLabel} · ${scene.employmentLabel}`;
-      address.textContent=`${scene.residenceLabel} · ${scene.housingLabel}`;
-      visual.setAttribute('aria-label',`${scene.age}세 ${month}개월 ${scene.ageLabel}, ${scene.jobLabel}, ${scene.residenceLabel}, ${scene.housingLabel}. 가상 대표 풍경.`);
+      current.replaceChildren(...[`${scene.age}세 ${month}개월`,scene.jobLabel,scene.employmentLabel].map(text=>make('li','',displayCopy(text))));
+      address.replaceChildren(...[scene.residenceLabel.replaceAll(' · ',' '),scene.housingLabel].map(text=>make('li','',displayCopy(text))));
+      visual.setAttribute('aria-label',`${scene.age}세 ${month}개월 ${scene.ageLabel}, ${scene.jobLabel}, ${scene.residenceLabel}, ${scene.housingLabel}.`);
       host.classList.toggle('is-running',Boolean(running));
       return scene;
     },

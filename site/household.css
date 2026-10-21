@@ -9,3 +9,12 @@
 .funding-note{padding:10px 12px;background:#edf2e8;border-radius:5px;margin:10px 0}
 .funding-blocked{color:#8a4c31;background:#f7ece4}
 @media(max-width:599px){.household-panel{padding:16px}.household-overview{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.household-panel-top button{width:100%}}
+/* Each financial or academic detail is a separate row. */
+#education-dialog .education-facts{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:12px 0}
+#education-dialog .education-facts>div{display:grid;grid-template-columns:minmax(100px,.6fr) minmax(0,1fr);gap:5px 14px;min-width:0}
+#education-dialog .education-facts dt{color:var(--muted);font-size:.88em;overflow-wrap:anywhere}
+#education-dialog .education-facts dd{margin:0;min-width:0;overflow-wrap:anywhere;line-height:1.7}
+#education-dialog .education-facts dd ul{margin:0;padding-left:20px;display:grid;gap:5px}
+#education-dialog .education-notes{padding-left:21px;display:grid;gap:7px;line-height:1.8;overflow-wrap:anywhere;font-size:.9em}
+#education-dialog .education-options .life-tool-button{width:100%;margin-top:12px}
+@media(max-width:539px){#education-dialog .education-facts>div{grid-template-columns:minmax(0,1fr);gap:3px}}

@@ -1,4 +1,5 @@
-import {careerModelFieldViews} from './career-model-views.mjs';
+import {careerModelFieldViews} from './career-model-views.mjs?v=economy-ui-1';
+import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=economy-ui-1';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],
@@ -109,11 +110,6 @@ export function careerFieldViews(row) {
   });
 }
 
-function safeExternalUrl(value) {
-  try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password ? url.href : null; }
-  catch { return null; }
-}
-
 /** Information browsing only. onSelect reports a viewed record, never employment. */
 export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
   validateCareerCatalog(catalog);
@@ -122,14 +118,14 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
   if (document.getElementById('career-info')) throw new Error('직업 탐색 팝업은 한 번만 생성해 주세요.');
   const make = (tag, className = '', text = '') => {
     const node = document.createElement(tag); node.className = className;
-    if (text) node.textContent = text;
+    if (text) node.textContent = displayCopy(text);
     return node;
   };
   const button = (className, text) => {const b = make('button',className,text);b.type='button';return b;};
   const dialog = make('dialog','career-dialog'); dialog.id = 'career-info'; dialog.setAttribute('aria-labelledby','career-title');
   const header = make('div','career-header'), title = make('h2','','직업 찾아보기'); title.id='career-title';title.tabIndex=-1;
   const x = button('career-close','×');x.setAttribute('aria-label','직업 탐색 닫기');header.append(title,x);
-  const intro = make('p','career-intro','공식 직업분류에서 직업을 찾아보고 확인한 자료를 살펴봅니다. 미확인은 제한 없음이나 취업 가능을 뜻하지 않습니다.');
+  const intro = make('p','career-intro','직업별 학력·임금·근무조건을 찾아봅니다.');
   const controls = make('div','career-search-controls');
   const searchLabel = make('label','','직업명·분류명·코드 검색'), search = make('input');
   search.id='career-search';search.type='search';search.autocomplete='off';search.placeholder='예: 개발, 간호, 채굴';searchLabel.htmlFor=search.id;
@@ -140,12 +136,11 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
   }
   const searchBox = make('div'), groupBox = make('div');searchBox.append(searchLabel,search);groupBox.append(groupLabel,group);controls.append(searchBox,groupBox);
   const body = make('div','career-body'), listPane = make('section','career-list-pane');listPane.setAttribute('aria-label','직업 검색 결과');
-  const count = make('p','career-result-count');count.setAttribute('role','status');count.setAttribute('aria-live','polite');
+  const count = make('div','career-result-count');count.setAttribute('role','status');count.setAttribute('aria-live','polite');
   const list = make('ul','career-results'), more = button('career-more','20개 더 보기');
   listPane.append(count,list,more);
   const detail = make('section','career-detail');detail.setAttribute('aria-label','선택한 직업 정보');
   body.append(listPane,detail);dialog.append(header,intro,controls,body);document.body.append(dialog);
-  const sources = new Map([...catalog.sources,...(catalog.modelSources||[])].map(source => [String(source.id),source]));
   const rows = new Map(catalog.occupations.map(row => [row.id,row]));
   let limit = PAGE_SIZE, selectedId = null, reportedOpen = false;
 
@@ -153,7 +148,7 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
     const found = searchOccupations(catalog.occupations,search.value,group.value);
     list.replaceChildren();
     const visible = found.slice(0,limit);
-    count.textContent = `${found.length.toLocaleString('ko-KR')}개 직업 · ${visible.length.toLocaleString('ko-KR')}개 표시`;
+    count.replaceChildren();appendUiFacts(document,count,[['검색 결과',`${found.length.toLocaleString('ko-KR')}개 직업`],['표시 중',`${visible.length.toLocaleString('ko-KR')}개`]],'career-summary-facts');
     for (const row of visible) {
       const item = make('li'), choose = button('career-result','');
       choose.setAttribute('aria-pressed',String(row.id===selectedId));
@@ -164,51 +159,34 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
     more.hidden=visible.length>=found.length;
   }
 
-  function appendEvidence(host, view) {
-    if (view.missingReason) host.append(make('p','career-missing',view.missingReason.replaceAll('constraintRules','공통 법령 안내')));
-    for (const id of view.sourceIds) {
-      const source = sources.get(id);
-      if (!source) {host.append(make('p','career-evidence','출처 상세 미확인'));continue;}
-      const p = make('p','career-evidence'), url = safeExternalUrl(source.url);
-      if (url) {const a=make('a','',clean(source.title)||'공식 출처');a.href=url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);}
-      else p.textContent=clean(source.title)||'출처 링크 미확인';
-      if (clean(source.license)) p.append(document.createTextNode(` · ${{'unrestricted':'이용허락 제한 없음','KOGL-1':'공공누리 제1유형(출처표시)','statutory_text_not_copyright_protected':'법령 문언(저작권법 제7조)'}[source.license]||source.license}`));
-      host.append(p);
-    }
-  }
-
   function renderDetail(row, focus = false) {
     detail.replaceChildren();
-    if (!row) {detail.append(make('h3','','직업 정보'),make('p','career-empty','목록에서 직업을 고르면 9개 항목의 확인 상태와 출처를 보여 줍니다.'));return;}
+    if (!row) {detail.append(make('h3','','직업 정보'),make('p','career-empty','목록에서 직업을 고르면 자세한 정보를 보여줍니다.'));return;}
     const back = button('career-back','검색으로 돌아가기 ↑');back.addEventListener('click',() => search.focus());
     const heading = make('h3','career-occupation-title',row.occupation.name);heading.tabIndex=-1;
     const c = row.occupation.classification || {};
-    const classification = [clean(c.system),groupOf(row),clean(c.referenceDate)?`분류 기준 ${c.referenceDate}`:''].filter(Boolean).join(' · ');
-    detail.append(back,heading,make('p','career-classification',classification));
+    detail.append(back,heading);appendUiFacts(document,detail,[['직업 분류',groupOf(row)],['분류 코드 체계',clean(c.system)],['분류 기준',clean(c.referenceDate)||'미확인']],'career-summary-facts');
     const fields = make('dl','career-fields');
     for (const view of careerFieldViews(row)) {
       const field = make('div','career-field'), label = make('dt','',view.label), value = make('dd');
-      value.append(make('p','career-value',view.summary));
+      const summary=make('ul','career-value-list');for(const line of displayLines(view.summary))summary.append(make('li','career-value',line));value.append(summary);
       if (view.lines.length) {const lines=make('ul','career-values');for(const text of view.lines) lines.append(make('li','',text));value.append(lines);}
-      for (const note of view.notes) value.append(make('p','career-note',note));
-      appendEvidence(value,view);field.append(label,value);fields.append(field);
+      field.append(label,value);fields.append(field);
     }
     const modelViews=careerModelFieldViews(row);
     if(modelViews.length){
       const section=make('section','career-model-section');
-      section.append(make('h4','','게임용 추정·추가 조사'),make('p','career-model-notice','아래 값은 공개 직종 통계와 작업 특성을 참고해 만든 게임용 대표값입니다. 해당 세부 직업의 실측 평균이나 확정 근로조건이 아닙니다.'));
+      section.append(make('h4','','직업 특성'));
       const modelFields=make('dl','career-fields');
       for(const view of modelViews){
         const field=make('div','career-field'),label=make('dt','',view.label),value=make('dd');
-        value.append(make('p','career-value',view.summary));
+        const summary=make('ul','career-value-list');for(const line of displayLines(view.summary))summary.append(make('li','career-value',line));value.append(summary);
         if(view.lines.length){const list=make('ul','career-values');for(const line of view.lines)list.append(make('li','',line));value.append(list);}
-        for(const note of view.notes)value.append(make('p','career-note',note));
-        appendEvidence(value,view);field.append(label,value);modelFields.append(field);
+        field.append(label,value);modelFields.append(field);
       }
-      section.append(modelFields);detail.append(section,make('h4','','공식 자료·법정 확인 항목'));
+      section.append(modelFields);detail.append(section,make('h4','','자격·임금 정보'));
     }
     detail.append(fields);
-    detail.append(make('p','career-disclaimer','정보 열람 화면입니다. 직업 선택의 법적 자격을 판정하거나 현재 삶의 직업·소득·기록을 변경하지 않습니다.'));
     if (focus) heading.focus();
   }
 

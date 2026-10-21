@@ -1,21 +1,48 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=decision-popup-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=decision-popup-1';
-import {formatMoney} from './spending.mjs';
-function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=economy-ui-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=economy-ui-1';
+import {formatMoney} from './spending.mjs?v=economy-ui-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economy-ui-1';
+function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
+function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
+function facts(host,pairs,cls='education-facts'){return appendUiFacts(document,host,pairs,cls);}
 export function createEducationBrowser({getState,data,onSchool,onUniversity,onDefer,onFundingPause,onOpen,onClose}){
- const dialog=el('dialog',undefined,'life-tools-dialog');dialog.id='education-dialog';dialog.setAttribute('aria-labelledby','education-title');const top=el('div',undefined,'dialog-top'),heading=el('h2','학교·대학 지원');heading.id='education-title';heading.tabIndex=-1;const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','학교 지원 창 닫기');top.append(heading,close);const summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(top,summary,status,body);document.body.append(dialog);
+ const dialog=el('dialog',undefined,'life-tools-dialog');dialog.id='education-dialog';dialog.setAttribute('aria-labelledby','education-title');
+ const top=el('div',undefined,'dialog-top'),heading=el('h2','학교·대학 지원');heading.id='education-title';heading.tabIndex=-1;
+ const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','학교 지원 창 닫기');top.append(heading,close);
+ const summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(top,summary,status,body);document.body.append(dialog);
  let mode='school',filters={ownership:'',location:'',field:''};
- function act(callback,id){try{callback(id);const outcome=getState().schoolJourney?.lastOutcome;status.textContent=outcome?.status==='rejected'?`${outcome.label} 불합격. 더 낮은 게임 문턱의 경로에 지원하거나 진학을 유예할 수 있습니다.`:outcome?.status==='deferred'?'대학 진학을 미루고 다른 경험을 이어갑니다.':`${outcome?.label||'학교'} 합격 · 입학을 반영했습니다.`;render();}catch(error){status.textContent=error?.message||'지원 조건을 확인해주세요.';}}
- function render(){const s=getState();summary.replaceChildren(el('strong',`${s.name} · ${s.age}세 ${s.month}개월 · 배움 ${Math.round(s.learn)}/100`),el('p',s.education));body.replaceChildren();body.append(el('p','아래 합격률·난이도·전공별 등록금 배율은 게임 설정입니다. 실제 학교의 선발 결과나 자격 취득을 예측하지 않습니다. 같은 입학 시기의 같은 선택을 반복해 재추첨할 수 없습니다.','life-tool-notice'));
-  const household=householdSummary(s);if(household)body.append(el('p',`내 현금 ${formatMoney(s.cash)} · 가구 금융자산 ${formatMoney(household.liquidAssetsWan)} · 월 추가 지원 여력 ${formatMoney(household.familyMonthlyCapacityWan)}. 유료 학비는 기본 생활비·주거비와 준비금을 제외하고 12개월 예산을 확인합니다. 예상 지원은 현재 고용·소득 기준이며 부모의 실직·이직·은퇴·사망으로 달라질 수 있습니다.`,'funding-note'));
-  if(mode==='university'&&s.schooling?.status==='enrolled'){const paused=!!s.schooling.fundingPaused,funding=educationFunding(s,s.schooling.annualTuitionWan,{university:true,hobbyCostWan:activeHobbyCost(s,data.hobbyCatalog)});body.append(el('h3',s.schooling.school.name),el('p',paused?'학비 준비 휴학 중 · 취업으로 자금을 준비할 수 있습니다.':'현재 대학 재학 중입니다.'),el('p',`월 학비 ${formatMoney(s.schooling.annualTuitionWan/12)} · 가족 지원 예상 ${formatMoney(funding.familyMonthlyWan)} · 내 준비액 월 ${formatMoney(funding.personalMonthlyWan)}`,'funding-note'));const b=button(paused?'학비 마련 후 복학하기':'학비 준비로 휴학하기',()=>act(onFundingPause,!paused),'life-tool-button life-tool-primary');b.disabled=s.phase!=='running'||s.service.active||paused&&!funding.eligible;body.append(b);for(const reason of funding.reasons)body.append(el('p',reason,'life-tool-blocked'));body.append(el('p','휴학 때는 수업료·학업 진행을 멈춥니다. 복학하면 근로소득을 중단하고 학업을 이어갑니다.','small'));return;}
+ const act=(callback,id)=>completeModalAction(dialog,status,callback,id,'지원 조건을 확인해주세요.');
+ const fundingFacts=(host,funding)=>facts(host,[['월 학비',formatMoney(funding.monthlyTuitionWan)],['가족 지원 예상',formatMoney(funding.familyMonthlyWan)],['월 내 준비액',formatMoney(funding.personalMonthlyWan)],...(funding.commitmentMonths?[['예산 확인 기간',`${funding.commitmentMonths}개월`]]:[])],'education-facts funding-note');
+ function render(){
+  const s=getState();summary.replaceChildren(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['배움',`${Math.round(s.learn)}/100`],['학업',s.education]]);body.replaceChildren();
+  const household=householdSummary(s);
+  if(household){facts(body,[['내 소지금',formatMoney(s.cash)],['가구 금융자산',formatMoney(household.liquidAssetsWan)],['월 추가 지원 여력',formatMoney(household.familyMonthlyCapacityWan)]],'education-facts funding-note');list(body,['유료 학비는 생활비·주거비와 준비금을 제외한 12개월 예산을 확인합니다.','부모의 취업·실직·이직·은퇴·사망에 따라 지원액이 달라집니다.']);}
+  if(mode==='university'&&s.schooling?.status==='enrolled'){
+   const paused=!!s.schooling.fundingPaused,funding=educationFunding(s,s.schooling.annualTuitionWan,{university:true,hobbyCostWan:activeHobbyCost(s,data.hobbyCatalog)});
+   body.append(el('h3',displayLines(s.schooling.school.name).at(-1)));facts(body,[['학업 상태',paused?'학비 준비 휴학 중':'대학 재학 중']]);fundingFacts(body,{...funding,monthlyTuitionWan:s.schooling.annualTuitionWan/12});
+   const b=button(paused?'학비 마련 후 복학하기':'학비 준비로 휴학하기',()=>act(onFundingPause,!paused),'life-tool-button life-tool-primary');b.disabled=s.phase!=='running'||s.service.active||paused&&!funding.eligible;body.append(b);
+   list(body,funding.reasons,'education-notes life-tool-blocked');list(body,['휴학 중에는 수업료와 학업 진행을 멈춥니다.','복학하면 근로소득을 중단하고 학업을 이어갑니다.']);return;
+  }
   let options;
   if(mode==='university'){
-   const all=universityOptions(s,{},data),controls=el('div',undefined,'education-filters');for(const[key,label,values]of [['ownership','1. 대학 설립',[['public','국공립'],['private','사립']]],['location','2. 대학 지역',[['seoul','서울'],['regional','서울 외 지역']]],['field','3. 계열·전공',[...new Map(all.map(row=>[row.field,[row.field,row.fieldLabel]])).values()]]]){const l=el('label',label),select=el('select');select.setAttribute('aria-label',label);select.append(new Option('선택해주세요',''));for(const[value,text]of values)select.append(new Option(text,value));select.value=filters[key];select.addEventListener('change',()=>{filters[key]=select.value;render();});l.append(select);controls.append(l);}body.append(controls);if(Object.values(filters).some(value=>!value)){body.append(el('p','설립 유형 → 지역 → 계열·전공을 선택하면 지원할 과정을 보여줍니다.'));options=[];}else options=universityOptions(s,filters,data);
-   body.append(el('p','서울 외 지역에는 경기·인천도 포함됩니다. 교대 계열은 국공립 경로를 제공합니다. 의학·약학은 6년 게임 과정이며 면허가 자동 발급되지 않습니다.','small'));
+   const all=universityOptions(s,{},data),controls=el('div',undefined,'education-filters');
+   for(const [key,label,values]of [['ownership','1. 대학 설립',[['public','국공립'],['private','사립']]],['location','2. 대학 지역',[['seoul','서울'],['regional','서울 외 지역']]],['field','3. 계열·전공',[...new Map(all.map(row=>[row.field,[row.field,row.fieldLabel]])).values()]]]){
+    const l=el('label',label),select=el('select');select.setAttribute('aria-label',label);select.append(new Option('선택해주세요',''));for(const [value,text]of values)select.append(new Option(text,value));select.value=filters[key];
+    select.addEventListener('change',()=>{filters[key]=select.value;render();body.querySelector(`[aria-label="${label}"]`)?.focus({preventScroll:true});});l.append(select);controls.append(l);
+   }
+   body.append(controls);
+   if(Object.values(filters).some(value=>!value)){body.append(el('p','설립 유형 → 지역 → 계열·전공을 선택해주세요.'));options=[];}else options=universityOptions(s,filters,data);
+   list(body,['서울 외 지역에는 경기·인천도 포함됩니다.','교대 계열은 국공립 경로를 제공합니다.','의학·약학 과정은 6년입니다.','같은 입학 시기의 같은 과정에 중복 지원할 수 없습니다.']);
   }else options=schoolChoices(s,data);
-  const cards=el('div',undefined,'education-options');for(const row of options){const card=el('article',undefined,'life-tool-detail');card.append(el('h3',row.label||row.name),el('p',`${row.ownershipLabel||''}${row.locationLabel?' · '+row.locationLabel:''}${row.fieldLabel?' · '+row.fieldLabel:''}`),el('p',`연 등록금 ${formatMoney(row.annualTuitionWan)} · ${row.durationMonths}개월 과정`),el('strong',`현재 게임 합격 가능성 ${(row.admissionChance*100).toFixed(1)}%`),el('p',`게임 난이도(비교값) ${row.learningThreshold} · 나의 배움 ${Math.round(s.learn)}`,'small'));const b=button(mode==='university'?'이 대학 과정에 지원하기':'이 학교에 지원하기',()=>act(mode==='university'?onUniversity:onSchool,row.id),'life-tool-button life-tool-primary');b.disabled=!row.eligible;card.append(b);if(row.funding&&!row.funding.legacy)card.append(el('p',`월 학비 ${formatMoney(row.funding.monthlyTuitionWan)} · 가구 예상 지원 ${formatMoney(row.funding.familyMonthlyWan)} · 내 준비액 월 ${formatMoney(row.funding.personalMonthlyWan)} · ${row.funding.commitmentMonths}개월 예산 확인`,'funding-note'));for(const reason of row.reasons||[])card.append(el('p',reason,'life-tool-blocked'));for(const text of [row.note,row.costNote])if(text)card.append(el('p',text,'small'));cards.append(card);}body.append(cards);if(!options.length&&!Object.values(filters).some(value=>!value))body.append(el('p','이 조합으로 제공하는 과정이 없습니다. 설립 유형이나 전공을 바꿔주세요.'));
+  const cards=el('div',undefined,'education-options');
+  for(const row of options){
+   const card=el('article',undefined,'life-tool-detail');card.append(el('h3',displayLines(row.label||row.name).at(-1)));
+   facts(card,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[]),['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)]]);
+   const b=button(mode==='university'?'이 대학 과정에 지원하기':'이 학교에 지원하기',()=>act(mode==='university'?onUniversity:onSchool,row.id),'life-tool-button life-tool-primary');b.disabled=!row.eligible;card.append(b);
+   if(row.funding&&!row.funding.legacy)fundingFacts(card,row.funding);list(card,row.reasons||[],'education-notes life-tool-blocked');cards.append(card);
+  }
+  body.append(cards);if(!options.length&&!Object.values(filters).some(value=>!value))body.append(el('p','이 조합으로 제공하는 과정이 없습니다. 설립 유형이나 전공을 바꿔주세요.'));
   if(mode==='university'&&s.pendingDecision==='education')body.append(button('대학 진학을 미루고 경험 쌓기',()=>act(onDefer),'life-tool-button'));
  }
  dialog.addEventListener('close',()=>onClose?.());dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
