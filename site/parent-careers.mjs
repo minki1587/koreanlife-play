@@ -1,11 +1,12 @@
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=parent-life-1';
+import {parentDeathCheck} from './family-estate.mjs?v=family-estate-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=family-estate-1';
 import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const str=x=>typeof x==='string'&&x.length>0&&x.length<=250;
-const statuses=['employed','unemployed','homemaking','retired'];
-const statusLabels={employed:'취업 중',unemployed:'구직 중',homemaking:'육아·가사',retired:'은퇴'};
+const statuses=['employed','unemployed','homemaking','retired','deceased'];
+const statusLabels={employed:'취업 중',unemployed:'구직 중',homemaking:'육아·가사',retired:'은퇴',deceased:'사망'};
 const caches=new WeakMap();
 function ticket(seed,id,month,kind){let h=2166136261;for(const c of `${VERSION}|${seed}|${id}|${month}|${kind}`)h=Math.imul(h^c.charCodeAt(0),16777619);h+=0x6D2B79F5;let t=Math.imul(h^h>>>15,1|h);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296;}
 const verified=(v,key)=>v&&String(v.status||'').startsWith('verified')&&Array.isArray(v.sourceURLs)&&v.sourceURLs.length&&v[key]!==undefined;
@@ -26,16 +27,17 @@ export function createParentLife(s,data){
 }
 export function parentJobCandidates(s,p,data){
  const birth=s.profile.birthFamily.guardians.find(g=>g.id===p.id),age=Math.floor(p.ageMonths/12);
- if(age>=s.familyLife.rules.retirementAge||p.status==='retired')return [];
+ if(age>=s.familyLife.rules.retirementAge||['retired','deceased'].includes(p.status))return [];
  return rows(data).filter(({row,requirements:q,limits:a})=>q.educationLevel<=birth.education.level&&q.requiredRegions.includes(birth.residence.region)&&(!q.qualificationRequired||p.preparedOccupationIds.includes(row.id))&&Object.entries(q.requiredAbilities).every(([key,value])=>p.abilities[key]>=value)&&!a.sex&&(a.min===null||age>=a.min)&&(a.max===null||age<=a.max));
 }
 export function advanceParentLife(s,data){
  if(!s.familyLife)return null;
  const life=clone(s.familyLife),atMonth=s.totalMonths+1;if(life.lastProcessedMonth!==s.totalMonths)throw new Error('부모 생애의 정산 월이 일치하지 않습니다.');const events=[];
  for(const p of life.guardians){
+  if(p.status==='deceased')continue;
   const birth=s.profile.birthFamily.guardians.find(g=>g.id===p.id),before=p.status,oldJob=p.occupation?.name||'',oldIncome=p.annualIncomeWan;p.ageMonths++;
   const draw=kind=>ticket(s.seed,p.id,atMonth,kind),age=Math.floor(p.ageMonths/12),emit=(type,title)=>{p.lastChangeMonth=atMonth;events.push({id:`${p.id}-${atMonth}-${type}`,atMonth,guardianId:p.id,type,title,fromStatus:before,toStatus:p.status,fromOccupation:oldJob,toOccupation:p.occupation?.name||'',fromAnnualIncomeWan:oldIncome,annualIncomeWan:p.annualIncomeWan});};
-  let event=null;
+  let event=null;const mortality=parentDeathCheck(s,p,atMonth);if(mortality){p.lastMortalityCheck=mortality;if(mortality.dies){p.death=clone(mortality);p.lastOccupation=p.occupation||p.lastOccupation;p.occupation=null;p.status='deceased';p.annualIncomeWan=0;emit('death',`${birth.role} ${birth.name}님을 기억하며`);continue;}}
   if(p.status!=='retired'&&(age>=life.rules.retirementAge||(p.occupation?.limits.max!==null&&p.occupation?.limits.max!==undefined&&age>p.occupation.limits.max))){p.lastOccupation=p.occupation||p.lastOccupation;p.occupation=null;p.status='retired';event=['retirement',`${birth.role} ${birth.name}님이 은퇴했다`];}
   else if(p.status==='employed'){
    if(draw('loss')<life.rules.monthlyLossChance){p.lastOccupation=p.occupation;p.occupation=null;p.status='unemployed';p.searchMonths=0;event=['job-loss',`${birth.role} ${birth.name}님이 다음 일을 찾기 시작했다`];}
@@ -56,11 +58,11 @@ export function validParentLife(s){try{
  const l=s?.familyLife;if(l===undefined)return true;const f=s.profile?.birthFamily;
  if(!l||!f||!s.householdFinance||l.version!==VERSION||l.familyFingerprint!==f.fingerprint||!Number.isInteger(l.activatedAtMonth)||l.activatedAtMonth<0||l.activatedAtMonth>s.totalMonths||l.lastProcessedMonth!==s.totalMonths)return false;validateParentRules(l.rules);
  if(!Array.isArray(l.guardians)||l.guardians.length!==f.guardians.length||new Set(l.guardians.map(p=>p.id)).size!==l.guardians.length)return false;
- for(const p of l.guardians){const g=f.guardians.find(g=>g.id===p.id);if(!g||p.ageMonths!==g.ageAtBirth*12+s.totalMonths||!statuses.includes(p.status)||!Number.isInteger(p.searchMonths)||p.searchMonths<0||p.searchMonths>s.totalMonths-l.activatedAtMonth||!Number.isInteger(p.lastChangeMonth)||p.lastChangeMonth<l.activatedAtMonth||p.lastChangeMonth>s.totalMonths||!nn(p.annualIncomeWan)||!Array.isArray(p.preparedOccupationIds)||p.preparedOccupationIds.length!==new Set(p.preparedOccupationIds).size||!p.preparedOccupationIds.every(id=>id===g.occupation?.id)||!p.abilities||!ABILITY_AXES.every(a=>nn(p.abilities[a.id])&&p.abilities[a.id]<=100)||!p.experienceByOccupation||Array.isArray(p.experienceByOccupation)||!Object.entries(p.experienceByOccupation).every(([id,n])=>/^know-\d{6}$/.test(id)&&Number.isInteger(n)&&n>=0&&n<=p.ageMonths-g.education.entryAge*12))return false;
+ for(const p of l.guardians){const g=f.guardians.find(g=>g.id===p.id);if(!g||p.ageMonths!==g.ageAtBirth*12+(p.status==='deceased'?p.death?.atMonth:s.totalMonths)||!statuses.includes(p.status)||!Number.isInteger(p.searchMonths)||p.searchMonths<0||p.searchMonths>s.totalMonths-l.activatedAtMonth||!Number.isInteger(p.lastChangeMonth)||p.lastChangeMonth<l.activatedAtMonth||p.lastChangeMonth>s.totalMonths||!nn(p.annualIncomeWan)||!Array.isArray(p.preparedOccupationIds)||p.preparedOccupationIds.length!==new Set(p.preparedOccupationIds).size||!p.preparedOccupationIds.every(id=>id===g.occupation?.id)||!p.abilities||!ABILITY_AXES.every(a=>nn(p.abilities[a.id])&&p.abilities[a.id]<=100)||!p.experienceByOccupation||Array.isArray(p.experienceByOccupation)||!Object.entries(p.experienceByOccupation).every(([id,n])=>/^know-\d{6}$/.test(id)&&Number.isInteger(n)&&n>=0&&n<=p.ageMonths-g.education.entryAge*12))return false;
   if(p.lastOccupation!==null&&!validCareer(p.lastOccupation,g,p))return false;
   if(p.status==='employed'){if(!validCareer(p.occupation,g,p)||p.annualIncomeWan!==p.occupation.annualIncomeWan||p.ageMonths>=l.rules.retirementAge*12||p.occupation.limits.min!==null&&Math.floor(p.ageMonths/12)<p.occupation.limits.min||p.occupation.limits.max!==null&&Math.floor(p.ageMonths/12)>p.occupation.limits.max||p.experienceByOccupation[p.occupation.id]!==p.occupation.experienceMonths)return false;}
   else if(p.occupation!==null||p.annualIncomeWan!==0)return false;
  }
  if(!Array.isArray(l.events)||l.events.length>l.rules.historyLimit||new Set(l.events.map(e=>e.id)).size!==l.events.length)return false;
- return l.events.every((e,i)=>str(e.id)&&Number.isInteger(e.atMonth)&&e.atMonth>l.activatedAtMonth&&e.atMonth<=s.totalMonths&&(!i||e.atMonth>=l.events[i-1].atMonth)&&f.guardians.some(g=>g.id===e.guardianId)&&['retirement','job-loss','job-hire','job-change','job-search'].includes(e.type)&&str(e.title)&&statuses.includes(e.fromStatus)&&statuses.includes(e.toStatus)&&typeof e.fromOccupation==='string'&&typeof e.toOccupation==='string'&&nn(e.fromAnnualIncomeWan)&&nn(e.annualIncomeWan));
+ return l.events.every((e,i)=>str(e.id)&&Number.isInteger(e.atMonth)&&e.atMonth>l.activatedAtMonth&&e.atMonth<=s.totalMonths&&(!i||e.atMonth>=l.events[i-1].atMonth)&&f.guardians.some(g=>g.id===e.guardianId)&&['retirement','job-loss','job-hire','job-change','job-search','death'].includes(e.type)&&str(e.title)&&statuses.includes(e.fromStatus)&&statuses.includes(e.toStatus)&&typeof e.fromOccupation==='string'&&typeof e.toOccupation==='string'&&nn(e.fromAnnualIncomeWan)&&nn(e.annualIncomeWan));
  }catch{return false;}}

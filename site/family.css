@@ -21,5 +21,9 @@
 .family-fact{min-width:0}
 .family-fact dt{font-size:calc(10px * 1.2 * var(--user-text-scale,1));color:var(--muted);margin-bottom:4px;overflow-wrap:anywhere}
 .family-fact dd{font-size:calc(12px * 1.2 * var(--user-text-scale,1));line-height:1.75;margin:0;word-break:keep-all;overflow-wrap:anywhere}
+.family-estate-record{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:6px;min-width:0}
+.family-estate-record>summary{font-size:calc(12px * 1.2 * var(--user-text-scale,1));line-height:1.75;font-weight:600;cursor:pointer;overflow-wrap:anywhere}
+.family-estate-record .family-facts{margin-top:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:539px){.family-estate-record .family-facts{grid-template-columns:minmax(0,1fr)}}
 .family-current>h3{font-size:calc(16px * 1.2 * var(--user-text-scale,1));line-height:1.7;overflow-wrap:anywhere}.family-career-history{padding-left:20px;font-size:calc(11px * 1.2 * var(--user-text-scale,1));line-height:1.9;overflow-wrap:anywhere}.family-note,.family-empty{font-size:calc(11px * 1.2 * var(--user-text-scale,1));line-height:1.85;color:var(--muted);margin:18px 0 0;overflow-wrap:anywhere}
 @media(max-width:539px){.family-preview-people,.family-people{grid-template-columns:minmax(0,1fr)}.birth-family{padding:16px}.family-dialog-top{padding:14px}.family-dialog-top h2{font-size:calc(17px * 1.2 * var(--user-text-scale,1))}.family-dialog-body{padding:16px}.guardian-card,.family-section{padding:15px}}

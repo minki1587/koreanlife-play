@@ -1,5 +1,5 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=parent-life-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=parent-life-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=family-estate-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=family-estate-1';
 import {formatMoney} from './spending.mjs';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
@@ -8,7 +8,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
  let mode='school',filters={ownership:'',location:'',field:''};
  function act(callback,id){try{callback(id);const outcome=getState().schoolJourney?.lastOutcome;status.textContent=outcome?.status==='rejected'?`${outcome.label} 불합격. 더 낮은 게임 문턱의 경로에 지원하거나 진학을 유예할 수 있습니다.`:outcome?.status==='deferred'?'대학 진학을 미루고 다른 경험을 이어갑니다.':`${outcome?.label||'학교'} 합격 · 입학을 반영했습니다.`;render();}catch(error){status.textContent=error?.message||'지원 조건을 확인해주세요.';}}
  function render(){const s=getState();summary.replaceChildren(el('strong',`${s.name} · ${s.age}세 ${s.month}개월 · 배움 ${Math.round(s.learn)}/100`),el('p',s.education));body.replaceChildren();body.append(el('p','아래 합격률·난이도·전공별 등록금 배율은 게임 설정입니다. 실제 학교의 선발 결과나 자격 취득을 예측하지 않습니다. 같은 입학 시기의 같은 선택을 반복해 재추첨할 수 없습니다.','life-tool-notice'));
-  const household=householdSummary(s);if(household)body.append(el('p',`내 현금 ${formatMoney(s.cash)} · 가구 금융자산 ${formatMoney(household.liquidAssetsWan)} · 월 추가 지원 여력 ${formatMoney(household.familyMonthlyCapacityWan)}. 유료 학비는 기본 생활비·주거비와 준비금을 제외하고 12개월 예산을 확인합니다. 예상 지원은 현재 고용·소득 기준이며 부모의 실직·이직·은퇴로 달라질 수 있습니다.`,'funding-note'));
+  const household=householdSummary(s);if(household)body.append(el('p',`내 현금 ${formatMoney(s.cash)} · 가구 금융자산 ${formatMoney(household.liquidAssetsWan)} · 월 추가 지원 여력 ${formatMoney(household.familyMonthlyCapacityWan)}. 유료 학비는 기본 생활비·주거비와 준비금을 제외하고 12개월 예산을 확인합니다. 예상 지원은 현재 고용·소득 기준이며 부모의 실직·이직·은퇴·사망으로 달라질 수 있습니다.`,'funding-note'));
   if(mode==='university'&&s.schooling?.status==='enrolled'){const paused=!!s.schooling.fundingPaused,funding=educationFunding(s,s.schooling.annualTuitionWan,{university:true,hobbyCostWan:activeHobbyCost(s,data.hobbyCatalog)});body.append(el('h3',s.schooling.school.name),el('p',paused?'학비 준비 휴학 중 · 취업으로 자금을 준비할 수 있습니다.':'현재 대학 재학 중입니다.'),el('p',`월 학비 ${formatMoney(s.schooling.annualTuitionWan/12)} · 가족 지원 예상 ${formatMoney(funding.familyMonthlyWan)} · 내 준비액 월 ${formatMoney(funding.personalMonthlyWan)}`,'funding-note'));const b=button(paused?'학비 마련 후 복학하기':'학비 준비로 휴학하기',()=>act(onFundingPause,!paused),'life-tool-button life-tool-primary');b.disabled=s.phase!=='running'||s.service.active||paused&&!funding.eligible;body.append(b);for(const reason of funding.reasons)body.append(el('p',reason,'life-tool-blocked'));body.append(el('p','휴학 때는 수업료·학업 진행을 멈춥니다. 복학하면 근로소득을 중단하고 학업을 이어갑니다.','small'));return;}
   let options;
   if(mode==='university'){

@@ -1,4 +1,4 @@
-import {currentFamilyIncome} from './parent-careers.mjs';
+import {currentFamilyIncome} from './parent-careers.mjs?v=family-estate-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -14,7 +14,7 @@ export function createHouseholdFinance(s,rules){
 }
 export function validHouseholdFinance(s){try{
   const h=s?.householdFinance;if(h===undefined)return true;
-  if(!h||h.version!==VERSION||h.familyFingerprint!==s.profile?.birthFamily?.fingerprint||!Number.isInteger(h.activatedAtMonth)||h.activatedAtMonth<0||h.activatedAtMonth>s.totalMonths||!Number.isInteger(h.lastProcessedMonth)||h.lastProcessedMonth<h.activatedAtMonth||h.lastProcessedMonth>s.totalMonths||!['liquidAssetsWan','housingAssetWan','debtWan'].every(k=>nonnegative(h[k]))||h.housingAssetWan!==s.profile.birthFamily.household.housingAssetWan||h.debtWan>s.profile.birthFamily.household.debtWan)return false;
+  if(!h||h.version!==VERSION||h.familyFingerprint!==s.profile?.birthFamily?.fingerprint||!Number.isInteger(h.activatedAtMonth)||h.activatedAtMonth<0||h.activatedAtMonth>s.totalMonths||!Number.isInteger(h.lastProcessedMonth)||h.lastProcessedMonth<h.activatedAtMonth||h.lastProcessedMonth>s.totalMonths||!['liquidAssetsWan','housingAssetWan','debtWan'].every(k=>nonnegative(h[k]))||(s.familyEstate?h.housingAssetWan>s.profile.birthFamily.household.housingAssetWan:h.housingAssetWan!==s.profile.birthFamily.household.housingAssetWan)||h.debtWan>s.profile.birthFamily.household.debtWan)return false;
   validateHouseholdRules(h.rules);if(!h.totals||!TOTAL_KEYS.every(k=>nonnegative(h.totals[k])))return false;
   const m=h.lastMonth;if(m!==null){
     if(!m||m.atMonth!==h.lastProcessedMonth||typeof m.supportEligible!=='boolean'||!['openingWan','closingWan','incomeWan','fixedPaidWan','fixedShortfallWan','livingWan','tuitionWan','allowanceWan','hobbyWan','protectionWan','debtRepaidWan','reserveWan'].every(k=>nonnegative(m[k]))||m.closingWan!==h.liquidAssetsWan||Math.abs(round(m.openingWan+m.incomeWan-m.fixedPaidWan-m.livingWan-m.tuitionWan-m.allowanceWan-m.hobbyWan)-m.closingWan)>.0002)return false;
@@ -24,7 +24,7 @@ export function validHouseholdFinance(s){try{
 
 export const hasHouseholdSupport=s=>!!s?.householdFinance&&!!s?.profile?.birthFamily;
 export function familySupportEligible(s,{university=false}={}){
-  if(!hasHouseholdSupport(s)||s.service?.active)return false;
+  if(!hasHouseholdSupport(s)||s.service?.active||s.familyEstate?.closed)return false;
   return s.age<19||(s.age<=s.householdFinance.rules.maximumStudentAge&&(university||s.schooling?.status==='enrolled'));
 }
 export function effectiveHobbyAge(s,row){return hasHouseholdSupport(s)?s.householdFinance.rules.childHobbyAges[row.id]??row.minAge:row.minAge;}
@@ -37,7 +37,7 @@ export function personalLivingWan(s,{university=false}={}){
   return living+housing;
 }
 function baseline(s,living){
-  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(currentFamilyIncome(s)/12*r.incomeBudgetShare),home=round(b.housing.monthlyWan+(b.members-1)*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
+  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(currentFamilyIncome(s)/12*r.incomeBudgetShare),home=s.familyEstate?.closed?0:round(b.housing.monthlyWan+(b.members-1-(s.familyEstate?s.familyLife.guardians.filter(p=>p.status==='deceased').length:0))*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
   return {income,home,repayment,fixed,reserve};
 }
 export function monthlyFamilyCapacity(s,{living=personalLivingWan(s),university=false}={}){
@@ -94,5 +94,5 @@ export function settleHouseholdMonth(s,{livingWan,tuitionWan,hobbyWan,personalIn
 export function householdSummary(s){
   if(!hasHouseholdSupport(s))return null;
   const h=s.householdFinance,b=familyBase(s),m=h.lastMonth;
-  return {eligible:familySupportEligible(s),parentsActive:!!s.familyLife,currentAnnualIncomeWan:currentFamilyIncome(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(currentFamilyIncome(s)/12*h.rules.incomeBudgetShare),monthlyHousingWan:b.housing.monthlyWan,familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
+  return {eligible:familySupportEligible(s),parentsActive:!!s.familyLife,currentAnnualIncomeWan:currentFamilyIncome(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(currentFamilyIncome(s)/12*h.rules.incomeBudgetShare),monthlyHousingWan:s.familyEstate?.closed?0:b.housing.monthlyWan,familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
 }

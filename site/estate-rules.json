@@ -1,0 +1,10 @@
+{
+  "version": "family-estate-1",
+  "kind": "game_assumption",
+  "funeralCostWan": 1000,
+  "ownership": "equal-living-guardians",
+  "distribution": "equal-surviving-guardians-player-siblings",
+  "propertySettlement": "cash-at-book-value",
+  "personalDebtTransfer": false,
+  "note": "장례비 1,000만원·보호자 공동재산 균등 지분·남은 보호자와 자녀의 순재산 균등 분배·부동산 지분 평가액 현금정산은 게임 규칙입니다. 실제 장례비 평균·법정 상속분·세금·법적 상속절차를 재현하지 않습니다. 미충당 유산채무는 기록하고 개인 부채로 자동 이전하지 않습니다."
+}
