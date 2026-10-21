@@ -44,3 +44,7 @@
   #game .game-grid.game-layout>.history-rail{grid-column:1/-1;grid-row:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));position:static;height:auto;min-height:0}
   .history-rail>.timeline-panel,.history-rail>.finance-panel{grid-column:auto;grid-row:auto;position:static;height:auto;min-height:0;overflow:visible}
 }
+
+.military-savings h5{margin:18px 0 10px;padding-top:12px;border-top:1px solid var(--line);font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--green)}
+#military-settlement{padding:0 10px 1px;border:1px solid var(--line);border-radius:6px;background:var(--sage)}
+#military-settlement h5{border-top:0;margin-top:0}

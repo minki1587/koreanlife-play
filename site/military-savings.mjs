@@ -11,15 +11,17 @@ function amounts(savings){
  return{principalWan,interestWan:q(weighted*savings.annualInterestRate/12),matchingWan:q(principalWan*savings.matchingRate)};
 }
 
-// This is a transfer from an existing wallet, never a new wage or an expense.
+// The deposit is capped by this month's newly paid military wage. Existing
+// wallet or family money must never fill a contribution shortfall.
 // A save created before this feature starts at its next actual month, not enlistment.
-export function fundMilitarySavingsMonth(state,atMonth=state.totalMonths+1){
+export function fundMilitarySavingsMonth(state,atMonth=state.totalMonths+1,{availablePayWan=0}={}){
  if(!state.service?.active)return null;
  const savings=clone(state.service.savings||createMilitarySavings(state,{activatedAtMonth:atMonth-1}));
  if(!savings||savings.status!=='active'||atMonth<=savings.lastProcessedMonth)return null;
  if(atMonth!==savings.lastProcessedMonth+1||savings.deposits.length>=savings.plannedMonths)throw new RangeError('적금 납입 월이 이어지지 않습니다.');
- const contributionWan=q(Math.min(savings.monthlyLimitWan,Math.max(0,state.cash)));
- savings.deposits.push({atMonth,contributionWan});savings.lastProcessedMonth=atMonth;
+ if(!money(availablePayWan))throw new RangeError('지급한 군급여를 확인해 주세요.');
+ const contributionWan=q(Math.min(savings.monthlyLimitWan,availablePayWan,Math.max(0,state.cash)));
+ savings.deposits.push({atMonth,contributionWan,fundingSource:'military-pay',payWan:availablePayWan});savings.lastProcessedMonth=atMonth;
  return{savings,cash:q(state.cash-contributionWan),contributionWan,atMonth};
 }
 
@@ -44,7 +46,7 @@ export function militarySavingsSummary(state){
 export function validMilitarySavings(state){try{
  const s=state?.service?.savings;if(s===undefined)return true;
  if(!s||s.version!==MILITARY_SAVINGS_RULES.version||!['monthlyLimitWan','matchingRate','annualInterestRate'].every(k=>s[k]===MILITARY_SAVINGS_RULES[k])||!Number.isInteger(s.activatedAtMonth)||s.activatedAtMonth<0||s.activatedAtMonth>state.totalMonths||!Number.isInteger(s.plannedMonths)||s.plannedMonths<1||s.plannedMonths>36||!Array.isArray(s.deposits)||s.deposits.length>s.plannedMonths||s.lastProcessedMonth!==s.activatedAtMonth+s.deposits.length||s.lastProcessedMonth>state.totalMonths||!['active','matured','interrupted'].includes(s.status))return false;
- if(!s.deposits.every((d,i)=>d&&d.atMonth===s.activatedAtMonth+i+1&&money(d.contributionWan)&&d.contributionWan<=s.monthlyLimitWan))return false;
+ if(!s.deposits.every((d,i)=>d&&d.atMonth===s.activatedAtMonth+i+1&&money(d.contributionWan)&&d.contributionWan<=s.monthlyLimitWan&&(d.fundingSource===undefined?d.payWan===undefined:d.fundingSource==='military-pay'&&money(d.payWan)&&d.contributionWan<=d.payWan)))return false;
  if(s.status==='active')return s.settlement===null&&state.service.active&&s.lastProcessedMonth===state.totalMonths&&state.service.remainingMonths===s.plannedMonths-s.deposits.length;
  const p=s.settlement,a=amounts(s);if(!p||p.atMonth!==s.lastProcessedMonth||!['principalWan','interestWan','matchingWan','payoutWan'].every(k=>money(p[k]))||p.principalWan!==a.principalWan||p.interestWan!==a.interestWan||p.payoutWan!==q(p.principalWan+p.interestWan+p.matchingWan))return false;
  if(s.status==='matured')return p.reason==='maturity'&&p.matchingWan===a.matchingWan&&s.deposits.length===s.plannedMonths&&!state.service.active&&state.service.remainingMonths===0;

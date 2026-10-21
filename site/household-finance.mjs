@@ -1,4 +1,4 @@
-import {currentFamilyIncome} from './parent-careers.mjs?v=economy-ui-2';
+import {currentFamilyIncome} from './parent-careers.mjs?v=military-pay-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

@@ -1,7 +1,7 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=economy-ui-2';
-import {schoolChoices,universityOptions} from './education.mjs?v=economy-ui-2';
-import {formatMoney} from './spending.mjs?v=economy-ui-2';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economy-ui-2';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=military-pay-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=military-pay-1';
+import {formatMoney} from './spending.mjs?v=military-pay-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=military-pay-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
