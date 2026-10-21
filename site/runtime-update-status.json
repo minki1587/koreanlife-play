@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "method": "public-official-source-pull",
+  "schedule": {
+    "cron": "0 0 * * 2",
+    "timezone": "Asia/Seoul",
+    "label": "매주 화요일 오전 9시"
+  },
+  "lastCheckedAt": null,
+  "lastUpdatedAt": null,
+  "result": "not-yet-run",
+  "observedScope": {
+    "sourceIds": [
+      "15119096",
+      "15119098",
+      "15122500"
+    ],
+    "fields": [
+      "education.attainmentDistribution",
+      "salary.median",
+      "salary.lowerQuartile",
+      "salary.upperQuartile",
+      "sources.metadata"
+    ],
+    "note": "직업 537개에 연결된 학력분포 원값, 제공되는 10개 직업 임금 중앙값·사분위와 출처 메타데이터만 자동 갱신합니다."
+  },
+  "preservedSnapshots": {
+    "birth": {
+      "geographyYear": 2025,
+      "automatic": false
+    },
+    "mortality": {
+      "automatic": false
+    }
+  },
+  "sources": [
+    {
+      "id": "15119096",
+      "sha256": "8de57e672cf8107c20dfd1b48479d15d9c57ced77998d0c8a54b191cfe416686",
+      "sourceModified": "2025-08-01",
+      "checkedAt": null
+    },
+    {
+      "id": "15119098",
+      "sha256": "e52551a14b191fcc62946ba6a2d1f3a7423825e65d9f1354e2002484b3a38d1b",
+      "sourceModified": "2025-11-04",
+      "checkedAt": null
+    },
+    {
+      "id": "15122500",
+      "sha256": "080b7193652f01af0e3aa994a9419e4583ea313ad5604a3b04547f862f2bc9b6",
+      "sourceModified": "2025-08-12",
+      "checkedAt": null
+    }
+  ],
+  "limitations": [
+    "비공개 원본 저장소와 공개 게임은 같은 공식 원천을 독립적으로 점검합니다. 비공개 원본이나 전체 수집 파일을 공개하지 않습니다.",
+    "법정 자격·전문직 경로·게임 임금·능력·위험 모형은 검토된 값을 보존합니다.",
+    "출생 확률은 승인된 2025년 통계 구역을 유지하며 출생·사망 통계의 새 연도를 자동 편입하지 않습니다.",
+    "직업 코드·이름·분류·자료 구조 또는 이용조건이 달라지면 자동 반영을 중단하고 수동 검토가 필요합니다."
+  ]
+}

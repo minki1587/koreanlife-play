@@ -2,7 +2,7 @@ name: Publish Korean Life
 on:
   push:
     branches: [main]
-    paths: ['site/**', '.github/workflows/pages.yml']
+    paths: ['site/**', 'deploy/runtime-update/**', '.github/workflows/pages.yml', '.github/workflows/update-runtime.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,6 +22,10 @@ jobs:
       - name: Check game modules
         run: |
           for module in site/*.mjs; do node --check "$module"; done
+      - name: Test public updater and verify managed runtime
+        run: |
+          python -m unittest discover -s deploy/runtime-update -p 'test_*.py' -v
+          python -c "import sys; from pathlib import Path; sys.path.insert(0,'deploy/runtime-update'); import update_runtime; update_runtime.verify_export_marker(Path('site').resolve(),Path('.koreanlife-pages-export.json').resolve())"
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:

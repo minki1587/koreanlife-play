@@ -1,7 +1,7 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=injury-care-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=injury-care-1';
-import {formatMoney} from './spending.mjs?v=injury-care-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=injury-care-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=audit-fixes-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=audit-fixes-1';
+import {formatMoney} from './spending.mjs?v=audit-fixes-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=audit-fixes-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -33,7 +33,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
    }
    body.append(controls);
    if(Object.values(filters).some(value=>!value)){body.append(el('p','설립 유형 → 지역 → 계열·전공을 선택해주세요.'));options=[];}else options=universityOptions(s,filters,data);
-   list(body,['서울 외 지역에는 경기·인천도 포함됩니다.','교대 계열은 국공립 경로를 제공합니다.','의학·약학 과정은 6년입니다.','같은 입학 시기의 같은 과정에 중복 지원할 수 없습니다.']);
+   list(body,['서울 외 지역에는 경기·인천도 포함됩니다.','교대 계열은 국공립 경로를 제공합니다.','의학·치의학·수의학·한의학·약학 과정은 6년입니다.','같은 입학 시기의 같은 과정에 중복 지원할 수 없습니다.']);
   }else options=schoolChoices(s,data);
   const cards=el('div',undefined,'education-options');
   for(const row of options){

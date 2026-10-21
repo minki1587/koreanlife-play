@@ -1,7 +1,7 @@
-import {estateSummary} from './family-estate.mjs?v=injury-care-1';
-import {currentParents} from './parent-careers.mjs?v=injury-care-1';
-import {householdSummary} from './household-finance.mjs?v=injury-care-1';
-import {formatMoney} from './spending.mjs?v=injury-care-1';
+import {estateSummary} from './family-estate.mjs?v=audit-fixes-1';
+import {currentParents} from './parent-careers.mjs?v=audit-fixes-1';
+import {householdSummary} from './household-finance.mjs?v=audit-fixes-1';
+import {formatMoney} from './spending.mjs?v=audit-fixes-1';
 export function householdFacts(s){
  const h=householdSummary(s);if(!h)return [];
  const m=h.lastMonth,estate=estateSummary(s);

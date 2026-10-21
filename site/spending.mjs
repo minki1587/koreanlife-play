@@ -1,4 +1,5 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=injury-care-1';
+import {appendLifeEvent} from './timeline-history.mjs?v=audit-fixes-1';
+import {pendingInjuryCare} from './injury-care.mjs?v=audit-fixes-1';
 // All prices/effects are fictional game settings. This module does no I/O.
 export const EFFECT_LIMITS=Object.freeze({health:Object.freeze([-5,8]),learn:Object.freeze([0,8]),bond:Object.freeze([0,8]),joy:Object.freeze([-3,10]),skill:Object.freeze([0,.5])});
 const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');
@@ -116,8 +117,7 @@ export function spend(original,row,catalog){
  const history={id:row.id,title:activity.title,category:row.category,month:next.totalMonths,costWan:activity.costWan,effects};
  s.history.push(history);if(s.history.length>100)s.history.splice(0,s.history.length-100);
  const labels={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'숙련'},changes=[`현금 지출 ${formatMoney(activity.costWan)}`,...KEYS.filter(k=>effects[k]!==0).map(k=>`${labels[k]} ${effects[k]>0?'+':''}${effects[k]}`)];
- next.timeline.push({id:`spending-${next.totalMonths}-${next.logSerial++}`,age:next.age,month:next.month,type:'spending',title:activity.title,text:activity.description,changes});
- if(next.timeline.length>120)next.timeline.splice(0,next.timeline.length-120);
+ appendLifeEvent(next,{id:`spending-${next.totalMonths}-${next.logSerial}`,age:next.age,month:next.month,type:'spending',title:activity.title,text:activity.description,changes});next.logSerial++;
  require(validSpendingState(next),'소비 기록의 저장 정합성을 확인할 수 없습니다.');
  return next;
 }

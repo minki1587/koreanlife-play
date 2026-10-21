@@ -1,5 +1,5 @@
-import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=injury-care-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=injury-care-1';
+import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=audit-fixes-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=audit-fixes-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -56,9 +56,18 @@ export function activeHobbyCost(s,catalog){
 
 export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostWan=0}={}){
   if(!hasHouseholdSupport(s))return {eligible:true,monthlyTuitionWan:annualTuitionWan/12,familyMonthlyWan:0,personalMonthlyWan:0,reasons:[],legacy:true};
-  const fee=round(annualTuitionWan/12),n=s.householdFinance.rules.commitmentMonths,living=personalLivingWan(s,{university}),b=baseline(s,living),parentLiving=familySupportEligible(s,{university})?Math.max(0,b.income+Math.max(0,s.householdFinance.liquidAssetsWan-b.reserve)/n-b.fixed):0,livingGap=Math.max(0,living-parentLiving),capacity=Math.max(0,monthlyFamilyCapacity(s,{university,living})-hobbyCostWan),personal=round(Math.max(0,s.cash/n-livingGap)),family=round(Math.min(fee,capacity)),own=round(Math.max(0,fee-family));
-  const eligible=fee===0||capacity+personal+1e-7>=fee;
-  return {eligible,legacy:false,monthlyTuitionWan:fee,familyMonthlyWan:family,personalMonthlyWan:own,commitmentMonths:n,reasons:eligible?[]:[`학비 예산 부족: 월 ${fee.toFixed(2)}만원 필요 · 가구 월 지원 여력 ${capacity.toFixed(2)}만원 + 내 현금 ${s.cash.toFixed(2)}만원을 ${n}개월로 나눈 범위에서 지원 가능합니다.`]};
+  const fee=round(annualTuitionWan/12),n=s.householdFinance.rules.commitmentMonths,living=personalLivingWan(s,{university}),b=baseline(s,living),parentLiving=familySupportEligible(s,{university})?Math.max(0,b.income+Math.max(0,s.householdFinance.liquidAssetsWan-b.reserve)/n-b.fixed):0,livingGap=Math.max(0,living-parentLiving),capacity=monthlyFamilyCapacity(s,{university,living}),family=round(Math.min(fee,capacity)),own=round(Math.max(0,fee-family));
+  // These obligations cannot use earmarked family tuition/hobby transfers.
+  // Keep the opening debt balance for the horizon (no extra borrowing assumed),
+  // but reserve care only for the months in which it is still payable.
+  const personalInterestMonthlyWan=round(s.debt*.035/12),careCommitmentMonths=Math.min(n,Math.max(0,s.care?.remainingMonths||0)),personalCareCommitmentWan=round(round(s.care?.annualCost/12||0)*careCommitmentMonths),personalCareMonthlyWan=round(personalCareCommitmentWan/n),availablePersonal=round(s.cash/n-livingGap-personalInterestMonthlyWan-personalCareMonthlyWan),personal=Math.max(0,availablePersonal);
+  // Tuition has the same priority as actual monthly settlement. Reserve the
+  // remaining hobby bill once, from family capacity first and then own cash.
+  const familyHobby=round(Math.min(hobbyCostWan,Math.max(0,capacity-family))),ownHobby=round(Math.max(0,hobbyCostWan-familyHobby));
+  // Compare horizon totals before dividing/rounding the care average, so a
+  // short final care payment cannot disappear below a monthly one-won unit.
+  const requiredPersonalWan=round((livingGap+personalInterestMonthlyWan+own+ownHobby)*n+personalCareCommitmentWan),eligible=fee===0||s.cash+1e-7>=requiredPersonalWan;
+  return {eligible,legacy:false,monthlyTuitionWan:fee,familyMonthlyWan:family,personalMonthlyWan:own,hobbyMonthlyWan:hobbyCostWan,familyHobbyMonthlyWan:familyHobby,personalHobbyMonthlyWan:ownHobby,personalInterestMonthlyWan,personalCareMonthlyWan,personalCareCommitmentWan,careCommitmentMonths,commitmentMonths:n,reasons:eligible?[]:[`학비 예산 부족: 월 학비 ${fee.toFixed(2)}만원과 취미비 ${hobbyCostWan.toFixed(2)}만원을 함께 준비해야 합니다. 가구 월 지원 여력 ${capacity.toFixed(2)}만원과 생활비·이자·남은 돌봄비를 제외한 내 월 예산 ${personal.toFixed(2)}만원으로 ${n}개월을 준비할 수 없습니다.`]};
 }
 export function hobbyFunding(s,costWan){
   if(!hasHouseholdSupport(s))return {eligible:s.cash+1e-9>=costWan,familyMonthlyWan:0,personalMonthlyWan:costWan,reason:s.cash+1e-9>=costWan?'':'보유 현금이 월 취미비보다 적습니다.'};

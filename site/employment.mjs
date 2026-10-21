@@ -1,10 +1,12 @@
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=audit-fixes-1';
+import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=audit-fixes-1';
 // Public-source notes and fictional hiring rules are deliberately separate.
 export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));
 const LEVEL_LABELS=['학업 준비','초등 과정','중등 과정','고교 과정','대학 과정','대학원 과정','박사 과정'];
 const AXES=ABILITY_AXES.map(x=>x.id),finite=n=>typeof n==='number'&&Number.isFinite(n),clamp=n=>Math.min(100,Math.max(0,n)),clone=x=>structuredClone(x),idOk=id=>typeof id==='string'&&/^know-[0-9]{6}$/.test(id);
 const completedLevel=s=>s.schoolJourney?(Number.isInteger(s.schoolJourney.highestLevel)?Math.min(4,Math.max(0,s.schoolJourney.highestLevel)):0):s.schooling?.status==='graduated'?4:s.age>=19?3:s.age>=16?2:s.age>=13?1:0;
-const modelNote='학위·직업준비 증표·능력 문턱과 근무지역 배치는 게임 규칙입니다. 실제 채용공고·법정 자격·취업 가능성을 판정하지 않습니다.';
+const modelNote='학위·전공·직업준비 증표·능력 문턱은 게임 규칙입니다. 실제 채용공고·법정 자격·취업 가능성을 판정하지 않습니다.';
 export function employmentProfile(s){
   const e=s?.employment,learn=finite(s?.learn)?s.learn:35,bond=finite(s?.bond)?s.bond:50,health=finite(s?.health)?s.health:75,skill=finite(s?.skill)?s.skill:0;
   const abilities=e?.abilities?clone(e.abilities):{analytical:clamp(learn),communication:clamp(bond),physical:clamp(health),precision:clamp(learn+skill*2),digital:clamp(learn+skill*2)};
@@ -19,13 +21,11 @@ export function employmentRequirements(row){
   const educationLevel=['11','12'].includes(group)?5:['13','14','15','21','22','30'].includes(group)?4:3;
   const emphasis=row.modeled?.workAbilities?.levels||{},requiredAbilities={};
   for(const axis of AXES)requiredAbilities[axis]=finite(emphasis[axis])?Math.round(emphasis[axis]*.65):0;
-  let hash=2166136261;for(const c of row.id)hash=Math.imul(hash^c.charCodeAt(0),16777619);
-  const start=(hash>>>0)%CAREER_REGIONS.length,requiredRegions=[0,5,11].map(offset=>CAREER_REGIONS[(start+offset)%CAREER_REGIONS.length]);
-  const qualificationRequired=String(row.qualifications?.status||'').startsWith('verified');
+  const profession=professionRule(row),qualificationRequired=!!profession||String(row.qualifications?.status||'').startsWith('verified');
   const officialRegions=publicStructured(row.regionRestriction,'allowedRegions')&&Array.isArray(row.regionRestriction.allowedRegions)&&row.regionRestriction.allowedRegions.length?row.regionRestriction.allowedRegions.filter(region=>CAREER_REGIONS.includes(region)):null;
-  return{educationLevel,educationLabel:LEVEL_LABELS[educationLevel],requiredAbilities,requiredRegions:officialRegions?.length?officialRegions:requiredRegions,regionKind:officialRegions?.length?'official':'game_assumption',qualificationRequired,qualificationId:row.id,kind:'game_assumption',note:modelNote,regionNote:officialRegions?.length?'확인된 구조화 지역 조건을 우선 적용합니다.':'직업 ID로 정한 3개 시도의 가상 채용공고 근무지입니다. 직업 자체의 법적 거주 제한이 아닙니다.'};
+  return{educationLevel,educationLabel:LEVEL_LABELS[educationLevel],requiredAbilities,requiredRegions:officialRegions?.length?[...officialRegions]:[...CAREER_REGIONS],regionKind:officialRegions?.length?'official':'unrestricted',qualificationRequired,qualificationId:row.id,profession:profession?{...profession}:null,kind:'game_assumption',note:modelNote,regionNote:officialRegions?.length?'확인된 구조화 지역 조건을 우선 적용합니다.':'확인된 구조화 지역 조건이 없는 직업은 게임에서 모든 시도에서 지원할 수 있습니다. 법적 제한의 부재를 확정한 뜻은 아닙니다.'};
 }
-function phaseReasons(s,{firstJob=false}={}){const reasons=[];if(!s||s.phase==='ended')reasons.push('삶의 기록이 종료되었습니다.');if(s?.phase==='decision'&&!(firstJob&&s.pendingDecision==='first-job'))reasons.push('현재 갈림길을 먼저 선택해 주세요.');if(s?.service?.active)reasons.push('복무 중에는 지원·훈련·이사를 할 수 없습니다.');return reasons;}
+function phaseReasons(s,{firstJob=false}={}){const reasons=[];if(!s||s.phase==='ended')reasons.push('삶의 기록이 종료되었습니다.');if(s?.phase==='decision'&&!(firstJob&&s.pendingDecision==='first-job'))reasons.push('현재 갈림길을 먼저 선택해 주세요.');if(s?.service?.active)reasons.push('복무 중에는 지원·훈련·이사를 할 수 없습니다.');if(pendingInjuryCare(s)||injuryImpact(s).workFactor===0)reasons.push('부상 대응과 회복을 먼저 마쳐 주세요.');return reasons;}
 export function evaluateEmployment(s,row){
   const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[];
   const add=(label,value,met,kind='game_assumption')=>{requirements.push({label,value,met,kind});if(met===false)reasons.push(`${label}: ${value}`);};
@@ -34,8 +34,9 @@ export function evaluateEmployment(s,row){
   add('이달 지원','성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
   add('현재 직업','현재 직업에 중복 지원할 수 없음',s?.job?.occupationId!==row.id);
   add('게임 학위',`${rules.educationLabel} 이수 이상 · 실제 법정 학력 판정 아님`,profile.educationLevel>=rules.educationLevel);
+  if(rules.profession)add('전공 이수',professionFieldRequirement(rules.profession),professionFieldMet(s,rules.profession));
   for(const axis of ABILITY_AXES)add(axis.label,`${Math.round(profile.abilities[axis.id]*10)/10} / 게임 문턱 ${rules.requiredAbilities[axis.id]}`,profile.abilities[axis.id]>=rules.requiredAbilities[axis.id]);
-  add(rules.regionKind==='official'?'확인된 지역 조건':'가상 공고 근무지역',`${rules.requiredRegions.join(' · ')}${rules.regionKind==='official'?'':' · 게임 공고 배치'}`,rules.requiredRegions.includes(s?.residence?.region),rules.regionKind);
+  if(rules.regionKind==='unrestricted')add('지원 지역','모든 시도에서 지원 가능',true);
   if(rules.qualificationRequired)add('게임 직업준비 증표','24개월 준비 과정 이수 · 실제 면허 발급 아님',profile.qualifications.includes(row.id));
   const education=row.education?.required;
   if(education?.text){requirements.push({label:'확인한 학력 조문',value:education.text,met:null,kind:'official'});warnings.push('공식 학력·학점·예외 경로의 개인별 충족 여부는 자동 판정하지 않습니다.');}
@@ -46,7 +47,7 @@ export function evaluateEmployment(s,row){
   if(publicStructured(min,'maxAge')&&Number.isInteger(min.maxAge))add('확인된 최대 나이',`${min.maxAge}세`,s.age<=min.maxAge,'official');
   if(!min)requirements.push({label:'직업별 법적 나이',value:'미확인 · 종사자 평균나이로 제한하지 않음',met:null,kind:'unknown'});
   if(publicStructured(row.regionRestriction,'allowedRegions')&&Array.isArray(row.regionRestriction.allowedRegions))add('확인된 지역 조건',row.regionRestriction.allowedRegions.join(' · '),row.regionRestriction.allowedRegions.includes(s?.residence?.region),'official');
-  else requirements.push({label:'직업 자체의 법적 지역 제한',value:'미확인 · 공고의 게임 근무지역과 별개',met:null,kind:'unknown'});
+  else requirements.push({label:'직업 자체의 법적 지역 제한',value:'미확인',met:null,kind:'unknown'});
   const sex=s?.profile?.sex;
   if(publicStructured(row.sexRestriction,'allowedSexes')&&Array.isArray(row.sexRestriction.allowedSexes)){
     if(typeof sex==='string'&&sex) add('확인된 성별 조건',row.sexRestriction.allowedSexes.join(' · '),row.sexRestriction.allowedSexes.includes(sex),'official');
@@ -62,7 +63,7 @@ export function careerTrainingPlan(s,request,row){
   const p=employmentProfile(s);if(!request||typeof request!=='object')throw new TypeError('훈련 종류를 선택해 주세요.');
   if(request.type==='ability'&&AXES.includes(request.ability)){if(p.abilities[request.ability]>=100)throw new Error('이미 이 능력의 게임 상한에 도달했습니다.');return{type:'ability',ability:request.ability,label:`${ABILITY_AXES.find(a=>a.id===request.ability).label} 훈련`,durationMonths:1,cost:30,gain:8};}
   if(request.type==='education'){if(p.educationLevel>=6)throw new Error('게임 학위 과정을 모두 마쳤습니다.');const targetLevel=p.educationLevel<3?3:p.educationLevel+1;return{type:'education',targetLevel,label:`${LEVEL_LABELS[targetLevel]} 게임 과정`,durationMonths:targetLevel===3?12:targetLevel===4?48:targetLevel===5?24:36,cost:targetLevel===3?120:targetLevel===4?2400:1200};}
-  if(request.type==='qualification'&&row&&employmentRequirements(row).qualificationRequired){if(p.qualifications.includes(row.id))throw new Error('이 직업의 게임 준비 증표를 이미 받았습니다.');if(p.educationLevel<employmentRequirements(row).educationLevel)throw new Error('게임 학위 과정을 먼저 마쳐 주세요.');return{type:'qualification',occupationId:row.id,label:`${row.occupation.name} 직업준비 · 실제 면허 아님`,durationMonths:24,cost:600};}
+  if(request.type==='qualification'&&row&&employmentRequirements(row).qualificationRequired){const rules=employmentRequirements(row);if(p.qualifications.includes(row.id))throw new Error('이 직업의 게임 준비 증표를 이미 받았습니다.');if(p.educationLevel<rules.educationLevel)throw new Error('게임 학위 과정을 먼저 마쳐 주세요.');if(!professionFieldMet(s,rules.profession))throw new Error(`${professionFieldRequirement(rules.profession)} 후 직업 준비 과정을 시작할 수 있습니다.`);return{type:'qualification',occupationId:row.id,label:`${row.occupation.name} 직업준비 · 실제 면허 아님`,durationMonths:24,cost:600};}
   throw new TypeError('지원하지 않는 훈련입니다.');
 }
 export function progressCareerTraining(s){

@@ -1,9 +1,9 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=injury-care-1';
-import {militarySavingsSummary} from './military-savings.mjs?v=injury-care-1';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=injury-care-1';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=injury-care-1';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=injury-care-1';
-import {createPixelIcon} from './pixel-icons.mjs?v=injury-care-1';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=audit-fixes-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=audit-fixes-1';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=audit-fixes-1';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=audit-fixes-1';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=audit-fixes-1';
+import {createPixelIcon} from './pixel-icons.mjs?v=audit-fixes-1';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const hobbyFee=wan=>`${Math.round((wan||0)*10000).toLocaleString('ko-KR')}원`;

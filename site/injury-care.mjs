@@ -1,3 +1,4 @@
+import {hobbyAllowedDuringRecovery} from './hobby-activity.mjs?v=audit-fixes-1';
 // Explicit, versioned game choices; amounts are in ten thousand won.
 export const CARE_VERSION='injury-care-v1';
 const q=n=>Math.round(n*10000)/10000;
@@ -7,7 +8,7 @@ export function injuryImpact(s){
  const workFactor=!active?1:i.care?.mode==='rest'?0:({minor:.8,major:.5,critical:0})[i.severity];
  return{active,severity:active?i.severity:null,workFactor,workLabel:!active?'정상 근무':workFactor?`회복 중 · 근로소득 ${Math.round(workFactor*100)}%`:'회복 휴무 · 근로소득 없음'};
 }
-export function hobbyInjuryAllowed(s,row){const impact=injuryImpact(s);return !impact.active||impact.severity!=='critical'&&['지능','감상',...(impact.severity==='minor'?['창작','교류']:[])].includes(row.type);}
+export function hobbyInjuryAllowed(s,row){const impact=injuryImpact(s);return !impact.active||hobbyAllowedDuringRecovery(impact.severity,row);}
 export function injuryCareOptions(s){
  const i=s?.lifeHealth?.injury;if(!i||!pendingInjuryCare(s))return[];
  const n={minor:0,major:1,critical:2}[i.severity],left=i.remainingRecoveryMonths;

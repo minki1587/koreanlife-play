@@ -1,8 +1,9 @@
-import {formatMoney} from './spending.mjs?v=injury-care-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=injury-care-1';
-import {searchOccupations} from './career-browser.mjs?v=injury-care-1';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=injury-care-1';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=injury-care-1';
+import {formatMoney} from './spending.mjs?v=audit-fixes-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=audit-fixes-1';
+import {searchOccupations} from './career-browser.mjs?v=audit-fixes-1';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=audit-fixes-1';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=audit-fixes-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=audit-fixes-1';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));
@@ -63,8 +64,8 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
   if(!s){body.append(el('p','먼저 게임을 시작해주세요.'));return;}
   appendList(body,['훈련비는 등록할 때 한 번 지출합니다.','자금 부족분은 차입으로 처리합니다.','동시에 한 과정, 한 달에 한 번만 등록할 수 있습니다.','복무·정규 재학 중에는 훈련이 진행되지 않습니다.']);
   if(s.pendingDecision==='first-job')body.append(button('취업을 미루고 훈련 준비하기',()=>act(onDefer,undefined,'취업 갈림길을 마쳤습니다. 이제 과정을 골라 등록할 수 있습니다.')));
-  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schoolJourney?.current||s.schooling?.status==='enrolled'||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths;
-  if(blocked)body.append(el('p',p.training?'진행 중인 훈련을 마친 뒤 새 과정에 등록할 수 있습니다.':'16세 이후, 갈림길·복무·정규 학업을 마친 뒤 등록할 수 있습니다. 이달 이미 등록했다면 다음 달에 다시 선택해주세요.','employment-blocked'));
+  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schoolJourney?.current||s.schooling?.status==='enrolled'&&!s.schooling.fundingPaused||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths||pendingInjuryCare(s)||injuryImpact(s).workFactor===0;
+  if(blocked)body.append(el('p',pendingInjuryCare(s)||injuryImpact(s).workFactor===0?'부상 대응과 회복을 먼저 마쳐 주세요.':p.training?'진행 중인 훈련을 마친 뒤 새 과정에 등록할 수 있습니다.':'16세 이후, 갈림길·복무·정규 학업을 마친 뒤 등록할 수 있습니다. 이달 이미 등록했다면 다음 달에 다시 선택해주세요.','employment-blocked'));
   const cards=el('div',undefined,'employment-training-grid');
   function courseCard(title,request){const card=el('section',undefined,'employment-training-card');card.append(el('h4',title));let plan;try{plan=careerTrainingPlan(s,request);}catch(error){card.append(el('p',error.message));return card;}facts(card,[...(request.type==='ability'?[['현재 능력',`${Math.round(p.abilities[request.ability]??0)}/100`]]:request.type==='education'?[['현재 학력',p.educationLabel]]:[]),['기간',`${plan.durationMonths}개월`],['등록비',cash(plan.cost)],...(request.type==='ability'?[['완료 효과','능력 +8점']]:[])]);const b=button(`${plan.label} 시작`,()=>act(onTrain,request,`${plan.label}에 등록했습니다. 월별 진행으로 이수합니다.`));b.disabled=blocked;card.append(b);return card;}
   for(const [ability,label]of Object.entries(ABILITIES))cards.append(courseCard(label,{type:'ability',ability}));
@@ -75,7 +76,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
   select.addEventListener('change',()=>{selectedId=select.value;updatePreparation();});updatePreparation();prep.append(el('h4','직업별 자격 준비'),label,courseInfo,el('p','학력 조건을 갖춘 뒤 준비 과정을 이수합니다.'),prepButton);cards.append(prep);body.append(cards);
  }
  function renderMove(){
-  const s=getState();body.append(el('h3','채용공고의 근무지로 이사하기'));appendList(body,['이사비 300만원을 한 번 지출합니다.','자금이 부족하면 차입합니다.']);
+  const s=getState();body.append(el('h3','새 거주지역 선택하기'));appendList(body,['이사비 300만원을 한 번 지출합니다.','자금이 부족하면 차입합니다.']);
   if(!s){body.append(el('p','먼저 게임을 시작해주세요.'));return;}
   const label=el('label','새 거주지역'),select=el('select');select.setAttribute('aria-label','새 거주지역');for(const region of data.regions)select.append(new Option(region,region));select.value=s.residence.region;label.append(select);facts(body,[['현재 거주지역',s.residence.region],['주거 형태',s.residence.housing]]);body.append(label,button('선택한 지역으로 이사하기',()=>act(onMove,select.value,'이사했습니다. 새 거주지역으로 지원 조건을 다시 확인할 수 있습니다.')));
  }
