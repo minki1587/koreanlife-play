@@ -46,7 +46,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .birth-details{padding:16px;max-width:100%}
 .birth-details-top{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px}
 .birth-method{width:100%;max-width:100%}
-.begin-life{width:100%;max-width:440px}
+.begin-life{display:block;width:100%;max-width:440px;margin-inline:auto}
 .clockbar{position:relative;top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px;margin-bottom:18px}
 .clock-state{min-width:0;max-width:100%;flex-wrap:wrap;overflow-wrap:anywhere}
 .clock-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-width:0;margin-top:0}
