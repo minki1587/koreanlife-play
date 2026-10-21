@@ -1,3 +1,4 @@
+import {careerModelFieldViews} from './career-model-views.mjs';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],
@@ -144,7 +145,7 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
   listPane.append(count,list,more);
   const detail = make('section','career-detail');detail.setAttribute('aria-label','선택한 직업 정보');
   body.append(listPane,detail);dialog.append(header,intro,controls,body);document.body.append(dialog);
-  const sources = new Map(catalog.sources.map(source => [String(source.id),source]));
+  const sources = new Map([...catalog.sources,...(catalog.modelSources||[])].map(source => [String(source.id),source]));
   const rows = new Map(catalog.occupations.map(row => [row.id,row]));
   let limit = PAGE_SIZE, selectedId = null, reportedOpen = false;
 
@@ -164,14 +165,14 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
   }
 
   function appendEvidence(host, view) {
-    if (view.missingReason) host.append(make('p','career-missing',view.missingReason));
+    if (view.missingReason) host.append(make('p','career-missing',view.missingReason.replaceAll('constraintRules','공통 법령 안내')));
     for (const id of view.sourceIds) {
       const source = sources.get(id);
       if (!source) {host.append(make('p','career-evidence','출처 상세 미확인'));continue;}
       const p = make('p','career-evidence'), url = safeExternalUrl(source.url);
       if (url) {const a=make('a','',clean(source.title)||'공식 출처');a.href=url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);}
       else p.textContent=clean(source.title)||'출처 링크 미확인';
-      if (clean(source.license)) p.append(document.createTextNode(` · ${source.license}`));
+      if (clean(source.license)) p.append(document.createTextNode(` · ${{'unrestricted':'이용허락 제한 없음','KOGL-1':'공공누리 제1유형(출처표시)','statutory_text_not_copyright_protected':'법령 문언(저작권법 제7조)'}[source.license]||source.license}`));
       host.append(p);
     }
   }
@@ -192,7 +193,22 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
       for (const note of view.notes) value.append(make('p','career-note',note));
       appendEvidence(value,view);field.append(label,value);fields.append(field);
     }
-    detail.append(fields,make('p','career-disclaimer','정보 열람 화면입니다. 직업 선택의 법적 자격을 판정하거나 현재 삶의 직업·소득·기록을 변경하지 않습니다.'));
+    const modelViews=careerModelFieldViews(row);
+    if(modelViews.length){
+      const section=make('section','career-model-section');
+      section.append(make('h4','','게임용 추정·추가 조사'),make('p','career-model-notice','아래 값은 공개 직종 통계와 작업 특성을 참고해 만든 게임용 대표값입니다. 해당 세부 직업의 실측 평균이나 확정 근로조건이 아닙니다.'));
+      const modelFields=make('dl','career-fields');
+      for(const view of modelViews){
+        const field=make('div','career-field'),label=make('dt','',view.label),value=make('dd');
+        value.append(make('p','career-value',view.summary));
+        if(view.lines.length){const list=make('ul','career-values');for(const line of view.lines)list.append(make('li','',line));value.append(list);}
+        for(const note of view.notes)value.append(make('p','career-note',note));
+        appendEvidence(value,view);field.append(label,value);modelFields.append(field);
+      }
+      section.append(modelFields);detail.append(section,make('h4','','공식 자료·법정 확인 항목'));
+    }
+    detail.append(fields);
+    detail.append(make('p','career-disclaimer','정보 열람 화면입니다. 직업 선택의 법적 자격을 판정하거나 현재 삶의 직업·소득·기록을 변경하지 않습니다.'));
     if (focus) heading.focus();
   }
 

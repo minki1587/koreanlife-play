@@ -1,0 +1,983 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "kr-life-table-2024-age-band-mean-v1",
+  "referenceYear": 2024,
+  "readyForRuntime": true,
+  "sex": "both",
+  "metric": "annual-death-probability",
+  "source": {
+    "id": "korean-life-table-2024",
+    "title": "2024년 생명표 작성 결과 · 표3 완전 생명표(남녀 전체)",
+    "publisher": "국가데이터처",
+    "referenceYear": 2024,
+    "publishedAt": "2025-12-03",
+    "verifiedAsOf": "2026-10-21",
+    "url": "https://mods.go.kr/board.es?act=view&bid=208&list_no=439533&mid=a10301060900",
+    "tableUrl": "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B42&conn_path=I3"
+  },
+  "sourceFiles": {
+    "raw": {
+      "path": "life-table-2024.hwpx",
+      "bytes": 6293832,
+      "sha256": "2a57dd735746387d0af9e13c1431a5ab9518951e15a24f74595e29dd6c9e188c",
+      "url": "https://mods.go.kr/boardDownload.es?bid=208&list_no=439533&seq=2"
+    },
+    "extractedCsv": {
+      "path": "life-table-2024-extracted.csv",
+      "bytes": 6180,
+      "sha256": "1753e08279ce6c8baf94b1ce91353acba6865f7b14c92dd14da4efab803abbad"
+    }
+  },
+  "license": {
+    "id": "KOGL-1",
+    "attributionRequired": true,
+    "commercialUse": true,
+    "adaptation": true,
+    "redistribution": true,
+    "url": "https://www.kogl.or.kr/info/licenseType1.do",
+    "proofFile": "kogl-type1-embedded.jpg",
+    "embeddedPath": "BinData/image4.jpg",
+    "proofNote": "공식 원본 HWPX의 첫 장 이미지 image4.jpg를 직접 확인: 공공누리 출처표시(1유형)."
+  },
+  "annual": [
+    {
+      "age": 0,
+      "qx": 0.00238,
+      "sourceQx": 0.00238,
+      "sourceQxDecimal": "0.00238",
+      "ageBand": "0세"
+    },
+    {
+      "age": 1,
+      "qx": 0.0001525,
+      "sourceQx": 0.00024,
+      "sourceQxDecimal": "0.00024",
+      "ageBand": "1~4세"
+    },
+    {
+      "age": 2,
+      "qx": 0.0001525,
+      "sourceQx": 0.00017,
+      "sourceQxDecimal": "0.00017",
+      "ageBand": "1~4세"
+    },
+    {
+      "age": 3,
+      "qx": 0.0001525,
+      "sourceQx": 0.00011,
+      "sourceQxDecimal": "0.00011",
+      "ageBand": "1~4세"
+    },
+    {
+      "age": 4,
+      "qx": 0.0001525,
+      "sourceQx": 9e-05,
+      "sourceQxDecimal": "0.00009",
+      "ageBand": "1~4세"
+    },
+    {
+      "age": 5,
+      "qx": 7e-05,
+      "sourceQx": 8e-05,
+      "sourceQxDecimal": "0.00008",
+      "ageBand": "5~9세"
+    },
+    {
+      "age": 6,
+      "qx": 7e-05,
+      "sourceQx": 8e-05,
+      "sourceQxDecimal": "0.00008",
+      "ageBand": "5~9세"
+    },
+    {
+      "age": 7,
+      "qx": 7e-05,
+      "sourceQx": 7e-05,
+      "sourceQxDecimal": "0.00007",
+      "ageBand": "5~9세"
+    },
+    {
+      "age": 8,
+      "qx": 7e-05,
+      "sourceQx": 6e-05,
+      "sourceQxDecimal": "0.00006",
+      "ageBand": "5~9세"
+    },
+    {
+      "age": 9,
+      "qx": 7e-05,
+      "sourceQx": 6e-05,
+      "sourceQxDecimal": "0.00006",
+      "ageBand": "5~9세"
+    },
+    {
+      "age": 10,
+      "qx": 0.000102,
+      "sourceQx": 6e-05,
+      "sourceQxDecimal": "0.00006",
+      "ageBand": "10~14세"
+    },
+    {
+      "age": 11,
+      "qx": 0.000102,
+      "sourceQx": 8e-05,
+      "sourceQxDecimal": "0.00008",
+      "ageBand": "10~14세"
+    },
+    {
+      "age": 12,
+      "qx": 0.000102,
+      "sourceQx": 0.0001,
+      "sourceQxDecimal": "0.00010",
+      "ageBand": "10~14세"
+    },
+    {
+      "age": 13,
+      "qx": 0.000102,
+      "sourceQx": 0.00012,
+      "sourceQxDecimal": "0.00012",
+      "ageBand": "10~14세"
+    },
+    {
+      "age": 14,
+      "qx": 0.000102,
+      "sourceQx": 0.00015,
+      "sourceQxDecimal": "0.00015",
+      "ageBand": "10~14세"
+    },
+    {
+      "age": 15,
+      "qx": 0.000228,
+      "sourceQx": 0.00017,
+      "sourceQxDecimal": "0.00017",
+      "ageBand": "15~19세"
+    },
+    {
+      "age": 16,
+      "qx": 0.000228,
+      "sourceQx": 0.0002,
+      "sourceQxDecimal": "0.00020",
+      "ageBand": "15~19세"
+    },
+    {
+      "age": 17,
+      "qx": 0.000228,
+      "sourceQx": 0.00023,
+      "sourceQxDecimal": "0.00023",
+      "ageBand": "15~19세"
+    },
+    {
+      "age": 18,
+      "qx": 0.000228,
+      "sourceQx": 0.00026,
+      "sourceQxDecimal": "0.00026",
+      "ageBand": "15~19세"
+    },
+    {
+      "age": 19,
+      "qx": 0.000228,
+      "sourceQx": 0.00028,
+      "sourceQxDecimal": "0.00028",
+      "ageBand": "15~19세"
+    },
+    {
+      "age": 20,
+      "qx": 0.000344,
+      "sourceQx": 0.0003,
+      "sourceQxDecimal": "0.00030",
+      "ageBand": "20~24세"
+    },
+    {
+      "age": 21,
+      "qx": 0.000344,
+      "sourceQx": 0.00032,
+      "sourceQxDecimal": "0.00032",
+      "ageBand": "20~24세"
+    },
+    {
+      "age": 22,
+      "qx": 0.000344,
+      "sourceQx": 0.00034,
+      "sourceQxDecimal": "0.00034",
+      "ageBand": "20~24세"
+    },
+    {
+      "age": 23,
+      "qx": 0.000344,
+      "sourceQx": 0.00037,
+      "sourceQxDecimal": "0.00037",
+      "ageBand": "20~24세"
+    },
+    {
+      "age": 24,
+      "qx": 0.000344,
+      "sourceQx": 0.00039,
+      "sourceQxDecimal": "0.00039",
+      "ageBand": "20~24세"
+    },
+    {
+      "age": 25,
+      "qx": 0.000468,
+      "sourceQx": 0.00041,
+      "sourceQxDecimal": "0.00041",
+      "ageBand": "25~29세"
+    },
+    {
+      "age": 26,
+      "qx": 0.000468,
+      "sourceQx": 0.00044,
+      "sourceQxDecimal": "0.00044",
+      "ageBand": "25~29세"
+    },
+    {
+      "age": 27,
+      "qx": 0.000468,
+      "sourceQx": 0.00047,
+      "sourceQxDecimal": "0.00047",
+      "ageBand": "25~29세"
+    },
+    {
+      "age": 28,
+      "qx": 0.000468,
+      "sourceQx": 0.0005,
+      "sourceQxDecimal": "0.00050",
+      "ageBand": "25~29세"
+    },
+    {
+      "age": 29,
+      "qx": 0.000468,
+      "sourceQx": 0.00052,
+      "sourceQxDecimal": "0.00052",
+      "ageBand": "25~29세"
+    },
+    {
+      "age": 30,
+      "qx": 0.00058,
+      "sourceQx": 0.00054,
+      "sourceQxDecimal": "0.00054",
+      "ageBand": "30~34세"
+    },
+    {
+      "age": 31,
+      "qx": 0.00058,
+      "sourceQx": 0.00056,
+      "sourceQxDecimal": "0.00056",
+      "ageBand": "30~34세"
+    },
+    {
+      "age": 32,
+      "qx": 0.00058,
+      "sourceQx": 0.00058,
+      "sourceQxDecimal": "0.00058",
+      "ageBand": "30~34세"
+    },
+    {
+      "age": 33,
+      "qx": 0.00058,
+      "sourceQx": 0.0006,
+      "sourceQxDecimal": "0.00060",
+      "ageBand": "30~34세"
+    },
+    {
+      "age": 34,
+      "qx": 0.00058,
+      "sourceQx": 0.00062,
+      "sourceQxDecimal": "0.00062",
+      "ageBand": "30~34세"
+    },
+    {
+      "age": 35,
+      "qx": 0.000784,
+      "sourceQx": 0.00065,
+      "sourceQxDecimal": "0.00065",
+      "ageBand": "35~39세"
+    },
+    {
+      "age": 36,
+      "qx": 0.000784,
+      "sourceQx": 0.00071,
+      "sourceQxDecimal": "0.00071",
+      "ageBand": "35~39세"
+    },
+    {
+      "age": 37,
+      "qx": 0.000784,
+      "sourceQx": 0.00078,
+      "sourceQxDecimal": "0.00078",
+      "ageBand": "35~39세"
+    },
+    {
+      "age": 38,
+      "qx": 0.000784,
+      "sourceQx": 0.00085,
+      "sourceQxDecimal": "0.00085",
+      "ageBand": "35~39세"
+    },
+    {
+      "age": 39,
+      "qx": 0.000784,
+      "sourceQx": 0.00093,
+      "sourceQxDecimal": "0.00093",
+      "ageBand": "35~39세"
+    },
+    {
+      "age": 40,
+      "qx": 0.001144,
+      "sourceQx": 0.00101,
+      "sourceQxDecimal": "0.00101",
+      "ageBand": "40~44세"
+    },
+    {
+      "age": 41,
+      "qx": 0.001144,
+      "sourceQx": 0.00108,
+      "sourceQxDecimal": "0.00108",
+      "ageBand": "40~44세"
+    },
+    {
+      "age": 42,
+      "qx": 0.001144,
+      "sourceQx": 0.00114,
+      "sourceQxDecimal": "0.00114",
+      "ageBand": "40~44세"
+    },
+    {
+      "age": 43,
+      "qx": 0.001144,
+      "sourceQx": 0.00121,
+      "sourceQxDecimal": "0.00121",
+      "ageBand": "40~44세"
+    },
+    {
+      "age": 44,
+      "qx": 0.001144,
+      "sourceQx": 0.00128,
+      "sourceQxDecimal": "0.00128",
+      "ageBand": "40~44세"
+    },
+    {
+      "age": 45,
+      "qx": 0.001636,
+      "sourceQx": 0.00137,
+      "sourceQxDecimal": "0.00137",
+      "ageBand": "45~49세"
+    },
+    {
+      "age": 46,
+      "qx": 0.001636,
+      "sourceQx": 0.00148,
+      "sourceQxDecimal": "0.00148",
+      "ageBand": "45~49세"
+    },
+    {
+      "age": 47,
+      "qx": 0.001636,
+      "sourceQx": 0.00162,
+      "sourceQxDecimal": "0.00162",
+      "ageBand": "45~49세"
+    },
+    {
+      "age": 48,
+      "qx": 0.001636,
+      "sourceQx": 0.00178,
+      "sourceQxDecimal": "0.00178",
+      "ageBand": "45~49세"
+    },
+    {
+      "age": 49,
+      "qx": 0.001636,
+      "sourceQx": 0.00193,
+      "sourceQxDecimal": "0.00193",
+      "ageBand": "45~49세"
+    },
+    {
+      "age": 50,
+      "qx": 0.002452,
+      "sourceQx": 0.00209,
+      "sourceQxDecimal": "0.00209",
+      "ageBand": "50~54세"
+    },
+    {
+      "age": 51,
+      "qx": 0.002452,
+      "sourceQx": 0.00227,
+      "sourceQxDecimal": "0.00227",
+      "ageBand": "50~54세"
+    },
+    {
+      "age": 52,
+      "qx": 0.002452,
+      "sourceQx": 0.00244,
+      "sourceQxDecimal": "0.00244",
+      "ageBand": "50~54세"
+    },
+    {
+      "age": 53,
+      "qx": 0.002452,
+      "sourceQx": 0.00263,
+      "sourceQxDecimal": "0.00263",
+      "ageBand": "50~54세"
+    },
+    {
+      "age": 54,
+      "qx": 0.002452,
+      "sourceQx": 0.00283,
+      "sourceQxDecimal": "0.00283",
+      "ageBand": "50~54세"
+    },
+    {
+      "age": 55,
+      "qx": 0.00353,
+      "sourceQx": 0.00305,
+      "sourceQxDecimal": "0.00305",
+      "ageBand": "55~59세"
+    },
+    {
+      "age": 56,
+      "qx": 0.00353,
+      "sourceQx": 0.00328,
+      "sourceQxDecimal": "0.00328",
+      "ageBand": "55~59세"
+    },
+    {
+      "age": 57,
+      "qx": 0.00353,
+      "sourceQx": 0.00351,
+      "sourceQxDecimal": "0.00351",
+      "ageBand": "55~59세"
+    },
+    {
+      "age": 58,
+      "qx": 0.00353,
+      "sourceQx": 0.00377,
+      "sourceQxDecimal": "0.00377",
+      "ageBand": "55~59세"
+    },
+    {
+      "age": 59,
+      "qx": 0.00353,
+      "sourceQx": 0.00404,
+      "sourceQxDecimal": "0.00404",
+      "ageBand": "55~59세"
+    },
+    {
+      "age": 60,
+      "qx": 0.005114,
+      "sourceQx": 0.00433,
+      "sourceQxDecimal": "0.00433",
+      "ageBand": "60~64세"
+    },
+    {
+      "age": 61,
+      "qx": 0.005114,
+      "sourceQx": 0.00468,
+      "sourceQxDecimal": "0.00468",
+      "ageBand": "60~64세"
+    },
+    {
+      "age": 62,
+      "qx": 0.005114,
+      "sourceQx": 0.00509,
+      "sourceQxDecimal": "0.00509",
+      "ageBand": "60~64세"
+    },
+    {
+      "age": 63,
+      "qx": 0.005114,
+      "sourceQx": 0.00552,
+      "sourceQxDecimal": "0.00552",
+      "ageBand": "60~64세"
+    },
+    {
+      "age": 64,
+      "qx": 0.005114,
+      "sourceQx": 0.00595,
+      "sourceQxDecimal": "0.00595",
+      "ageBand": "60~64세"
+    },
+    {
+      "age": 65,
+      "qx": 0.0077,
+      "sourceQx": 0.00639,
+      "sourceQxDecimal": "0.00639",
+      "ageBand": "65~69세"
+    },
+    {
+      "age": 66,
+      "qx": 0.0077,
+      "sourceQx": 0.00691,
+      "sourceQxDecimal": "0.00691",
+      "ageBand": "65~69세"
+    },
+    {
+      "age": 67,
+      "qx": 0.0077,
+      "sourceQx": 0.00757,
+      "sourceQxDecimal": "0.00757",
+      "ageBand": "65~69세"
+    },
+    {
+      "age": 68,
+      "qx": 0.0077,
+      "sourceQx": 0.00835,
+      "sourceQxDecimal": "0.00835",
+      "ageBand": "65~69세"
+    },
+    {
+      "age": 69,
+      "qx": 0.0077,
+      "sourceQx": 0.00928,
+      "sourceQxDecimal": "0.00928",
+      "ageBand": "65~69세"
+    },
+    {
+      "age": 70,
+      "qx": 0.013204,
+      "sourceQx": 0.01038,
+      "sourceQxDecimal": "0.01038",
+      "ageBand": "70~74세"
+    },
+    {
+      "age": 71,
+      "qx": 0.013204,
+      "sourceQx": 0.01164,
+      "sourceQxDecimal": "0.01164",
+      "ageBand": "70~74세"
+    },
+    {
+      "age": 72,
+      "qx": 0.013204,
+      "sourceQx": 0.01306,
+      "sourceQxDecimal": "0.01306",
+      "ageBand": "70~74세"
+    },
+    {
+      "age": 73,
+      "qx": 0.013204,
+      "sourceQx": 0.01458,
+      "sourceQxDecimal": "0.01458",
+      "ageBand": "70~74세"
+    },
+    {
+      "age": 74,
+      "qx": 0.013204,
+      "sourceQx": 0.01636,
+      "sourceQxDecimal": "0.01636",
+      "ageBand": "70~74세"
+    },
+    {
+      "age": 75,
+      "qx": 0.023732,
+      "sourceQx": 0.01826,
+      "sourceQxDecimal": "0.01826",
+      "ageBand": "75~79세"
+    },
+    {
+      "age": 76,
+      "qx": 0.023732,
+      "sourceQx": 0.02048,
+      "sourceQxDecimal": "0.02048",
+      "ageBand": "75~79세"
+    },
+    {
+      "age": 77,
+      "qx": 0.023732,
+      "sourceQx": 0.02307,
+      "sourceQxDecimal": "0.02307",
+      "ageBand": "75~79세"
+    },
+    {
+      "age": 78,
+      "qx": 0.023732,
+      "sourceQx": 0.02629,
+      "sourceQxDecimal": "0.02629",
+      "ageBand": "75~79세"
+    },
+    {
+      "age": 79,
+      "qx": 0.023732,
+      "sourceQx": 0.03056,
+      "sourceQxDecimal": "0.03056",
+      "ageBand": "75~79세"
+    },
+    {
+      "age": 80,
+      "qx": 0.04888,
+      "sourceQx": 0.03573,
+      "sourceQxDecimal": "0.03573",
+      "ageBand": "80~84세"
+    },
+    {
+      "age": 81,
+      "qx": 0.04888,
+      "sourceQx": 0.04163,
+      "sourceQxDecimal": "0.04163",
+      "ageBand": "80~84세"
+    },
+    {
+      "age": 82,
+      "qx": 0.04888,
+      "sourceQx": 0.04818,
+      "sourceQxDecimal": "0.04818",
+      "ageBand": "80~84세"
+    },
+    {
+      "age": 83,
+      "qx": 0.04888,
+      "sourceQx": 0.05531,
+      "sourceQxDecimal": "0.05531",
+      "ageBand": "80~84세"
+    },
+    {
+      "age": 84,
+      "qx": 0.04888,
+      "sourceQx": 0.06355,
+      "sourceQxDecimal": "0.06355",
+      "ageBand": "80~84세"
+    },
+    {
+      "age": 85,
+      "qx": 0.094906,
+      "sourceQx": 0.07266,
+      "sourceQxDecimal": "0.07266",
+      "ageBand": "85~89세"
+    },
+    {
+      "age": 86,
+      "qx": 0.094906,
+      "sourceQx": 0.08274,
+      "sourceQxDecimal": "0.08274",
+      "ageBand": "85~89세"
+    },
+    {
+      "age": 87,
+      "qx": 0.094906,
+      "sourceQx": 0.09385,
+      "sourceQxDecimal": "0.09385",
+      "ageBand": "85~89세"
+    },
+    {
+      "age": 88,
+      "qx": 0.094906,
+      "sourceQx": 0.10601,
+      "sourceQxDecimal": "0.10601",
+      "ageBand": "85~89세"
+    },
+    {
+      "age": 89,
+      "qx": 0.094906,
+      "sourceQx": 0.11927,
+      "sourceQxDecimal": "0.11927",
+      "ageBand": "85~89세"
+    },
+    {
+      "age": 90,
+      "qx": 0.166896,
+      "sourceQx": 0.13365,
+      "sourceQxDecimal": "0.13365",
+      "ageBand": "90~94세"
+    },
+    {
+      "age": 91,
+      "qx": 0.166896,
+      "sourceQx": 0.14916,
+      "sourceQxDecimal": "0.14916",
+      "ageBand": "90~94세"
+    },
+    {
+      "age": 92,
+      "qx": 0.166896,
+      "sourceQx": 0.16579,
+      "sourceQxDecimal": "0.16579",
+      "ageBand": "90~94세"
+    },
+    {
+      "age": 93,
+      "qx": 0.166896,
+      "sourceQx": 0.18353,
+      "sourceQxDecimal": "0.18353",
+      "ageBand": "90~94세"
+    },
+    {
+      "age": 94,
+      "qx": 0.166896,
+      "sourceQx": 0.20235,
+      "sourceQxDecimal": "0.20235",
+      "ageBand": "90~94세"
+    },
+    {
+      "age": 95,
+      "qx": 0.265248,
+      "sourceQx": 0.22217,
+      "sourceQxDecimal": "0.22217",
+      "ageBand": "95~99세"
+    },
+    {
+      "age": 96,
+      "qx": 0.265248,
+      "sourceQx": 0.24294,
+      "sourceQxDecimal": "0.24294",
+      "ageBand": "95~99세"
+    },
+    {
+      "age": 97,
+      "qx": 0.265248,
+      "sourceQx": 0.26454,
+      "sourceQxDecimal": "0.26454",
+      "ageBand": "95~99세"
+    },
+    {
+      "age": 98,
+      "qx": 0.265248,
+      "sourceQx": 0.28686,
+      "sourceQxDecimal": "0.28686",
+      "ageBand": "95~99세"
+    },
+    {
+      "age": 99,
+      "qx": 0.265248,
+      "sourceQx": 0.30973,
+      "sourceQxDecimal": "0.30973",
+      "ageBand": "95~99세"
+    }
+  ],
+  "ageBands": [
+    {
+      "startAge": 0,
+      "endAge": 0,
+      "label": "0세",
+      "ageCount": 1,
+      "qx": 0.00238,
+      "qxDecimal": "0.00238",
+      "sourceQxSumDecimal": "0.00238"
+    },
+    {
+      "startAge": 1,
+      "endAge": 4,
+      "label": "1~4세",
+      "ageCount": 4,
+      "qx": 0.0001525,
+      "qxDecimal": "0.0001525",
+      "sourceQxSumDecimal": "0.00061"
+    },
+    {
+      "startAge": 5,
+      "endAge": 9,
+      "label": "5~9세",
+      "ageCount": 5,
+      "qx": 7e-05,
+      "qxDecimal": "0.00007",
+      "sourceQxSumDecimal": "0.00035"
+    },
+    {
+      "startAge": 10,
+      "endAge": 14,
+      "label": "10~14세",
+      "ageCount": 5,
+      "qx": 0.000102,
+      "qxDecimal": "0.000102",
+      "sourceQxSumDecimal": "0.00051"
+    },
+    {
+      "startAge": 15,
+      "endAge": 19,
+      "label": "15~19세",
+      "ageCount": 5,
+      "qx": 0.000228,
+      "qxDecimal": "0.000228",
+      "sourceQxSumDecimal": "0.00114"
+    },
+    {
+      "startAge": 20,
+      "endAge": 24,
+      "label": "20~24세",
+      "ageCount": 5,
+      "qx": 0.000344,
+      "qxDecimal": "0.000344",
+      "sourceQxSumDecimal": "0.00172"
+    },
+    {
+      "startAge": 25,
+      "endAge": 29,
+      "label": "25~29세",
+      "ageCount": 5,
+      "qx": 0.000468,
+      "qxDecimal": "0.000468",
+      "sourceQxSumDecimal": "0.00234"
+    },
+    {
+      "startAge": 30,
+      "endAge": 34,
+      "label": "30~34세",
+      "ageCount": 5,
+      "qx": 0.00058,
+      "qxDecimal": "0.00058",
+      "sourceQxSumDecimal": "0.00290"
+    },
+    {
+      "startAge": 35,
+      "endAge": 39,
+      "label": "35~39세",
+      "ageCount": 5,
+      "qx": 0.000784,
+      "qxDecimal": "0.000784",
+      "sourceQxSumDecimal": "0.00392"
+    },
+    {
+      "startAge": 40,
+      "endAge": 44,
+      "label": "40~44세",
+      "ageCount": 5,
+      "qx": 0.001144,
+      "qxDecimal": "0.001144",
+      "sourceQxSumDecimal": "0.00572"
+    },
+    {
+      "startAge": 45,
+      "endAge": 49,
+      "label": "45~49세",
+      "ageCount": 5,
+      "qx": 0.001636,
+      "qxDecimal": "0.001636",
+      "sourceQxSumDecimal": "0.00818"
+    },
+    {
+      "startAge": 50,
+      "endAge": 54,
+      "label": "50~54세",
+      "ageCount": 5,
+      "qx": 0.002452,
+      "qxDecimal": "0.002452",
+      "sourceQxSumDecimal": "0.01226"
+    },
+    {
+      "startAge": 55,
+      "endAge": 59,
+      "label": "55~59세",
+      "ageCount": 5,
+      "qx": 0.00353,
+      "qxDecimal": "0.00353",
+      "sourceQxSumDecimal": "0.01765"
+    },
+    {
+      "startAge": 60,
+      "endAge": 64,
+      "label": "60~64세",
+      "ageCount": 5,
+      "qx": 0.005114,
+      "qxDecimal": "0.005114",
+      "sourceQxSumDecimal": "0.02557"
+    },
+    {
+      "startAge": 65,
+      "endAge": 69,
+      "label": "65~69세",
+      "ageCount": 5,
+      "qx": 0.0077,
+      "qxDecimal": "0.00770",
+      "sourceQxSumDecimal": "0.03850"
+    },
+    {
+      "startAge": 70,
+      "endAge": 74,
+      "label": "70~74세",
+      "ageCount": 5,
+      "qx": 0.013204,
+      "qxDecimal": "0.013204",
+      "sourceQxSumDecimal": "0.06602"
+    },
+    {
+      "startAge": 75,
+      "endAge": 79,
+      "label": "75~79세",
+      "ageCount": 5,
+      "qx": 0.023732,
+      "qxDecimal": "0.023732",
+      "sourceQxSumDecimal": "0.11866"
+    },
+    {
+      "startAge": 80,
+      "endAge": 84,
+      "label": "80~84세",
+      "ageCount": 5,
+      "qx": 0.04888,
+      "qxDecimal": "0.04888",
+      "sourceQxSumDecimal": "0.24440"
+    },
+    {
+      "startAge": 85,
+      "endAge": 89,
+      "label": "85~89세",
+      "ageCount": 5,
+      "qx": 0.094906,
+      "qxDecimal": "0.094906",
+      "sourceQxSumDecimal": "0.47453"
+    },
+    {
+      "startAge": 90,
+      "endAge": 94,
+      "label": "90~94세",
+      "ageCount": 5,
+      "qx": 0.166896,
+      "qxDecimal": "0.166896",
+      "sourceQxSumDecimal": "0.83448"
+    },
+    {
+      "startAge": 95,
+      "endAge": 99,
+      "label": "95~99세",
+      "ageCount": 5,
+      "qx": 0.265248,
+      "qxDecimal": "0.265248",
+      "sourceQxSumDecimal": "1.32624"
+    }
+  ],
+  "maxAge": {
+    "status": "user_defined_cap",
+    "label": "120세 · 사용자 설정 상한",
+    "years": 120,
+    "days": 0,
+    "completedMonths": 1440,
+    "verificationLevel": "사용자 설정 게임 상한 · 국내 최고령 인증 기록이 아님",
+    "verifiedAsOf": "2026-10-21",
+    "decisionOrigin": "explicit-user-request",
+    "source": {
+      "type": "user-decision",
+      "note": "사용자가 120세로 제한하도록 명시했다."
+    },
+    "historicalPublicReport": {
+      "institution": "국민건강보험공단",
+      "reportedAgeYears": 123,
+      "publishedAt": "2011-01-19",
+      "url": "https://www.newswire.co.kr/newsRead.php?no=522890",
+      "verificationLevel": "공단 배포 보도자료의 나이. 출생일·만나이 미확인, 국제 나이 검증·전국 역대 최고 인증 아님.",
+      "note": "참고한 과거 공공기관 보도 사례다. 이 나이를 게임 상한으로 사용하지 않는다."
+    }
+  },
+  "tail": {
+    "status": "game-assumption",
+    "fromAge": 100,
+    "throughAge": 119,
+    "sourceTerminalQx": "1.00000",
+    "usableAsAnnualProbability": false,
+    "method": "hold-95-99-age-band-mean",
+    "decisionOrigin": "root-default-pending-preference",
+    "note": "100~119세는 공식 한 살별 qx가 미공표이므로 95~99세 평균을 그대로 유지하는 게임 가정이다. 관측값·공식 추정값이 아니며 100+ 종결값1을 사용하지 않는다.",
+    "qx": 0.265248,
+    "qxDecimal": "0.265248",
+    "sourceBand": "95~99세"
+  },
+  "methodology": {
+    "metricDefinition": "정확한 나이 x세의 생존자가 다음 나이 x+1세에 도달하기 전에 사망할 1년 확률 qx.",
+    "timeBasis": "2024년 단일 기간 생명표. 출생 코호트의 미래 예측이나 여러 연도 평균이 아니다.",
+    "sexBasis": "공식 남녀전체 계열. 남자 qx와 여자 qx를 1:1 평균하지 않는다.",
+    "ageBandMethod": "0세, 1~4세, 5~9세 이후 5세 단위. 각 구간 한 살별 qx를 같은 가중치로 산술평균한다.",
+    "ageBandInterpretation": "사용자가 선택한 게임 규칙이며 실제 해당 연령구간 전체의 사망확률이나 인구가중 사망률이 아니다.",
+    "annualApplication": "각 나이에 진입할 때 한 번 적용하는 게임 규칙. 월마다 같은 연간 확률을 반복 적용하지 않는다.",
+    "excluded": "간이생명표 5년 사망확률, 사망자/연앙인구 사망률, 사인별 사망확률을 추가 중복 적용하지 않는다.",
+    "openInterval": "100+ q=1은 남은 평생 개방구간의 종결값이다. 100세 1년 사망확률이 아니다.",
+    "maxAgeInterpretation": "보도 나이를 게임 상한으로 쓸 경우 상한 도달은 사망이 아닌 별도 회고 종료이다.",
+    "limitations": "건강·직업·거주지·선택에 따른 위험 배수는 적용하지 않는다. 공식 공표값의 소수 다섯 자리 정밀도를 보존한다."
+  },
+  "attribution": "출처: 국가데이터처, 2024년 생명표 작성 결과(2025-12-03), 표3 완전 생명표 남녀전체. 공공누리 제1유형. 가공: 한 살별 qx의 연령대 산술평균."
+}
