@@ -1,0 +1,5042 @@
+{
+  "schemaVersion": 1,
+  "priceBasis": "fictional-game-setting",
+  "priceNote": "모든 비용·기간·연령·능력 변화는 명시적인 게임 설정이며 실제 제품 가격·평균 소비 통계·의료 효능·수익률을 뜻하지 않습니다.",
+  "moneyUnit": "만원",
+  "actionsPerMonth": 1,
+  "paidMinimumAge": 19,
+  "effectRanges": {
+    "health": [
+      -5,
+      8
+    ],
+    "learn": [
+      0,
+      8
+    ],
+    "bond": [
+      0,
+      8
+    ],
+    "joy": [
+      -3,
+      10
+    ],
+    "skill": [
+      0,
+      0.5
+    ]
+  },
+  "rules": [
+    "한 달에 모든 소비 선택을 통틀어 한 번만 실행합니다. 별도의 개별 재선택 대기기간도 적용합니다.",
+    "유료 선택은 게임의 보호자 지원 구간이 끝나는19세부터 보유 현금 안에서만 가능합니다. 자동 차입은 하지 않습니다.",
+    "무료 선택도 연령·월별 횟수·대기기간을 적용합니다. 실제 서비스의 무료 이용 가능성을 주장하지 않습니다.",
+    "집·차는 구입 시 현금을 지출하고 소유 목록에 남깁니다. 같은 항목을 다시 구입할 수 없으며 시장가·재판매·임대·원금보전·수익·유지비는 계산하지 않습니다.",
+    "집 구입이 실제 거주지나 생활비를 바꾸거나 차 구입이 면허·통근 자격을 부여하지 않습니다.",
+    "건강·배움·관계·만족 점수는0~100, 숙련도skill은0~100의 게임 점수로 반영합니다. 취업용5축 능력이나 실제 학위·면허는 부여하지 않습니다."
+  ],
+  "categories": [
+    {
+      "id": "wellness",
+      "title": "건강한 생활"
+    },
+    {
+      "id": "exercise",
+      "title": "운동과 야외활동"
+    },
+    {
+      "id": "food",
+      "title": "식사와 주방"
+    },
+    {
+      "id": "reading",
+      "title": "독서와 기초배움"
+    },
+    {
+      "id": "technology",
+      "title": "기술과 만들기 배움"
+    },
+    {
+      "id": "arts",
+      "title": "예술과 취미"
+    },
+    {
+      "id": "relationships",
+      "title": "사람들과의 시간"
+    },
+    {
+      "id": "travel",
+      "title": "국내 여행과 나들이"
+    },
+    {
+      "id": "culture",
+      "title": "문화 관람"
+    },
+    {
+      "id": "home",
+      "title": "살림과 주거 정비"
+    },
+    {
+      "id": "digital",
+      "title": "디지털 생활 도구"
+    },
+    {
+      "id": "clothing",
+      "title": "옷과 자기관리"
+    },
+    {
+      "id": "mobility",
+      "title": "이동과 교통 경험"
+    },
+    {
+      "id": "pet",
+      "title": "동물과 식물 돌봄"
+    },
+    {
+      "id": "community",
+      "title": "이웃과 나눔"
+    },
+    {
+      "id": "rest",
+      "title": "휴식과 마음 정리"
+    },
+    {
+      "id": "convenience",
+      "title": "생활 편의와 시간"
+    },
+    {
+      "id": "housing-asset",
+      "title": "주거자산 구입"
+    },
+    {
+      "id": "vehicle-asset",
+      "title": "이동수단 구입"
+    },
+    {
+      "id": "seasons",
+      "title": "계절과 기념 경험"
+    }
+  ],
+  "choices": [
+    {
+      "id": "spend-001",
+      "title": "생활 습관 점검 노트",
+      "category": "wellness",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "잠과 식사 시간을 적으며 지난 생활을 돌아본다."
+    },
+    {
+      "id": "spend-002",
+      "title": "개인 맞춤 스트레칭 안내",
+      "category": "wellness",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "몸을 무리하지 않는 범위에서 움직이는 가상 안내 시간을 갖는다."
+    },
+    {
+      "id": "spend-003",
+      "title": "기초 체력 측정 체험",
+      "category": "wellness",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "근력과 유연성을 살펴보는 가상 체험에 참여한다."
+    },
+    {
+      "id": "spend-004",
+      "title": "건강생활 상담 시간",
+      "category": "wellness",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "일상 습관을 정리하는 가상 상담 시간을 예약한다."
+    },
+    {
+      "id": "spend-005",
+      "title": "자세 점검 워크숍",
+      "category": "wellness",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "오래 앉아 있는 자세와 책상 배치를 점검한다."
+    },
+    {
+      "id": "spend-006",
+      "title": "걷기 자세 교실",
+      "category": "wellness",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "편하게 걷는 동작을 연습하는 모임에 참여한다."
+    },
+    {
+      "id": "spend-007",
+      "title": "수면 공간 정비",
+      "category": "wellness",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "빛과 소음에 방해받지 않도록 침실 소품을 바꾼다."
+    },
+    {
+      "id": "spend-008",
+      "title": "일주일 식사 기록 도구",
+      "category": "wellness",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "식사 시간을 기록할 도구를 마련한다."
+    },
+    {
+      "id": "spend-009",
+      "title": "가벼운 회복 프로그램",
+      "category": "wellness",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "휴식과 가벼운 움직임으로 구성된 가상 프로그램을 선택한다."
+    },
+    {
+      "id": "spend-010",
+      "title": "호흡과 이완 교실",
+      "category": "wellness",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "호흡을 천천히 가다듬는 교실에서 시간을 보낸다."
+    },
+    {
+      "id": "spend-011",
+      "title": "집 안 안전 점검",
+      "category": "wellness",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "미끄러운 곳과 걸리기 쉬운 물건을 정리한다."
+    },
+    {
+      "id": "spend-012",
+      "title": "눈 휴식 타이머",
+      "category": "wellness",
+      "costWan": 1,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "화면을 보는 사이 쉬는 시간을 알려 줄 타이머를 마련한다."
+    },
+    {
+      "id": "spend-013",
+      "title": "개인 위생 꾸러미",
+      "category": "wellness",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "생활에 쓸 위생용품을 한 번에 정리한다."
+    },
+    {
+      "id": "spend-014",
+      "title": "주방 위생 정비",
+      "category": "wellness",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "주방 도구와 보관함을 정돈한다."
+    },
+    {
+      "id": "spend-015",
+      "title": "생활 리듬 재설계 주말",
+      "category": "wellness",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 3,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "주말을 비워 일상의 시간표를 다시 짠다."
+    },
+    {
+      "id": "spend-016",
+      "title": "동네 걷기 한 바퀴",
+      "category": "exercise",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "가까운 골목과 공원을 천천히 걸어 본다."
+    },
+    {
+      "id": "spend-017",
+      "title": "수영 기초 한 달",
+      "category": "exercise",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "물에 익숙해지는 가상 수영 수업에 참여한다."
+    },
+    {
+      "id": "spend-018",
+      "title": "실내 운동시설 한 달",
+      "category": "exercise",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "개인 운동 시간을 정해 시설을 이용한다."
+    },
+    {
+      "id": "spend-019",
+      "title": "요가 입문 수업",
+      "category": "exercise",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "매트 위에서 기본 동작을 배운다."
+    },
+    {
+      "id": "spend-020",
+      "title": "소도구 필라테스 체험",
+      "category": "exercise",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "작은 도구를 이용하는 가상 동작 수업을 듣는다."
+    },
+    {
+      "id": "spend-021",
+      "title": "배드민턴 동호회",
+      "category": "exercise",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "셔틀콕을 주고받으며 사람들과 몸을 움직인다."
+    },
+    {
+      "id": "spend-022",
+      "title": "탁구 기본기 강습",
+      "category": "exercise",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "라켓을 쥐고 기본 자세를 익힌다."
+    },
+    {
+      "id": "spend-023",
+      "title": "동네 축구 모임",
+      "category": "exercise",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "가벼운 축구 모임에 참가한다."
+    },
+    {
+      "id": "spend-024",
+      "title": "주말 농구 대관 모임",
+      "category": "exercise",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "코트를 함께 빌려 농구를 즐긴다."
+    },
+    {
+      "id": "spend-025",
+      "title": "실내 암벽 입문",
+      "category": "exercise",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "안내를 받으며 낮은 난도의 가상 벽을 오른다."
+    },
+    {
+      "id": "spend-026",
+      "title": "볼링 연습 모임",
+      "category": "exercise",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "공을 굴리며 손의 감각을 익힌다."
+    },
+    {
+      "id": "spend-027",
+      "title": "가벼운 등산 장비",
+      "category": "exercise",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "일상적인 산길 나들이에 쓸 장비를 마련한다."
+    },
+    {
+      "id": "spend-028",
+      "title": "달리기 소모임",
+      "category": "exercise",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "짧은 거리를 함께 달리는 모임에 참여한다."
+    },
+    {
+      "id": "spend-029",
+      "title": "댄스 운동 수업",
+      "category": "exercise",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "음악에 맞춰 움직이는 수업을 듣는다."
+    },
+    {
+      "id": "spend-030",
+      "title": "겨울 실내 스케이트 체험",
+      "category": "exercise",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 4,
+        "learn": 0,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "빙판 위에서 균형 잡는 시간을 보낸다."
+    },
+    {
+      "id": "spend-031",
+      "title": "제철 채소 요리 꾸러미",
+      "category": "food",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "제철 채소를 중심으로 집에서 한 끼를 준비한다."
+    },
+    {
+      "id": "spend-032",
+      "title": "일주일 도시락 준비",
+      "category": "food",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "도시락을 미리 준비해 두는 시간을 갖는다."
+    },
+    {
+      "id": "spend-033",
+      "title": "집밥 기초 요리 교실",
+      "category": "food",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "손질과 기본 조리 순서를 연습한다."
+    },
+    {
+      "id": "spend-034",
+      "title": "따뜻한 국물 한 끼",
+      "category": "food",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "따뜻한 음식을 먹으며 잠시 쉰다."
+    },
+    {
+      "id": "spend-035",
+      "title": "친구와 작은 저녁 식사",
+      "category": "food",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "가까운 친구와 저녁 식탁을 나눈다."
+    },
+    {
+      "id": "spend-036",
+      "title": "가족을 위한 주말 식탁",
+      "category": "food",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "함께 먹을 음식을 준비한다."
+    },
+    {
+      "id": "spend-037",
+      "title": "동네 카페 휴식",
+      "category": "food",
+      "costWan": 1,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "조용한 자리에 앉아 음료 한 잔을 즐긴다."
+    },
+    {
+      "id": "spend-038",
+      "title": "전통 차 체험",
+      "category": "food",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "차를 천천히 우리고 맛보는 시간을 갖는다."
+    },
+    {
+      "id": "spend-039",
+      "title": "빵 굽기 체험",
+      "category": "food",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "반죽을 만지고 작은 빵을 구워 본다."
+    },
+    {
+      "id": "spend-040",
+      "title": "발효 음식 만들기",
+      "category": "food",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "음식을 담그고 보관하는 과정을 배운다."
+    },
+    {
+      "id": "spend-041",
+      "title": "작은 주방 칼갈이",
+      "category": "food",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "주방 도구를 손질해 조리 준비를 한다."
+    },
+    {
+      "id": "spend-042",
+      "title": "밀폐용기 정리 세트",
+      "category": "food",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "남은 음식을 보관할 도구를 정리한다."
+    },
+    {
+      "id": "spend-043",
+      "title": "낯선 지역 음식 맛보기",
+      "category": "food",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "평소와 다른 지역 음식을 경험한다."
+    },
+    {
+      "id": "spend-044",
+      "title": "나를 위한 기념일 식사",
+      "category": "food",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "기념하고 싶은 날에 식사 시간을 넉넉히 쓴다."
+    },
+    {
+      "id": "spend-045",
+      "title": "베란다 식용 허브 화분",
+      "category": "food",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "작은 허브 화분을 두고 주방을 가꾼다."
+    },
+    {
+      "id": "spend-046",
+      "title": "도서관 자유 독서",
+      "category": "reading",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "책장 사이에서 읽고 싶은 책을 골라 본다."
+    },
+    {
+      "id": "spend-047",
+      "title": "새 소설 한 권",
+      "category": "reading",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "이야기 한 편을 읽을 시간을 마련한다."
+    },
+    {
+      "id": "spend-048",
+      "title": "인문학 입문 강의",
+      "category": "reading",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "생각의 관점을 넓히는 가상 강의를 듣는다."
+    },
+    {
+      "id": "spend-049",
+      "title": "역사 읽기 모임",
+      "category": "reading",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "역사책의 한 장을 함께 읽고 이야기한다."
+    },
+    {
+      "id": "spend-050",
+      "title": "과학 교양서 묶음",
+      "category": "reading",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "여러 과학 주제를 담은 책을 마련한다."
+    },
+    {
+      "id": "spend-051",
+      "title": "생활 글쓰기 수업",
+      "category": "reading",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "매일의 경험을 짧은 글로 적어 본다."
+    },
+    {
+      "id": "spend-052",
+      "title": "기초 외국어 회화",
+      "category": "reading",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "일상 표현을 주고받는 수업에 참여한다."
+    },
+    {
+      "id": "spend-053",
+      "title": "손글씨와 기록 도구",
+      "category": "reading",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "손으로 메모할 종이와 펜을 고른다."
+    },
+    {
+      "id": "spend-054",
+      "title": "낭독 모임 참가",
+      "category": "reading",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "글을 소리 내어 읽으며 다른 목소리를 듣는다."
+    },
+    {
+      "id": "spend-055",
+      "title": "시집과 감상 노트",
+      "category": "reading",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "짧은 시를 읽고 떠오른 생각을 적는다."
+    },
+    {
+      "id": "spend-056",
+      "title": "기초 수학 다시 배우기",
+      "category": "reading",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "오래전에 배운 수 개념을 다시 풀어 본다."
+    },
+    {
+      "id": "spend-057",
+      "title": "지도 읽기 워크숍",
+      "category": "reading",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "지도를 살피며 장소의 관계를 이해한다."
+    },
+    {
+      "id": "spend-058",
+      "title": "생활 문서 작성 교실",
+      "category": "reading",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "서류의 흐름과 문장을 정리하는 연습을 한다."
+    },
+    {
+      "id": "spend-059",
+      "title": "책 수선 체험",
+      "category": "reading",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "낡은 책 한 권을 조심스럽게 손질한다."
+    },
+    {
+      "id": "spend-060",
+      "title": "월간 읽기 계획 구독",
+      "category": "reading",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.1
+      },
+      "cooldownMonths": 1,
+      "description": "한 달 독서 주제를 정해 꾸준히 읽는다."
+    },
+    {
+      "id": "spend-061",
+      "title": "스프레드시트 입문",
+      "category": "technology",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "표와 계산식을 다루는 기초 과정을 연습한다."
+    },
+    {
+      "id": "spend-062",
+      "title": "기초 코딩 체험",
+      "category": "technology",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "작은 명령을 조합해 결과를 확인한다."
+    },
+    {
+      "id": "spend-063",
+      "title": "웹 페이지 만들기 교실",
+      "category": "technology",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "간단한 화면을 구성하는 가상 수업을 듣는다."
+    },
+    {
+      "id": "spend-064",
+      "title": "사진 편집 입문",
+      "category": "technology",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "사진의 크기와 색을 다루는 방법을 배운다."
+    },
+    {
+      "id": "spend-065",
+      "title": "영상 편집 실습",
+      "category": "technology",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "짧은 영상을 자르고 이어 붙여 본다."
+    },
+    {
+      "id": "spend-066",
+      "title": "디지털 문서 정리 수업",
+      "category": "technology",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "폴더와 파일을 보기 좋게 정리한다."
+    },
+    {
+      "id": "spend-067",
+      "title": "안전한 온라인 생활 교실",
+      "category": "technology",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "디지털 정보를 다루는 습관을 되돌아본다."
+    },
+    {
+      "id": "spend-068",
+      "title": "기초 전자회로 체험",
+      "category": "technology",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "안전한 가상 실습 키트로 간단한 회로를 만든다."
+    },
+    {
+      "id": "spend-069",
+      "title": "목공 소도구 실습",
+      "category": "technology",
+      "costWan": 14,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "안내를 받으며 작은 나무 소품을 만든다."
+    },
+    {
+      "id": "spend-070",
+      "title": "생활 수선 교실",
+      "category": "technology",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "단추와 옷단을 손보는 방법을 익힌다."
+    },
+    {
+      "id": "spend-071",
+      "title": "도자기 기초 수업",
+      "category": "technology",
+      "costWan": 11,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "흙을 빚어 작은 그릇을 만든다."
+    },
+    {
+      "id": "spend-072",
+      "title": "정리와 공정 개선 워크숍",
+      "category": "technology",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "일의 순서를 나누고 더 편한 흐름을 설계한다."
+    },
+    {
+      "id": "spend-073",
+      "title": "기초 설계 도면 체험",
+      "category": "technology",
+      "costWan": 13,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 5,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "단순한 물체를 선과 치수로 표현한다."
+    },
+    {
+      "id": "spend-074",
+      "title": "프레젠테이션 연습",
+      "category": "technology",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "짧은 발표 자료를 만들고 말해 본다."
+    },
+    {
+      "id": "spend-075",
+      "title": "손작업 도구 관리 수업",
+      "category": "technology",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 4,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0.3
+      },
+      "cooldownMonths": 2,
+      "description": "자주 쓰는 도구의 보관과 정리를 연습한다."
+    },
+    {
+      "id": "spend-076",
+      "title": "종이와 연필로 스케치",
+      "category": "arts",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "집에서 눈앞의 물건을 간단히 그려 본다."
+    },
+    {
+      "id": "spend-077",
+      "title": "색연필 드로잉 도구",
+      "category": "arts",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "여러 색을 겹쳐 작은 그림을 완성한다."
+    },
+    {
+      "id": "spend-078",
+      "title": "아크릴화 원데이 수업",
+      "category": "arts",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "캔버스 위에 색면을 올려 본다."
+    },
+    {
+      "id": "spend-079",
+      "title": "도트 그림 그리기 체험",
+      "category": "arts",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "작은 칸에 색을 놓아 가상 동네를 그린다."
+    },
+    {
+      "id": "spend-080",
+      "title": "우쿨렐레 입문 수업",
+      "category": "arts",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "간단한 코드를 짚고 짧은 곡을 연주한다."
+    },
+    {
+      "id": "spend-081",
+      "title": "피아노 기초 한 달",
+      "category": "arts",
+      "costWan": 14,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "건반의 위치와 리듬을 익힌다."
+    },
+    {
+      "id": "spend-082",
+      "title": "기타 합주 모임",
+      "category": "arts",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "다른 사람과 박자를 맞춰 연주한다."
+    },
+    {
+      "id": "spend-083",
+      "title": "합창 동호회 참여",
+      "category": "arts",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "목소리를 모아 한 곡을 완성한다."
+    },
+    {
+      "id": "spend-084",
+      "title": "전통 악기 체험",
+      "category": "arts",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "새로운 악기의 소리와 동작을 경험한다."
+    },
+    {
+      "id": "spend-085",
+      "title": "필름 사진 산책",
+      "category": "arts",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "천천히 장면을 고르고 사진을 남긴다."
+    },
+    {
+      "id": "spend-086",
+      "title": "꽃꽂이 체험",
+      "category": "arts",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "꽃과 가지의 모양을 살펴 작은 장식을 만든다."
+    },
+    {
+      "id": "spend-087",
+      "title": "뜨개질 입문 꾸러미",
+      "category": "arts",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "실을 엮어 작은 생활 소품을 만든다."
+    },
+    {
+      "id": "spend-088",
+      "title": "가죽 소품 만들기",
+      "category": "arts",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "조각을 이어 작은 가죽 소품을 완성한다."
+    },
+    {
+      "id": "spend-089",
+      "title": "연극 놀이 워크숍",
+      "category": "arts",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "표정과 움직임으로 짧은 장면을 연기한다."
+    },
+    {
+      "id": "spend-090",
+      "title": "보드게임 모임",
+      "category": "arts",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0.1
+      },
+      "cooldownMonths": 2,
+      "description": "규칙을 익히고 함께 순서를 주고받는다."
+    },
+    {
+      "id": "spend-091",
+      "title": "오래된 친구에게 편지",
+      "category": "relationships",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 1,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "안부와 기억을 글로 정리해 전한다."
+    },
+    {
+      "id": "spend-092",
+      "title": "친구 생일 작은 선물",
+      "category": "relationships",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "상대가 떠오르는 작은 선물을 고른다."
+    },
+    {
+      "id": "spend-093",
+      "title": "가족 생일 모임 준비",
+      "category": "relationships",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "기념할 사람을 중심으로 모임을 준비한다."
+    },
+    {
+      "id": "spend-094",
+      "title": "동료와 점심 약속",
+      "category": "relationships",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 5,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "서로의 근황을 나누는 식사 자리를 갖는다."
+    },
+    {
+      "id": "spend-095",
+      "title": "이웃과 나누는 다과",
+      "category": "relationships",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "가까운 이웃과 앉아 이야기를 나눈다."
+    },
+    {
+      "id": "spend-096",
+      "title": "친구 집들이 선물",
+      "category": "relationships",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "새로운 공간에 어울릴 생활 소품을 준비한다."
+    },
+    {
+      "id": "spend-097",
+      "title": "부모님과 하루 나들이",
+      "category": "relationships",
+      "costWan": 20,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "함께 걷고 식사할 하루를 마련한다."
+    },
+    {
+      "id": "spend-098",
+      "title": "형제자매와 취미 체험",
+      "category": "relationships",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 5,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "서로 해 보고 싶던 활동을 함께 선택한다."
+    },
+    {
+      "id": "spend-099",
+      "title": "가족사진 촬영 시간",
+      "category": "relationships",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "현재의 모습을 함께 기록한다."
+    },
+    {
+      "id": "spend-100",
+      "title": "소규모 동창 모임",
+      "category": "relationships",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "오랜만에 만난 사람들의 이야기를 듣는다."
+    },
+    {
+      "id": "spend-101",
+      "title": "친구와 피크닉 준비",
+      "category": "relationships",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "돗자리와 먹을거리를 챙겨 야외에서 만난다."
+    },
+    {
+      "id": "spend-102",
+      "title": "감사의 꽃 한 다발",
+      "category": "relationships",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 5,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "고마운 마음을 작은 꽃다발로 표현한다."
+    },
+    {
+      "id": "spend-103",
+      "title": "가까운 사람과 대화 주말",
+      "category": "relationships",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "일정을 비우고 서로의 이야기에 시간을 쓴다."
+    },
+    {
+      "id": "spend-104",
+      "title": "기념일 공동 작품 만들기",
+      "category": "relationships",
+      "costWan": 16,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "함께 만든 결과물로 기억을 남긴다."
+    },
+    {
+      "id": "spend-105",
+      "title": "가족 식탁 도구 보완",
+      "category": "relationships",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "여럿이 모일 때 쓸 도구를 마련한다."
+    },
+    {
+      "id": "spend-106",
+      "title": "근교 공원 반나절",
+      "category": "travel",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "가까운 녹지에서 쉬었다 돌아온다."
+    },
+    {
+      "id": "spend-107",
+      "title": "강변 자전거길 나들이",
+      "category": "travel",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "강을 따라 이동하며 풍경을 즐긴다."
+    },
+    {
+      "id": "spend-108",
+      "title": "바닷가 당일 여행",
+      "category": "travel",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "해안 풍경을 보고 하루를 보낸다."
+    },
+    {
+      "id": "spend-109",
+      "title": "산촌 하루 체험",
+      "category": "travel",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 2,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "작은 산촌의 분위기를 경험한다."
+    },
+    {
+      "id": "spend-110",
+      "title": "전통 마을 방문",
+      "category": "travel",
+      "costWan": 14,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "오래된 골목과 집의 모양을 살펴본다."
+    },
+    {
+      "id": "spend-111",
+      "title": "철도 소도시 여행",
+      "category": "travel",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "기차를 타고 낯선 소도시를 돌아본다."
+    },
+    {
+      "id": "spend-112",
+      "title": "숲속 하룻밤",
+      "category": "travel",
+      "costWan": 35,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "숲 가까운 곳에서 하루 묵는다."
+    },
+    {
+      "id": "spend-113",
+      "title": "섬 마을 짧은 여행",
+      "category": "travel",
+      "costWan": 60,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "배를 타고 작은 섬의 일상을 경험한다."
+    },
+    {
+      "id": "spend-114",
+      "title": "도시 박물관 여행",
+      "category": "travel",
+      "costWan": 28,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "여러 박물관을 중심으로 동선을 짠다."
+    },
+    {
+      "id": "spend-115",
+      "title": "동해안 이틀 여행",
+      "category": "travel",
+      "costWan": 75,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "동쪽 해안을 따라 이틀을 보낸다."
+    },
+    {
+      "id": "spend-116",
+      "title": "남해안 이틀 여행",
+      "category": "travel",
+      "costWan": 80,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "남쪽 바닷길의 풍경을 둘러본다."
+    },
+    {
+      "id": "spend-117",
+      "title": "제주 짧은 휴식",
+      "category": "travel",
+      "costWan": 130,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 2,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "섬의 여러 풍경을 여유롭게 만난다."
+    },
+    {
+      "id": "spend-118",
+      "title": "농촌 수확 체험",
+      "category": "travel",
+      "costWan": 16,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 2,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "농촌의 계절 작업을 가상 체험한다."
+    },
+    {
+      "id": "spend-119",
+      "title": "지역 축제 주말",
+      "category": "travel",
+      "costWan": 32,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "동네 축제의 공연과 장터를 둘러본다."
+    },
+    {
+      "id": "spend-120",
+      "title": "기차로 한 주 여행",
+      "category": "travel",
+      "costWan": 220,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 1,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "한 주 동안 여러 지역을 천천히 이동한다."
+    },
+    {
+      "id": "spend-121",
+      "title": "작은 영화관 관람",
+      "category": "culture",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "큰 화면에서 이야기 한 편을 본다."
+    },
+    {
+      "id": "spend-122",
+      "title": "독립영화 기획전",
+      "category": "culture",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "낯선 형식의 영화를 골라 본다."
+    },
+    {
+      "id": "spend-123",
+      "title": "동네 전시 관람",
+      "category": "culture",
+      "costWan": 1,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "가까운 전시 공간에서 작품을 둘러본다."
+    },
+    {
+      "id": "spend-124",
+      "title": "기획 미술전 관람",
+      "category": "culture",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 2,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "하나의 주제로 모인 작품을 감상한다."
+    },
+    {
+      "id": "spend-125",
+      "title": "소극장 연극 관람",
+      "category": "culture",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "무대 가까이에서 배우들의 움직임을 본다."
+    },
+    {
+      "id": "spend-126",
+      "title": "뮤지컬 한 편",
+      "category": "culture",
+      "costWan": 16,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "노래와 장면이 어우러진 공연을 즐긴다."
+    },
+    {
+      "id": "spend-127",
+      "title": "국악 공연 관람",
+      "category": "culture",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "전통 악기와 목소리를 듣는다."
+    },
+    {
+      "id": "spend-128",
+      "title": "실내악 연주회",
+      "category": "culture",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 2,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "작은 편성의 연주를 감상한다."
+    },
+    {
+      "id": "spend-129",
+      "title": "대중음악 소규모 공연",
+      "category": "culture",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "좋아하는 음악을 현장에서 듣는다."
+    },
+    {
+      "id": "spend-130",
+      "title": "무용 공연 관람",
+      "category": "culture",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "몸짓으로 전개되는 이야기를 감상한다."
+    },
+    {
+      "id": "spend-131",
+      "title": "과학관 특별 체험",
+      "category": "culture",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "전시와 체험 도구를 살펴본다."
+    },
+    {
+      "id": "spend-132",
+      "title": "천문 관측 행사",
+      "category": "culture",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 2,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "하늘을 보는 가상 행사에 참여한다."
+    },
+    {
+      "id": "spend-133",
+      "title": "문학 낭독회",
+      "category": "culture",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 3,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "작가와 독자의 목소리를 듣는다."
+    },
+    {
+      "id": "spend-134",
+      "title": "문화유산 해설 산책",
+      "category": "culture",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "장소에 얽힌 이야기를 들으며 걷는다."
+    },
+    {
+      "id": "spend-135",
+      "title": "지역 공예 전시회",
+      "category": "culture",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 1,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 1,
+      "description": "생활 속 공예 작품을 둘러본다."
+    },
+    {
+      "id": "spend-136",
+      "title": "침구 정비 세트",
+      "category": "home",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "오래 쓴 침구를 새롭게 정리한다."
+    },
+    {
+      "id": "spend-137",
+      "title": "작은 책상 마련",
+      "category": "home",
+      "costWan": 35,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "읽고 작업할 자리를 만든다."
+    },
+    {
+      "id": "spend-138",
+      "title": "편한 작업 의자",
+      "category": "home",
+      "costWan": 45,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "앉아서 보내는 시간을 위한 의자를 고른다."
+    },
+    {
+      "id": "spend-139",
+      "title": "집 안 조명 교체",
+      "category": "home",
+      "costWan": 22,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "방마다 쓰임에 맞는 조명을 마련한다."
+    },
+    {
+      "id": "spend-140",
+      "title": "수납장 하나 추가",
+      "category": "home",
+      "costWan": 30,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "물건의 자리를 나누어 보관한다."
+    },
+    {
+      "id": "spend-141",
+      "title": "현관 정리 도구",
+      "category": "home",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "자주 드나드는 공간을 정돈한다."
+    },
+    {
+      "id": "spend-142",
+      "title": "커튼과 햇빛 가리개",
+      "category": "home",
+      "costWan": 20,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "빛의 양을 조절할 소품을 준비한다."
+    },
+    {
+      "id": "spend-143",
+      "title": "작은 실내 화분",
+      "category": "home",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "방 안에 초록 공간을 만든다."
+    },
+    {
+      "id": "spend-144",
+      "title": "생활 소음 줄이기 소품",
+      "category": "home",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "문과 가구에 소음을 줄일 소품을 더한다."
+    },
+    {
+      "id": "spend-145",
+      "title": "주방 작업대 보완",
+      "category": "home",
+      "costWan": 40,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "음식을 준비할 공간을 정돈한다."
+    },
+    {
+      "id": "spend-146",
+      "title": "욕실 수납 정리",
+      "category": "home",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "젖기 쉬운 생활용품을 나누어 둔다."
+    },
+    {
+      "id": "spend-147",
+      "title": "창문 방풍 정비",
+      "category": "home",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "창문 틈과 주변을 손질한다."
+    },
+    {
+      "id": "spend-148",
+      "title": "베란다 작은 휴식 자리",
+      "category": "home",
+      "costWan": 28,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "잠깐 앉아 쉴 공간을 만든다."
+    },
+    {
+      "id": "spend-149",
+      "title": "방 하나 도배 정비",
+      "category": "home",
+      "costWan": 90,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "한 방의 벽면을 새롭게 정돈한다."
+    },
+    {
+      "id": "spend-150",
+      "title": "집 전체 대청소 도움",
+      "category": "home",
+      "costWan": 55,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "생활 공간을 넓게 정리하는 시간을 마련한다."
+    },
+    {
+      "id": "spend-151",
+      "title": "문서 작업 노트북",
+      "category": "digital",
+      "costWan": 140,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "문서와 가벼운 작업에 쓸 가상 기기를 마련한다."
+    },
+    {
+      "id": "spend-152",
+      "title": "창작 작업 노트북",
+      "category": "digital",
+      "costWan": 260,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "그림과 영상을 다룰 가상 작업 도구를 마련한다."
+    },
+    {
+      "id": "spend-153",
+      "title": "학습용 태블릿",
+      "category": "digital",
+      "costWan": 80,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "글을 읽고 필기할 기기를 고른다."
+    },
+    {
+      "id": "spend-154",
+      "title": "전자책 전용 단말",
+      "category": "digital",
+      "costWan": 35,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "책을 읽는 용도의 기기를 마련한다."
+    },
+    {
+      "id": "spend-155",
+      "title": "작업용 모니터",
+      "category": "digital",
+      "costWan": 50,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "화면을 넓게 볼 수 있는 도구를 놓는다."
+    },
+    {
+      "id": "spend-156",
+      "title": "기계식 키보드",
+      "category": "digital",
+      "costWan": 16,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "손에 맞는 입력 도구를 골라 본다."
+    },
+    {
+      "id": "spend-157",
+      "title": "인체공학 마우스",
+      "category": "digital",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "작업 자세를 고려해 입력 도구를 바꾼다."
+    },
+    {
+      "id": "spend-158",
+      "title": "소음 줄이는 헤드폰",
+      "category": "digital",
+      "costWan": 30,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "혼자 집중할 소리를 듣는 도구를 마련한다."
+    },
+    {
+      "id": "spend-159",
+      "title": "가정용 소형 프린터",
+      "category": "digital",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "필요한 문서를 인쇄할 도구를 둔다."
+    },
+    {
+      "id": "spend-160",
+      "title": "파일 백업 저장장치",
+      "category": "digital",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "작업 자료를 정리해 보관할 도구를 마련한다."
+    },
+    {
+      "id": "spend-161",
+      "title": "온라인 창작 도구 이용권",
+      "category": "digital",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "그림이나 문서를 만들 가상 도구를 이용한다."
+    },
+    {
+      "id": "spend-162",
+      "title": "소형 디지털 카메라",
+      "category": "digital",
+      "costWan": 95,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "일상의 장면을 기록할 도구를 마련한다."
+    },
+    {
+      "id": "spend-163",
+      "title": "휴대전화 교체",
+      "category": "digital",
+      "costWan": 110,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "오래 사용한 가상 단말을 바꾼다."
+    },
+    {
+      "id": "spend-164",
+      "title": "마이크와 녹음 소품",
+      "category": "digital",
+      "costWan": 24,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "목소리를 녹음하고 되듣는 도구를 마련한다."
+    },
+    {
+      "id": "spend-165",
+      "title": "집 안 통신 환경 정비",
+      "category": "digital",
+      "costWan": 20,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0.1
+      },
+      "cooldownMonths": 12,
+      "description": "기기 위치와 연결 도구를 정돈한다."
+    },
+    {
+      "id": "spend-166",
+      "title": "일상 운동화",
+      "category": "clothing",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "편하게 걸을 신발을 마련한다."
+    },
+    {
+      "id": "spend-167",
+      "title": "단정한 면접 복장",
+      "category": "clothing",
+      "costWan": 35,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "격식을 갖춘 자리에 입을 옷을 준비한다."
+    },
+    {
+      "id": "spend-168",
+      "title": "따뜻한 겨울 외투",
+      "category": "clothing",
+      "costWan": 45,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "추운 계절에 입을 가상 외투를 고른다."
+    },
+    {
+      "id": "spend-169",
+      "title": "여름 기능성 일상복",
+      "category": "clothing",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "더운 계절의 활동복을 마련한다."
+    },
+    {
+      "id": "spend-170",
+      "title": "가벼운 비옷과 우산",
+      "category": "clothing",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "비 오는 날에 쓸 물건을 준비한다."
+    },
+    {
+      "id": "spend-171",
+      "title": "옷 수선과 길이 조정",
+      "category": "clothing",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "가지고 있던 옷을 몸에 맞게 손본다."
+    },
+    {
+      "id": "spend-172",
+      "title": "헤어스타일 정돈",
+      "category": "clothing",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "머리를 정돈하며 기분을 바꾼다."
+    },
+    {
+      "id": "spend-173",
+      "title": "작은 피부관리 체험",
+      "category": "clothing",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "일상을 비우고 자기관리 시간을 갖는다."
+    },
+    {
+      "id": "spend-174",
+      "title": "편한 실내복 세트",
+      "category": "clothing",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "집에서 입을 옷을 마련한다."
+    },
+    {
+      "id": "spend-175",
+      "title": "계절 옷장 정리 도움",
+      "category": "clothing",
+      "costWan": 14,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "입을 옷과 보관할 옷을 나누어 둔다."
+    },
+    {
+      "id": "spend-176",
+      "title": "일상 가방 교체",
+      "category": "clothing",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "자주 들고 다닐 가방을 고른다."
+    },
+    {
+      "id": "spend-177",
+      "title": "눈부심 가리는 모자",
+      "category": "clothing",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "야외 활동 때 쓸 소품을 마련한다."
+    },
+    {
+      "id": "spend-178",
+      "title": "작은 액세서리 기념품",
+      "category": "clothing",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "일상의 모습에 변화를 줄 소품을 고른다."
+    },
+    {
+      "id": "spend-179",
+      "title": "작업용 보호 소품",
+      "category": "clothing",
+      "costWan": 13,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "가상 손작업 활동에 쓸 소품을 마련한다."
+    },
+    {
+      "id": "spend-180",
+      "title": "옷 관리 도구 세트",
+      "category": "clothing",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 6,
+      "description": "옷을 손질하고 보관할 도구를 준비한다."
+    },
+    {
+      "id": "spend-181",
+      "title": "한 달 대중교통 나들이",
+      "category": "mobility",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "평소보다 여러 곳을 대중교통으로 둘러본다."
+    },
+    {
+      "id": "spend-182",
+      "title": "공유 자전거 체험",
+      "category": "mobility",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "짧은 거리의 자전거 이동을 경험한다."
+    },
+    {
+      "id": "spend-183",
+      "title": "운전 감각 보완 연습",
+      "category": "mobility",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "안내를 받으며 가상 운전 연습을 한다."
+    },
+    {
+      "id": "spend-184",
+      "title": "교통안전 체험 교실",
+      "category": "mobility",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "길에서 마주치는 상황을 가상으로 살펴본다."
+    },
+    {
+      "id": "spend-185",
+      "title": "자전거 기본 정비",
+      "category": "mobility",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "바퀴와 연결 부위를 손질한다."
+    },
+    {
+      "id": "spend-186",
+      "title": "주말 차량 대여",
+      "category": "mobility",
+      "costWan": 22,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "짧은 나들이에 가상 차량을 빌린다."
+    },
+    {
+      "id": "spend-187",
+      "title": "짧은 캠핑차 대여",
+      "category": "mobility",
+      "costWan": 65,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "잠시 머물 공간을 실은 차량을 가상으로 빌린다."
+    },
+    {
+      "id": "spend-188",
+      "title": "기차 좌석 여행",
+      "category": "mobility",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "기차를 타고 풍경을 보며 이동한다."
+    },
+    {
+      "id": "spend-189",
+      "title": "도시 순환 관광버스",
+      "category": "mobility",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "익숙한 도시를 다른 동선으로 돌아본다."
+    },
+    {
+      "id": "spend-190",
+      "title": "강 위 유람선 체험",
+      "category": "mobility",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "물길 위에서 도시 풍경을 본다."
+    },
+    {
+      "id": "spend-191",
+      "title": "가방 이동 편의 서비스",
+      "category": "mobility",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "나들이의 짐을 덜어 주는 가상 서비스를 선택한다."
+    },
+    {
+      "id": "spend-192",
+      "title": "걷기 좋은 길 안내 체험",
+      "category": "mobility",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "동선을 살펴 천천히 이동하는 시간을 갖는다."
+    },
+    {
+      "id": "spend-193",
+      "title": "장거리 이동 휴식 계획",
+      "category": "mobility",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "이동 중 쉴 곳과 시간을 미리 정한다."
+    },
+    {
+      "id": "spend-194",
+      "title": "이동용 편의 소품",
+      "category": "mobility",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "목베개와 작은 정리 도구를 마련한다."
+    },
+    {
+      "id": "spend-195",
+      "title": "자전거 여행 지원 꾸러미",
+      "category": "mobility",
+      "costWan": 14,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 0,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "짧은 자전거 여행에 쓸 가상 지원 물품을 준비한다."
+    },
+    {
+      "id": "spend-196",
+      "title": "동물 돌봄 기본 교실",
+      "category": "pet",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "다른 생명을 대하는 태도를 배우는 가상 수업을 듣는다."
+    },
+    {
+      "id": "spend-197",
+      "title": "반려동물 놀이 도구",
+      "category": "pet",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 시간을 보낼 가상 놀이 도구를 마련한다."
+    },
+    {
+      "id": "spend-198",
+      "title": "반려동물 산책 가방",
+      "category": "pet",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "산책 중 쓸 물건을 정리한다."
+    },
+    {
+      "id": "spend-199",
+      "title": "생활 공간 청결 소품",
+      "category": "pet",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 지내는 공간의 정리 도구를 마련한다."
+    },
+    {
+      "id": "spend-200",
+      "title": "반려동물 사진 촬영",
+      "category": "pet",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께한 모습을 가상의 사진으로 남긴다."
+    },
+    {
+      "id": "spend-201",
+      "title": "반려동물 휴식 자리",
+      "category": "pet",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "편히 머물 작은 공간을 만든다."
+    },
+    {
+      "id": "spend-202",
+      "title": "반려동물 이동 가방",
+      "category": "pet",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "이동할 때 쓸 가상 가방을 준비한다."
+    },
+    {
+      "id": "spend-203",
+      "title": "돌봄 공백 지원 시간",
+      "category": "pet",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "자리를 비우는 동안의 가상 돌봄 시간을 마련한다."
+    },
+    {
+      "id": "spend-204",
+      "title": "반려동물 교감 수업",
+      "category": "pet",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "기본적인 상호작용을 연습한다."
+    },
+    {
+      "id": "spend-205",
+      "title": "실내 식물 돌봄 도구",
+      "category": "pet",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "화분과 흙을 다루는 도구를 마련한다."
+    },
+    {
+      "id": "spend-206",
+      "title": "분갈이 체험 교실",
+      "category": "pet",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "식물이 자랄 자리를 정돈한다."
+    },
+    {
+      "id": "spend-207",
+      "title": "작은 수경 재배 꾸러미",
+      "category": "pet",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "초록 잎의 변화를 지켜볼 작은 공간을 만든다."
+    },
+    {
+      "id": "spend-208",
+      "title": "동물 보호 활동 교육",
+      "category": "pet",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "보호 활동의 기본을 배우는 가상 시간을 갖는다."
+    },
+    {
+      "id": "spend-209",
+      "title": "가족 돌봄 일정판",
+      "category": "pet",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 돌볼 일을 나누어 적는다."
+    },
+    {
+      "id": "spend-210",
+      "title": "오래된 돌봄 용품 수선",
+      "category": "pet",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 3,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "이미 쓰던 가상 돌봄 도구를 손질한다."
+    },
+    {
+      "id": "spend-211",
+      "title": "동네 환경 정리 참여",
+      "category": "community",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 1,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "주변을 함께 정리하는 가상 활동에 참여한다."
+    },
+    {
+      "id": "spend-212",
+      "title": "이웃 나눔 상자 준비",
+      "category": "community",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "나눌 생활 물건을 한 상자에 정리한다."
+    },
+    {
+      "id": "spend-213",
+      "title": "작은 정기 나눔",
+      "category": "community",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "이번 달 가상 나눔 활동에 비용을 보탠다."
+    },
+    {
+      "id": "spend-214",
+      "title": "지역 공동식사 지원",
+      "category": "community",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 5,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 먹는 자리에 쓸 가상 식재료를 준비한다."
+    },
+    {
+      "id": "spend-215",
+      "title": "마을 행사 자원활동",
+      "category": "community",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "행사 준비를 도우며 사람들과 협력한다."
+    },
+    {
+      "id": "spend-216",
+      "title": "청소년 배움 멘토링",
+      "category": "community",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "아는 내용을 정리해 나누는 가상 시간을 갖는다."
+    },
+    {
+      "id": "spend-217",
+      "title": "도서 나눔 꾸러미",
+      "category": "community",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "나누고 싶은 책을 정리한다."
+    },
+    {
+      "id": "spend-218",
+      "title": "공동 정원 가꾸기",
+      "category": "community",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 5,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 돌보는 작은 정원을 가꾼다."
+    },
+    {
+      "id": "spend-219",
+      "title": "동네 수선 행사 지원",
+      "category": "community",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "물건을 손보는 가상 행사에 준비물을 보탠다."
+    },
+    {
+      "id": "spend-220",
+      "title": "지역 기록 모임",
+      "category": "community",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "오래된 동네 이야기를 듣고 기록한다."
+    },
+    {
+      "id": "spend-221",
+      "title": "재사용 장터 참여",
+      "category": "community",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "다시 쓸 물건을 나누는 가상 자리에 참여한다."
+    },
+    {
+      "id": "spend-222",
+      "title": "계절 생활물품 나눔",
+      "category": "community",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 5,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "계절에 맞춘 가상 나눔 꾸러미를 만든다."
+    },
+    {
+      "id": "spend-223",
+      "title": "공동 작업 도구 보완",
+      "category": "community",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 2,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "여럿이 쓰는 작은 도구를 마련한다."
+    },
+    {
+      "id": "spend-224",
+      "title": "지역 문화 행사 후원",
+      "category": "community",
+      "costWan": 20,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "가상 동네의 공연 준비에 비용을 보탠다."
+    },
+    {
+      "id": "spend-225",
+      "title": "마을 쉼터 정비 지원",
+      "category": "community",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 1,
+        "bond": 4,
+        "joy": 2,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "함께 쉬는 공간의 가상 정비에 참여한다."
+    },
+    {
+      "id": "spend-226",
+      "title": "조용한 산책과 생각 정리",
+      "category": "rest",
+      "costWan": 0,
+      "minAge": 7,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 1,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "정해 둔 길을 천천히 걸으며 생각을 정리한다."
+    },
+    {
+      "id": "spend-227",
+      "title": "작은 일기장 마련",
+      "category": "rest",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "하루의 느낌을 적을 공간을 마련한다."
+    },
+    {
+      "id": "spend-228",
+      "title": "조용한 휴식 공간 이용",
+      "category": "rest",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "혼자 머물며 쉬는 가상 시간을 갖는다."
+    },
+    {
+      "id": "spend-229",
+      "title": "하루 디지털 휴식",
+      "category": "rest",
+      "costWan": 1,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "화면에서 잠시 떨어져 보낼 소품을 준비한다."
+    },
+    {
+      "id": "spend-230",
+      "title": "따뜻한 목욕 휴식",
+      "category": "rest",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "몸을 씻고 천천히 쉬는 시간을 갖는다."
+    },
+    {
+      "id": "spend-231",
+      "title": "짧은 명상 체험",
+      "category": "rest",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "조용히 앉아 호흡에 주의를 기울인다."
+    },
+    {
+      "id": "spend-232",
+      "title": "향기 소품 만들기",
+      "category": "rest",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "마음에 드는 향의 가상 소품을 만든다."
+    },
+    {
+      "id": "spend-233",
+      "title": "편안한 음악 감상 시간",
+      "category": "rest",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "다른 일을 멈추고 음악 한 곡에 집중한다."
+    },
+    {
+      "id": "spend-234",
+      "title": "주말 낮잠 환경 정비",
+      "category": "rest",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "잠깐 쉬기 좋은 자리를 정돈한다."
+    },
+    {
+      "id": "spend-235",
+      "title": "개인 상담 체험 시간",
+      "category": "rest",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "생각을 말로 정리하는 가상 상담 시간을 갖는다."
+    },
+    {
+      "id": "spend-236",
+      "title": "한적한 숙소 하루",
+      "category": "rest",
+      "costWan": 35,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "익숙한 일정에서 벗어나 하루를 쉰다."
+    },
+    {
+      "id": "spend-237",
+      "title": "차분한 색칠 도구",
+      "category": "rest",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "복잡하지 않은 그림에 색을 채운다."
+    },
+    {
+      "id": "spend-238",
+      "title": "나만의 휴식 꾸러미",
+      "category": "rest",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "쉬는 데 쓸 작은 물건을 모은다."
+    },
+    {
+      "id": "spend-239",
+      "title": "반나절 일정 비우기",
+      "category": "rest",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "밀린 생활 일을 줄여 쉬는 시간을 만든다."
+    },
+    {
+      "id": "spend-240",
+      "title": "한 주 정리 워크숍",
+      "category": "rest",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 2,
+      "description": "해야 할 일과 쉬고 싶은 일을 나누어 적는다."
+    },
+    {
+      "id": "spend-241",
+      "title": "세탁과 다림질 도움",
+      "category": "convenience",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "밀린 옷 관리를 맡기고 시간을 비운다."
+    },
+    {
+      "id": "spend-242",
+      "title": "가벼운 집 정리 도움",
+      "category": "convenience",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "방 안 물건을 정돈하는 가상 도움을 받는다."
+    },
+    {
+      "id": "spend-243",
+      "title": "가구 조립 도움",
+      "category": "convenience",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "작은 가구를 조립하는 가상 도움을 받는다."
+    },
+    {
+      "id": "spend-244",
+      "title": "생활용품 정기 꾸러미",
+      "category": "convenience",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "반복해서 쓸 소모품을 한 번에 준비한다."
+    },
+    {
+      "id": "spend-245",
+      "title": "주말 식사 준비 도움",
+      "category": "convenience",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "며칠의 식사 준비에 가상 도움을 받는다."
+    },
+    {
+      "id": "spend-246",
+      "title": "서류와 사진 정리 도구",
+      "category": "convenience",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "흩어진 기록물을 나누어 보관한다."
+    },
+    {
+      "id": "spend-247",
+      "title": "휴대품 수선 서비스",
+      "category": "convenience",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "자주 들고 다닌 물건의 작은 고장을 손본다."
+    },
+    {
+      "id": "spend-248",
+      "title": "실내 공구 보관함",
+      "category": "convenience",
+      "costWan": 9,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "흩어진 가정용 도구를 정리한다."
+    },
+    {
+      "id": "spend-249",
+      "title": "한 달 일정 관리 도구",
+      "category": "convenience",
+      "costWan": 2,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "약속과 할 일을 한곳에 적는다."
+    },
+    {
+      "id": "spend-250",
+      "title": "생활 소모품 교체",
+      "category": "convenience",
+      "costWan": 8,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "오래 쓴 작은 소모품을 바꾼다."
+    },
+    {
+      "id": "spend-251",
+      "title": "작은 가전 청소 도움",
+      "category": "convenience",
+      "costWan": 11,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "자주 쓰는 가전 주변을 손질한다."
+    },
+    {
+      "id": "spend-252",
+      "title": "창고 정리 하루",
+      "category": "convenience",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "보관 중인 물건을 꺼내 정리한다."
+    },
+    {
+      "id": "spend-253",
+      "title": "필수품 비상 가방",
+      "category": "convenience",
+      "costWan": 13,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "예기치 않은 불편에 대비할 가상 물건을 모은다."
+    },
+    {
+      "id": "spend-254",
+      "title": "이사 전 짐 정리 도움",
+      "category": "convenience",
+      "costWan": 30,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "이동 전 물건을 나누고 포장한다. 실제 거주지는 바뀌지 않는다."
+    },
+    {
+      "id": "spend-255",
+      "title": "생활 도구 점검 패키지",
+      "category": "convenience",
+      "costWan": 16,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 3,
+        "skill": 0
+      },
+      "cooldownMonths": 3,
+      "description": "자주 쓰는 물건의 상태를 한 번에 확인한다."
+    },
+    {
+      "id": "spend-256",
+      "title": "작은 연립주택 구입",
+      "category": "housing-asset",
+      "costWan": 18000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 소형 연립주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-257",
+      "title": "도시형 소형 주택 구입",
+      "category": "housing-asset",
+      "costWan": 24000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 7,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 도시형 소형 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-258",
+      "title": "역세권 소형 아파트 구입",
+      "category": "housing-asset",
+      "costWan": 38000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 역세권 소형 아파트 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-259",
+      "title": "교외 중형 아파트 구입",
+      "category": "housing-asset",
+      "costWan": 33000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 3,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 교외 중형 아파트 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-260",
+      "title": "도심 중형 아파트 구입",
+      "category": "housing-asset",
+      "costWan": 55000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 7,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 도심 중형 아파트 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-261",
+      "title": "도심 넓은 아파트 구입",
+      "category": "housing-asset",
+      "costWan": 85000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 도심 대형 아파트 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-262",
+      "title": "마당 있는 작은 집 구입",
+      "category": "housing-asset",
+      "costWan": 42000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "작은 마당이 있는 가상 주택을 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-263",
+      "title": "교외 단독주택 구입",
+      "category": "housing-asset",
+      "costWan": 60000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 3,
+        "joy": 7,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 교외 단독주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-264",
+      "title": "전통형 한옥 주택 구입",
+      "category": "housing-asset",
+      "costWan": 65000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "전통적인 외관의 가상 주택을 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-265",
+      "title": "소도시 주택 구입",
+      "category": "housing-asset",
+      "costWan": 22000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 소도시 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-266",
+      "title": "바닷가 작은 주택 구입",
+      "category": "housing-asset",
+      "costWan": 47000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 7,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 해안 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-267",
+      "title": "숲 가까운 주택 구입",
+      "category": "housing-asset",
+      "costWan": 36000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 3,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 숲 인근 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-268",
+      "title": "다락 있는 복층 주택 구입",
+      "category": "housing-asset",
+      "costWan": 51000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 복층 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-269",
+      "title": "작업실 겸 주택 구입",
+      "category": "housing-asset",
+      "costWan": 72000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 7,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "작업 공간이 있는 가상 주택을 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-270",
+      "title": "넓은 가족 주택 구입",
+      "category": "housing-asset",
+      "costWan": 100000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 2,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 120,
+      "description": "가상 가족 주택 한 채를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "home",
+        "slot": "housing-asset"
+      }
+    },
+    {
+      "id": "spend-271",
+      "title": "도시형 자전거 구입",
+      "category": "vehicle-asset",
+      "costWan": 45,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "평소 이동에 쓸 가상 자전거를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-272",
+      "title": "접이식 자전거 구입",
+      "category": "vehicle-asset",
+      "costWan": 75,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "접어 보관할 가상 자전거를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-273",
+      "title": "장거리용 자전거 구입",
+      "category": "vehicle-asset",
+      "costWan": 180,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 장거리 자전거를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-274",
+      "title": "생활형 전기자전거 구입",
+      "category": "vehicle-asset",
+      "costWan": 230,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 전기자전거를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-275",
+      "title": "가벼운 이륜차 구입",
+      "category": "vehicle-asset",
+      "costWan": 350,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 이륜차를 소유 목록에 기록한다. 면허 취득을 뜻하지 않는다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-276",
+      "title": "소형 중고차 구입",
+      "category": "vehicle-asset",
+      "costWan": 900,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 소형 중고차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-277",
+      "title": "중형 중고차 구입",
+      "category": "vehicle-asset",
+      "costWan": 1700,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 중형 중고차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-278",
+      "title": "소형 신차 구입",
+      "category": "vehicle-asset",
+      "costWan": 2500,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 소형 신차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-279",
+      "title": "중형 신차 구입",
+      "category": "vehicle-asset",
+      "costWan": 3700,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 중형 신차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-280",
+      "title": "하이브리드 중형차 구입",
+      "category": "vehicle-asset",
+      "costWan": 4500,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 혼합동력 차량을 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-281",
+      "title": "소형 전기차 구입",
+      "category": "vehicle-asset",
+      "costWan": 3900,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 소형 전기차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-282",
+      "title": "가족용 승합차 구입",
+      "category": "vehicle-asset",
+      "costWan": 4800,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 가족용 승합차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-283",
+      "title": "야외활동용 차량 구입",
+      "category": "vehicle-asset",
+      "costWan": 5400,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 야외활동용 차량을 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-284",
+      "title": "소형 캠핑차 구입",
+      "category": "vehicle-asset",
+      "costWan": 7800,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 6,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 소형 캠핑차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-285",
+      "title": "장거리 여행용 캠핑차 구입",
+      "category": "vehicle-asset",
+      "costWan": 12000,
+      "minAge": 19,
+      "effects": {
+        "health": 0,
+        "learn": 0,
+        "bond": 0,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 60,
+      "description": "가상 장거리 캠핑차를 소유 목록에 기록한다. 구입가는 시장가치가 아니며 재판매·원금 회수·수익은 계산하지 않는다. 거주지·생활비·이동 능력은 자동 변경하지 않는다.",
+      "asset": {
+        "kind": "vehicle",
+        "slot": "vehicle-asset"
+      }
+    },
+    {
+      "id": "spend-286",
+      "title": "봄꽃 사진 나들이",
+      "category": "seasons",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "꽃이 피는 시기의 풍경을 가상으로 즐긴다."
+    },
+    {
+      "id": "spend-287",
+      "title": "봄 소풍 도시락",
+      "category": "seasons",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "봄날을 떠올리며 소풍 음식을 준비한다."
+    },
+    {
+      "id": "spend-288",
+      "title": "여름 물놀이 하루",
+      "category": "seasons",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "물을 가까이에서 즐기는 가상 하루를 보낸다."
+    },
+    {
+      "id": "spend-289",
+      "title": "여름밤 야외 영화",
+      "category": "seasons",
+      "costWan": 4,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 2,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "바람을 맞으며 영화 한 편을 본다."
+    },
+    {
+      "id": "spend-290",
+      "title": "가을 숲길 산책 모임",
+      "category": "seasons",
+      "costWan": 6,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "나뭇잎의 변화를 보며 함께 걷는다."
+    },
+    {
+      "id": "spend-291",
+      "title": "가을 수확 음식 체험",
+      "category": "seasons",
+      "costWan": 7,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "수확의 계절을 주제로 음식을 만든다."
+    },
+    {
+      "id": "spend-292",
+      "title": "겨울 따뜻한 방 꾸미기",
+      "category": "seasons",
+      "costWan": 10,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "포근하게 쉴 작은 공간을 꾸민다."
+    },
+    {
+      "id": "spend-293",
+      "title": "겨울 눈 풍경 여행",
+      "category": "seasons",
+      "costWan": 25,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 2,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "눈이 있는 가상 풍경을 만나러 간다."
+    },
+    {
+      "id": "spend-294",
+      "title": "새해 다짐 기록 꾸러미",
+      "category": "seasons",
+      "costWan": 3,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "새로운 한 해에 하고 싶은 일을 적는다."
+    },
+    {
+      "id": "spend-295",
+      "title": "생일을 위한 작은 하루",
+      "category": "seasons",
+      "costWan": 12,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "자신의 생일에 하고 싶던 일을 고른다."
+    },
+    {
+      "id": "spend-296",
+      "title": "졸업 기념 사진과 앨범",
+      "category": "seasons",
+      "costWan": 18,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "배움의 한 구간을 사진과 글로 기록한다."
+    },
+    {
+      "id": "spend-297",
+      "title": "첫 월급 기념 선물",
+      "category": "seasons",
+      "costWan": 20,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 2,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "처음의 성취를 기억할 가상 소품을 고른다."
+    },
+    {
+      "id": "spend-298",
+      "title": "이사 기념 작은 식물",
+      "category": "seasons",
+      "costWan": 5,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "새 출발을 상징하는 화분을 마련한다. 실제 거주지는 바뀌지 않는다."
+    },
+    {
+      "id": "spend-299",
+      "title": "한 해 가족 기록집",
+      "category": "seasons",
+      "costWan": 15,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 5,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "지난 한 해의 장면을 모아 기록집을 만든다."
+    },
+    {
+      "id": "spend-300",
+      "title": "삶의 중간 기념 여행",
+      "category": "seasons",
+      "costWan": 90,
+      "minAge": 19,
+      "effects": {
+        "health": 1,
+        "learn": 0,
+        "bond": 1,
+        "joy": 4,
+        "skill": 0
+      },
+      "cooldownMonths": 12,
+      "description": "지나온 시간을 돌아보는 가상 여행을 선택한다."
+    }
+  ]
+}

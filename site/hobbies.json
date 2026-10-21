@@ -1,0 +1,2282 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "hobbies-public-fees-2026-10-v1",
+  "asOf": "2026-10-21",
+  "title": "48개 취미: 공식 공개요금 기반 월 대표예산",
+  "currency": "KRW",
+  "unit": "만원/월",
+  "isNationalAverage": false,
+  "gameEffectsExplicit": true,
+  "assumptions": [
+    "취미별 전국 실측 평균비용을 확보한 자료가 아니다. 공개 공공시설·공공강좌 가격을 선택한 뒤 월 대표예산으로 계산했다.",
+    "게임 비용·빈도·효과·시작연령은 실제 개인별 지출·건강·능력 향상을 예측하지 않는다.",
+    "기간이 표에 명시되지 않은 강남센터 게시수강료는 매월 모집을 참고한 월 배정 가정이며 game_budget으로 별도 표시한다.",
+    "4주=게임 1개월로 재료비를 분산한다. 실제 달력 일수·과정 중 휴강·제휴/거주지/모집요건과 다를 수 있다.",
+    "관측 요금은 2026 과정과 확인일 현재 공개 페이지를 함께 포함한다. 이미 끝난 과정은 가격 참고이며 현재 예약 가능성을 뜻하지 않는다.",
+    "모든 비용은 표시한 포함 범위만 대상으로 한다. 장비·재료 미공개/별도·교통·식비는 일반적으로 제외되므로 개인 총생활비 평균이 아니다.",
+    "유료 활동은19세 이상·보유 현금 이내만 적용한다. 무료 아동 취미는 최소연령을 게임상 별도 설정한다. 실제 시설 수강자격이나 안전상 적합성 판정이 아니다."
+  ],
+  "sources": [
+    {
+      "id": "gangnam-center",
+      "title": "강남구도시관리공단 강남스포츠문화센터 프로그램·수강등록 안내",
+      "url": "https://life.gangnam.go.kr/fmcs/104",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "e85bbd30e11eb876da8d5115cfc847f02d770c98a6bce026b2ed1d648ca83bba",
+      "rawBytes": 93452,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "jongno-quarter",
+      "title": "종로구 자치회관 2026년 4분기 프로그램",
+      "url": "https://jachi.jongno.go.kr/Program/Default.aspx",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "68607022ec12b81a3b79e83e00972485b97ea45d9765759170f36399622a7ac0",
+      "rawBytes": 38799,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "jongno-q1",
+      "title": "종로1·2·3·4가동 2026년 1분기 월 수강료표",
+      "url": "https://jachi.jongno.go.kr/Common/File.aspx?seq=3878",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "87396ef8c50074171ee3881bf9e37d815790cd920b9f7123abbb7c4407d1e788",
+      "rawBytes": 145520,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "songpa-library",
+      "title": "서울특별시교육청 송파도서관 자료이용안내",
+      "url": "https://splib.sen.go.kr/splib/html.do?menu_idx=45",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "f0d098323f3ba9e24269f19d216361efff688121fffdb720c2e5c42ad82e02e1",
+      "rawBytes": 83508,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "jongno-reading",
+      "title": "종로구 초등 독서토론 2026 하반기",
+      "url": "https://jongno.go.kr/reserv/detail.do?pgId=JFAC2797",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "f164659a8b7bc4ad2833cb8a2298e7f95c267bf5f4b95ef57d214eb9daedbf3a",
+      "rawBytes": 37137,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "yangcheon-writing",
+      "title": "양천구 방아다리문학도서관 2026 지혜학교 글쓰기",
+      "url": "https://lifestudy.yangcheon.go.kr/sugang/prgm/lctre/view.do?eclstNo=28&eclstTyCd=ET_04&lctreNo=830965&menuNo=300001",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "6f352c88c5bb066ced3705b07b3e90d923026eaba99656a64d6da6c693ade00c",
+      "rawBytes": 71739,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "museum",
+      "title": "국립중앙박물관 관람료 안내",
+      "url": "https://www.museum.go.kr/",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "8c6f5dc53824ca547c3eda8314150d7170bc85c7aac367baf54cad5437e6f6dc",
+      "rawBytes": 104264,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "sema",
+      "title": "서울시립미술관 서소문본관 관람 안내",
+      "url": "https://sema.seoul.go.kr/kr/visit/seosomun",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "349e6b85a9f67d8c3a9f12cda93dd883409505fb71bd6ccec6d2521d6eb5e35d",
+      "rawBytes": 168487,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "bike",
+      "title": "서울시설공단 따릉이 이용권·안전수칙",
+      "url": "https://sisul.or.kr/open_content/traffic/bikeseoul.jsp",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "933627223a2a3b7c5af95023dba7d5b25e4869b272c9480bc4fe162aaa0cb153",
+      "rawBytes": 21608,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "garden",
+      "title": "강남구 2026 상자텃밭 분양 안내",
+      "url": "https://www.gangnam.go.kr/board/B_000031/1074971/view.do?mid=ID01_0313",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "e5c299660436ea99453a59638e2052ff90b92328370b6b565bedf3c94776c747",
+      "rawBytes": 465520,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "swim",
+      "title": "서울특별시 체육시설관리사업소 잠실수영장 이용료",
+      "url": "https://stadium.seoul.go.kr/lecture/fee",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "4801163789948537aeace92c656e85fdab4b75c3eb85764fb7076aafe405fd2c",
+      "rawBytes": 87014,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "guitar",
+      "title": "관악구 평생학습관 2026년 2분기 통기타",
+      "url": "https://www.gwanak.go.kr/site/edu/lecture/Lecture_View.do?clIdx=L00008784",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "1b72aaa430e25210bdfa9d46acfce64dd63b0c3a78c4bee47ab537f50d656d47",
+      "rawBytes": 80322,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "photo",
+      "title": "연수구 송도글로벌평생학습관 2026 하반기 스마트폰 사진",
+      "url": "https://www.yeonsu.go.kr/lll/edu/global_request.asp?lec_idx=42529&page=v",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "d9dd3cbe926cb31829580244cfc5a6ac9485c8b75631669f8d89bf4d527d6dfe",
+      "rawBytes": 42946,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "knit",
+      "title": "태안군 평생학습관 2026 하반기 손뜨개",
+      "url": "https://taean.go.kr/prog/educate/lll/edu/sub02_01_01/view.do?eduNo=4101&se=01",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "79d950cbabaa76015ede4d6d14a6fad61dc3cadd3d84d83ab900701f2cac9b72",
+      "rawBytes": 67653,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "daegu-arts",
+      "title": "대구광역시 여성회관 2026 제2기 모집안내 pp.4~6",
+      "url": "https://www.daegu.go.kr/cmsh/daegu.go.kr/woman/file/woman/2026_02/202602.pdf",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "6751c1397ac232fe7bdb010601885b83dd555bdb69a0e3a1f9759494a556f6e2",
+      "rawBytes": 19845756,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "camping",
+      "title": "국립공원공단 공개 수입징수규칙 요금표 pp.10·12 (2026-01-01 시행)",
+      "url": "https://reservation.knps.or.kr/bbs/notice/20251128032532426.pdf",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "804e4f137b9f00e32d4bab2e9c6b5ee28972a54cf905230ef394cd9cc792a397",
+      "rawBytes": 383200,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    },
+    {
+      "id": "park",
+      "title": "서울시설공단 서울어린이대공원 공원입장료 안내",
+      "url": "https://www.sisul.or.kr/open_content/childrenpark/",
+      "checkedAt": "2026-10-21",
+      "publicationDate": null,
+      "rawSha256": "196f88bb03b473098d45c9d74e7374099a4f41f850dcece4007f5b18fbad99ba",
+      "rawBytes": 46654,
+      "evidenceUse": "공개 요금·기간·대상 등 사실을 선택하여 요약. 원문 강의설명·사진·PDF를 재배포하지 않음. 포털 전체의 공공누리 허락을 추정하지 않음.",
+      "referenceNote": "2026년 공개 과정 또는 확인일 현재 게시 요금. 모집종료·추첨·거주지·장비 조건은 실제 기관에서 별도 확인."
+    }
+  ],
+  "hobbies": [
+    {
+      "id": "hobby-reading",
+      "name": "도서관 독서",
+      "type": "지능",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "송파도서관 도서대출 무료. 일반 열람·대출만 이용하며 연체·배송·구매 도서는 제외.",
+        "formula": "무료 도서대출 × 월 4회 = 0원",
+        "included": [
+          "도서 열람",
+          "일반 대출"
+        ],
+        "excluded": [
+          "교통",
+          "도서 구입",
+          "연체",
+          "택배"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "songpa-library",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "무료 도서대출 × 월 4회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "songpa-library"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.3,
+        "bond": 0.05,
+        "joy": 0.18,
+        "skill": 0.01
+      },
+      "minAge": 6,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-book-discussion",
+      "name": "독서 토론",
+      "type": "교류",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026.9.10~11.19 목요일 무료 초등 4~6학년 과정 사례. 게임은 연령에 맞는 무료 모임을 가정하며 실제 과정의 전 연령 참여를 보장하지 않음.",
+        "formula": "무료 독서토론 × 월 4회 = 0원",
+        "included": [
+          "무료 토론 참가"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-reading",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "무료 독서토론 × 월 4회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-reading"
+      ],
+      "effects": {
+        "health": 0.03,
+        "learn": 0.1,
+        "bond": 0.28,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 10,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-writing",
+      "name": "문학 글쓰기",
+      "type": "창작",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026.8.26~11.18 수요일 성인 무료 글쓰기 과정 사례. 게임에서는 이미 가진 필기도구로 쓰는 활동 예산.",
+        "formula": "무료 강좌 × 월 4회 = 0원",
+        "included": [
+          "무료 강좌",
+          "기존 필기도구"
+        ],
+        "excluded": [
+          "교통",
+          "도서 구매",
+          "새 필기도구"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "yangcheon-writing",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "무료 강좌 × 월 4회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "yangcheon-writing"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-english",
+      "name": "영어 회화",
+      "type": "지능",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "초급 영어회화 목요일 게시요금 3만원. 매월 접수 운영을 참고해 한 기를 한 달로 두었으나 상세 표에 수강료 기간이 별도로 명시되지 않아 월 배정은 게임 가정.",
+        "formula": "게시 수강료 30,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 수강료 30,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.3,
+        "bond": 0.05,
+        "joy": 0.18,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-chinese",
+      "name": "중국어 회화",
+      "type": "지능",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 중국어 초급 목요일 월 수강료. 이후 분기 가격으로 확대하지 않음.",
+        "formula": "월 수강료 30,000원 = 3만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 30,000원 = 3만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.3,
+        "bond": 0.05,
+        "joy": 0.18,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-japanese",
+      "name": "일본어 회화",
+      "type": "지능",
+      "monthlyCostWan": 4,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "입문 월·수 반 게시요금. 월 단위 비용 배정은 게임 가정이며 교재는 제외.",
+        "formula": "게시 수강료 40,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 수강료 40,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.3,
+        "bond": 0.05,
+        "joy": 0.18,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-phone-photo",
+      "name": "스마트폰 사진",
+      "type": "창작",
+      "monthlyCostWan": 1.25,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026.10.26~12.14 매주 월 8회 과정의 비용을 4회 단위로 배분. 기존 스마트폰 사용.",
+        "formula": "(수강료 20,000원 + 교재 5,000원) ÷ 8회 × 월 4회 = 12,500원",
+        "included": [
+          "수강료",
+          "교재"
+        ],
+        "excluded": [
+          "교통",
+          "스마트폰 구매",
+          "통신료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "photo",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "(수강료 20,000원 + 교재 5,000원) ÷ 8회 × 월 4회 = 12,500원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "photo"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-museum",
+      "name": "박물관 감상",
+      "type": "감상",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "국립중앙박물관 무료 일반 관람만 가정. 유료 특별전은 포함하지 않음.",
+        "formula": "상설 관람료 0원 × 월 2회 = 0원",
+        "included": [
+          "무료 일반 전시"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "주차",
+          "유료 특별전"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "museum",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "상설 관람료 0원 × 월 2회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "museum"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.2,
+        "bond": 0.05,
+        "joy": 0.25,
+        "skill": 0
+      },
+      "minAge": 6,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 2,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-art-museum",
+      "name": "미술관 감상",
+      "type": "감상",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "서울시립미술관 서소문본관 무료 전시만 가정. 특별전은 유료일 수 있음.",
+        "formula": "무료 전시 관람료 0원 × 월 2회 = 0원",
+        "included": [
+          "무료 전시"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "주차",
+          "유료 특별전"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "sema",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "무료 전시 관람료 0원 × 월 2회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "sema"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.2,
+        "bond": 0.05,
+        "joy": 0.25,
+        "skill": 0
+      },
+      "minAge": 6,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 2,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-watercolor",
+      "name": "수채화",
+      "type": "창작",
+      "monthlyCostWan": 6.0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(12주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 15만원 ÷ (12주÷4주) = 월 6만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 15만원 ÷ (12주÷4주) = 월 6만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-pencil-drawing",
+      "name": "연필 드로잉",
+      "type": "창작",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "스케치 월요일 반 게시요금. 매월 접수에 따른 월 배정은 게임 가정. 스케치북·연필·지우개 별도.",
+        "formula": "게시 스케치 수강료 30,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 스케치 수강료 30,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-urban-sketch",
+      "name": "어반 스케치",
+      "type": "창작",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "월요일 일상 드로잉 반 게시요금. 월 배정은 게임 가정. 드로잉펜·스케치북·교통 제외.",
+        "formula": "게시 수강료 30,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 수강료 30,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-calligraphy",
+      "name": "전통 서예",
+      "type": "창작",
+      "monthlyCostWan": 2,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 화요일 월 수강료. 붓·먹·종이 별도.",
+        "formula": "공식 월 수강료 20,000원 = 2만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 월 수강료 20,000원 = 2만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-modern-calligraphy",
+      "name": "캘리그라피",
+      "type": "창작",
+      "monthlyCostWan": 3.25,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 9만원 ÷ (16주÷4주) = 월 3.25만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 9만원 ÷ (16주÷4주) = 월 3.25만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-pottery",
+      "name": "생활 도예",
+      "type": "창작",
+      "monthlyCostWan": 2.0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 공식 표의 소성비 별도 조건을 유지하므로 총 제작비가 아님.",
+        "formula": "월 수강료 1만원 + 과정 재료비 4만원 ÷ (16주÷4주) = 월 2만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "소성비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 4만원 ÷ (16주÷4주) = 월 2만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-knitting",
+      "name": "손뜨개",
+      "type": "창작",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "태안군 2026.8.14~12.4 무료 강좌. 한 달에 작품 1개를 만드는 게임 빈도이며 코바늘·작품 규모 차이는 원 공고 범위를 따름.",
+        "formula": "수강료 0원 + 4개 작품 재료비 120,000원 ÷ 4작품 × 월 1작품 = 30,000원",
+        "included": [
+          "공고 작품 재료"
+        ],
+        "excluded": [
+          "교통",
+          "공고 외 추가 도구",
+          "추가 작품"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "knit",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "수강료 0원 + 4개 작품 재료비 120,000원 ÷ 4작품 × 월 1작품 = 30,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "knit"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-embroidery",
+      "name": "생활 자수",
+      "type": "창작",
+      "monthlyCostWan": 3.0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 8만원 ÷ (16주÷4주) = 월 3만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 8만원 ÷ (16주÷4주) = 월 3만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-hanji-craft",
+      "name": "한지 공예",
+      "type": "창작",
+      "monthlyCostWan": 5.5,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(12주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 공식 재료비 범위 12~15만원의 가운데 13.5만원을 예산 기준으로 선택. 참여자 평균이 아님.",
+        "formula": "월 수강료 1만원 + 과정 재료비 13.5만원 ÷ (12주÷4주) = 월 5.5만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 13.5만원 ÷ (12주÷4주) = 월 5.5만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-flower-arranging",
+      "name": "꽃꽂이",
+      "type": "창작",
+      "monthlyCostWan": 5.0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 16만원 ÷ (16주÷4주) = 월 5만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 16만원 ÷ (16주÷4주) = 월 5만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-botanical-art",
+      "name": "색연필 보타니컬 아트",
+      "type": "창작",
+      "monthlyCostWan": 1.875,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 60색 이상 색연필 개별 준비는 제외.",
+        "formula": "월 수강료 1만원 + 과정 재료비 3.5만원 ÷ (16주÷4주) = 월 1.875만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "60색 이상 색연필",
+          "개인 장비"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 3.5만원 ÷ (16주÷4주) = 월 1.875만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-korean-painting",
+      "name": "한국화",
+      "type": "창작",
+      "monthlyCostWan": 3.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 10만원 ÷ (16주÷4주) = 월 3.5만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 10만원 ÷ (16주÷4주) = 월 3.5만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-fabric-art",
+      "name": "천아트",
+      "type": "창작",
+      "monthlyCostWan": 3.1667,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(12주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 6.5만원 ÷ (12주÷4주) = 월 3.16667만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 6.5만원 ÷ (12주÷4주) = 월 3.16667만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-oil-painting",
+      "name": "서양화",
+      "type": "창작",
+      "monthlyCostWan": 7.75,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 27만원 ÷ (16주÷4주) = 월 7.75만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 27만원 ÷ (16주÷4주) = 월 7.75만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-ink-flower",
+      "name": "문인화",
+      "type": "창작",
+      "monthlyCostWan": 2.625,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. ",
+        "formula": "월 수강료 1만원 + 과정 재료비 6.5만원 ÷ (16주÷4주) = 월 2.625만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 6.5만원 ÷ (16주÷4주) = 월 2.625만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-metal-craft",
+      "name": "금속 공예",
+      "type": "창작",
+      "monthlyCostWan": 6.0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(12주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 공식 주말반 재료비(왁스·은 작품) 기준. 금속 시세나 새 작품 비용의 고정 가격이 아님.",
+        "formula": "월 수강료 1만원 + 과정 재료비 15만원 ÷ (12주÷4주) = 월 6만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "개인 장비",
+          "공고 외 별도 비용"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 15만원 ÷ (12주÷4주) = 월 6만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-guitar",
+      "name": "통기타",
+      "type": "창작",
+      "monthlyCostWan": 2,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "관악구 2026.4.1~6.26 총36회 과정. 기타 개인 소지 필수·대여 및 보관 불가. 월12회 연습 가정.",
+        "formula": "3개월 수강료 60,000원 ÷ 3개월 = 20,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "기타 구매",
+          "대여",
+          "보관"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "guitar",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "3개월 수강료 60,000원 ÷ 3개월 = 20,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "guitar"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 12,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-ukulele",
+      "name": "우쿨렐레",
+      "type": "창작",
+      "monthlyCostWan": 1.25,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 악기는 개별 준비하므로 구매·대여비 제외.",
+        "formula": "월 수강료 1만원 + 과정 재료비 1만원 ÷ (16주÷4주) = 월 1.25만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "악기 구매",
+          "대여"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 1만원 ÷ (16주÷4주) = 월 1.25만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-ocarina",
+      "name": "오카리나",
+      "type": "창작",
+      "monthlyCostWan": 1.25,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026 제2기 공식 과정(16주). 4주를 게임 한 달로 환산하여 재료비를 분산한 대표예산. 악기는 개별 준비하므로 구매·대여비 제외.",
+        "formula": "월 수강료 1만원 + 과정 재료비 1만원 ÷ (16주÷4주) = 월 1.25만원",
+        "included": [
+          "수강료",
+          "공고 재료비"
+        ],
+        "excluded": [
+          "교통",
+          "악기 구매",
+          "대여"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "daegu-arts",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "월 수강료 1만원 + 과정 재료비 1만원 ÷ (16주÷4주) = 월 1.25만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "daegu-arts"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-violin",
+      "name": "바이올린",
+      "type": "창작",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "금요일 바이올린 반 게시요금. 운영 여부 별도 문의 대상이며 월 배정은 게임 가정. 악기 개인 준비.",
+        "formula": "게시 수강료 30,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 수강료 30,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-singing",
+      "name": "가요 노래교실",
+      "type": "교류",
+      "monthlyCostWan": 2,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 월요일 가요교실 월 수강료.",
+        "formula": "공식 월 수강료 20,000원 = 2만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 월 수강료 20,000원 = 2만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0.03,
+        "learn": 0.1,
+        "bond": 0.28,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-classical-singing",
+      "name": "성악·가곡",
+      "type": "창작",
+      "monthlyCostWan": 5,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "금요일 성악 반 게시요금. 성별 지정반 요건을 게임 전체 취미에 적용하지 않으며 월 배정은 가정.",
+        "formula": "게시 성악 수강료 50,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 성악 수강료 50,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0,
+        "learn": 0.12,
+        "bond": 0.06,
+        "joy": 0.28,
+        "skill": 0.025
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-percussion",
+      "name": "장구·북 난타",
+      "type": "교류",
+      "monthlyCostWan": 2,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 화요일 장구·북난타 월 수강료. 개인 악기 비용 미확인·제외.",
+        "formula": "공식 월 수강료 20,000원 = 2만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 월 수강료 20,000원 = 2만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0.03,
+        "learn": 0.1,
+        "bond": 0.28,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-folk-song",
+      "name": "민요",
+      "type": "교류",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 4분기 목요일 서도소리 과정의 분기 요금. 1분기 월2만원 사례와 구분.",
+        "formula": "2026.10~12 서도소리 90,000원 ÷ 3개월 = 30,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 서도소리 90,000원 ÷ 3개월 = 30,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.03,
+        "learn": 0.1,
+        "bond": 0.28,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-korean-dance",
+      "name": "한국 무용",
+      "type": "운동",
+      "monthlyCostWan": 2.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 수요일 한국무용 월 수강료. 의상·신발 제외.",
+        "formula": "공식 월 수강료 25,000원 = 2.5만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 월 수강료 25,000원 = 2.5만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-line-dance",
+      "name": "라인 댄스",
+      "type": "운동",
+      "monthlyCostWan": 2.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "이화동 월요일 입문반 분기 요금. 월4회 가정.",
+        "formula": "2026.10~12 75,000원 ÷ 3개월 = 25,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 75,000원 ÷ 3개월 = 25,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-ballroom-dance",
+      "name": "댄스 스포츠",
+      "type": "교류",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "종로1~4가동 수·금 웰빙스포츠댄스 분기 요금.",
+        "formula": "2026.10~12 90,000원 ÷ 3개월 = 30,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 90,000원 ÷ 3개월 = 30,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.03,
+        "learn": 0.1,
+        "bond": 0.28,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-kpop-dance",
+      "name": "K-POP·재즈 댄스",
+      "type": "운동",
+      "monthlyCostWan": 5.5,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "월·수·금 반 게시요금. 월 배정은 게임 가정이며 댄스복 별도.",
+        "formula": "게시 수강료 55,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 수강료 55,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 12,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-swimming",
+      "name": "자유 수영",
+      "type": "운동",
+      "monthlyCostWan": 1.6,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "잠실수영장 성인 평일 자유수영 입장료. 강습 없음, 주말요금·수영복·수경 제외.",
+        "formula": "성인 평일 일일권 4,000원 × 월 4회 = 16,000원",
+        "included": [
+          "평일 일일 입장"
+        ],
+        "excluded": [
+          "교통",
+          "수영복",
+          "수경",
+          "강습",
+          "주말 차액"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "swim",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "성인 평일 일일권 4,000원 × 월 4회 = 16,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "swim"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 4,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-gym",
+      "name": "헬스",
+      "type": "운동",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "2026년 1분기 헬스교실 월 회원료. 개인지도 제외.",
+        "formula": "공식 월 수강료 30,000원 = 3만원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-q1",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 월 수강료 30,000원 = 3만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-q1"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 12,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-badminton",
+      "name": "배드민턴",
+      "type": "운동",
+      "monthlyCostWan": 4.5,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "월~금 자유이용 게시요금. 월8회 이용 가정, 월 배정은 게임 가정. 개인레슨 별도.",
+        "formula": "게시 자유이용 45,000원을 월 1기 예산으로 배정",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "gangnam-center",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "게시 자유이용 45,000원을 월 1기 예산으로 배정"
+          }
+        ]
+      },
+      "sourceIds": [
+        "gangnam-center"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-table-tennis",
+      "name": "탁구",
+      "type": "운동",
+      "monthlyCostWan": 2.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "이화동 화·수 탁구교실 분기 요금. 라켓 개인 준비.",
+        "formula": "2026.10~12 75,000원 ÷ 3개월 = 25,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 75,000원 ÷ 3개월 = 25,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-yoga",
+      "name": "요가",
+      "type": "운동",
+      "monthlyCostWan": 2.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "이화동 성인 화·목 웰빙요가 분기 요금.",
+        "formula": "2026.10~12 75,000원 ÷ 3개월 = 25,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 75,000원 ÷ 3개월 = 25,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-pilates",
+      "name": "소도구 필라테스",
+      "type": "운동",
+      "monthlyCostWan": 3.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "부암동 스트레칭필라테스 화·목 분기 요금. 소도구 구매·기구 레슨 제외.",
+        "formula": "2026.10~12 105,000원 ÷ 3개월 = 35,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 105,000원 ÷ 3개월 = 35,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-qigong",
+      "name": "국선도·단전호흡",
+      "type": "운동",
+      "monthlyCostWan": 2.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "이화동 월·수·금 국선도 분기 요금. 치료효과를 뜻하지 않음.",
+        "formula": "2026.10~12 75,000원 ÷ 3개월 = 25,000원",
+        "included": [
+          "강좌 수강료"
+        ],
+        "excluded": [
+          "교통",
+          "식비",
+          "개인 장비",
+          "별도 재료"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "jongno-quarter",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026.10~12 75,000원 ÷ 3개월 = 25,000원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "jongno-quarter"
+      ],
+      "effects": {
+        "health": 0.3,
+        "learn": 0.02,
+        "bond": 0.1,
+        "joy": 0.2,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 12,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-park-walking",
+      "name": "공원 산책",
+      "type": "야외",
+      "monthlyCostWan": 0,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "서울어린이대공원 무료 입장 사례. 가까운 무료 공원을 걷고 기존 신발을 쓰는 게임 가정.",
+        "formula": "무료 공원 입장 × 월 8회 = 0원",
+        "included": [
+          "무료 공원 입장"
+        ],
+        "excluded": [
+          "교통",
+          "새 신발",
+          "음료",
+          "유료 부대시설"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "park",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "무료 공원 입장 × 월 8회 = 0원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "park"
+      ],
+      "effects": {
+        "health": 0.2,
+        "learn": 0.08,
+        "bond": 0.12,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 6,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-public-bike",
+      "name": "공공 자전거",
+      "type": "야외",
+      "monthlyCostWan": 0.5,
+      "costBasis": {
+        "kind": "derived_budget",
+        "period": "month",
+        "description": "기본시간 안에 반납하는 월8회 활동. 실제 따릉이는 만13세 이상·지역/회원조건 있으나 게임의 유료 활동은19세 이상으로 단순화.",
+        "formula": "따릉이 1시간 반복 30일권 5,000원 = 0.5만원",
+        "included": [
+          "30일권",
+          "자전거 대여"
+        ],
+        "excluded": [
+          "초과요금",
+          "안전모",
+          "개인 장비",
+          "교통"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "bike",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "따릉이 1시간 반복 30일권 5,000원 = 0.5만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "bike"
+      ],
+      "effects": {
+        "health": 0.2,
+        "learn": 0.08,
+        "bond": 0.12,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-container-garden",
+      "name": "상자 텃밭",
+      "type": "야외",
+      "monthlyCostWan": 0.1433,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "실제 분양은 강남구 대상·수량 제한 일회성 사업. 6개월 분산은 게임 예산 가정이며 매월 보조금을 받거나 무료 새 세트를 받지 않음.",
+        "formula": "2026 A/B형 세트 자부담 8,600원 ÷ 사용 6개월(게임 가정) = 월 약1,433원",
+        "included": [
+          "공고 상자",
+          "상토",
+          "모종",
+          "종자 세트의 분산 예산"
+        ],
+        "excluded": [
+          "추가 모종",
+          "추가 비료",
+          "배송 외 비용",
+          "수확물 판매수입"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "garden",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "2026 A/B형 세트 자부담 8,600원 ÷ 사용 6개월(게임 가정) = 월 약1,433원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "garden"
+      ],
+      "effects": {
+        "health": 0.2,
+        "learn": 0.08,
+        "bond": 0.12,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 8,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    },
+    {
+      "id": "hobby-camping",
+      "name": "야영 캠핑",
+      "type": "야외",
+      "monthlyCostWan": 3,
+      "costBasis": {
+        "kind": "game_budget",
+        "period": "month",
+        "description": "공개 규칙 자료의 부칙은 2026-01-01 시행, p.12는 1구역/차량1대/전기 포함. 그러나 표지 개정일·번호에 공란이 남아 현행 확정 법규로 인증하지 않으며, 이 금액을 선택한 게임 예산이다. 한 명이 구역 전체요금을 부담, 현장 예약요금 별도 확인.",
+        "formula": "공식 공개 요금표의 자동차야영지 주말·성수기 1구역 30,000원 × 월1박 = 3만원",
+        "included": [
+          "자동차야영지 1구역",
+          "차량1대",
+          "전기"
+        ],
+        "excluded": [
+          "텐트",
+          "장비 대여/구매",
+          "식비",
+          "교통",
+          "추가 차량"
+        ],
+        "observedPrices": [
+          {
+            "sourceId": "camping",
+            "interpretation": "숫자 요금·기간은 아래 산식과 설명에 기재. 월 배정·빈도는 별도 게임 가정.",
+            "feeAndConversion": "공식 공개 요금표의 자동차야영지 주말·성수기 1구역 30,000원 × 월1박 = 3만원"
+          }
+        ]
+      },
+      "sourceIds": [
+        "camping"
+      ],
+      "effects": {
+        "health": 0.2,
+        "learn": 0.08,
+        "bond": 0.12,
+        "joy": 0.25,
+        "skill": 0.01
+      },
+      "minAge": 19,
+      "minAgeBasis": "게임 시작 연령. 유료는 19세 이상, 무료는 별도 아동용 활동을 가정하며 실제 기관의 수강 자격을 자동 인정하지 않음.",
+      "monthlyActivityFrequency": 1,
+      "frequencyBasis": "게임 월 활동 횟수 가정. 원 강좌 일정과 다르면 비용 산식·설명에서 구분.",
+      "gameEffectsExplicit": true
+    }
+  ]
+}

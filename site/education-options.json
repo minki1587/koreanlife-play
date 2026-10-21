@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "modelVersion": "education-paths-2026-v1",
+  "verifiedAsOf": "2026-10-21",
+  "kind": "game_education_paths",
+  "note": "학교 분류와 제도 설명은 공식 출처를 참고합니다. 입학 연령·합격식·학습 효과·아래 비용·전공별 배율은 게임 설정이며 실제 입학확률·입시성적·학교/학과 등록금이 아닙니다.",
+  "sources": [
+    {"title":"초·중등교육법 제3조·제10조의2·제12조","url":"https://star.moe.go.kr/web/contents/m20101.do?id=108384&schM=view","basis":"국공사립 구분, 고교 무상교육의 항목과 예외, 의무교육. 사립을 모두 유료로 일반화하지 않음"},
+    {"title":"초·중등교육법 시행령 제76조의3","url":"https://www.law.go.kr/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=1000947583","basis":"일반고·특목고·특성화고·자율고의 구분. 설립별 공사립과 학교 유형은 다른 축"},
+    {"title":"경기도교육청 2025학년도 고등학교 신입생 전형업무 추진계획 학교 현황","url":"https://satp.goe.go.kr/resources/files/guide_6.pdf","basis":"공립 및 사립 외국어고가 모두 존재함을 확인. 이 게임은 특정 학교의 지원자격·모집범위를 재현하지 않음"},
+    {"title":"서울대학교 학칙 제52조","url":"https://law.go.kr/schlPubRulInfoP.do?schlPubRulSeq=2200000132977","basis":"일반 학사과정 4~6년 범위와 의학·약학 6년 사례. 게임에서는 일반·교대4년, 의학·약학6년으로 단순화"},
+    {"title":"강원대학교 약학대학 발전계획 2024~2027","url":"https://pharmacy.kangwon.ac.kr/cms/etcResourceOpen.do?key=%24cms%24EwBmBYFpWB2A6ADgEwGZA&site=%24cms%24A4CwhgTgtmDGCeQ","basis":"2022년부터 통합6년제 약학 교육 사례. 실제 약사 면허 취득은 별개"},
+    {"title":"교육부 2026학년도 대학입학전형 시행계획 발표","url":"https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=98803&lev=0&m=020402","basis":"대학별 전형은 학생부·수능 등 복합적인 절차다. 배움 점수 하나는 현실 입시모형이 아님"},
+    {"title":"통계청 고시 제2025-174호 교육통계 분류 설명","url":"https://mods.go.kr/boardDownload.es?bid=107&list_no=435888&seq=2","basis":"KEDI7개 대계열과 무전공 분류 확인. 게임의8개 지원 트랙은 공식 대계열8분류라는 뜻이 아님"}
+  ],
+  "officialClassificationNote":"KEDI 대계열은 인문·사회·교육·공학·자연·의약·예체능 등의 공식 교육통계 분류이며 무전공 등도 구분한다. 게임은 사용자 선택을 위해 법학·의학·약학 등을 따로 펼친8개 지원 트랙을 사용한다. 공식 분류표 전체나 실제 대학 편제를 대체하지 않는다.",
+  "schoolOptions": [
+    {"id":"primary-public","stage":"primary","name":"국공립 초등학교 경로","ownership":"public","schoolType":"ordinary","durationMonths":72,"annualTuitionWan":0,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.05,"costNote":"이 게임의 수업료0. 생활·급식·체험·준비물의 실제 전체비용0이라는 뜻은 아님"},
+    {"id":"primary-private","stage":"primary","name":"사립 초등학교 경로","ownership":"private","schoolType":"ordinary","durationMonths":72,"annualTuitionWan":900,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.05,"costNote":"연900만원은 게임 학비 가정. 실제 사립초 평균·개별학교 학비가 아님. 현실의 추첨·모집·통학 조건은 생략"},
+    {"id":"middle-public","stage":"middle","name":"국공립 중학교 경로","ownership":"public","schoolType":"ordinary","durationMonths":36,"annualTuitionWan":0,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.06,"costNote":"의무교육의 일반 중학교 경로로 수업료0을 적용. 기타 실제 비용 전체를 뜻하지 않음"},
+    {"id":"middle-private","stage":"middle","name":"사립 일반중학교 경로","ownership":"private","schoolType":"ordinary","durationMonths":36,"annualTuitionWan":0,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.06,"costNote":"의무교육 위탁의 일반 사립중 경로로 수업료0. 별도 선발·학비가 있는 사립 특성화중 등을 대표하지 않음. 현실의 배정절차는 생략"},
+    {"id":"high-public-general","stage":"high","name":"공립 일반고 경로","ownership":"public","schoolType":"general","durationMonths":36,"annualTuitionWan":0,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.08,"costNote":"무상교육 일반고 경로의 게임 수업료0. 모든 생활·교육비가 무료라는 뜻은 아님"},
+    {"id":"high-private-general","stage":"high","name":"사립 일반고 경로","ownership":"private","schoolType":"general","durationMonths":36,"annualTuitionWan":0,"learningThreshold":0,"guaranteed":true,"annualLearningBonus":0.08,"costNote":"무상교육 대상 일반 사립고 경로를 가정. 사립이라는 이유만으로 수업료를 부과하지 않음"},
+    {"id":"high-private-autonomous","stage":"high","name":"자율형 사립고 경로","ownership":"private","schoolType":"autonomous-private","durationMonths":36,"annualTuitionWan":1000,"learningThreshold":75,"guaranteed":false,"annualLearningBonus":0.10,"costNote":"연1000만원은 별도학비 경로의 게임 가정. 실제 자사고 평균·개별학교 학비·입학확률이 아님"},
+    {"id":"high-public-foreign","stage":"high","name":"공립 외국어고 경로","ownership":"public","schoolType":"foreign-language","durationMonths":36,"annualTuitionWan":0,"learningThreshold":65,"guaranteed":false,"annualLearningBonus":0.10,"costNote":"공립 외고 경로 수업료0의 게임 단순화. 기숙사·급식·프로그램 실제 비용은 별도"},
+    {"id":"high-private-foreign","stage":"high","name":"사립 외국어고 경로","ownership":"private","schoolType":"foreign-language","durationMonths":36,"annualTuitionWan":850,"learningThreshold":65,"guaranteed":false,"annualLearningBonus":0.10,"costNote":"연850만원은 무상교육 예외인 별도학비 경로의 게임 가정. 모든 사립 외고가 같은 비용·예외라는 뜻은 아님"}
+  ],
+  "universityFields": [
+    {"id":"humanities","label":"인문학","durationMonths":48,"learningThreshold":48,"tuitionMultiplier":0.95},
+    {"id":"natural","label":"자연과학","durationMonths":48,"learningThreshold":56,"tuitionMultiplier":1.10},
+    {"id":"social","label":"사회과학","durationMonths":48,"learningThreshold":52,"tuitionMultiplier":1.00},
+    {"id":"law","label":"법학 학부","durationMonths":48,"learningThreshold":68,"tuitionMultiplier":1.00,"note":"학부 법학 경로이며 법학전문대학원·변호사 자격을 자동 취득하지 않음"},
+    {"id":"medicine","label":"의학","durationMonths":72,"learningThreshold":90,"tuitionMultiplier":1.60,"note":"6년 게임 과정이며 의사 국가시험·면허를 자동 취득하지 않음"},
+    {"id":"teaching","label":"교육대학·초등교육","durationMonths":48,"learningThreshold":70,"tuitionMultiplier":1.00,"publicOnly":true,"note":"국공립 교육대학 경로만 제공. 교원자격·임용 합격을 자동 부여하지 않음"},
+    {"id":"engineering","label":"공학","durationMonths":48,"learningThreshold":60,"tuitionMultiplier":1.12},
+    {"id":"pharmacy","label":"약학","durationMonths":72,"learningThreshold":84,"tuitionMultiplier":1.40,"note":"6년 게임 과정이며 약사 국가시험·면허를 자동 취득하지 않음"}
+  ],
+  "admissionModel":{"kind":"game_assumption","minimumChance":0.05,"maximumChance":0.95,"formula":"clamp(0.5 + (learn - learningThreshold) / 50, 0.05, 0.95)","publicThresholdOffset":3,"seoulThresholdOffset":8,"rerollPolicy":"동일 학년도·단계 공통 난수. 같은 지원 재시도 금지, 불합격 후 더 낮은 문턱만 지원 가능. 초중·일반고 기본 배정 경로는 게임에서 보장하며 대학은 유예 선택 가능"},
+  "costPolicy":{"kind":"game_assumption","moneyUnit":"만원","under19":"19세 전 학교 수업료도 기존 생활비와 함께 보호자 지원으로 상쇄한다. 미성년 캐릭터에게 이 학비 때문에 차입금을 만들지 않는 게임 가계 범위이며 부모의 실제 부담이 없다는 뜻은 아니다","university":"기존 수집 대학의 설립별×서울/서울외 등록금 산술평균에 게임 전공 배율을 적용하여 12분할. 특정 학교·전공의 관측 등록금이 아니다","housing":"대학 진학시 경로가 정한 실제 시도로 이동하고 기존 기숙사·월세 가상 생활비 규칙을 유지한다"}
+}

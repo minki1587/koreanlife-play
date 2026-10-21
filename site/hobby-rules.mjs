@@ -1,0 +1,29 @@
+// All benefit values and age gates are explicit game assumptions.
+const clone=x=>structuredClone(x),round=x=>Math.round((x+Number.EPSILON)*10000)/10000;
+const METRICS=['health','learn','bond','joy','skill'];
+const finite=n=>typeof n==='number'&&Number.isFinite(n);
+const idOk=id=>typeof id==='string'&&/^hobby-[a-z0-9-]+$/.test(id);
+function rowsOf(catalog){const rows=Array.isArray(catalog)?catalog:catalog?.hobbies;if(!Array.isArray(rows)||!rows.length)throw new TypeError('취미 자료가 없습니다.');const ids=new Set();for(const r of rows){if(!idOk(r?.id)||ids.has(r.id)||typeof r.name!=='string'||!r.name.trim()||!finite(r.monthlyCostWan)||r.monthlyCostWan<0||!Number.isInteger(r.minAge)||r.minAge<0||!r.effects||!METRICS.every(k=>finite(r.effects[k])&&r.effects[k]>=0&&r.effects[k]<=1)||r.gameEffectsExplicit!==true)throw new TypeError('취미 자료의 비용·효과·연령을 확인해주세요.');ids.add(r.id);}return rows;}
+const defaults=()=>({schemaVersion:1,selectedIds:[],active:false,activatedAtMonth:null,lastProcessedMonth:null,lastResult:null});
+export function hobbyProfile(s){return s?.hobbies?clone(s.hobbies):defaults();}
+export function validHobbyState(s){try{if(s?.hobbies===undefined)return true;const h=s.hobbies;if(!h||h.schemaVersion!==1||!Array.isArray(h.selectedIds)||h.selectedIds.length>3||new Set(h.selectedIds).size!==h.selectedIds.length||!h.selectedIds.every(idOk)||typeof h.active!=='boolean'||h.active&&!h.selectedIds.length)return false;for(const key of ['activatedAtMonth','lastProcessedMonth'])if(h[key]!==null&&(!Number.isInteger(h[key])||h[key]<0||h[key]>s.totalMonths))return false;if(h.active&&h.activatedAtMonth===null)return false;if(h.lastResult!==null){const r=h.lastResult;if(!r||!['applied','insufficient_funds','age_blocked','unavailable'].includes(r.status)||!Number.isInteger(r.atMonth)||r.atMonth!==h.lastProcessedMonth||!finite(r.costWan)||r.costWan<0||!r.effects||!METRICS.every(k=>finite(r.effects[k])&&r.effects[k]>=0&&r.effects[k]<=3)||!Array.isArray(r.names)||!r.names.every(x=>typeof x==='string')||typeof r.reason!=='string')return false;if(r.status!=='applied'&&(r.costWan!==0||METRICS.some(k=>r.effects[k]!==0)))return false;}return true;}catch{return false;}}
+function stateOf(s){if(!s||!Number.isInteger(s.totalMonths)||s.totalMonths<0||s.age!==Math.floor(s.totalMonths/12)||!finite(s.cash)||s.cash<0||!validHobbyState(s)||!METRICS.every(k=>finite(s[k])))throw new TypeError('취미에 사용할 삶의 기록이 올바르지 않습니다.');return clone(s);}
+function actionState(s){const next=stateOf(s);if(next.phase!=='running')throw new Error('진행 중인 삶에서 갈림길을 마친 뒤 취미를 선택해주세요.');return next;}
+function selectedRows(s,rows){return s.hobbies.selectedIds.map(id=>{const r=rows.find(x=>x.id===id);if(!r)throw new Error('선택한 취미가 현재 목록에 없습니다. 다시 선택해주세요.');return r;});}
+function ageReason(s,rows){if(rows.some(r=>s.age<r.minAge))return '선택한 취미의 게임 시작 연령에 도달하지 않았습니다.';if(s.age<19&&rows.some(r=>r.monthlyCostWan>0))return '유료 취미는 게임에서 19세 이상부터 활동할 수 있습니다.';return '';}
+export function setHobbies(original,ids,catalog){const rows=rowsOf(catalog),s=actionState(original);if(!Array.isArray(ids)||ids.length>3||new Set(ids).size!==ids.length||!ids.every(idOk))throw new RangeError('취미는 서로 다른 항목을 최대 3개까지 선택해주세요.');s.hobbies=hobbyProfile(s);s.hobbies.selectedIds=[...ids];const selected=selectedRows(s,rows),reason=ageReason(s,selected);if(reason)throw new Error(reason);s.hobbies.active=false;s.hobbies.activatedAtMonth=null;return s;}
+export function activateHobbies(original,active,catalog){if(typeof active!=='boolean')throw new TypeError('활동 여부를 확인해주세요.');const rows=rowsOf(catalog),s=actionState(original);s.hobbies=hobbyProfile(s);if(active){if(!s.hobbies.selectedIds.length)throw new Error('취미를 1~3개 선택해주세요.');const reason=ageReason(s,selectedRows(s,rows));if(reason)throw new Error(reason);if(!s.hobbies.active)s.hobbies.activatedAtMonth=s.totalMonths;}s.hobbies.active=active;if(!active)s.hobbies.activatedAtMonth=null;return s;}
+export function progressHobbies(original,catalog){
+ const rows=rowsOf(catalog),s=stateOf(original),h=hobbyProfile(s),zero=Object.fromEntries(METRICS.map(k=>[k,0])),base={atMonth:s.totalMonths,costWan:0,effects:zero,names:[],reason:''};
+ if(!h.active)return {state:s,result:{...base,status:'inactive'}};
+ if(s.phase==='ended'||s.totalMonths<=h.activatedAtMonth||h.lastProcessedMonth===s.totalMonths)return {state:s,result:{...base,status:'not_due'}};
+ s.hobbies=h;let selected;try{selected=selectedRows(s,rows);}catch(error){return stop('unavailable',error.message);}
+ const reason=ageReason(s,selected);if(reason)return stop('age_blocked',reason);
+ const cost=round(selected.reduce((n,r)=>n+r.monthlyCostWan,0));
+ if(s.cash+1e-9<cost)return stop('insufficient_funds','보유 현금이 월 취미비보다 적어 정기 활동을 중단했습니다. 비용과 효과를 적용하지 않았습니다.');
+ if(!s.ledger||!finite(s.ledger.expenses)||s.ledger.expenses<0)throw new TypeError('취미비를 기록할 월 예산이 올바르지 않습니다.');
+ s.cash=round(s.cash-cost);s.ledger.expenses=round(s.ledger.expenses+cost);const effects={...zero};
+ for(const key of METRICS){const amount=round(selected.reduce((n,r)=>n+r.effects[key],0)),before=s[key],ceiling=key==='skill'?Math.max(5,before):100;s[key]=Math.min(ceiling,round(before+amount));effects[key]=round(s[key]-before);}
+ const result={...base,status:'applied',costWan:cost,effects,names:selected.map(r=>r.name),reason:'정기 취미의 월 비용과 게임 효과를 한 번 적용했습니다.'};h.lastProcessedMonth=s.totalMonths;h.lastResult=clone(result);return {state:s,result};
+ function stop(status,reason){h.active=false;h.activatedAtMonth=null;const result={...base,status,reason};h.lastProcessedMonth=s.totalMonths;h.lastResult=clone(result);return {state:s,result};}
+}

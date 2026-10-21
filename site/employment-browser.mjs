@@ -1,9 +1,10 @@
+import {formatMoney} from './spending.mjs';
 import {searchOccupations} from './career-browser.mjs';
 import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs';
 import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
-const cash=n=>Number(n||0).toLocaleString('ko-KR',{maximumFractionDigits:1})+'만원';
+const cash=n=>formatMoney(Number(n||0));
 const PAGE_SIZE=20;
 const kindLabel={game_assumption:'게임 조건',official:'공식 자료',unknown:'미확인'};
 function el(tag,copy,cls){const node=document.createElement(tag);if(copy!==undefined)node.textContent=copy;if(cls)node.className=cls;return node;}
@@ -60,7 +61,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
   if(!s){body.append(el('p','먼저 게임을 시작해주세요.'));return;}
   body.append(el('p','훈련비는 등록할 때 한 번 지출합니다. 자금 부족분은 게임 차입으로 처리하며, 동시에 한 과정·한 달에 한 번만 등록할 수 있습니다. 복무·정규 재학 중에는 훈련이 진행되지 않습니다.','small'));
   if(s.pendingDecision==='first-job')body.append(button('취업을 미루고 훈련 준비하기',()=>act(onDefer,undefined,'취업 갈림길을 마쳤습니다. 이제 과정을 골라 등록할 수 있습니다.')));
-  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schooling?.status==='enrolled'||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths;
+  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schoolJourney?.current||s.schooling?.status==='enrolled'||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths;
   if(blocked)body.append(el('p',p.training?'진행 중인 훈련을 마친 뒤 새 과정에 등록할 수 있습니다.':'16세 이후, 갈림길·복무·정규 학업을 마친 뒤 등록할 수 있습니다. 이달 이미 등록했다면 다음 달에 다시 선택해주세요.','employment-blocked'));
   const cards=el('div',undefined,'employment-training-grid');
   function courseCard(title,request){const card=el('section',undefined,'employment-training-card');card.append(el('h4',title));let plan;try{plan=careerTrainingPlan(s,request);}catch(error){card.append(el('p',error.message));return card;}card.append(el('p',`${plan.durationMonths}개월 · 등록비 ${cash(plan.cost)}${request.type==='ability'?' · 완료 시 +8점':''}`));const b=button(`${plan.label} 시작`,()=>act(onTrain,request,`${plan.label}에 등록했습니다. 월별 진행으로 이수합니다.`));b.disabled=blocked;card.append(b);return card;}

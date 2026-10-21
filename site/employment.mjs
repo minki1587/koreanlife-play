@@ -3,7 +3,7 @@ export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));
 const LEVEL_LABELS=['학업 준비','초등 과정','중등 과정','고교 과정','대학 과정','대학원 과정','박사 과정'];
 const AXES=ABILITY_AXES.map(x=>x.id),finite=n=>typeof n==='number'&&Number.isFinite(n),clamp=n=>Math.min(100,Math.max(0,n)),clone=x=>structuredClone(x),idOk=id=>typeof id==='string'&&/^know-[0-9]{6}$/.test(id);
-const completedLevel=s=>s.schooling?.status==='graduated'?4:s.age>=19?3:s.age>=16?2:s.age>=13?1:0;
+const completedLevel=s=>s.schoolJourney?(Number.isInteger(s.schoolJourney.highestLevel)?Math.min(4,Math.max(0,s.schoolJourney.highestLevel)):0):s.schooling?.status==='graduated'?4:s.age>=19?3:s.age>=16?2:s.age>=13?1:0;
 const modelNote='학위·직업준비 증표·능력 문턱과 근무지역 배치는 게임 규칙입니다. 실제 채용공고·법정 자격·취업 가능성을 판정하지 않습니다.';
 export function employmentProfile(s){
   const e=s?.employment,learn=finite(s?.learn)?s.learn:35,bond=finite(s?.bond)?s.bond:50,health=finite(s?.health)?s.health:75,skill=finite(s?.skill)?s.skill:0;
@@ -30,7 +30,7 @@ export function evaluateEmployment(s,row){
   const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[];
   const add=(label,value,met,kind='game_assumption')=>{requirements.push({label,value,met,kind});if(met===false)reasons.push(`${label}: ${value}`);};
   add('지원 나이','16세 이상 · 게임 규칙',s?.age>=16);
-  add('현재 학업','정규 재학·복무를 마친 뒤 지원',s?.schooling?.status!=='enrolled'&&s?.job?.status!=='재학');
+  add('현재 학업','정규 재학·복무를 마친 뒤 지원',!s?.schoolJourney?.current&&s?.schooling?.status!=='enrolled'&&s?.job?.status!=='재학');
   add('이달 지원','성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
   add('현재 직업','현재 직업에 중복 지원할 수 없음',s?.job?.occupationId!==row.id);
   add('게임 학위',`${rules.educationLabel} 이수 이상 · 실제 법정 학력 판정 아님`,profile.educationLevel>=rules.educationLevel);
@@ -66,7 +66,7 @@ export function careerTrainingPlan(s,request,row){
   throw new TypeError('지원하지 않는 훈련입니다.');
 }
 export function progressCareerTraining(s){
-  if(!s.employment?.training||s.service?.active||s.schooling?.status==='enrolled')return null;
+  if(!s.employment?.training||s.service?.active||s.schoolJourney?.current||s.schooling?.status==='enrolled')return null;
   const employment=employmentState(s),t=employment.training;t.remainingMonths--;if(t.remainingMonths>0)return{employment,completed:null};
   if(t.type==='ability')employment.abilities[t.ability]=clamp(employment.abilities[t.ability]+t.gain);
   else if(t.type==='education')employment.educationLevel=Math.max(employment.educationLevel,t.targetLevel);
