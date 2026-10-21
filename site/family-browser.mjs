@@ -1,7 +1,7 @@
-import {renderEstateDetails} from './estate-views.mjs?v=family-estate-1';
-import {currentParents} from './parent-careers.mjs?v=family-estate-1';
-import {householdSummary} from './household-finance.mjs?v=family-estate-1';
-import {householdFacts} from './household-views.mjs?v=family-estate-1';
+import {renderEstateDetails} from './estate-views.mjs?v=daily-layout-1';
+import {currentParents} from './parent-careers.mjs?v=daily-layout-1';
+import {householdSummary} from './household-finance.mjs?v=daily-layout-1';
+import {householdFacts} from './household-views.mjs?v=daily-layout-1';
 import {formatMoney} from './spending.mjs';
 import {familySummary} from './birth-family.mjs';
 
@@ -71,8 +71,5 @@ export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},on
 export function renderFamilyPreview(host,f,{profiles,onOpen,document=host.ownerDocument}){
   host.replaceChildren();host.className='birth-family';
   const make=(tag,cls,value)=>{const n=document.createElement(tag);n.className=cls;n.textContent=value;return n;};
-  host.append(make('h2','', '함께 시작하는 사람들'),make('p','family-summary',familySummary(f)));
-  const people=make('div','family-preview-people','');
-  for(const g of f.guardians){const row=make('div','family-preview-person','');row.append(make('strong','',`${g.role} · ${g.name}`),make('span','',g.occupation?`${g.occupation.name} · 추정 연 ${formatMoney(g.occupation.annualIncomeWan)}`:`${g.activity} · 근로소득 없음`));people.append(row);}
-  const button=make('button','secondary family-details-button','가족 자세히 보기 ↗');button.id='birth-family-open';button.type='button';button.setAttribute('aria-haspopup','dialog');button.addEventListener('click',()=>onOpen(f));host.append(people,button);
+  const button=make('button','secondary family-details-button','가족 정보 ↗');button.id='birth-family-open';button.type='button';button.setAttribute('aria-haspopup','dialog');button.addEventListener('click',()=>onOpen(f));host.append(button);
 }

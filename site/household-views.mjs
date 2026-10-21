@@ -1,6 +1,6 @@
-import {estateSummary} from './family-estate.mjs?v=family-estate-1';
-import {currentParents} from './parent-careers.mjs?v=family-estate-1';
-import {householdSummary} from './household-finance.mjs?v=family-estate-1';
+import {estateSummary} from './family-estate.mjs?v=daily-layout-1';
+import {currentParents} from './parent-careers.mjs?v=daily-layout-1';
+import {householdSummary} from './household-finance.mjs?v=daily-layout-1';
 import {formatMoney} from './spending.mjs';
 export function householdFacts(s){
  const h=householdSummary(s);if(!h)return [];

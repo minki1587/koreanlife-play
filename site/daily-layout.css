@@ -1,0 +1,28 @@
+/* Daily scene → four stats → focus. Each small-screen row scrolls independently. */
+.daily-life-panel{min-width:0;display:flex;flex-direction:column;gap:16px}
+.daily-life-panel .life-scene{margin:0}
+.daily-stats{display:grid;grid-template-columns:repeat(4,minmax(max-content,1fr));gap:12px;padding:16px 0;border-block:1px solid var(--line);overflow-x:auto;scrollbar-width:thin}
+.daily-stats>div{min-width:0;display:flex;flex-direction:column;gap:7px}
+.daily-stats span{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+.daily-stats strong{font-size:calc(14px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.5;white-space:nowrap}
+.daily-stats meter{width:100%;min-width:0;height:9px;accent-color:#657a52}
+.daily-life-panel .focus-panel{margin:0;padding:0;border:0}
+.daily-life-panel .focus-group{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:4px 3px 10px;max-width:100%;scrollbar-width:thin}
+.daily-life-panel .focus-group button{flex:1 0 auto;white-space:nowrap;min-height:44px}
+.daily-life-panel .focus-panel .panel-title{flex-wrap:wrap;gap:8px}
+.daily-life-panel .focus-panel h3{margin:0}
+.daily-life-panel #focus-description{margin:8px 0 0}
+.profile-identity>.person-heading{grid-area:name;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px}
+.profile-identity .person-gender{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted);white-space:nowrap}
+.profile-identity .person-heading #person{margin:0}
+.birth-family{border:0;padding:0;background:transparent;margin-block:18px}
+.birth-family .family-details-button{width:100%}
+.life-feed li.family-brief{padding-block:10px}
+.life-feed li.family-brief b{font-weight:500}
+@media(min-width:1024px){
+  #game .game-grid.game-layout>.daily-life-panel{grid-column:2;grid-row:1;margin-bottom:20px}
+}
+@media(max-width:480px){
+  .daily-stats{gap:7px}
+  .daily-stats strong{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+}

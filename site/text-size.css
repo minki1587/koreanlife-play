@@ -1,9 +1,9 @@
-/* 100% means the project's 20% larger text baseline. This is font scaling only. */
-:root{--user-text-scale:1}
-body{font-size:calc(16px * 1.2 * var(--user-text-scale,1))}
+/* 100% keeps the saved user scale; the previous 1.2 baseline is enlarged by 20% to 1.44. */
+:root{--base-text-scale:1.44;--user-text-scale:1}
+body{font-size:calc(16px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
 header{flex-wrap:wrap;gap:12px 18px}
 #text-size-controls{display:inline-flex;align-items:center;justify-content:center;gap:6px;max-width:100%;flex:0 0 auto}
-#text-size-controls .text-size-button{display:inline-grid;place-items:center;min-width:44px;min-height:44px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:calc(18px * 1.2 * var(--user-text-scale,1));font-weight:600;line-height:1.2}
+#text-size-controls .text-size-button{display:inline-grid;place-items:center;min-width:44px;min-height:44px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:calc(18px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-weight:600;line-height:1.2}
 #text-size-controls .text-size-button:hover{background:#e9eddf}
 #text-size-controls .text-size-button:disabled{cursor:default;opacity:.45}
-#text-size-controls .text-size-value{min-width:4.5ch;text-align:center;white-space:nowrap;color:var(--ink);font-family:inherit;font-size:calc(12px * 1.2 * var(--user-text-scale,1));font-variant-numeric:tabular-nums;line-height:1.4}
+#text-size-controls .text-size-value{min-width:4.5ch;text-align:center;white-space:nowrap;color:var(--ink);font-family:inherit;font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-variant-numeric:tabular-nums;line-height:1.4}

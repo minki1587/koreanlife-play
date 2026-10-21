@@ -1,6 +1,6 @@
 import {formatMoney,spendingStatus} from './spending.mjs';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=family-estate-1';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=family-estate-1';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=daily-layout-1';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=daily-layout-1';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const hobbyFee=wan=>`${Math.round((wan||0)*10000).toLocaleString('ko-KR')}원`;

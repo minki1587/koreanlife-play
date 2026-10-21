@@ -1,5 +1,5 @@
-import {parentDeathCheck} from './family-estate.mjs?v=family-estate-1';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=family-estate-1';
+import {parentDeathCheck} from './family-estate.mjs?v=daily-layout-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=daily-layout-1';
 import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
@@ -40,12 +40,13 @@ export function advanceParentLife(s,data){
   let event=null;const mortality=parentDeathCheck(s,p,atMonth);if(mortality){p.lastMortalityCheck=mortality;if(mortality.dies){p.death=clone(mortality);p.lastOccupation=p.occupation||p.lastOccupation;p.occupation=null;p.status='deceased';p.annualIncomeWan=0;emit('death',`${birth.role} ${birth.name}님을 기억하며`);continue;}}
   if(p.status!=='retired'&&(age>=life.rules.retirementAge||(p.occupation?.limits.max!==null&&p.occupation?.limits.max!==undefined&&age>p.occupation.limits.max))){p.lastOccupation=p.occupation||p.lastOccupation;p.occupation=null;p.status='retired';event=['retirement',`${birth.role} ${birth.name}님이 은퇴했다`];}
   else if(p.status==='employed'){
-   if(draw('loss')<life.rules.monthlyLossChance){p.lastOccupation=p.occupation;p.occupation=null;p.status='unemployed';p.searchMonths=0;event=['job-loss',`${birth.role} ${birth.name}님이 다음 일을 찾기 시작했다`];}
+   if(draw('loss')<life.rules.monthlyLossChance){p.lastOccupation=p.occupation;p.occupation=null;p.status='unemployed';p.searchMonths=0;event=['job-loss',`${birth.role} ${birth.name}님이 실직해 구직을 시작했다`];}
    else if(draw('change')<life.rules.monthlyChangeChance){const options=parentJobCandidates({...s,familyLife:life},p,data).filter(j=>j.row.id!==p.occupation.id);if(options.length){const entry=options[Math.floor(draw('vacancy')*options.length)];p.lastOccupation=p.occupation;p.occupation=career(entry,p.experienceByOccupation[entry.row.id]||0,p.occupation.incomeScale,birth.residence);event=['job-change',`${birth.role} ${birth.name}님이 ${p.occupation.name}(으)로 이직했다`];}}
   }else if(p.status==='unemployed'){
    p.searchMonths++;if(draw('hire')<life.rules.monthlyHireChance){const options=parentJobCandidates({...s,familyLife:life},p,data);if(options.length){const entry=options[Math.floor(draw('vacancy')*options.length)];p.occupation=career(entry,p.experienceByOccupation[entry.row.id]||0,p.lastOccupation?.incomeScale||1,birth.residence);p.status='employed';p.searchMonths=0;event=['job-hire',`${birth.role} ${birth.name}님이 ${p.occupation.name} 일을 시작했다`];}}
   }else if(p.status==='homemaking'&&draw('search')<life.rules.monthlySearchChance){p.status='unemployed';p.searchMonths=0;event=['job-search',`${birth.role} ${birth.name}님이 구직을 시작했다`];}
   if(p.status==='employed'){const o=p.occupation;o.experienceMonths++;o.annualIncomeWan=careerModelIncome(o.model,o.experienceMonths,o.incomeScale);p.experienceByOccupation[o.id]=o.experienceMonths;p.annualIncomeWan=o.annualIncomeWan;}else p.annualIncomeWan=0;
+  if(!event&&p.status==='employed'&&p.annualIncomeWan>oldIncome)event=['wage-rise',`${birth.role} ${birth.name}님의 경력 임금이 올랐다`];
   if(event)emit(...event);
  }
  life.events=[...life.events,...events].slice(-life.rules.historyLimit);life.lastProcessedMonth=atMonth;
@@ -64,5 +65,5 @@ export function validParentLife(s){try{
   else if(p.occupation!==null||p.annualIncomeWan!==0)return false;
  }
  if(!Array.isArray(l.events)||l.events.length>l.rules.historyLimit||new Set(l.events.map(e=>e.id)).size!==l.events.length)return false;
- return l.events.every((e,i)=>str(e.id)&&Number.isInteger(e.atMonth)&&e.atMonth>l.activatedAtMonth&&e.atMonth<=s.totalMonths&&(!i||e.atMonth>=l.events[i-1].atMonth)&&f.guardians.some(g=>g.id===e.guardianId)&&['retirement','job-loss','job-hire','job-change','job-search','death'].includes(e.type)&&str(e.title)&&statuses.includes(e.fromStatus)&&statuses.includes(e.toStatus)&&typeof e.fromOccupation==='string'&&typeof e.toOccupation==='string'&&nn(e.fromAnnualIncomeWan)&&nn(e.annualIncomeWan));
+ return l.events.every((e,i)=>str(e.id)&&Number.isInteger(e.atMonth)&&e.atMonth>l.activatedAtMonth&&e.atMonth<=s.totalMonths&&(!i||e.atMonth>=l.events[i-1].atMonth)&&f.guardians.some(g=>g.id===e.guardianId)&&['retirement','job-loss','job-hire','job-change','job-search','death','wage-rise'].includes(e.type)&&str(e.title)&&statuses.includes(e.fromStatus)&&statuses.includes(e.toStatus)&&typeof e.fromOccupation==='string'&&typeof e.toOccupation==='string'&&nn(e.fromAnnualIncomeWan)&&nn(e.annualIncomeWan));
  }catch{return false;}}
