@@ -1,3 +1,4 @@
+import {currentFamilyIncome} from './parent-careers.mjs';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -36,7 +37,7 @@ export function personalLivingWan(s,{university=false}={}){
   return living+housing;
 }
 function baseline(s,living){
-  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(b.annualIncomeWan/12*r.incomeBudgetShare),home=round(b.housing.monthlyWan+(b.members-1)*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
+  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(currentFamilyIncome(s)/12*r.incomeBudgetShare),home=round(b.housing.monthlyWan+(b.members-1)*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
   return {income,home,repayment,fixed,reserve};
 }
 export function monthlyFamilyCapacity(s,{living=personalLivingWan(s),university=false}={}){
@@ -70,10 +71,10 @@ export function settleHouseholdMonth(s,{livingWan,tuitionWan,hobbyWan,personalIn
   if(h.lastProcessedMonth>=atMonth)throw new Error('이미 정산한 가구 지원 월입니다.');
   const eligible=familySupportEligible(s),opening=h.liquidAssetsWan,b=baseline(s,livingWan),m={atMonth,supportEligible:eligible,openingWan:opening,closingWan:opening,incomeWan:0,fixedPaidWan:0,fixedShortfallWan:0,livingWan:0,tuitionWan:0,allowanceWan:0,hobbyWan:0,protectionWan:0,debtRepaidWan:0,reserveWan:b.reserve};
   let pool=opening,own=Math.max(0,s.cash+personalIncomeWan-otherPersonalCostWan),tuitionFunded=true;
-  if(eligible){
+  if(eligible||s.familyLife){
     m.incomeWan=b.income;pool=round(pool+b.income);
     const homePaid=Math.min(pool,b.home);pool=round(pool-homePaid);m.fixedPaidWan=homePaid;m.fixedShortfallWan=round(b.home-homePaid);
-    m.livingWan=Math.min(pool,livingWan);pool=round(pool-m.livingWan);
+    m.livingWan=eligible?Math.min(pool,livingWan):0;pool=round(pool-m.livingWan);
     m.debtRepaidWan=Math.min(pool,b.repayment);pool=round(pool-m.debtRepaidWan);h.debtWan=round(h.debtWan-m.debtRepaidWan);m.fixedPaidWan=round(m.fixedPaidWan+m.debtRepaidWan);m.fixedShortfallWan=round(m.fixedShortfallWan+b.repayment-m.debtRepaidWan);
   }
   const ownLiving=Math.min(own,Math.max(0,livingWan-m.livingWan));own=round(own-ownLiving);
@@ -93,5 +94,5 @@ export function settleHouseholdMonth(s,{livingWan,tuitionWan,hobbyWan,personalIn
 export function householdSummary(s){
   if(!hasHouseholdSupport(s))return null;
   const h=s.householdFinance,b=familyBase(s),m=h.lastMonth;
-  return {eligible:familySupportEligible(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(b.annualIncomeWan/12*h.rules.incomeBudgetShare),monthlyHousingWan:b.housing.monthlyWan,familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
+  return {eligible:familySupportEligible(s),parentsActive:!!s.familyLife,currentAnnualIncomeWan:currentFamilyIncome(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(currentFamilyIncome(s)/12*h.rules.incomeBudgetShare),monthlyHousingWan:b.housing.monthlyWan,familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
 }

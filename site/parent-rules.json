@@ -1,0 +1,11 @@
+{
+  "version": "parent-life-1",
+  "kind": "game_assumption",
+  "retirementAge": 65,
+  "monthlyLossChance": 0.004,
+  "monthlyChangeChance": 0.003,
+  "monthlyHireChance": 0.08,
+  "monthlySearchChance": 0.008,
+  "historyLimit": 120,
+  "note": "부모·보호자의 월별 고용 전환과 65세 은퇴는 실제 고용통계나 법정 정년이 아닌 게임 규칙입니다. 은퇴 후 근로소득은 0이며 별도 연금·사망·상속은 계산하지 않습니다. 현재 나이는 출생 당시 나이에 경과 개월을 더한 기록입니다."
+}

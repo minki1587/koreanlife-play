@@ -1,5 +1,6 @@
-import {householdSummary} from './household-finance.mjs';
-import {householdFacts} from './household-views.mjs';
+import {currentParents} from './parent-careers.mjs';
+import {householdSummary} from './household-finance.mjs?v=parent-life-1';
+import {householdFacts} from './household-views.mjs?v=parent-life-1';
 import {formatMoney} from './spending.mjs';
 import {familySummary} from './birth-family.mjs';
 
@@ -13,7 +14,7 @@ export function familyLocationLabel(place,profiles){
 export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},onClose=()=>{},document=globalThis.document}={}){
   const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
   const dialog=el('dialog','family-dialog');dialog.id='family-dialog';dialog.setAttribute('aria-labelledby','family-title');
-  const top=el('div','family-dialog-top'),heading=el('h2','', '태어난 집의 이야기');heading.id='family-title';heading.tabIndex=-1;
+  const top=el('div','family-dialog-top'),heading=el('h2','', '가족의 현재와 시작');heading.id='family-title';heading.tabIndex=-1;
   const close=el('button','family-close','×');close.type='button';close.setAttribute('aria-label','가족 정보 닫기');
   const body=el('div','family-dialog-body');top.append(heading,close);dialog.append(top,body);document.body.append(dialog);
   let opener=null;
@@ -22,7 +23,7 @@ export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},on
   function render(f){
     body.replaceChildren();
     if(!f){body.append(el('p','family-empty','이전 삶에는 출생 가족 정보가 저장되지 않았습니다. 새 삶부터 가족 배경을 확인할 수 있습니다.'));return;}
-    const state=getState(),live=state?.profile?.birthFamily?.fingerprint===f.fingerprint?householdSummary(state):null;if(live){body.append(card('현재 가구 지원 계정',householdFacts(state)));body.append(el('p','family-note','가구 금융자산은 실제 지원 때 줄고 소득 예산의 잔액은 남습니다. 주택·보증금은 현금화하지 않습니다. 지원 정산은 미성년 기간과 만 28세 이하 대학 재학·학비 준비 기간에 적용하며, 복무 중에는 멈춥니다.'));}
+    const state=getState(),sameFamily=state?.profile?.birthFamily?.fingerprint===f.fingerprint;if(sameFamily&&state.familyLife){const current=el('section','family-current');current.id='family-current';current.append(el('h3','',`현재 부모·보호자 · ${state.age}세 ${state.month}개월의 가족`));const people=el('div','family-people');for(const p of currentParents(state)){people.append(card(`${p.role} · ${p.name}`, [['현재 나이',`${p.age}세 ${p.month}개월`],['현재 상태',p.statusLabel],['현재 직업',p.occupation?.name||'근로 직업 없음'],['연 근로소득 · 게임 추정',money(p.annualIncomeWan)],['월 근로소득 · 게임 추정',money(p.annualIncomeWan/12)],['학력',p.education.label],...(p.occupation?[['직무 경력',`${Math.floor(p.occupation.experienceMonths/12)}년 ${p.occupation.experienceMonths%12}개월`],['근무형태',p.occupation.employmentType],['근무지',familyLocationLabel(p.occupation.workplace,profiles)]]:[])]));}current.append(people);const events=state.familyLife.events.slice(-10).reverse();current.append(el('h3','', '최근 가족의 변화'));if(events.length){const list=el('ul','family-career-history');for(const e of events)list.append(el('li','',`${Math.floor(e.atMonth/12)}세 ${e.atMonth%12}개월 · ${e.title} · 연 근로소득 ${money(e.annualIncomeWan)}`));current.append(list);}else current.append(el('p','family-note','이 시점부터 부모의 고용 변화를 기록합니다.'));current.append(el('p','family-note','나이는 매달 증가합니다. 취업·실직·이직 확률과 65세 은퇴는 게임 규칙이며 실제 고용통계·법정 정년이 아닙니다. 은퇴하면 근로소득은 종료됩니다.'));body.append(current);}const live=state?.profile?.birthFamily?.fingerprint===f.fingerprint?householdSummary(state):null;if(live){body.append(card('현재 가구 지원 계정',householdFacts(state)));body.append(el('p','family-note','가구 금융자산은 실제 지원 때 줄고 소득 예산의 잔액은 남습니다. 주택·보증금은 현금화하지 않습니다. 자녀 지원은 미성년 기간과 만 28세 이하 대학 재학·학비 준비 기간에 적용하며, 복무 중에는 멈춥니다. 부모 생애가 시작된 기록은 자녀 지원이 없는 달에도 가구 소득·기본 지출을 정산합니다.'));}
     const tag=el('p','family-kicker','출생 당시의 가족 기록'),summary=el('p','family-summary',familySummary(f));body.append(tag,summary);
     const people=el('div','family-people');
     for(const g of f.guardians){
