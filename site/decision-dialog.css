@@ -9,9 +9,9 @@
 .decision-reminder{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 16px;margin:0 0 18px;border:1px solid #b5c6a8;border-radius:8px;background:#edf2e6}
 .decision-reminder span{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6}
 .decision-reminder button{min-height:44px}
-.daily-stats>div{flex-direction:row;align-items:baseline;gap:6px}
+.daily-stats>div{position:relative;flex-direction:row;align-items:baseline;gap:6px}
 .daily-stats>div>span,.daily-stats>div>strong{white-space:nowrap}
-.daily-stats meter{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);border:0}
+.daily-stats meter{position:absolute;left:0;top:0;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);border:0}
 .daily-life-panel .focus-panel{display:block}
 .daily-life-panel .focus-group{padding-block:0 5px}
 @media(max-width:480px){
