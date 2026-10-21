@@ -6,9 +6,9 @@
     "timezone": "Asia/Seoul",
     "label": "매주 화요일 오전 9시"
   },
-  "lastCheckedAt": null,
+  "lastCheckedAt": "2026-10-21T17:07:22+00:00",
   "lastUpdatedAt": null,
-  "result": "not-yet-run",
+  "result": "unchanged",
   "observedScope": {
     "sourceIds": [
       "15119096",
@@ -38,19 +38,19 @@
       "id": "15119096",
       "sha256": "8de57e672cf8107c20dfd1b48479d15d9c57ced77998d0c8a54b191cfe416686",
       "sourceModified": "2025-08-01",
-      "checkedAt": null
+      "checkedAt": "2026-10-21T17:07:22+00:00"
     },
     {
       "id": "15119098",
       "sha256": "e52551a14b191fcc62946ba6a2d1f3a7423825e65d9f1354e2002484b3a38d1b",
       "sourceModified": "2025-11-04",
-      "checkedAt": null
+      "checkedAt": "2026-10-21T17:07:22+00:00"
     },
     {
       "id": "15122500",
       "sha256": "080b7193652f01af0e3aa994a9419e4583ea313ad5604a3b04547f862f2bc9b6",
       "sourceModified": "2025-08-12",
-      "checkedAt": null
+      "checkedAt": "2026-10-21T17:07:22+00:00"
     }
   ],
   "limitations": [
