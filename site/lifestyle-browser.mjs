@@ -1,8 +1,8 @@
-import {militarySavingsSummary} from './military-savings.mjs?v=economy-ui-1';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=economy-ui-1';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=economy-ui-1';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=economy-ui-1';
-import {createPixelIcon} from './pixel-icons.mjs?v=economy-ui-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=economy-ui-2';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=economy-ui-2';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=economy-ui-2';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=economy-ui-2';
+import {createPixelIcon} from './pixel-icons.mjs?v=economy-ui-2';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const hobbyFee=wan=>`${Math.round((wan||0)*10000).toLocaleString('ko-KR')}원`;

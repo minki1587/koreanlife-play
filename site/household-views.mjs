@@ -1,7 +1,7 @@
-import {estateSummary} from './family-estate.mjs?v=economy-ui-1';
-import {currentParents} from './parent-careers.mjs?v=economy-ui-1';
-import {householdSummary} from './household-finance.mjs?v=economy-ui-1';
-import {formatMoney} from './spending.mjs?v=economy-ui-1';
+import {estateSummary} from './family-estate.mjs?v=economy-ui-2';
+import {currentParents} from './parent-careers.mjs?v=economy-ui-2';
+import {householdSummary} from './household-finance.mjs?v=economy-ui-2';
+import {formatMoney} from './spending.mjs?v=economy-ui-2';
 export function householdFacts(s){
  const h=householdSummary(s);if(!h)return [];
  const m=h.lastMonth,estate=estateSummary(s);

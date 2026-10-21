@@ -2,6 +2,7 @@
 const clauses=value=>String(value??'').split(/\s+·\s+(?![^()]*\))|\n+/u);
 function cleanClause(value){
  const disclaimer=sentence=>
+  /출생지역은[^.。]*가구 배경과 초기 여유자금은 가상 설정이다/u.test(sentence)||
   /실제[^.。]*(?:아닙니다|아니다|아님|아니며|뜻하지 않|나타내지 않|예측하지 않|예측하지 않는다|판정하지 않|재현하지 않|부여하지 않|대체하지 않|포함하지 않|결과가 아니다|자동 발급되지 않|자동 취득하지 않)/u.test(sentence)||
   /(?:실측|전국[^.。]*평균)[^.。]*(?:아님|아니|않)/u.test(sentence)||
   /(?:임금·생활비·점수·사건|합격식·입학 연령·비용·학습 효과)[^.。]*(?:가상 규칙|게임 설정)/u.test(sentence)||

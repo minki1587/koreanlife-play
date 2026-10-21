@@ -1,8 +1,8 @@
-import {formatMoney} from './spending.mjs?v=economy-ui-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economy-ui-1';
-import {searchOccupations} from './career-browser.mjs?v=economy-ui-1';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=economy-ui-1';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=economy-ui-1';
+import {formatMoney} from './spending.mjs?v=economy-ui-2';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economy-ui-2';
+import {searchOccupations} from './career-browser.mjs?v=economy-ui-2';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=economy-ui-2';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=economy-ui-2';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));
