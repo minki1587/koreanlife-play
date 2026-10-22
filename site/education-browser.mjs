@@ -1,7 +1,7 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=private-school-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=private-school-1';
-import {formatMoney} from './spending.mjs?v=private-school-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=private-school-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=life-improvements-1';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=life-improvements-1';
+import {formatMoney} from './spending.mjs?v=life-improvements-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=life-improvements-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -11,11 +11,16 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
  const top=el('div',undefined,'dialog-top'),heading=el('h2','학교·대학 지원');heading.id='education-title';heading.tabIndex=-1;
  const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','학교 지원 창 닫기');top.append(heading,close);
  const summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(top,summary,status,body);document.body.append(dialog);
- let mode='school',universityPath='university',filters={ownership:'',location:'',field:''};
+ let mode='overview',universityPath='university',filters={ownership:'',location:'',field:''};
  const act=(callback,id)=>completeModalAction(dialog,status,callback,id,'지원 조건을 확인해주세요.');
  const fundingFacts=(host,funding)=>facts(host,[['월 학비',formatMoney(funding.monthlyTuitionWan)],['가족 지원 예상',formatMoney(funding.familyMonthlyWan)],['월 내 준비액',formatMoney(funding.personalMonthlyWan)],...(funding.commitmentMonths?[['예산 확인 기간',`${funding.commitmentMonths}개월`]]:[])],'education-facts funding-note');
  function render(){
   const s=getState();summary.replaceChildren(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['배움',`${Math.round(s.learn)}/100`],['학업',s.education]]);body.replaceChildren();
+  if(mode==='overview'){
+   const school=schoolManagementSummary(s,data);body.append(el('h3','나의 학업'));
+   facts(body,[['현재 과정',school.currentName],...(school.stage?[['이수 기간',`${school.progressMonths}/${school.durationMonths}개월`],['남은 과정',`${school.remainingMonths}개월`],['배움 보너스',`연 +${school.annualLearningBonus.toFixed(2)}`],...(school.annualBondBonus?[['관계 보너스',`연 +${school.annualBondBonus.toFixed(2)}`]]:[]),...(school.annualJoyBonus?[['만족 보너스',`연 +${school.annualJoyBonus.toFixed(2)}`]]:[]),['연 등록금',formatMoney(school.annualTuitionWan)]]:[]),['다음 입학',`${school.nextEntry.label} · ${school.nextEntry.age}세`],['남은 시간',school.nextEntry.remainingMonths?`${school.nextEntry.remainingMonths}개월`:'해당 입학 갈림길에서 선택']]);
+   list(body,[school.stage?'재학 기간에 맞춰 매달 배움이 쌓입니다.':'입학 시기가 되면 학교를 선택하는 갈림길이 열립니다.']);return;
+  }
   const household=householdSummary(s);
   if(household&&!(mode==='university'&&(universityPath==='academy'||s.academy))){facts(body,[['내 소지금',formatMoney(s.cash)],['가구 금융자산',formatMoney(household.liquidAssetsWan)],['월 추가 지원 여력',formatMoney(household.familyMonthlyCapacityWan)]],'education-facts funding-note');list(body,['유료 학비는 생활비·주거비와 준비금을 제외한 12개월 예산을 확인합니다.','부모의 취업·실직·이직·은퇴·사망에 따라 지원액이 달라집니다.']);}
   if(mode==='university'&&s.academy){
@@ -48,7 +53,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
   const cards=el('div',undefined,'education-options');
   for(const row of options){
    const card=el('article',undefined,'life-tool-detail');card.append(el('h3',displayLines(row.label||row.name).at(-1)));
-   facts(card,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[]),['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],...(mode==='school'?[['배움 보너스',`연 +${row.annualLearningBonus.toFixed(2)}`]]:[]),['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)],...(row.academy?[['건강 기준',`${row.healthThreshold}/100`],['현재 건강',`${Math.round(s.health)}/100`],['재학 지원','학비·숙식 제공'],['졸업 후',`${row.branchLabel} 장교 경로`]]:[])]);
+   facts(card,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[]),['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],...(mode==='school'?[['배움 보너스',`연 +${row.annualLearningBonus.toFixed(2)}`],...(row.annualBondBonus?[['관계 보너스',`연 +${row.annualBondBonus.toFixed(2)}`]]:[]),...(row.annualJoyBonus?[['만족 보너스',`연 +${row.annualJoyBonus.toFixed(2)}`]]:[])]:[]),['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)],...(row.academy?[['건강 기준',`${row.healthThreshold}/100`],['현재 건강',`${Math.round(s.health)}/100`],['재학 지원','학비·숙식 제공'],['졸업 후',`${row.branchLabel} 장교 경로`]]:[])]);
    const b=button(row.academy?'이 사관학교에 지원하기':mode==='university'?'이 대학 과정에 지원하기':'이 학교에 지원하기',()=>act(mode==='university'?onUniversity:onSchool,row.id),'life-tool-button life-tool-primary');b.disabled=!row.eligible;card.append(b);
    if(row.funding&&!row.funding.legacy)fundingFacts(card,row.funding);list(card,row.reasons||[],'education-notes life-tool-blocked');cards.append(card);
   }
@@ -56,5 +61,5 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
   if(mode==='university'&&s.pendingDecision==='education')body.append(button('대학 진학을 미루고 경험 쌓기',()=>act(onDefer),'life-tool-button'));
  }
  dialog.addEventListener('close',()=>onClose?.());dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
- return{get isOpen(){return dialog.open;},open(which='school'){mode=which;status.textContent='';onOpen?.();render();if(!dialog.open)dialog.showModal();heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
+ return{get isOpen(){return dialog.open;},open(which){const s=getState();which??=['school-primary','school-middle','school-high'].includes(s.pendingDecision)?'school':s.age<19||s.schoolJourney?.current?'overview':'university';mode=which==='university'&&(s.age<19||s.schoolJourney?.current)?'overview':which;heading.textContent=mode==='overview'?'학업 관리':'학교·대학 지원';status.textContent='';onOpen?.();render();if(!dialog.open)dialog.showModal();heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
 }

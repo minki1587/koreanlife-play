@@ -1,8 +1,10 @@
-import {validSave,VERSION} from './engine.mjs?v=private-school-1';
-import {validCareerModel} from './career-economy.mjs?v=private-school-1';
+import {validSave,VERSION} from './engine.mjs?v=life-improvements-1';
+import {validCareerModel} from './career-economy.mjs?v=life-improvements-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=life-improvements-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';
+export const PREVIOUS_BACKUP_KEY=SAVE_KEY+'-previous';
 export const JOURNAL_KEY=SAVE_KEY+'-import-journal-v1';
 export const MAX_SAVE_FILE_BYTES=8*1024*1024;
 export const MAX_SAVE_DEPTH=64;
@@ -82,7 +84,10 @@ function downloadDescriptor(raw,fileName){
  return{text:raw,raw,fileName,mimeType:'application/json',bytes:bytes(raw),valid,life};
 }
 /** Return the exact stored bytes, even for a damaged backup that must be preserved. */
-export function createBackupDownload(storage,{key=SAVE_KEY}={}){const raw=get(storage,key);return raw===null?null:downloadDescriptor(raw,key===SAVE_KEY?'koreanlife-current-backup-v2.json':'koreanlife-previous-backup-v2.json');}
+export function createBackupDownload(storage,{key=SAVE_KEY}={}){const raw=get(storage,key);return raw===null?null:downloadDescriptor(raw,key===SAVE_KEY?'koreanlife-current-backup-v2.json':key===IMPORT_BACKUP_KEY?'koreanlife-import-backup-v2.json':'koreanlife-previous-backup-v2.json');}
+/** Both independent backup slots remain visible. Undated legacy files are not
+ * assigned a timestamp using character age or the time this menu was opened. */
+export function listStoredBackups(storage){return [[PREVIOUS_BACKUP_KEY,'이전 삶의 기록'],[IMPORT_BACKUP_KEY,'불러오기 전 기록']].flatMap(([key,label])=>{const copy=createBackupDownload(storage,{key});return copy?[{...copy,key,label,savedAt:storedSaveMetadata(copy.text)?.savedAt??null}]:[];}).sort((a,b)=>a.savedAt&&b.savedAt?Date.parse(b.savedAt)-Date.parse(a.savedAt):a.savedAt?-1:b.savedAt?1:0);}
 
 function readJournal(storage){
  const raw=get(storage,JOURNAL_KEY);if(raw===null)return null;
@@ -110,10 +115,12 @@ export function getPendingRecoveryDownloads(storage){const journal=readJournal(s
  * A prepared journal is rolled back on the next startup; a committed journal is
  * only cleaned up, so later gameplay is never reverted after a successful import.
  */
-export function commitSaveTransfer(storage,preview,{confirmed=false,life:preparedLife}={}){
+export function commitSaveTransfer(storage,preview,{confirmed=false,life:preparedLife,saveMetadata,expectedPrimary}={}){
  const record=previews.get(preview);if(!record)fail('IMPORT_PREVIEW_INVALID','먼저 진행 기록 파일을 확인해 주세요.');
  if(confirmed!==true)fail('IMPORT_CONFIRMATION_REQUIRED','미리보기를 확인한 뒤 ‘불러와 이어하기’를 눌러 주세요.');
- const life=structuredClone(preparedLife??record.life);checkLife(life);const settings={paused:true,speed:record.settings.speed},nextPrimary=JSON.stringify({life,settings});
+ if(saveMetadata!==undefined&&(!plain(saveMetadata)||!Number.isSafeInteger(saveMetadata.revision)||saveMetadata.revision<1||typeof saveMetadata.writer!=='string'||!validSavedAt(saveMetadata.savedAt)))fail('SAVE_METADATA_INVALID','저장 시각과 개정 정보를 확인하지 못했습니다.');
+ if(expectedPrimary!==undefined&&get(storage,SAVE_KEY)!==expectedPrimary)fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 최신 기록을 다시 확인해 주세요.');
+ const life=structuredClone(preparedLife??record.life);checkLife(life);const settings={paused:true,speed:record.settings.speed},nextPrimary=JSON.stringify({life,settings,...(saveMetadata?{saveMetadata}:{})});
  if(bytes(nextPrimary)>MAX_SAVE_FILE_BYTES)fail('FILE_TOO_LARGE','준비한 진행 기록이 저장 크기 제한을 넘었습니다.');
  if(get(storage,JOURNAL_KEY)!==null)fail('STORAGE_PENDING','중단된 불러오기 복구를 먼저 완료해 주세요.',{recoveryRequired:true});
  if(record.sourceKey&&get(storage,record.sourceKey)!==record.sourceText)fail('STORAGE_CHANGED','확인한 백업이 다른 탭에서 바뀌었습니다. 미리보기를 다시 열어 주세요.');

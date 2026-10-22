@@ -5,7 +5,7 @@ function facts(host,life){
  for(const [label,value] of [['이름',life.name],['나이',`${life.age}세 ${life.month}개월`],['직업',life.job.title],['거주지',`${life.residence.region} · ${life.residence.city}`],['진행 상태',life.phase==='ended'?'종료된 삶':life.phase==='decision'?'갈림길 선택 대기':'이어서 진행 가능']]){const row=el('div');row.append(el('dt',label),el('dd',String(value)));list.append(row);}
  host.replaceChildren(list);
 }
-export function createSaveTransferBrowser({prepareFile,onImport,getBackup,onRestore,onDownloadBackup,getRecoveryDownloads,getRecoveryError,onDownloadRecovery,onOpen,onClose}){
+export function createSaveTransferBrowser({prepareFile,onImport,getBackup,getBackups,onRestore,onDownloadBackup,getRecoveryDownloads,getRecoveryError,onDownloadRecovery,onOpen,onClose}){
  const dialog=el('dialog',undefined,'life-tools-dialog save-transfer-dialog');dialog.id='save-transfer-dialog';dialog.setAttribute('aria-labelledby','save-transfer-title');
  const top=el('div',undefined,'dialog-top'),title=el('h2','진행 기록 불러오기');title.id='save-transfer-title';title.tabIndex=-1;
  const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','기록 불러오기 창 닫기');top.append(title,close);
@@ -18,16 +18,25 @@ export function createSaveTransferBrowser({prepareFile,onImport,getBackup,onRest
  const confirm=button('불러와 이어하기',async()=>{if(!prepared||working)return;working=true;setBusy();try{await onImport(prepared);dialog.close();}catch(e){error.textContent=e?.message||'기록을 불러오지 못했습니다. 기존 기록은 유지합니다.';}finally{working=false;setBusy();}},'primary');confirm.id='save-import-confirm';confirm.disabled=true;
  const cancel=button('취소',()=>dialog.close());actions.append(confirm,cancel);
  const note=el('p','불러오기를 확정하면 현재 기록을 먼저 백업합니다. 새 기록은 일시정지 상태로 열립니다. 다른 기기에서는 현재 기기의 파일을 직접 옮겨 선택해 주세요.','small');
- const backup=el('section',undefined,'save-backup-section'),backupTitle=el('h3','기존 저장 백업'),backupText=el('p');backupText.id='save-backup-description';
- const backupActions=el('div',undefined,'save-transfer-actions');
- const download=button('백업 파일 내려받기 ↓',()=>{try{onDownloadBackup();status.textContent='기존 저장 백업을 파일로 보관했습니다.';}catch(e){error.textContent=e?.message||'백업 파일을 확인할 수 없습니다.';}});download.id='save-backup-download';
- const restore=button('백업 복원하기',async()=>{if(working)return;working=true;setBusy();try{await onRestore();dialog.close();}catch(e){error.textContent=e?.message||'백업을 복원하지 못했습니다. 현재 기록은 유지합니다.';}finally{working=false;setBusy();}});restore.id='save-backup-restore';
- backupActions.append(download,restore);backup.append(backupTitle,backupText,backupActions,el('p','복원할 때도 현재 기록을 백업해 다시 돌아올 수 있습니다. 백업은 이 기기에만 보관되므로 필요한 파일은 직접 내려받아 주세요.','small'));
+ const backup=el('section',undefined,'save-backup-section'),backupTitle=el('h3','기존 저장 백업'),backupText=el('p'),backupRows=el('div');backupText.id='save-backup-description';
+ backup.append(backupTitle,backupText,backupRows,el('p','저장일이 있는 최신 백업부터 표시합니다. 복원할 때도 현재 기록을 백업합니다. 백업은 이 기기에만 보관되므로 필요한 파일은 직접 내려받아 주세요.','small'));
  const recovery=el('section',undefined,'save-backup-section');recovery.id='save-recovery-files';recovery.hidden=true;
  body.append(intro,label,input,status,error,preview,note,actions,backup,recovery);dialog.append(top,body);document.body.append(dialog);
- let prepared=null,working=false,token=0,backupInfo=null;
- function setBusy(){confirm.disabled=working||!prepared;input.disabled=working;restore.disabled=working||!backupInfo?.valid;download.disabled=working||!backupInfo?.raw;cancel.disabled=working;close.disabled=working;}
- function refreshBackup(){backupInfo=getBackup();backupText.textContent=backupInfo?.life?`${backupInfo.life.name} · ${backupInfo.life.age}세 ${backupInfo.life.month}개월`:backupInfo?.raw?'백업 파일을 내려받을 수 있습니다. 현재 버전에서 검증되지 않아 복원은 제한합니다.':'아직 백업한 기록이 없습니다.';recovery.replaceChildren();const copies=getRecoveryDownloads?.()||[];recovery.hidden=!copies.length;if(copies.length){recovery.append(el('h3','중단 전 기록 보관'));for(const [i,copy]of copies.entries())recovery.append(button(`복구용 원본 ${i+1} 내려받기 ↓`,()=>onDownloadRecovery(copy)));}setBusy();}
+ let prepared=null,working=false,token=0,backupButtons=[];
+ function setBusy(){confirm.disabled=working||!prepared;input.disabled=working;for(const row of backupButtons){row.restore.disabled=working||!row.info.valid;row.download.disabled=working||!row.info.raw;}cancel.disabled=working;close.disabled=working;}
+ function refreshBackup(){
+  const infos=getBackups?.()??[getBackup?.()].filter(Boolean);backupButtons=[];backupRows.replaceChildren();backupText.textContent=infos.length?'복원할 기록을 선택해 주세요.':'아직 백업한 기록이 없습니다.';
+  for(const [index,info]of infos.entries()){
+   const card=el('article',undefined,'save-backup-section');card.dataset.backupKey=info.key||'';const heading=el('h4',`${index===0&&info.savedAt?'최근 백업 · ':''}${info.label||'저장 백업'}`),details=el('ul');
+   if(info.life)details.append(el('li',`이름: ${info.life.name}`),el('li',`나이: ${info.life.age}세 ${info.life.month}개월`));else details.append(el('li','현재 버전에서 검증되지 않아 복원은 제한합니다. 원본 파일은 내려받을 수 있습니다.'));
+   details.append(el('li',`저장일: ${info.savedAt?new Date(info.savedAt).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}):'미기록'}`));
+   const actions=el('div',undefined,'save-transfer-actions');
+   const download=button('백업 파일 내려받기 ↓',()=>{try{onDownloadBackup(info.key);status.textContent='선택한 백업을 파일로 보관했습니다.';}catch(e){error.textContent=e?.message||'백업 파일을 확인할 수 없습니다.';}});download.id=`save-backup-download${index?'-'+index:''}`;
+   const restore=button('백업 복원하기',async()=>{if(working)return;working=true;setBusy();try{await onRestore(info.key);dialog.close();}catch(e){error.textContent=e?.message||'백업을 복원하지 못했습니다. 현재 기록은 유지합니다.';}finally{working=false;setBusy();}});restore.id=`save-backup-restore${index?'-'+index:''}`;
+   actions.append(download,restore);card.append(heading,details,actions);backupRows.append(card);backupButtons.push({info,download,restore});
+  }
+  recovery.replaceChildren();const copies=getRecoveryDownloads?.()||[];recovery.hidden=!copies.length;if(copies.length){recovery.append(el('h3','중단 전 기록 보관'));for(const [i,copy]of copies.entries())recovery.append(button(`복구용 원본 ${i+1} 내려받기 ↓`,()=>onDownloadRecovery(copy)));}setBusy();
+ }
  input.addEventListener('change',async()=>{const ticket=++token,file=input.files?.[0];prepared=null;preview.hidden=true;preview.replaceChildren();error.textContent='';if(!file){status.textContent='';setBusy();return;}working=true;status.textContent='파일을 확인하고 있습니다.';setBusy();try{const next=await prepareFile(file);if(ticket!==token||!dialog.open)return;prepared=next;facts(preview,next.life);preview.hidden=false;status.textContent=`${file.name} · 기록 확인 완료. 내용을 확인하고 불러오기를 눌러 주세요.`;}catch(e){if(ticket===token)error.textContent=e?.message||'파일을 확인하지 못했습니다. 기존 기록은 유지합니다.';}finally{if(ticket===token){working=false;if(!prepared)status.textContent='';setBusy();}}});
  dialog.addEventListener('cancel',e=>{if(working)e.preventDefault();});
  dialog.addEventListener('close',()=>{token++;working=false;prepared=null;input.value='';onClose?.();});

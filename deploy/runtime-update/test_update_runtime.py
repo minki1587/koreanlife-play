@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 import public_occupations as parser
 import update_runtime as updater
+import runtime_catalog
 
 
 def csv_bytes(headers, rows):
@@ -25,7 +26,12 @@ def zip_bytes(files):
     output = io.BytesIO()
     with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
         for name, raw in files.items():
-            archive.writestr(name, raw)
+            # Source identity in these fixtures describes payload changes, not
+            # the wall clock of the test run. ZIP's implicit current timestamp
+            # otherwise creates false updates across a two-second boundary.
+            info = zipfile.ZipInfo(name, date_time=(2023, 8, 18, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            archive.writestr(info, raw)
     return output.getvalue()
 
 
@@ -97,7 +103,17 @@ class RuntimeUpdaterTests(unittest.TestCase):
         collect_all(self.original_data, source_fixture())
         self.catalog = parser.build_catalog(self.original_data)
         for index, row in enumerate(self.catalog['occupations']):
-            row['modeled'] = {'protected': {'profession': index, 'salary': 1234, 'risk': ['reviewed']}}
+            row['modeled'] = {'protected': {'profession': index, 'salary': 1234, 'risk': ['reviewed']},
+                              'status': 'model_estimate', 'modelVersion': 'offline-reviewed-v1',
+                              'groupId': 'know-middle-01', 'sourceIds': ['reviewed-model'],
+                              'salary': {'averageAnnualWan': 1234},
+                              'careerWage': {'stages': [{'minYears': 0, 'annualWan': 1000, 'label': '초기 경력'},
+                                                       {'minYears': 5, 'annualWan': 1500, 'label': '숙련 경력'}]},
+                              'employmentType': {'types': [{'label': '정규직'}]},
+                              'workingTime': {'weeklyHours': 40, 'shift': {'likelihood': 'low'}},
+                              'workAbilities': {'levels': {'analytical': 50, 'communication': 50,
+                                                          'physical': 50, 'precision': 50, 'digital': 50}},
+                              'occupationalRisks': {'level': 1, 'tags': ['reviewed']}}
             row['education']['required'] = {'protectedProfessionalRoute': index}
             row['professionalRequirements'] = {'license': 'reviewed-' + str(index)}
             row['salary']['average'] = 1234
@@ -107,6 +123,7 @@ class RuntimeUpdaterTests(unittest.TestCase):
         self.catalog['modelMethodology'] = {'protected': True}
         self.catalog['coverage']['protectedProfessionalCount'] = 12
         (self.site / 'occupations.json').write_bytes(updater.blob(self.catalog))
+        (self.site / updater.RUNTIME_CATALOG_FILE).write_bytes(runtime_catalog.render(updater.blob(self.catalog)))
         (self.site / updater.STATUS_FILE).write_bytes(updater.blob(updater.initial_status(self.catalog)))
         (self.site / 'game-data.json').write_bytes(b'{"birthGeography":2025}')
         (self.site / 'mortality.json').write_bytes(b'{"approvedSnapshot":true}')
@@ -150,6 +167,9 @@ class RuntimeUpdaterTests(unittest.TestCase):
             updater.collect_source({'id': '15097972'}, self.root / 'rejected', 'now', fetcher)
 
     def test_unchanged_run_keeps_exact_catalog_and_does_not_claim_an_update(self):
+        for raw in (source_fixture()['15119096'], source_fixture()['15119098']):
+            with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                self.assertTrue(all(info.date_time == (2023, 8, 18, 0, 0, 0) for info in archive.infolist()))
         catalog_before = (self.site / 'occupations.json').read_bytes()
         updates, marker, status = self.stage(source_fixture())
         self.assertEqual(set(updates), {updater.STATUS_FILE})
@@ -162,7 +182,7 @@ class RuntimeUpdaterTests(unittest.TestCase):
     def test_changed_observations_preserve_every_professional_model_and_birth_death_file(self):
         preserved = {name: (self.site / name).read_bytes() for name in ('game-data.json', 'mortality.json')}
         updates, marker, status = self.stage(source_fixture(wage_delta=500, grade_delta=2))
-        self.assertEqual(set(updates), {'occupations.json', updater.STATUS_FILE})
+        self.assertEqual(set(updates), {'occupations.json', updater.RUNTIME_CATALOG_FILE, updater.STATUS_FILE})
         self.assertEqual(status['result'], 'updated')
         self.assertEqual(status['lastUpdatedAt'], '2026-10-23T00:00:00+00:00')
         updated = json.loads(updates['occupations.json'])
@@ -187,10 +207,15 @@ class RuntimeUpdaterTests(unittest.TestCase):
             self.assertEqual(updated[key], self.catalog[key])
         updater.commit_update(self.site, self.marker, updates, marker)
         updater.verify_export_marker(self.site, self.marker)
+        runtime = json.loads((self.site / updater.RUNTIME_CATALOG_FILE).read_bytes())
+        self.assertEqual(runtime['sourceCatalog']['sha256'], updater.digest((self.site / 'occupations.json').read_bytes()))
+        self.assertEqual(len(runtime['occupations']), 537)
+        for source_row, compact in zip(updated['occupations'], runtime['occupations']):
+            self.assertEqual(runtime_catalog.model_snapshot(source_row), runtime_catalog.model_snapshot(compact))
         for name, raw in preserved.items():
             self.assertEqual((self.site / name).read_bytes(), raw)
         self.assertEqual({path.name for path in self.site.iterdir()},
-                         {'occupations.json', updater.STATUS_FILE, 'game-data.json', 'mortality.json'})
+                         {'occupations.json', updater.RUNTIME_CATALOG_FILE, updater.STATUS_FILE, 'game-data.json', 'mortality.json'})
         self.assertNotIn('rawPath', next(source for source in updated['sources'] if source['id'] == '15122500'))
 
     def test_same_updated_source_on_later_check_preserves_last_updated_time(self):
@@ -219,18 +244,75 @@ class RuntimeUpdaterTests(unittest.TestCase):
             updater.commit_update(self.site, self.marker, {'game-data.json': b'not allowed'}, b'{}')
         updates, marker, _ = self.stage(source_fixture(wage_delta=500))
         before = {path: path.read_bytes() for path in [*self.site.iterdir(), self.marker]}
-        original_replace, calls = updater.os.replace, []
+        original_replace = updater.os.replace
+        for failure_at in (2, 3, 4):
+            calls = []
 
-        def fail_second(source, target):
-            calls.append(target)
-            if len(calls) == 2:
-                raise OSError('simulated disk failure')
+            def fail_write(source, target):
+                calls.append(target)
+                if len(calls) == failure_at:
+                    raise OSError('simulated disk failure')
+                return original_replace(source, target)
+
+            with patch.object(updater.os, 'replace', side_effect=fail_write), self.assertRaises(OSError):
+                updater.commit_update(self.site, self.marker, updates, marker)
+            self.assertEqual({path: path.read_bytes() for path in before}, before)
+            self.assertFalse(list(self.site.glob('*.update-tmp')))
+
+    def test_missing_or_stale_compact_is_repaired_without_claiming_new_observations(self):
+        source_before = (self.site / 'occupations.json').read_bytes()
+        for damaged in (None, b'{"sourceCatalog":{"sha256":"stale"}}'):
+            if damaged is None:
+                (self.site / updater.RUNTIME_CATALOG_FILE).unlink()
+            else:
+                (self.site / updater.RUNTIME_CATALOG_FILE).write_bytes(damaged)
+            updates, marker, status = self.stage(source_fixture())
+            self.assertEqual(set(updates), {updater.RUNTIME_CATALOG_FILE, updater.STATUS_FILE})
+            self.assertEqual(status['result'], 'unchanged')
+            self.assertIsNone(status['lastUpdatedAt'])
+            self.assertTrue(status['derivedRuntime']['refreshed'])
+            self.assertEqual(updates[updater.RUNTIME_CATALOG_FILE], runtime_catalog.render(source_before))
+            updater.commit_update(self.site, self.marker, updates, marker)
+            updater.verify_export_marker(self.site, self.marker)
+            self.assertEqual((self.site / 'occupations.json').read_bytes(), source_before)
+
+    def test_legacy_export_without_compact_can_add_only_the_derived_file(self):
+        (self.site / updater.RUNTIME_CATALOG_FILE).unlink()
+        self.mark()
+        updates, marker, _ = self.stage(source_fixture())
+        self.assertEqual(set(updates), {updater.RUNTIME_CATALOG_FILE, updater.STATUS_FILE})
+        updater.commit_update(self.site, self.marker, updates, marker)
+        updater.verify_export_marker(self.site, self.marker)
+
+    def test_source_cannot_commit_without_matching_compact_or_with_wrong_source_sha(self):
+        updates, marker, _ = self.stage(source_fixture(wage_delta=500))
+        before = {path: path.read_bytes() for path in [*self.site.iterdir(), self.marker]}
+        missing = dict(updates)
+        missing.pop(updater.RUNTIME_CATALOG_FILE)
+        with self.assertRaises(ValueError):
+            updater.commit_update(self.site, self.marker, missing, marker)
+        wrong = dict(updates)
+        wrong[updater.RUNTIME_CATALOG_FILE] = runtime_catalog.render(before[self.site / 'occupations.json'])
+        with self.assertRaises(ValueError):
+            updater.commit_update(self.site, self.marker, wrong, marker)
+        self.assertEqual({path: path.read_bytes() for path in before}, before)
+
+    def test_new_derived_file_is_removed_if_marker_commit_fails(self):
+        (self.site / updater.RUNTIME_CATALOG_FILE).unlink()
+        self.mark()
+        updates, marker, _ = self.stage(source_fixture(wage_delta=500))
+        before = {path: path.read_bytes() for path in [*self.site.iterdir(), self.marker]}
+        original_replace = updater.os.replace
+
+        def fail_marker(source, target):
+            if target == self.marker:
+                raise OSError('simulated marker failure')
             return original_replace(source, target)
 
-        with patch.object(updater.os, 'replace', side_effect=fail_second), self.assertRaises(OSError):
+        with patch.object(updater.os, 'replace', side_effect=fail_marker), self.assertRaises(OSError):
             updater.commit_update(self.site, self.marker, updates, marker)
+        self.assertFalse((self.site / updater.RUNTIME_CATALOG_FILE).exists())
         self.assertEqual({path: path.read_bytes() for path in before}, before)
-        self.assertFalse(list(self.site.glob('*.update-tmp')))
 
     def test_initial_status_reports_frozen_snapshots_and_no_invented_check_time(self):
         status = updater.initial_status(self.catalog)

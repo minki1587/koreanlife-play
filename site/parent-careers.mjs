@@ -1,6 +1,6 @@
-import {parentDeathCheck} from './family-estate.mjs?v=private-school-1';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=private-school-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=private-school-1';
+import {parentDeathCheck} from './family-estate.mjs?v=life-improvements-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=life-improvements-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=life-improvements-1';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

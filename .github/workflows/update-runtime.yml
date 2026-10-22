@@ -43,13 +43,13 @@ jobs:
       - name: Check runtime modules and occupation compatibility
         run: |
           for module in site/*.mjs; do node --check "$module"; done
-          node --input-type=module -e "import fs from 'node:fs'; import {validateCareerCatalog} from './site/career-browser.mjs'; import {occupationModelIndex} from './site/career-economy.mjs'; const c=JSON.parse(fs.readFileSync('site/occupations.json','utf8')); validateCareerCatalog(c); occupationModelIndex(c);"
+          node --input-type=module -e "import fs from 'node:fs'; import {validateCareerCatalog} from './site/career-browser.mjs'; import {occupationModelIndex} from './site/career-economy.mjs'; const c=JSON.parse(fs.readFileSync('site/occupations.json','utf8')); validateCareerCatalog(c); occupationModelIndex(c); const r=JSON.parse(fs.readFileSync('site/occupations-runtime.json','utf8')); validateCareerCatalog(r); occupationModelIndex(r); if(r.sourceCatalog.sha256!== (await import('node:crypto')).createHash('sha256').update(fs.readFileSync('site/occupations.json')).digest('hex')) throw new Error('Runtime catalog is out of date');"
       - name: Commit only public runtime observations and status
         if: inputs.dry_run != true
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- site/occupations.json site/runtime-update-status.json .koreanlife-pages-export.json
+          git add -- site/occupations.json site/occupations-runtime.json site/runtime-update-status.json .koreanlife-pages-export.json
           if ! git diff --cached --quiet; then
             git commit -m 'chore(data): refresh approved observations'
             git push origin HEAD:main

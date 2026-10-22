@@ -1,4 +1,5 @@
-import {applyCareRecord} from './injury-care.mjs?v=private-school-1';
+import {applyCareRecord} from './injury-care.mjs?v=life-improvements-1';
+import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=life-improvements-1';
 // Explicit game rules. No medical diagnosis, external data, DOM or I/O.
 export const LIFE_HEALTH_RULES=Object.freeze({version:'life-health-v1',monthlyFatalProbability:.00001,monthlyInjuryProbability:.01,severities:Object.freeze([
  Object.freeze({id:'minor',label:'경상',probability:.85,healthLoss:8,recoveryMonths:2}),
@@ -13,9 +14,9 @@ function fingerprint(seed){let h=2166136261;for(const c of JSON.stringify([seed,
 function same(a,b){if(typeof a==='number'||typeof b==='number')return near(a,b);if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const keys=Object.keys(a),other=Object.keys(b);return keys.length===other.length&&keys.every(key=>Object.hasOwn(b,key)&&same(a[key],b[key]));}
 
 /** One monthly event draw; a second deterministic draw chooses injury severity. */
-export function lifeHealthDraw(seed,atMonth){
+export function lifeHealthDraw(seed,atMonth,risk=null){
  if(!seedOk(seed)||!month(atMonth)||atMonth<1)throw new RangeError('몸 상태 사건의 시점을 확인해 주세요.');
- const random=rng(`life-health|${seed}|${LIFE_HEALTH_RULES.version}|${atMonth}`),roll=random(),severityRoll=random(),fatal=roll<LIFE_HEALTH_RULES.monthlyFatalProbability,injured=!fatal&&roll<LIFE_HEALTH_RULES.monthlyFatalProbability+LIFE_HEALTH_RULES.monthlyInjuryProbability;
+ const factor=risk?.multiplier??1,random=rng(`life-health|${seed}|${LIFE_HEALTH_RULES.version}|${atMonth}`),roll=random(),severityRoll=random(),fatal=roll<LIFE_HEALTH_RULES.monthlyFatalProbability*factor,injured=!fatal&&roll<(LIFE_HEALTH_RULES.monthlyFatalProbability+LIFE_HEALTH_RULES.monthlyInjuryProbability)*factor;
  let threshold=0;const severity=LIFE_HEALTH_RULES.severities.find(row=>(threshold+=row.probability)>severityRoll)||LIFE_HEALTH_RULES.severities.at(-1);
  return{roll,severityRoll,fatal,injured,severity:severity.id};
 }
@@ -25,9 +26,9 @@ export function createLifeHealth(state,{activatedAtMonth=state.totalMonths}={}){
  return{version:LIFE_HEALTH_RULES.version,rulesSnapshot:clone(LIFE_HEALTH_RULES),fingerprint:fingerprint(state.seed),activatedAtMonth,lastProcessedMonth:activatedAtMonth,records:[],injury:null};
 }
 
-function step(seed,atMonth,context,before,currentInjury){
+function step(seed,atMonth,context,before,currentInjury,risk=null){
  let injury=clone(currentInjury),after=before,type='none',incidentId=null,severity=null,deathCause=null,plannedRecovery=0,actualRecovery=0;
- const recovering=!!injury&&injury.remainingRecoveryMonths>0,draw=lifeHealthDraw(seed,atMonth);
+ const recovering=!!injury&&injury.remainingRecoveryMonths>0,draw=lifeHealthDraw(seed,atMonth,risk);
  if(before<=0){type='death';deathCause='health';}
  else if(draw.fatal){type='death';deathCause='accident';}
  else if(recovering){
@@ -42,7 +43,7 @@ function step(seed,atMonth,context,before,currentInjury){
   if(after<=0){type='death';deathCause='injury';}else type='injury';
  }
  if(type==='death')incidentId=`life-death-${atMonth}`;
- return{injury,record:{atMonth,context,healthBefore:before,healthAfter:after,type,incidentId,severity,deathCause,healthDelta:after-before,plannedRecovery,actualRecovery}};
+ return{injury,record:{atMonth,context,healthBefore:before,healthAfter:after,type,incidentId,severity,deathCause,healthDelta:after-before,plannedRecovery,actualRecovery,...(risk?{risk:clone(risk)}:{})}};
 }
 function presentation(record){
  const where=record.context==='military'?'군 복무 중':'일상 중',rule=LIFE_HEALTH_RULES.severities.find(row=>row.id===record.severity),severity=rule?.label||'';
@@ -52,14 +53,16 @@ function presentation(record){
 }
 
 /** Run after the clock advances, before service discharge; does not mutate state. */
-export function progressLifeHealth(state,atMonth=state.totalMonths,{context=state.service?.active?'military':'daily'}={}){
+export function progressLifeHealth(state,atMonth=state.totalMonths,{context=state.service?.active?'military':'daily',data}={}){
  if(state.phase==='ended')return null;
  if(state.lifeHealth&&month(atMonth)&&atMonth<=state.lifeHealth.lastProcessedMonth)return null;
  if(!seedOk(state.seed)||!health(state.health)||!month(atMonth)||atMonth<1||!contextOk(context))throw new TypeError('몸 상태를 진행할 기록이 올바르지 않습니다.');
  const medical=clone(state.lifeHealth||createLifeHealth(state,{activatedAtMonth:atMonth-1}));
  if(atMonth<=medical.lastProcessedMonth)return null;
  if(atMonth!==medical.lastProcessedMonth+1)throw new RangeError('몸 상태 기록의 월이 이어지지 않습니다.');
- const result=step(state.seed,atMonth,context,state.health,medical.injury);medical.injury=result.injury;medical.records.push(result.record);medical.lastProcessedMonth=atMonth;
+ if(!medical.riskPolicy&&data?.lifeHealthRisk===true)medical.riskPolicy={version:INCIDENT_RISK_RULES.version,activatedAtMonth:atMonth-1,rulesSnapshot:clone(INCIDENT_RISK_RULES)};
+ const risk=medical.riskPolicy?incidentRiskProfile(state,data,{context}):null;
+ const result=step(state.seed,atMonth,context,state.health,medical.injury,risk);medical.injury=result.injury;medical.records.push(result.record);medical.lastProcessedMonth=atMonth;
  if(medical.careEnabledAtMonth!==undefined)medical.pendingCare=result.record.type==='injury'?result.injury.id:null;
  const event=result.record.type==='none'?null:presentation(result.record),death=result.record.type==='death'?{type:'death',cause:result.record.deathCause,context,incidentId:result.record.incidentId,modelVersion:medical.version,atMonth,age:Math.floor(atMonth/12)}:null;
  return{lifeHealth:medical,health:result.record.healthAfter,event,death};
@@ -71,10 +74,12 @@ function validated(state){
  const care=m.careEnabledAtMonth!==undefined;
  if(care&&(!month(m.careEnabledAtMonth)||m.careEnabledAtMonth<m.activatedAtMonth||m.careEnabledAtMonth>state.totalMonths||!Array.isArray(m.careActions)||m.careActions.length>m.records.length))return null;
  if(!care&&(m.careActions!==undefined||m.pendingCare!==undefined))return null;
+ const policy=m.riskPolicy;if(policy&&(!same(policy.rulesSnapshot,INCIDENT_RISK_RULES)||policy.version!==INCIDENT_RISK_RULES.version||!month(policy.activatedAtMonth)||policy.activatedAtMonth<m.activatedAtMonth||policy.activatedAtMonth>state.totalMonths))return null;
  let injury=null,death=null,pending=null,actionIndex=0;
  for(let i=0;i<m.records.length;i++){
   const record=m.records[i],atMonth=m.activatedAtMonth+i+1;if(!record||record.atMonth!==atMonth||!contextOk(record.context)||!health(record.healthBefore)||death)return null;
-  const expected=step(state.seed,atMonth,record.context,record.healthBefore,injury);if(!same(record,expected.record))return null;injury=expected.injury;if(record.type==='death')death=record;
+  const risky=!!policy&&atMonth>policy.activatedAtMonth;if(risky?!validIncidentRisk(record.risk,{healthBefore:record.healthBefore,context:record.context}):record.risk!==undefined)return null;
+  const expected=step(state.seed,atMonth,record.context,record.healthBefore,injury,risky?record.risk:null);if(!same(record,expected.record))return null;injury=expected.injury;if(record.type==='death')death=record;
   if(care&&atMonth>m.careEnabledAtMonth&&record.type==='injury')pending=injury.id;
   const action=m.careActions?.[actionIndex];if(action?.atMonth===atMonth){if(!pending||action.healthBefore!==record.healthAfter)return null;try{injury=applyCareRecord(injury,action);}catch{return null;}pending=null;actionIndex++;}
   if(pending&&i<m.records.length-1)return null;

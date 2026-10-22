@@ -1,5 +1,5 @@
-import {displayCopy} from './ui-copy.mjs?v=private-school-1';
-import {deriveLifeScene} from './life-scene-model.mjs?v=private-school-1';
+import {displayCopy} from './ui-copy.mjs?v=life-improvements-1';
+import {deriveLifeScene} from './life-scene-model.mjs?v=life-improvements-1';
 
 const AGE_FRAMES = Object.freeze({baby:0,toddler:1,child:2,teen:3,young:4,adult:5,senior:6});
 const ROLE_FRAMES = Object.freeze({school:7,office:8,field:9,shop:10,military:11});
@@ -208,7 +208,7 @@ export function createLifeScene(host) {
   const placard = make('span','life-scene-placard');
   const inset = make('div','life-scene-map');
   const map = svgElement(document,'svg',{viewBox:'0 0 320 240','aria-hidden':'true'});
-  const mapUse = svgElement(document,'use');
+  const mapUse = svgElement(document,'image',{x:0,y:0,width:320,height:240,preserveAspectRatio:'xMidYMid meet'});
   map.append(mapUse);inset.append(map);
   const insetLabel = make('span','life-scene-map-label','현재 거주지역');
   inset.append(insetLabel);
@@ -240,7 +240,7 @@ export function createLifeScene(host) {
         home.replaceChildren(housingArt(document,scene.housing));
         activity.replaceChildren(activityArt(document,scene.role));
         if (scene.cityId && /^kr-city-[a-z0-9-]+$/.test(scene.cityId)) {
-          inset.hidden=false;mapUse.setAttribute('href',`#${scene.cityId}`);
+          inset.hidden=false;mapUse.setAttribute('href',`./assets/city-maps/${scene.cityId}.svg`);
         } else {inset.hidden=true;mapUse.removeAttribute('href');}
         previousKey=scene.sceneKey;
       }

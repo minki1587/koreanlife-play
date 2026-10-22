@@ -1,9 +1,9 @@
-import {academySupportActive} from './academy.mjs?v=private-school-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=private-school-1';
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=private-school-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=private-school-1';
-import {economicCostWan} from './economic-life.mjs?v=private-school-1';
-import {monthlyWorkIncomeWan} from './income-rules.mjs?v=private-school-1';
+import {academySupportActive} from './academy.mjs?v=life-improvements-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=life-improvements-1';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=life-improvements-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=life-improvements-1';
+import {economicCostWan} from './economic-life.mjs?v=life-improvements-1';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=life-improvements-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -79,15 +79,15 @@ export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostW
   return {eligible,legacy:false,monthlyTuitionWan:fee,familyMonthlyWan:family,personalMonthlyWan:own,hobbyMonthlyWan:hobbyCostWan,familyHobbyMonthlyWan:familyHobby,personalHobbyMonthlyWan:ownHobby,personalInterestMonthlyWan,personalCareMonthlyWan,personalCareCommitmentWan,careCommitmentMonths,formedFamilyCommitmentWan,formedFamilyMonthlyWan,formedFamilyMandatoryMonthlyWan:round(familyCommitment.mandatoryPersonalCostWan/n),formedFamilyExtraMonthlyWan:round(familyCommitment.extraPersonalCostWan/n),commitmentMonths:n,reasons:eligible?[]:[`학비 예산 부족: 월 학비 ${fee.toFixed(2)}만원과 취미비 ${hobbyCostWan.toFixed(2)}만원을 함께 준비해야 합니다. 가구 월 지원 여력 ${capacity.toFixed(2)}만원과 생활비·이자·남은 돌봄비·내 가족의 양육비를 제외한 내 월 예산 ${personal.toFixed(2)}만원으로 ${n}개월을 준비할 수 없습니다.`]};
 }
 export function hobbyFunding(s,costWan){
-  const formedFamilyMonthlyWan=formedFamilyMonthlyBurden(s);
+  const formedFamilyMonthlyWan=formedFamilyMonthlyBurden(s),militaryNetWan=round(monthlyMilitaryNetIncomeWan(s));
   if(!hasHouseholdSupport(s)){
-    if(!s.economicLife)return {eligible:s.cash+1e-9>=costWan+formedFamilyMonthlyWan,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:s.cash+1e-9>=costWan+formedFamilyMonthlyWan?'':'보유 현금이 월 취미비와 내 가족의 순양육비보다 적습니다.'};
-    const income=round(monthlyWorkIncomeWan(s)),tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),living=personalLivingWan(s),discretionary=round(s.age>=19?income*(1-s.saving)*.35:0),care=round(s.care?.remainingMonths>0?s.care.annualCost/12:0),interest=round(s.debt*.035/12);
-    const projected=s.cash+income-(s.age<19?0:living+tuition+discretionary+care)-interest-formedFamilyMonthlyWan,eligible=costWan===0||projected+1e-7>=costWan;
+    if(!s.economicLife)return {eligible:s.cash+militaryNetWan+1e-9>=costWan+formedFamilyMonthlyWan,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:s.cash+militaryNetWan+1e-9>=costWan+formedFamilyMonthlyWan?'':'보유 현금과 군급여 순수령액으로 월 취미비와 내 가족의 순양육비를 마련할 수 없습니다.'};
+    const income=round(monthlyWorkIncomeWan(s)),tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),living=personalLivingWan(s),discretionary=round(monthlyAutomaticConsumptionWan(s)),care=round(s.care?.remainingMonths>0?s.care.annualCost/12:0),interest=round(s.debt*.035/12);
+    const projected=s.cash+income+militaryNetWan-(s.age<19?0:living+tuition+discretionary+care)-interest-formedFamilyMonthlyWan,eligible=costWan===0||projected+1e-7>=costWan;
     return {eligible,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:eligible?'':'생활비·주거비·학비·이자·돌봄비와 양육비를 제외하면 월 취미비를 마련할 수 없습니다.'};
   }
-  const tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),income=round(monthlyWorkIncomeWan(s)),living=personalLivingWan(s),other=round(round(s.age>=19?income*(1-s.saving)*.35:0)+round(s.care?.remainingMonths>0?s.care.annualCost/12:0)+round(s.debt*.035/12)+formedFamilyMonthlyWan);
-  const plan=settleHouseholdMonth(s,{livingWan:living,tuitionWan:tuition,hobbyWan:costWan,personalIncomeWan:income,otherPersonalCostWan:other}),family=plan.finance.lastMonth.hobbyWan,own=round(costWan-family),projected=s.cash+income+plan.supportWan-living-other-(plan.tuitionFunded?tuition:0),eligible=projected+1e-7>=costWan;
+  const tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),income=round(monthlyWorkIncomeWan(s)),living=personalLivingWan(s),other=round(round(monthlyAutomaticConsumptionWan(s))+round(s.care?.remainingMonths>0?s.care.annualCost/12:0)+round(s.debt*.035/12)+formedFamilyMonthlyWan);
+  const plan=settleHouseholdMonth(s,{livingWan:living,tuitionWan:tuition,hobbyWan:costWan,personalIncomeWan:income+militaryNetWan,otherPersonalCostWan:other}),family=plan.finance.lastMonth.hobbyWan,own=round(costWan-family),projected=s.cash+income+militaryNetWan+plan.supportWan-living-other-(plan.tuitionFunded?tuition:0),eligible=projected+1e-7>=costWan;
   return {eligible,familyMonthlyWan:round(family),personalMonthlyWan:own,formedFamilyMonthlyWan,reason:eligible?'':`가구 취미 지원 여력 ${round(family)}만원과 내 현금 ${s.cash}만원으로 취미비 ${costWan}만원과 내 가족의 순양육비를 마련할 수 없습니다.`};
 }
 

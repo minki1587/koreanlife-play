@@ -1,9 +1,10 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=private-school-1';
-import {militarySavingsSummary} from './military-savings.mjs?v=private-school-1';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=private-school-1';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=private-school-1';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=private-school-1';
-import {createPixelIcon} from './pixel-icons.mjs?v=private-school-1';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=life-improvements-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=life-improvements-1';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=life-improvements-1';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=life-improvements-1';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=life-improvements-1';
+import {createPixelIcon} from './pixel-icons.mjs?v=life-improvements-1';
+import {completeModalAction} from './ui-copy.mjs?v=life-improvements-1';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const hobbyFee=wan=>`${Math.round((wan||0)*10000).toLocaleString('ko-KR')}원`;
@@ -19,7 +20,7 @@ export function createLifestyleBrowser({spendingCatalog,hobbyCatalog,getState,on
  const{dialog,heading}=createDialog('돈쓰기·취미활동',onClose),tabs=el('nav',undefined,'life-tool-tabs'),summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(tabs,summary,status,body);
  let tab='spending',query='',category='',page=0,selectedId=spendingCatalog.choices[0].id;
  const tabButtons=new Map();for(const[id,title]of [['spending','돈쓰기'],['hobbies','취미활동']]){const b=button(title,()=>{tab=id;status.textContent='';render();});tabs.append(b);tabButtons.set(id,b);}
- function act(callback,value){try{callback(value);dialog.close();}catch(error){status.textContent=error?.message||'지금은 이 선택을 할 수 없습니다.';status.scrollIntoView?.({block:'nearest'});}}
+ function act(callback,value){return completeModalAction(dialog,status,callback,value,'지금은 이 선택을 할 수 없습니다.');}
  function renderSummary(){const s=getState();summary.replaceChildren();if(!s)return;summary.append(el('strong',`${s.name} · ${s.age}세 ${s.month}개월`),facts([['내 현금',formatMoney(s.cash)],['차입금',formatMoney(s.debt)],['순자산',formatMoney(s.cash-s.debt+(militarySavingsSummary(s)?.lockedPrincipalWan||0))]]));}
  function renderSpending(){
   const s=getState();body.append(el('p','이번 달 단기 활동입니다. 비용과 효과를 한 번 반영하며 다음 달 자동 갱신하지 않습니다. 한 달에 한 번, 보유 현금 안에서 선택할 수 있습니다.','life-tool-notice'));

@@ -19,9 +19,11 @@ from pathlib import Path
 
 import public_occupations as occupations
 import public_portal as portal
+import runtime_catalog
 
 SOURCE_IDS = ('15119096', '15119098', '15122500')
 STATUS_FILE = 'runtime-update-status.json'
+RUNTIME_CATALOG_FILE = 'occupations-runtime.json'
 SOURCE_CONFIG = (
     {'id': '15119096', 'format': 'CSV', 'payload_format': 'ZIP', 'reference_period': '2023-08-18'},
     {'id': '15119098', 'format': 'CSV', 'payload_format': 'ZIP', 'reference_period': '2023-08-18'},
@@ -180,20 +182,26 @@ def merge_observed(current, fresh):
     return result, changed
 
 
-def verify_export_marker(site, marker):
+def verify_export_marker(site, marker, *, repair_derived=False):
     require(site.is_dir() and not site.is_symlink(), 'Missing or symlinked public site')
     require(marker.is_file() and not marker.is_symlink(), 'Missing public export marker')
     previous = occupations.load_json(marker)
     require(isinstance(previous.get('files'), dict) and 'occupations.json' in previous['files'], 'Unmanaged site export')
     for relative, previous_hash in previous['files'].items():
         path = occupations.safe_relative(site, relative)
+        require(not path.is_symlink(), 'Symlinked public runtime file: ' + relative)
+        if repair_derived and relative == RUNTIME_CATALOG_FILE:
+            # Only this deterministic derivative may be repaired. Its source
+            # remains subject to the complete released-file hash verification.
+            continue
         require(not path.is_symlink() and path.is_file() and digest(path.read_bytes()) == previous_hash,
                 'Public runtime differs from verified export marker: ' + relative)
+    require(not (site / RUNTIME_CATALOG_FILE).is_symlink(), 'Symlinked derived runtime catalog')
     return previous
 
 
 def prepare_update(site, marker, data_dir, checked_at):
-    previous = verify_export_marker(site, marker)
+    previous = verify_export_marker(site, marker, repair_derived=True)
     old = occupations.load_json(site / 'occupations.json')
     fresh = occupations.build_catalog(data_dir)
     new, changed = merge_observed(old, fresh)
@@ -210,14 +218,29 @@ def prepare_update(site, marker, data_dir, checked_at):
     updates = {STATUS_FILE: blob(new_status)}
     if changed:
         updates['occupations.json'] = blob(new)
+    full_bytes = updates.get('occupations.json', (site / 'occupations.json').read_bytes())
+    compact_bytes = runtime_catalog.render(full_bytes)
+    compact_path = site / RUNTIME_CATALOG_FILE
+    refreshed = not compact_path.is_file() or compact_path.read_bytes() != compact_bytes
+    if refreshed:
+        updates[RUNTIME_CATALOG_FILE] = compact_bytes
+    new_status['derivedRuntime'] = {'fileName': RUNTIME_CATALOG_FILE,
+                                    'sourceSha256': digest(full_bytes), 'refreshed': refreshed}
+    updates[STATUS_FILE] = blob(new_status)
     for relative, raw in updates.items():
         previous['files'][relative] = digest(raw)
     return updates, blob(previous), new_status
 
 
 def commit_update(site, marker, updates, marker_bytes):
-    allowed = {'occupations.json', STATUS_FILE}
+    allowed = {'occupations.json', RUNTIME_CATALOG_FILE, STATUS_FILE}
     require(set(updates) <= allowed, 'Attempted to update unapproved runtime path')
+    if 'occupations.json' in updates:
+        require(RUNTIME_CATALOG_FILE in updates, 'Source catalog update requires its matching runtime catalog')
+    if RUNTIME_CATALOG_FILE in updates:
+        source_bytes = updates.get('occupations.json', (site / 'occupations.json').read_bytes())
+        require(updates[RUNTIME_CATALOG_FILE] == runtime_catalog.render(source_bytes),
+                'Derived runtime catalog does not match its verified source')
     writes = [(site / relative, raw) for relative, raw in updates.items()] + [(marker, marker_bytes)]
     before = [(path, path.read_bytes() if path.exists() else None) for path, _ in writes]
     try:

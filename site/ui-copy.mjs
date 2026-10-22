@@ -74,6 +74,14 @@ export function appendUiFacts(document,host,pairs,className='ui-facts'){
 
 /** Completed attempts close immediately; failed validation keeps its actionable form. */
 export function completeModalAction(dialog,status,callback,argument,fallback='조건을 확인해주세요.'){
- try{callback(argument);status.textContent='';dialog.close();return true;}
- catch(error){status.textContent=displayCopy(error?.message||fallback);return false;}
+ if(dialog.dataset?.actionPending==='true')return false;
+ const success=()=>{status.textContent='';dialog.close();return true;},failure=error=>{status.textContent=displayCopy(error?.message||fallback);return false;};
+ try{const result=callback(argument);if(result&&typeof result.then==='function'){
+  if(dialog.dataset)dialog.dataset.actionPending='true';dialog.setAttribute?.('aria-busy','true');
+  const buttons=[...(dialog.querySelectorAll?.('button')||[])].map(button=>({button,disabled:button.disabled}));for(const row of buttons)row.button.disabled=true;
+  const guard=event=>{if(dialog.dataset?.actionPending==='true'){event.preventDefault?.();event.stopImmediatePropagation?.();}};
+  dialog.addEventListener?.('cancel',guard);dialog.addEventListener?.('click',guard,true);
+  return Promise.resolve(result).then(success,failure).finally(()=>{if(dialog.dataset)delete dialog.dataset.actionPending;dialog.setAttribute?.('aria-busy','false');for(const row of buttons)row.button.disabled=row.disabled;dialog.removeEventListener?.('cancel',guard);dialog.removeEventListener?.('click',guard,true);});
+ }return success();}
+ catch(error){return failure(error);}
 }
