@@ -1,5 +1,5 @@
-import {employmentIncomeFactor} from './employment-contract.mjs?v=focused-play-1';
-import {injuryImpact} from './injury-care.mjs?v=focused-play-1';
+import {employmentIncomeFactor} from './employment-contract.mjs?v=focused-play-2';
+import {injuryImpact} from './injury-care.mjs?v=focused-play-2';
 /** Focus contributions per month; other age, habit and work changes are added separately. */
 const EFFECTS=Object.freeze({
   balance:[['만족',0.6/12]],

@@ -1,6 +1,6 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=focused-play-1';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=focused-play-1';
-import {recoveryStudyAllowed} from './injury-care.mjs?v=focused-play-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=focused-play-2';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=focused-play-2';
+import {recoveryStudyAllowed} from './injury-care.mjs?v=focused-play-2';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([

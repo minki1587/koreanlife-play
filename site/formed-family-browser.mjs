@@ -1,8 +1,8 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=focused-play-1';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=focused-play-1';
-import {formatMoney} from './spending.mjs?v=focused-play-1';
-import {clearActionError,reportActionError} from './ui-copy.mjs?v=focused-play-1';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=focused-play-1';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=focused-play-2';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=focused-play-2';
+import {formatMoney} from './spending.mjs?v=focused-play-2';
+import {clearActionError,reportActionError} from './ui-copy.mjs?v=focused-play-2';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=focused-play-2';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}

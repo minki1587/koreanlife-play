@@ -1,7 +1,8 @@
-import {displayCopy} from './ui-copy.mjs?v=focused-play-1';
-import {formatMoney} from './spending.mjs?v=focused-play-1';
-import {focusedImportantEvents} from './history-digest.mjs?v=focused-play-1';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=focused-play-1';
+import {displayCopy} from './ui-copy.mjs?v=focused-play-2';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=focused-play-2';
+import {formatMoney} from './spending.mjs?v=focused-play-2';
+import {focusedImportantEvents} from './history-digest.mjs?v=focused-play-2';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=focused-play-2';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},
@@ -11,6 +12,8 @@ export const MANAGER_GROUPS=Object.freeze([
 ]);
 const FOCUS_NAMES={balance:'균형',learning:'배움',career:'일과 성장',health:'건강',relationships:'사람들'};
 const SCHOOL_IDS=new Set(['school-primary','school-middle','school-high']);
+
+export function recentEventTitle(event,state){return displayCopy(timelineFamilyCopy(event?.choice||event?.title||'삶의 변화',state));}
 
 /** One current task, derived from existing pending decisions. Never executes it. */
 export function currentLifeTask(state){
@@ -108,9 +111,9 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   if(activeGuide&&seen.has(activeGuide.id))activeGuide=null;
   $('milestone-guide').hidden=!activeGuide;if(activeGuide)$('guide-copy').textContent=activeGuide.text;
   const rows=focusedImportantEvents(events,{state,limit:3,parts,channel:'all'}),host=$('recent-important');
-  const signature=JSON.stringify(rows.map(e=>[e.id,e.title,e.age,e.month]));
+  const signature=JSON.stringify(rows.map(e=>[e.id,recentEventTitle(e,state),e.age,e.month]));
   if(host.dataset.signature!==signature){host.replaceChildren();for(const event of rows){
-   const row=document.createElement('li'),time=document.createElement('span'),title=document.createElement('strong');time.textContent=`${event.age}세${event.month?' '+event.month+'개월':''}`;title.textContent=displayCopy(event.choice||event.title||'삶의 변화');row.append(time,title);host.append(row);
+   const row=document.createElement('li'),time=document.createElement('span'),title=document.createElement('strong');time.textContent=`${event.age}세${event.month?' '+event.month+'개월':''}`;title.textContent=recentEventTitle(event,state);row.append(time,title);host.append(row);
   }host.dataset.signature=signature;}
   $('recent-empty').hidden=rows.length>0;
  }

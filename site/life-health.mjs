@@ -1,5 +1,5 @@
-import {applyCareRecord} from './injury-care.mjs?v=focused-play-1';
-import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=focused-play-1';
+import {applyCareRecord} from './injury-care.mjs?v=focused-play-2';
+import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=focused-play-2';
 // Explicit game rules. No medical diagnosis, external data, DOM or I/O.
 export const LIFE_HEALTH_RULES=Object.freeze({version:'life-health-v1',monthlyFatalProbability:.00001,monthlyInjuryProbability:.01,severities:Object.freeze([
  Object.freeze({id:'minor',label:'경상',probability:.85,healthLoss:8,recoveryMonths:2}),

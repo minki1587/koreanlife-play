@@ -1,4 +1,4 @@
-import {initScrollHints} from './scroll-hints.mjs?v=focused-play-1';
+import {initScrollHints} from './scroll-hints.mjs?v=focused-play-2';
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 
