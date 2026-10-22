@@ -6,8 +6,11 @@
 .life-scene-home svg,.life-scene-activity svg{overflow:visible;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)}
 .focus-effects{list-style:none;display:flex;flex-direction:column;gap:4px;margin:9px 0 0;padding:0;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6;color:var(--muted)}
 .focus-effects li::before{content:'· ';color:var(--green)}
-.daily-stats{grid-template-columns:minmax(0,1fr);overflow:visible;padding-block:12px;gap:8px}
-.daily-stats>div{display:grid;grid-template-columns:3em minmax(0,1fr);align-items:baseline;gap:10px}
+.daily-stats{grid-template-columns:repeat(4,minmax(max-content,1fr));overflow-x:auto;padding-block:12px;gap:18px}
+.daily-stats>div{display:grid;grid-template-columns:auto auto;align-items:baseline;gap:6px 9px}
+.daily-stats span,.daily-stats strong{white-space:nowrap;font-size:calc(clamp(8.5px,2.15cqw,12px) * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.daily-stats meter{grid-column:1/-1}
+.daily-stats:focus-visible{outline:2px solid #b79156;outline-offset:3px}
 .choice-details{list-style:none;margin:7px 0 0;padding:0;display:grid;gap:5px;color:var(--muted);font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6}
 .history-rail{min-width:0;display:flex;flex-direction:column;gap:18px}
 .finance-panel{min-width:0;padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
@@ -29,12 +32,13 @@
 #labor-summary{padding-left:18px;display:grid;gap:5px}
 #education{list-style:none;margin:0;padding:0;display:grid;gap:5px}
 @media(min-width:1024px){
+  #game .game-grid.game-layout{grid-template-columns:minmax(180px,.75fr) minmax(0,1.3fr) minmax(280px,1.3fr);column-gap:20px}
   #game .game-grid.game-layout>.history-rail{--history-offset:calc(112px * var(--user-text-scale,1) + env(safe-area-inset-top,0px));grid-column:3;grid-row:1/span 4;position:sticky;top:var(--history-offset);height:calc(100dvh - var(--history-offset) - 24px);min-height:360px}
   .history-rail>.timeline-panel,.history-rail>.finance-panel{position:static;flex:1 1 50%;min-height:160px;overflow:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable}
 }
 @media(min-width:1440px){
   :root{--layout-max:1600px}
-  #game .game-grid.game-layout{grid-template-columns:210px minmax(0,1fr) 245px 245px;gap:20px}
+  #game .game-grid.game-layout{grid-template-columns:minmax(190px,.8fr) minmax(0,1.4fr) minmax(250px,1fr) minmax(250px,1fr);gap:20px}
   #game .game-grid.game-layout>.history-rail{display:contents}
   .history-rail>.timeline-panel,.history-rail>.finance-panel{--history-offset:calc(112px * var(--user-text-scale,1) + env(safe-area-inset-top,0px));grid-row:1/span 4;position:sticky;top:var(--history-offset);height:calc(100dvh - var(--history-offset) - 24px);min-height:260px;max-height:none;margin:0}
   .history-rail>.timeline-panel{grid-column:3}
@@ -59,3 +63,8 @@
 .health-history-list ul{margin:0;padding-left:20px;display:grid;gap:4px}
 .ending-cause{color:var(--green);font-weight:600}.ending-health-panel{text-align:left}
 #changes{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+@media(max-width:480px){
+ .daily-stats{gap:4px}
+ .daily-stats>div{column-gap:3px}
+ .daily-stats span,.daily-stats strong{font-size:calc(8.5px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+}

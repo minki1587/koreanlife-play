@@ -1,9 +1,15 @@
-import {displayCopy,displayLines} from './ui-copy.mjs?v=family-life-2';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=ui-spouse-1';
+import {timelinePresentation} from './timeline-copy.mjs?v=ui-spouse-1';
+export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=ui-spouse-1';
 
-const MONEY=/수입|소득|연봉|임금|급여|월급|지원금|용돈|지출|비용|예산|생활비|등록금|학비|이자|부채|차입|상환|현금|순자산|상속|장례비|납입|적금|원금|만기|매칭|[\d,.]+\s*(?:만|억)?원/;
-const FINANCIAL_TYPES=new Set(['family-allowance','family-estate','military-savings','military-pay','formed-family-finance']);
-export function timelineParts(event){
+const MONEY=/수입|소득|연봉|임금|급여|월급|지원금|용돈|지출|비용|예산|생활비|양육비|등록금|학비|이자|부채|차입|상환|현금|순자산|상속|장례비|납입|적금|원금|만기|매칭|[\d,.]+\s*(?:만|억)?원/;
+const FINANCIAL_TYPES=new Set(['family-allowance','family-estate','military-savings','military-pay','formed-family-finance','formed-family-estate']);
+export function timelineParts(original,state){
+  const event=timelinePresentation(original,state);
   const title=displayCopy(event.title||event.choice||'삶의 기록');
+  // Monthly income, bills and transfers already have their own entries. Keep
+  // the birthday's everyday scene, without duplicating a yearly budget report.
+  if(event.type==='annual')return{life:{title,text:String(event.text||'').split(/(?<=[.!?])\s+/).map(displayCopy).filter(Boolean).slice(0,1),changes:[]},money:null};
   const facts=(event.changes||[]).flatMap(displayLines);
   const moneyFacts=facts.filter(text=>MONEY.test(text));
   const lifeFacts=facts.filter(text=>!MONEY.test(text));

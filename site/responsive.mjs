@@ -1,17 +1,25 @@
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 
-/** Native details layout only; preferences last for this document's lifetime. */
+/** Per-layout disclosure preferences last for this document's lifetime. */
 export function initResponsiveLayout(options = {}) {
   const document = options.document ?? globalThis.document;
   const details = document?.getElementById('profile-details');
+  const button = document?.getElementById('profile-details-toggle');
+  const content = document?.getElementById('profile-details-content');
   const root = document?.documentElement;
-  if (!details || details.tagName?.toLowerCase() !== 'details' || !root?.dataset) return null;
+  const native = details?.tagName?.toLowerCase() === 'details';
+  if (!details || (!native && (!button || !content)) || !root?.dataset) return null;
   if (controllers.has(details)) return controllers.get(details);
 
   const preferences = {wide: null, stacked: null};
   let mode = null;
-  let appliedOpen = Boolean(details.open);
+  const isOpen = () => native ? Boolean(details.open) : !content.hidden;
+  function setOpen(open) {
+    if (native) details.open = open;
+    else {content.hidden = !open;button.setAttribute('aria-expanded',String(open));}
+  }
+  let appliedOpen = isOpen();
   let media = null;
   try {
     const matchMedia = options.matchMedia ?? globalThis.matchMedia;
@@ -19,7 +27,7 @@ export function initResponsiveLayout(options = {}) {
   } catch { /* An unavailable media API uses the native narrow layout. */ }
 
   function rememberUserChoice() {
-    const open = Boolean(details.open);
+    const open = isOpen();
     if (mode !== null && open !== appliedOpen) {
       preferences[mode] = open;
       appliedOpen = open;
@@ -33,10 +41,11 @@ export function initResponsiveLayout(options = {}) {
     mode = nextMode;
     root.dataset.layout = mode;
     appliedOpen = preferences[mode] ?? (mode === 'wide');
-    if (Boolean(details.open) !== appliedOpen) details.open = appliedOpen;
+    setOpen(appliedOpen);
   }
 
-  details.addEventListener('toggle', rememberUserChoice);
+  if(native) details.addEventListener('toggle', rememberUserChoice);
+  else button.addEventListener('click',()=>{setOpen(!isOpen());rememberUserChoice();});
   // Programmatic open/close events are asynchronous and can be coalesced.
   // Reading the current DOM against appliedOpen ignores those late events
   // without discarding a subsequent user's actual change.
@@ -50,7 +59,7 @@ export function initResponsiveLayout(options = {}) {
 
   const controller = Object.freeze({
     get mode() { return mode; },
-    get open() { return Boolean(details.open); },
+    get open() { return isOpen(); },
   });
   controllers.set(details, controller);
   return controller;

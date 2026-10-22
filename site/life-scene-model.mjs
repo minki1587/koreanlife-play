@@ -1,3 +1,4 @@
+import {protagonistGender} from './person-identity.mjs?v=ui-spouse-1';
 // Pure presentation model. It never changes life state, money or probabilities.
 // Biomes are representative art directions, not official settlement statistics.
 const AGE_STAGES = [
@@ -61,13 +62,15 @@ function activeRole(state, study) {
 
 /**
  * Stable render descriptor from the engine's actual fields.
- * Age artwork and activity props are separate layers; no sex/gender is inferred.
+ * Age artwork and activity props are separate layers. Character gender follows
+ * the same saved/stable identity shown by the game; names never determine art.
  * An unknown current city stays unknown: birth city and province capitals are
  * never substituted for residence.city. No map or population data is changed.
  */
 export function deriveLifeScene(state, data = {}) {
   if (!state || !Number.isInteger(state.age) || state.age < 0) throw new TypeError('장면에는 유효한 현재 나이가 필요합니다.');
   const age = state.age;
+  const characterGender = protagonistGender(state)==='여성'?'female':'male';
   const [, ageStage, ageLabel] = AGE_STAGES.find(([limit]) => age < limit);
   const region = text(state.residence?.region);
   const city = text(state.residence?.city);
@@ -99,12 +102,12 @@ export function deriveLifeScene(state, data = {}) {
   const roleLabel = serviceActive ? `${serviceBranch || '군'} 복무 중` : academyActive ? jobLabel : ROLE_LABELS[role];
   // This includes location identity even when two places share one biome or a
   // renderer chooses the same bounded atlas variant from cityVariant.
-  const sceneKey = [ageStage, role, biome, housing, locationIdentity, housingLabel, jobIdentity].map(encodeURIComponent).join(':');
+  const sceneKey = [characterGender, ageStage, role, biome, housing, locationIdentity, housingLabel, jobIdentity].map(encodeURIComponent).join(':');
   return {
     schemaVersion:1,
     sceneKey,
     label:`${age}세 ${ageLabel} · ${roleLabel} · ${residenceLabel} · ${housingLabel}`,
-    age, ageStage, ageLabel, characterAge:ageStage,
+    age, ageStage, ageLabel, characterAge:ageStage, characterGender,
     role, roleLabel, roleReason:activity.reason,
     jobLabel, employmentLabel, educationLabel, educationState:study,
     retired:state.retired === true,

@@ -4,6 +4,7 @@ function cleanClause(value){
  const disclaimer=sentence=>
   /출생지역은[^.。]*가구 배경과 초기 여유자금은 가상 설정이다/u.test(sentence)||
   /실제[^.。]*(?:아닙니다|아니다|아님|아니며|뜻하지 않|나타내지 않|예측하지 않|예측하지 않는다|판정하지 않|재현하지 않|부여하지 않|대체하지 않|포함하지 않|결과가 아니다|자동 발급되지 않|자동 취득하지 않)/u.test(sentence)||
+  /실제 (?:공고|채용)[^.。]*아닌/u.test(sentence)||
   /(?:실측|전국[^.。]*평균)[^.。]*(?:아님|아니|않)/u.test(sentence)||
   /(?:임금·생활비·점수·사건|합격식·입학 연령·비용·학습 효과)[^.。]*(?:가상 규칙|게임 설정)/u.test(sentence)||
   /(?:게임 (?:설정|가정|규칙)|가상 (?:규칙|연령 규칙))[^.。]*(?:입니다|이다|이며|이므로)/u.test(sentence)||
@@ -11,9 +12,15 @@ function cleanClause(value){
   /(?:질병|사망 원인)[^.。]*(?:판정하지 않|추정하지 않)/u.test(sentence)||
   /가상[^.。]*(?:결과입니다|사건이다|연령 규칙이다)/u.test(sentence)||
   /배움 점수와 고정 난수에 따른 (?:가상 )?입학 결과다/u.test(sentence)||
+  /(?:월별(?:로)?\s*처리한\s*\d+개월|월별|연간)[^.。]*(?:예산|정산)[^.。]*(?:정리|요약|보고)/u.test(sentence)||
+  /^\s*(?:가구|가족)\s*소득\s*예산\s*(?:즉시\s*)?반영[.]?\s*$/u.test(sentence)||
+  /^\s*부동산 지분은 평가액으로 현금 정산합니다[.]?\s*$/u.test(sentence)||
+  /시간을 건너뛰지 않고[^.。]*다음 월부터[^.。]*반영/u.test(sentence)||
+  /^\s*게임 학위·직업준비 증표·5축 능력·공고 근무지역을 확인한 가상 채용이다[.]?\s*$/u.test(sentence)||
   /졸업해도 면허는 자동 취득하지 않는다/u.test(sentence)||
   /^\s*복무 경로는 대상이라는 가정으로 선택한다[.]?\s*$/u.test(sentence);
  const raw=String(value??'').replace(/복무 경로는 대상이라는 가정으로 선택한다[.]?/gu,'')
+  .replace(/(?:가구|가족)\s*소득\s*예산\s*(?:즉시\s*)?반영[.,]?\s*/gu,'')
   .replace(/(?:[,·]\s*)?실제 자격 판정 없음[.]?/gu,'')
   .replace(/대상이라는 가정,?\s*/gu,'');
  return raw.split(/(?<=[.!?。])\s+(?=[가-힣A-Z‘“])/u).filter(sentence=>!disclaimer(sentence)).join(' ')
@@ -35,6 +42,7 @@ function cleanClause(value){
   .replace(/게임 차입/gu,'차입')
   .replace(/게임 상한/gu,'상한')
   .replace(/게임 /gu,'')
+  .replace(/부모 연 근로소득/gu,'부모 연 소득')
   .replace(/\s*·\s*(?=·|$)/gu,'')
   .replace(/^\s*·\s*/u,'')
   .replace(/\s{2,}/gu,' ').trim();

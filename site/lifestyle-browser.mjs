@@ -1,9 +1,9 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=family-life-2';
-import {militarySavingsSummary} from './military-savings.mjs?v=family-life-2';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=family-life-2';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=family-life-2';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=family-life-2';
-import {createPixelIcon} from './pixel-icons.mjs?v=family-life-2';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=ui-spouse-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=ui-spouse-1';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=ui-spouse-1';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=ui-spouse-1';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=ui-spouse-1';
+import {createPixelIcon} from './pixel-icons.mjs?v=ui-spouse-1';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const hobbyFee=wan=>`${Math.round((wan||0)*10000).toLocaleString('ko-KR')}원`;
@@ -16,9 +16,9 @@ function iconHeading(tag,row,kind='spending',text){const heading=el(tag,undefine
 function createDialog(title,onClose){const dialog=el('dialog',undefined,'life-tools-dialog'),top=el('div',undefined,'dialog-top'),heading=el('h2',title);heading.tabIndex=-1;heading.id='lifestyle-title';dialog.id='lifestyle-dialog';dialog.setAttribute('aria-labelledby',heading.id);const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','생활 선택 창 닫기');top.append(heading,close);dialog.append(top);document.body.append(dialog);dialog.addEventListener('close',()=>onClose?.());dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});return{dialog,heading};}
 
 export function createLifestyleBrowser({spendingCatalog,hobbyCatalog,getState,onSpend,onHobbies,onActivity,onOpen,onClose}){
- const{dialog,heading}=createDialog('자산 사용·취미',onClose),tabs=el('nav',undefined,'life-tool-tabs'),summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(tabs,summary,status,body);
+ const{dialog,heading}=createDialog('돈쓰기·취미활동',onClose),tabs=el('nav',undefined,'life-tool-tabs'),summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(tabs,summary,status,body);
  let tab='spending',query='',category='',page=0,selectedId=spendingCatalog.choices[0].id;
- const tabButtons=new Map();for(const[id,title]of [['spending','자산 사용'],['hobbies','취미']]){const b=button(title,()=>{tab=id;status.textContent='';render();});tabs.append(b);tabButtons.set(id,b);}
+ const tabButtons=new Map();for(const[id,title]of [['spending','돈쓰기'],['hobbies','취미활동']]){const b=button(title,()=>{tab=id;status.textContent='';render();});tabs.append(b);tabButtons.set(id,b);}
  function act(callback,value){try{callback(value);dialog.close();}catch(error){status.textContent=error?.message||'지금은 이 선택을 할 수 없습니다.';status.scrollIntoView?.({block:'nearest'});}}
  function renderSummary(){const s=getState();summary.replaceChildren();if(!s)return;summary.append(el('strong',`${s.name} · ${s.age}세 ${s.month}개월`),facts([['내 현금',formatMoney(s.cash)],['차입금',formatMoney(s.debt)],['순자산',formatMoney(s.cash-s.debt+(militarySavingsSummary(s)?.lockedPrincipalWan||0))]]));}
  function renderSpending(){

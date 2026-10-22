@@ -1,5 +1,5 @@
-import {displayCopy} from './ui-copy.mjs?v=family-life-2';
-import {deriveLifeScene} from './life-scene-model.mjs?v=family-life-2';
+import {displayCopy} from './ui-copy.mjs?v=ui-spouse-1';
+import {deriveLifeScene} from './life-scene-model.mjs?v=ui-spouse-1';
 
 const AGE_FRAMES = Object.freeze({baby:0,toddler:1,child:2,teen:3,young:4,adult:5,senior:6});
 const ROLE_FRAMES = Object.freeze({school:7,office:8,field:9,shop:10,military:11});
@@ -7,6 +7,8 @@ const SENIOR_FRAMES = Object.freeze({office:12,field:13,shop:14});
 const BACKGROUNDS = Object.freeze({metropolitan:0,coastal:1,regional:2,rural:3});
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const instances = new WeakMap();
+
+export function characterAtlasFor(scene){return scene?.characterGender==='female'?'./assets/life-characters-female-v1.png':'./assets/life-characters-v1.png';}
 
 export function spriteIndexFor(scene) {
   if (!Object.hasOwn(AGE_FRAMES, scene?.ageStage)) throw new TypeError('알 수 없는 나이 단계입니다.');
@@ -224,9 +226,10 @@ export function createLifeScene(host) {
       const scene = deriveLifeScene(state,data);
       if (scene.sceneKey !== previousKey) {
         const frame = spriteIndexFor(scene);
+        sprite.style.backgroundImage = `url("${characterAtlasFor(scene)}")`;
         sprite.style.backgroundPosition = atlasPosition(frame,4,4);
         background.style.backgroundPosition = atlasPosition(BACKGROUNDS[scene.biome] ?? 2,2,2);
-        host.dataset.ageStage=scene.ageStage;host.dataset.role=scene.role;host.dataset.biome=scene.biome;
+        host.dataset.ageStage=scene.ageStage;host.dataset.role=scene.role;host.dataset.biome=scene.biome;host.dataset.characterGender=scene.characterGender;
         host.dataset.sceneKey=scene.sceneKey;host.dataset.spriteIndex=String(frame);
         host.style.setProperty('--scene-character-scale',scene.ageStage==='adult'?'1.04':'1');
         host.style.setProperty('--scene-character-gray',scene.ageStage==='adult'?'0.08':scene.ageStage==='senior'?'0.12':'0');
@@ -246,7 +249,7 @@ export function createLifeScene(host) {
       placard.textContent=scene.jobLabel;placard.title=scene.jobLabel;
       current.replaceChildren(...[`${scene.age}세 ${month}개월`,scene.jobLabel,scene.employmentLabel].map(text=>make('li','',displayCopy(text))));
       address.replaceChildren(...[scene.residenceLabel.replaceAll(' · ',' '),scene.housingLabel].map(text=>make('li','',displayCopy(text))));
-      visual.setAttribute('aria-label',`${scene.age}세 ${month}개월 ${scene.ageLabel}, ${scene.jobLabel}, ${scene.residenceLabel}, ${scene.housingLabel}.`);
+      visual.setAttribute('aria-label',`${scene.age}세 ${month}개월 ${scene.characterGender==='female'?'여성':'남성'} ${scene.ageLabel}, ${scene.jobLabel}, ${scene.residenceLabel}, ${scene.housingLabel}.`);
       host.classList.toggle('is-running',Boolean(running));
       return scene;
     },
