@@ -1,9 +1,9 @@
-import {academySupportActive} from './academy.mjs?v=review-two-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=review-two-1';
-import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=review-two-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=review-two-1';
-import {economicCostWan} from './economic-life.mjs?v=review-two-1';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=review-two-1';
+import {academySupportActive} from './academy.mjs?v=ux-design-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=ux-design-1';
+import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=ux-design-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=ux-design-1';
+import {economicCostWan} from './economic-life.mjs?v=ux-design-1';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=ux-design-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

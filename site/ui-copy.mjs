@@ -72,10 +72,56 @@ export function appendUiFacts(document,host,pairs,className='ui-facts'){
  host.append(dl);return dl;
 }
 
+const actionErrors=new WeakMap();
+let actionErrorSerial=0;
+
+export function clearActionError(status){
+ const previous=actionErrors.get(status);
+ if(previous){
+  previous.inline?.remove?.();
+  if(previous.anchor&&previous.id){
+   const descriptions=(previous.anchor.getAttribute?.('aria-describedby')||'').split(/\s+/).filter(id=>id&&id!==previous.id);
+   if(descriptions.length)previous.anchor.setAttribute('aria-describedby',descriptions.join(' '));
+   else previous.anchor.removeAttribute?.('aria-describedby');
+  }
+  status.hidden=previous.hidden;
+  actionErrors.delete(status);
+ }
+ status.textContent='';
+}
+
+/** Keep the original status in place; a rendered form may replace its action area. */
+export function reportActionError(status,error,{dialog,anchor,fallback='조건을 확인해주세요.'}={}){
+ clearActionError(status);
+ const document=status.ownerDocument||dialog?.ownerDocument||globalThis.document;
+ const text=displayCopy(error?.message||(typeof error==='string'?error:fallback));
+ const record={hidden:status.hidden,inline:null,anchor:null,id:null};
+ actionErrors.set(status,record);status.textContent=text;
+ let requested;
+ try{requested=typeof anchor==='function'?anchor():anchor;}catch{}
+ const usable=node=>node&&node!==status&&node!==dialog&&node.isConnected!==false&&node.parentNode&&
+  (!dialog||typeof dialog.contains!=='function'||dialog.contains(node))&&
+  (typeof node.after==='function'||typeof node.parentNode.insertBefore==='function');
+ const target=usable(requested)?requested:usable(document?.activeElement)?document.activeElement:null;
+ if(target&&document?.createElement){
+  const inline=document.createElement('p');inline.id=`action-inline-error-${++actionErrorSerial}`;inline.className='action-inline-error';
+  inline.setAttribute('role','alert');inline.setAttribute('aria-live','assertive');inline.setAttribute('aria-atomic','true');
+  if(typeof target.after==='function')target.after(inline);else target.parentNode.insertBefore(inline,target.nextSibling);
+  inline.textContent=text;status.hidden=true;record.inline=inline;record.anchor=target;record.id=inline.id;
+  const descriptions=(target.getAttribute?.('aria-describedby')||'').split(/\s+/).filter(Boolean);
+  target.setAttribute('aria-describedby',[...new Set([...descriptions,inline.id])].join(' '));
+  inline.scrollIntoView?.({block:'nearest',inline:'nearest'});
+  return inline;
+ }
+ status.hidden=false;status.scrollIntoView?.({block:'nearest',inline:'nearest'});return status;
+}
+
 /** Completed attempts close immediately; failed validation keeps its actionable form. */
-export function completeModalAction(dialog,status,callback,argument,fallback='조건을 확인해주세요.'){
+export function completeModalAction(dialog,status,callback,argument,fallback='조건을 확인해주세요.',options={}){
  if(dialog.dataset?.actionPending==='true')return false;
- const success=()=>{status.textContent='';dialog.close();return true;},failure=error=>{status.textContent=displayCopy(error?.message||fallback);return false;};
+ const anchor=options.anchor??(status.ownerDocument||dialog.ownerDocument||globalThis.document)?.activeElement;
+ clearActionError(status);
+ const success=()=>{clearActionError(status);if(options.keepOpen)options.onSuccess?.();else dialog.close();return true;},failure=error=>{reportActionError(status,error,{dialog,anchor,fallback});return false;};
  try{const result=callback(argument);if(result&&typeof result.then==='function'){
   if(dialog.dataset)dialog.dataset.actionPending='true';dialog.setAttribute?.('aria-busy','true');
   const buttons=[...(dialog.querySelectorAll?.('button')||[])].map(button=>({button,disabled:button.disabled}));for(const row of buttons)row.button.disabled=true;

@@ -1,4 +1,4 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=review-two-1';
+import {pendingInjuryCare} from './injury-care.mjs?v=ux-design-1';
 
 // This uses the existing personal-loan rate. Family debt is a separate account.
 export const PERSONAL_DEBT_ANNUAL_RATE=.035;

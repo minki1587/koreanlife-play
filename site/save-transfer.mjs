@@ -1,6 +1,6 @@
-import {validSave,VERSION} from './engine.mjs?v=review-two-1';
-import {validCareerModel} from './career-economy.mjs?v=review-two-1';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=review-two-1';
+import {validSave,VERSION} from './engine.mjs?v=ux-design-1';
+import {validCareerModel} from './career-economy.mjs?v=ux-design-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=ux-design-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';

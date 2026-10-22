@@ -1,5 +1,7 @@
-import {displayCopy} from './ui-copy.mjs?v=review-two-1';
-import {deriveLifeScene} from './life-scene-model.mjs?v=review-two-1';
+import {displayCopy} from './ui-copy.mjs?v=ux-design-1';
+import {deriveLifeScene} from './life-scene-model.mjs?v=ux-design-1';
+import {injuryImpact} from './injury-care.mjs?v=ux-design-1';
+import {employmentContractSummary} from './employment-contract.mjs?v=ux-design-1';
 
 const AGE_FRAMES = Object.freeze({baby:0,toddler:1,child:2,teen:3,young:4,adult:5,senior:6});
 const ROLE_FRAMES = Object.freeze({school:7,office:8,field:9,shop:10,military:11});
@@ -7,6 +9,16 @@ const SENIOR_FRAMES = Object.freeze({office:12,field:13,shop:14});
 const BACKGROUNDS = Object.freeze({metropolitan:0,coastal:1,regional:2,rural:3});
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const instances = new WeakMap();
+
+export function sceneActivityCopy(state,scene){
+  if(injuryImpact(state).active)return '몸을 돌보며 일상을 조절하는 중';
+  if(state?.schooling?.fundingPaused)return '다음 배움을 준비하는 중';
+  const contract=employmentContractSummary(state);
+  if(!state?.service?.active&&['gap','closed'].includes(contract?.workState))return contract.workState==='gap'?'다음 일감을 기다리는 중':'이번 달 영업을 쉬는 중';
+  if(scene.age<6)return '가족의 보살핌을 받는 중';
+  if(scene.age<19&&scene.role==='rest')return '놀이와 배움으로 하루를 보내는 중';
+  return {school:'학교에서 배우는 중',office:'일터에서 하루를 보내는 중',field:'현장에서 일하는 중',shop:'손님을 맞이하는 중',military:'나라를 지키는 중',rest:'일상을 돌보며 쉬는 중'}[scene.role]||'일상을 이어가는 중';
+}
 
 export function characterAtlasFor(scene){return scene?.characterGender==='female'?'./assets/life-characters-female-v1.png':'./assets/life-characters-v1.png';}
 
@@ -247,8 +259,9 @@ export function createLifeScene(host) {
       const month=Number.isInteger(state.month)&&state.month>=0&&state.month<12?state.month:0;
       stage.textContent=scene.ageLabel;
       placard.textContent=scene.jobLabel;placard.title=scene.jobLabel;
-      current.replaceChildren(...[`${scene.age}세 ${month}개월`,scene.jobLabel,scene.employmentLabel].map(text=>make('li','',displayCopy(text))));
-      address.replaceChildren(...[scene.residenceLabel.replaceAll(' · ',' '),scene.housingLabel].map(text=>make('li','',displayCopy(text))));
+      const activityCopy=sceneActivityCopy(state,scene);
+      current.replaceChildren(make('li','',activityCopy));
+      address.replaceChildren(make('li','',displayCopy(scene.residenceLabel.replaceAll(' · ',' '))));
       visual.setAttribute('aria-label',`${scene.age}세 ${month}개월 ${scene.characterGender==='female'?'여성':'남성'} ${scene.ageLabel}, ${scene.jobLabel}, ${scene.residenceLabel}, ${scene.housingLabel}.`);
       host.classList.toggle('is-running',Boolean(running));
       return scene;

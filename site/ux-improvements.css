@@ -1,0 +1,91 @@
+/* 2. The reason for a stopped clock and its recovery actions stay nearby. */
+#progress-notices:empty{display:none}
+#progress-notices>section{margin:0 0 16px;scroll-margin-top:16px;border:2px solid #986527;background:#fff7e7;border-radius:8px;padding:16px}
+#progress-notices p{margin:6px 0 12px;line-height:1.65}
+#clockbar[data-clock-reason=save-conflict],#clockbar[data-clock-reason=storage-quota],#clockbar[data-clock-reason=save-recovery]{border-color:#986527;background:#fff7e7}
+#clock-help{min-height:44px;margin:0}
+.clock-state{flex-wrap:wrap;gap:8px}
+/* 3. Keep the playable scene close; optional menus remain one tap away. */
+.action-drawer{margin-bottom:18px;border:1px solid var(--line);border-radius:8px;background:#edf1e6}
+.action-drawer>summary{padding:10px 14px;font-weight:600}
+.action-drawer>summary span{font-size:.8em;font-weight:400;color:var(--muted);margin-left:8px}
+.action-drawer .life-actionbar{border:0;margin:0}
+@media(min-width:1024px){.action-drawer>summary{display:none}}
+@media(max-width:1023px){
+ .action-drawer:not([open])>.life-actionbar{display:none}
+ .action-drawer .life-actionbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .action-drawer .life-actionbar button{width:100%;margin:0;text-align:center}
+ .journey-meta{margin-bottom:6px}.progress{margin-bottom:10px}
+ .clockbar{padding:8px;gap:6px}.clock-actions{gap:5px}#pause{flex:1 1 100px}.speed{padding:5px;min-width:40px}
+ #next:disabled{display:none}
+ .decision-reminder{padding:10px;gap:8px;margin-bottom:12px}
+ .decision-reminder>span{display:none}
+ .decision-reminder>button{width:100%;margin:0;min-height:44px}
+ .mobile-game-summary{margin-bottom:10px;padding:6px}
+ .welcome{display:flex;flex-direction:column;align-items:center}
+ .welcome .eyebrow{font-size:.62em;margin-top:8px}
+ .welcome h1{font-size:calc(clamp(26px,6vw,40px) * var(--base-text-scale,1.44) * var(--user-text-scale,1));margin:8px 0}
+ .welcome .intro{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6;margin:8px 0 14px;word-break:keep-all;overflow-wrap:break-word}
+ .welcome .start-box{order:3}
+ .welcome .hero-illustration{order:4;max-width:430px;margin:10px auto 0}
+ .start-box .name-hint{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));margin:5px 0 10px}
+ .start-actions{display:flex;flex-direction:column}.start-actions button{width:100%;min-height:48px}
+ .save-start-actions{margin-top:8px}.save-start-actions button{width:100%}
+}
+@media(max-height:500px){.mobile-game-summary{position:static}}
+/* 5. Later-life tools retain an age-labelled discovery path. */
+.future-actions{margin:0 12px 10px;border-top:1px solid var(--line)}
+.future-actions summary{font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+.future-actions ul{margin:0 0 10px;padding-left:20px;display:grid;gap:6px;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.life-actionbar button[data-suggested=true]{border-color:#718465;background:#e5eddb;color:var(--ink)}
+.life-actionbar button[hidden]{display:none!important}
+/* 6. Costs and actions lead; background facts remain available on demand. */
+.life-tool-summary .life-tool-fact-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.life-tool-summary .life-tool-fact-list>div{display:flex;flex-direction:column;gap:3px}
+.life-tool-summary .life-tool-fact-list dt{font-size:.72em;color:var(--muted)}
+.life-tool-summary .life-tool-fact-list dd{padding:0;font-size:.85em}
+.life-tool-more,.employment-more,.education-more,.formed-family-more,.investment-more{margin-block:8px;border-top:1px solid var(--line);padding:6px 0}
+.life-tools-dialog details>summary,.employment-dialog details>summary{font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:#51654a}
+.life-tool-selection{margin:8px 0;padding:4px 0}
+.life-tool-selection ul{margin-block:4px}
+.hobby-actions{padding:8px 0;background:var(--paper);border-block:1px solid var(--line)}
+.hobby-actions button{flex:1 1 120px}
+/* 8. One line stays one line, with explicit access to the hidden end. */
+.one-line-scroll{position:relative;min-width:0}
+.daily-stats span,.daily-stats strong{font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.one-line-scroll[data-overflow=true]{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:4px}
+.one-line-scroll[data-overflow=true]>.daily-stats,.one-line-scroll[data-overflow=true]>.focus-group{grid-column:2;grid-row:1;min-width:0;scroll-padding-inline:4px}
+.row-scroll{width:44px;height:44px;min-width:44px;padding:0;border:1px solid #819276;border-radius:6px;background:var(--paper);color:var(--ink);font-size:28px}
+.row-scroll-before{grid-column:1;grid-row:1}.row-scroll-after{grid-column:3;grid-row:1}.row-scroll[hidden]{display:none}
+.start-box[data-has-save=true] #resume{order:-1}
+/* 11. Tool buttons, actions and disabled states have consistent meaning. */
+.life-actionbar button{border:1px solid #91a185;border-radius:7px;background:var(--paper);color:var(--ink);min-height:44px;padding:10px 14px;text-decoration:none}
+.life-actionbar button:hover:not(:disabled){background:#e5eddb}
+button:disabled{cursor:default}
+[aria-busy=true] button:disabled{cursor:wait}
+.finance-asset-link{display:inline-flex;align-items:center;min-height:44px;padding:5px 10px;margin:0;border:1px solid #a1ae96;border-radius:6px;background:#f1f5eb;color:var(--ink);text-decoration:none;font:inherit}
+.finance-asset-link::after{content:'›';padding-left:9px;color:#516846}
+.family-dialog .dialog-close,.family-close{width:44px;height:44px;min-width:44px;min-height:44px;padding:0;font-size:calc(20px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1}
+.action-inline-error{padding:10px 12px;margin:8px 0;border:1px solid #ad7041;border-left-width:4px;border-radius:5px;background:#fff4e6;color:#6f4123;line-height:1.6;font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));overflow-wrap:anywhere}
+/* 12. Existing pixel assets retain their artwork and share crisp, even scaling. */
+.life-pixel-icon{width:48px;height:48px;flex-basis:48px;image-rendering:pixelated;shape-rendering:crispEdges}
+.life-scene-character-sprite{animation-timing-function:steps(3,end)}
+.life-scene-character{filter:grayscale(var(--scene-character-gray)) drop-shadow(0 3px 0 #273c3240)}
+.life-scene-map-label{font-size:calc(9px * var(--base-text-scale,1.44) * var(--user-text-scale,1));word-break:keep-all}
+body p,button,summary,.life-feed b,.when{word-break:keep-all;overflow-wrap:break-word}
+.life-scene-caption li{word-break:keep-all;overflow-wrap:break-word}
+.when{font-variant-numeric:tabular-nums}
+/* 10. Significant moments stand out without rewriting the recorded story. */
+#timeline-panel,#finance-panel,#life-feed,#money-feed{overflow-anchor:none;scroll-behavior:auto}
+.life-feed>.timeline-event{grid-template-columns:72px minmax(0,1fr)}
+.timeline-event-heading{display:grid;gap:6px}
+.timeline-event-badge{display:inline-block;justify-self:start;padding:3px 7px;border:1px solid #91a282;border-radius:4px;background:#eaf0df;color:#3c5737;font-size:calc(9px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-weight:600;line-height:1.4}
+.life-feed>.timeline-event--important{border-left:3px solid #71815f;padding-left:12px}
+.life-feed>.timeline-event--loss,.life-feed>.timeline-event--ending{border-left-color:#807689}
+.timeline-event--loss .timeline-event-badge,.timeline-event--ending .timeline-event-badge{background:#eee9f0;border-color:#a49aa9;color:#594e62}
+.timeline-event--health .timeline-event-badge{background:#fff1dc;border-color:#b58c57;color:#775025}
+.timeline-event.chosen b::before{content:none}
+.timeline-new-records{position:sticky;top:0;z-index:1;width:100%;margin:8px 0;padding:10px;background:#eaf0df;border:1px solid #8b9d7d}
+.timeline-new-records[hidden]{display:none}
+.finance-panel .life-feed>.timeline-event{grid-template-columns:minmax(0,1fr)}
+@media(max-width:599px){.life-scene-map-label{display:none}.life-scene-home svg,.life-scene-activity svg{filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff)}.life-feed li{grid-template-columns:67px minmax(0,1fr)}}

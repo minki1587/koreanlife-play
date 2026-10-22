@@ -1,5 +1,5 @@
-import {careerModelFieldViews} from './career-model-views.mjs?v=review-two-1';
-import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=review-two-1';
+import {careerModelFieldViews} from './career-model-views.mjs?v=ux-design-1';
+import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=ux-design-1';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],
@@ -148,6 +148,7 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
     const found = searchOccupations(catalog.occupations,search.value,group.value);
     list.replaceChildren();
     const visible = found.slice(0,limit);
+    if (!visible.some(row => row.id === selectedId)) selectedId = visible[0]?.id ?? null;
     count.replaceChildren();appendUiFacts(document,count,[['검색 결과',`${found.length.toLocaleString('ko-KR')}개 직업`],['표시 중',`${visible.length.toLocaleString('ko-KR')}개`]],'career-summary-facts');
     for (const row of visible) {
       const item = make('li'), choose = button('career-result','');
@@ -157,6 +158,7 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
     }
     if (!found.length) list.append(make('li','career-empty','일치하는 직업이 없습니다. 검색어나 분류를 바꿔 주세요.'));
     more.hidden=visible.length>=found.length;
+    return rows.get(selectedId) ?? null;
   }
 
   function renderDetail(row, focus = false) {
@@ -192,20 +194,28 @@ export function createCareerBrowser({catalog, onOpen, onClose, onSelect} = {}) {
 
   function select(id, focus = false) {
     const row = rows.get(id);if(!row)return false;
+    let found = searchOccupations(catalog.occupations,search.value,group.value);
+    let index = found.findIndex(item => item.id === id);
+    if (index < 0) {
+      search.value='';group.value='';
+      found=searchOccupations(catalog.occupations);
+      index=found.findIndex(item => item.id === id);
+    }
+    limit=Math.max(limit,Math.ceil((index+1)/PAGE_SIZE)*PAGE_SIZE);
     selectedId=id;renderResults();renderDetail(row,focus);
     if(typeof onSelect==='function')onSelect(row);
     return true;
   }
-  function refresh() {limit=PAGE_SIZE;renderResults();}
+  function refresh() {limit=PAGE_SIZE;renderDetail(renderResults());}
   search.addEventListener('input',refresh);group.addEventListener('change',refresh);
-  more.addEventListener('click',() => {limit+=PAGE_SIZE;renderResults();});
+  more.addEventListener('click',() => {limit+=PAGE_SIZE;renderDetail(renderResults());});
   x.addEventListener('click',() => dialog.close());
   dialog.addEventListener('click',event => {
     if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();
     if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();
   });
   dialog.addEventListener('close',() => {if(!reportedOpen)return;reportedOpen=false;if(typeof onClose==='function')onClose();});
-  renderResults();renderDetail(null);
+  renderDetail(renderResults());
   return Object.freeze({
     dialog,
     get isOpen(){return dialog.open;},

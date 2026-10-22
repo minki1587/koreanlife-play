@@ -1,4 +1,4 @@
-import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=review-two-1';
+import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=ux-design-1';
 
 const clone=x=>structuredClone(x),q=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 export const SPOUSE_LIFE_RULES=Object.freeze({version:'spouse-life-v1',kind:'game_assumption',maximumAgeMonths:1440,monthlyOwnLivingWan:75,monthlyOwnHousingWan:40,discretionaryFraction:.6,annualDebtInterest:.035,funeralCostWan:1000,inheritance:'equal-married-player-and-children',unpaidEstateDebtTransfers:false});

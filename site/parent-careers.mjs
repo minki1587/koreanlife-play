@@ -1,8 +1,8 @@
-import {parentDeathCheck} from './family-estate.mjs?v=review-two-1';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=review-two-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=review-two-1';
-import {careerProgressionAssessment} from './career-progression.mjs?v=review-two-1';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=review-two-1';
+import {parentDeathCheck} from './family-estate.mjs?v=ux-design-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=ux-design-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=ux-design-1';
+import {careerProgressionAssessment} from './career-progression.mjs?v=ux-design-1';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=ux-design-1';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
