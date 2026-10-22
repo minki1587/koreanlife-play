@@ -1,4 +1,4 @@
-import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=injury-copy-1';
+import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=private-school-1';
 
 const VERSION='family-estate-1',clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

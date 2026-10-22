@@ -1,9 +1,9 @@
-import {academySupportActive} from './academy.mjs?v=injury-copy-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=injury-copy-1';
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=injury-copy-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=injury-copy-1';
-import {economicCostWan} from './economic-life.mjs?v=injury-copy-1';
-import {monthlyWorkIncomeWan} from './income-rules.mjs?v=injury-copy-1';
+import {academySupportActive} from './academy.mjs?v=private-school-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=private-school-1';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=private-school-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=private-school-1';
+import {economicCostWan} from './economic-life.mjs?v=private-school-1';
+import {monthlyWorkIncomeWan} from './income-rules.mjs?v=private-school-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

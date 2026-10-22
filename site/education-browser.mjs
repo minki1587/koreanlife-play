@@ -1,7 +1,7 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=injury-copy-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=injury-copy-1';
-import {formatMoney} from './spending.mjs?v=injury-copy-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=injury-copy-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=private-school-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=private-school-1';
+import {formatMoney} from './spending.mjs?v=private-school-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=private-school-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -48,7 +48,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
   const cards=el('div',undefined,'education-options');
   for(const row of options){
    const card=el('article',undefined,'life-tool-detail');card.append(el('h3',displayLines(row.label||row.name).at(-1)));
-   facts(card,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[]),['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)],...(row.academy?[['건강 기준',`${row.healthThreshold}/100`],['현재 건강',`${Math.round(s.health)}/100`],['재학 지원','학비·숙식 제공'],['졸업 후',`${row.branchLabel} 장교 경로`]]:[])]);
+   facts(card,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[]),['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],...(mode==='school'?[['배움 보너스',`연 +${row.annualLearningBonus.toFixed(2)}`]]:[]),['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)],...(row.academy?[['건강 기준',`${row.healthThreshold}/100`],['현재 건강',`${Math.round(s.health)}/100`],['재학 지원','학비·숙식 제공'],['졸업 후',`${row.branchLabel} 장교 경로`]]:[])]);
    const b=button(row.academy?'이 사관학교에 지원하기':mode==='university'?'이 대학 과정에 지원하기':'이 학교에 지원하기',()=>act(mode==='university'?onUniversity:onSchool,row.id),'life-tool-button life-tool-primary');b.disabled=!row.eligible;card.append(b);
    if(row.funding&&!row.funding.legacy)fundingFacts(card,row.funding);list(card,row.reasons||[],'education-notes life-tool-blocked');cards.append(card);
   }

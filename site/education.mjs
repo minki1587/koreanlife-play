@@ -1,5 +1,5 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=injury-copy-1';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=injury-copy-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=private-school-1';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=private-school-1';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([
@@ -44,7 +44,12 @@ export function progressSchoolJourney(s){
   journey.completedStages.push(current.stage);journey.highestLevel=Math.max(journey.highestLevel,STAGES.indexOf(current.stage)+1);journey.current=null;return{journey,completed:{...current,completedMonth:s.totalMonths}};
 }
 export function schoolTuitionMonth(s){return s.schoolJourney?.current&&!s.service?.active?s.schoolJourney.current.annualTuitionWan/12:0;}
-export function schoolLearningMonth(s){return s.schoolJourney?.current&&!s.service?.active?s.schoolJourney.current.annualLearningBonus/12:0;}
+export function schoolLearningMonth(s,data){
+  const current=s.schoolJourney?.current;if(!current||s.service?.active)return 0;
+  // Rebalance future study months without rewriting past learning or admission records.
+  const row=data?.educationOptions?catalog(data).schoolOptions.find(r=>r.id===current.optionId&&r.stage===current.stage&&r.ownership===current.ownership):null;
+  return(row?.annualLearningBonus??current.annualLearningBonus)/12;
+}
 export function schoolJourneyLabel(s){const j=s.schoolJourney;if(!j)return null;if(s.schooling?.status==='enrolled')return`${s.schooling.majorLabel?`${s.schooling.majorLabel} · `:''}${s.schooling.school.name} ${s.service.active?'휴학 중':s.schooling.fundingPaused?'학비 준비 휴학 중':'재학 중'}`;if(s.schooling?.status==='graduated')return`대학 졸업 · ${s.schooling.majorLabel||s.schooling.school.name}`;if(j.current)return`${j.current.name} 재학`;return j.highestLevel>=3?'고교 과정 졸업':j.highestLevel===2?'중학교 과정 졸업':j.highestLevel===1?'초등학교 과정 졸업':'미취학 · 입학 준비';}
 export function validSchoolJourney(s){
   const j=s?.schoolJourney;if(j===undefined)return true;if(!j||j.schemaVersion!==1||typeof j.modelVersion!=='string'||!Number.isInteger(j.highestLevel)||j.highestLevel<0||j.highestLevel>4||!Array.isArray(j.completedStages)||j.completedStages.length>3||j.completedStages.some((stage,i)=>stage!==STAGES[i])||j.highestLevel<j.completedStages.length||!Array.isArray(j.applications)||j.applications.length>500)return false;

@@ -1,4 +1,4 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=injury-copy-1';
+import {pendingInjuryCare} from './injury-care.mjs?v=private-school-1';
 
 /** A care interruption is independent of the existence of another life fork. */
 export function storyView(state,next,latest=state?.timeline?.at(-1)){

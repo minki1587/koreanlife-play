@@ -1,7 +1,7 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=injury-copy-1';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=injury-copy-1';
-import {formatMoney} from './spending.mjs?v=injury-copy-1';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=injury-copy-1';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=private-school-1';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=private-school-1';
+import {formatMoney} from './spending.mjs?v=private-school-1';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=private-school-1';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}
