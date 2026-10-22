@@ -1,6 +1,6 @@
-import {validSave,VERSION} from './engine.mjs?v=life-improvements-1';
-import {validCareerModel} from './career-economy.mjs?v=life-improvements-1';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=life-improvements-1';
+import {validSave,VERSION} from './engine.mjs?v=review-two-1';
+import {validCareerModel} from './career-economy.mjs?v=review-two-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=review-two-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';
@@ -78,7 +78,7 @@ export async function readSaveFile(file){
  return previewFrom(text,{fileName:file.name,mimeType:file.type});
 }
 function get(storage,key){try{return storage.getItem(key);}catch(cause){fail('STORAGE_READ','브라우저의 저장 기록을 읽지 못했습니다. 저장 공간 접근을 확인해 주세요.',{cause});}}
-export function previewStoredBackup(storage,{key=IMPORT_BACKUP_KEY}={}){const raw=get(storage,key);return raw===null?null:previewFrom(raw,{fileName:'koreanlife-backup-v2.json',mimeType:'application/json',sourceKey:key});}
+export function previewStoredBackup(storage,{key=IMPORT_BACKUP_KEY,expectedRaw}={}){const raw=get(storage,key);if(expectedRaw!==undefined&&raw!==expectedRaw)fail('STORAGE_CHANGED','표시한 백업이 다른 탭에서 변경되었습니다. 새 목록에서 내용을 다시 확인해 주세요.');return raw===null?null:previewFrom(raw,{fileName:'koreanlife-backup-v2.json',mimeType:'application/json',sourceKey:key});}
 function downloadDescriptor(raw,fileName){
  let valid=false,life=null;try{const preview=previewFrom(raw,{fileName});valid=true;life=preview.life;}catch{}
  return{text:raw,raw,fileName,mimeType:'application/json',bytes:bytes(raw),valid,life};
@@ -88,15 +88,25 @@ export function createBackupDownload(storage,{key=SAVE_KEY}={}){const raw=get(st
 /** Both independent backup slots remain visible. Undated legacy files are not
  * assigned a timestamp using character age or the time this menu was opened. */
 export function listStoredBackups(storage){return [[PREVIOUS_BACKUP_KEY,'이전 삶의 기록'],[IMPORT_BACKUP_KEY,'불러오기 전 기록']].flatMap(([key,label])=>{const copy=createBackupDownload(storage,{key});return copy?[{...copy,key,label,savedAt:storedSaveMetadata(copy.text)?.savedAt??null}]:[];}).sort((a,b)=>a.savedAt&&b.savedAt?Date.parse(b.savedAt)-Date.parse(a.savedAt):a.savedAt?-1:b.savedAt?1:0);}
+/** Explicit cleanup never touches the current save or a pending import journal.
+ * The caller also holds the same cross-tab writer lock used for save/import. */
+export function removeStoredBackup(storage,{key,expectedRaw,confirmed=false}={}){
+ if(confirmed!==true)fail('BACKUP_DELETE_CONFIRMATION_REQUIRED','내려받은 파일을 확인한 뒤 백업 정리를 확정해 주세요.');
+ if(![IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY].includes(key)||typeof expectedRaw!=='string')fail('BACKUP_DELETE_INVALID','표시한 백업 원본을 먼저 확인해 주세요.');
+ if(get(storage,JOURNAL_KEY)!==null)fail('STORAGE_PENDING','중단된 불러오기 복구를 먼저 완료해 주세요.',{recoveryRequired:true});
+ if(get(storage,key)!==expectedRaw)fail('STORAGE_CHANGED','표시한 백업이 다른 탭에서 변경되었습니다. 새 목록에서 내용을 다시 확인해 주세요.');
+ storage.removeItem(key);if(get(storage,key)!==null)fail('STORAGE_WRITE','백업을 정리하지 못했습니다. 파일과 기존 저장을 확인해 주세요.');
+ return{removed:true,key};
+}
 
 function readJournal(storage){
  const raw=get(storage,JOURNAL_KEY);if(raw===null)return null;
  let journal;try{journal=parseText(raw,{maxBytes:MAX_JOURNAL_BYTES});}catch(cause){fail('JOURNAL_INVALID','중단된 불러오기 기록을 확인하지 못했습니다. 기존 파일을 내려받고 복구를 다시 시도해 주세요.',{cause,recoveryRequired:true});}
- if(!plain(journal)||journal.schemaVersion!==1||!['prepared','committed'].includes(journal.stage)||![journal.beforePrimary,journal.beforeBackup].every(v=>v===null||typeof v==='string')||typeof journal.nextPrimary!=='string')fail('JOURNAL_INVALID','중단된 불러오기 기록의 형식이 올바르지 않습니다.',{recoveryRequired:true});return journal;
+ if(!plain(journal)||journal.schemaVersion!==1||!['prepared','committed'].includes(journal.stage)||![journal.beforePrimary,journal.beforeBackup].every(v=>v===null||typeof v==='string')||typeof journal.nextPrimary!=='string'||journal.backupKey!==undefined&&![IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY].includes(journal.backupKey))fail('JOURNAL_INVALID','중단된 불러오기 기록의 형식이 올바르지 않습니다.',{recoveryRequired:true});return journal;
 }
 function restoreKey(storage,key,value){if(storage.getItem(key)===value)return;if(value===null)storage.removeItem(key);else storage.setItem(key,value);if(storage.getItem(key)!==value)throw new Error('Storage restore mismatch');}
 function rollBack(storage,journal){
- const failures=[];for(const [key,value]of [[SAVE_KEY,journal.beforePrimary],[IMPORT_BACKUP_KEY,journal.beforeBackup]])try{restoreKey(storage,key,value);}catch(error){failures.push(error);}
+ const failures=[];for(const [key,value]of [[SAVE_KEY,journal.beforePrimary],[journal.backupKey??IMPORT_BACKUP_KEY,journal.beforeBackup]])try{restoreKey(storage,key,value);}catch(error){failures.push(error);}
  let cleaned=false;if(!failures.length)try{storage.removeItem(JOURNAL_KEY);cleaned=storage.getItem(JOURNAL_KEY)===null;}catch{}
  return{complete:!failures.length,cleaned};
 }
@@ -104,7 +114,7 @@ function rollBack(storage,journal){
 export function recoverSaveTransfer(storage){
  const journal=readJournal(storage);if(!journal)return{recovered:false,cleanedCommitted:false};
  if(journal.stage==='committed'){try{storage.removeItem(JOURNAL_KEY);if(storage.getItem(JOURNAL_KEY)!==null)throw new Error('Journal cleanup mismatch');return{recovered:false,cleanedCommitted:true};}catch(cause){fail('STORAGE_RECOVERY_REQUIRED','불러오기는 완료했지만 복구 기록을 정리하지 못했습니다. 저장 공간 접근을 확인하고 다시 시도해 주세요.',{cause,recoveryRequired:true});}}
- let current,backup;try{current=get(storage,SAVE_KEY);backup=get(storage,IMPORT_BACKUP_KEY);}catch(error){error.recoveryRequired=true;throw error;}const expectedBackup=journal.beforePrimary??journal.beforeBackup;
+ let current,backup;try{current=get(storage,SAVE_KEY);backup=get(storage,journal.backupKey??IMPORT_BACKUP_KEY);}catch(error){error.recoveryRequired=true;throw error;}const expectedBackup=journal.beforePrimary??journal.beforeBackup;
  if(![journal.beforePrimary,journal.nextPrimary].includes(current)||![journal.beforeBackup,expectedBackup].includes(backup))fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 현재 기록을 내려받은 뒤 복구를 확인해 주세요.',{recoveryRequired:true});
  const result=rollBack(storage,journal);if(!result.complete||!result.cleaned)fail('STORAGE_RECOVERY_REQUIRED','이전 기록 복구를 완료하지 못했습니다. 저장 쓰기를 멈추고 복구용 파일을 보관해 주세요.',{recoveryRequired:true,rollbackComplete:result.complete});return{recovered:true,cleanedCommitted:false};
 }
@@ -115,24 +125,26 @@ export function getPendingRecoveryDownloads(storage){const journal=readJournal(s
  * A prepared journal is rolled back on the next startup; a committed journal is
  * only cleaned up, so later gameplay is never reverted after a successful import.
  */
-export function commitSaveTransfer(storage,preview,{confirmed=false,life:preparedLife,saveMetadata,expectedPrimary}={}){
+export function commitSaveTransfer(storage,preview,{confirmed=false,life:preparedLife,saveMetadata,expectedPrimary,backupKey=IMPORT_BACKUP_KEY,settings:preparedSettings}={}){
  const record=previews.get(preview);if(!record)fail('IMPORT_PREVIEW_INVALID','먼저 진행 기록 파일을 확인해 주세요.');
  if(confirmed!==true)fail('IMPORT_CONFIRMATION_REQUIRED','미리보기를 확인한 뒤 ‘불러와 이어하기’를 눌러 주세요.');
  if(saveMetadata!==undefined&&(!plain(saveMetadata)||!Number.isSafeInteger(saveMetadata.revision)||saveMetadata.revision<1||typeof saveMetadata.writer!=='string'||!validSavedAt(saveMetadata.savedAt)))fail('SAVE_METADATA_INVALID','저장 시각과 개정 정보를 확인하지 못했습니다.');
  if(expectedPrimary!==undefined&&get(storage,SAVE_KEY)!==expectedPrimary)fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 최신 기록을 다시 확인해 주세요.');
- const life=structuredClone(preparedLife??record.life);checkLife(life);const settings={paused:true,speed:record.settings.speed},nextPrimary=JSON.stringify({life,settings,...(saveMetadata?{saveMetadata}:{})});
+ if(![IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY].includes(backupKey))fail('BACKUP_SLOT_INVALID','허용된 백업 위치를 확인해 주세요.');
+ if(preparedSettings!==undefined)normalizeSettings(preparedSettings);
+ const life=structuredClone(preparedLife??record.life);checkLife(life);const settings=preparedSettings?{paused:preparedSettings.paused??true,speed:preparedSettings.speed??1}:{paused:true,speed:record.settings.speed},nextPrimary=JSON.stringify({life,settings,...(saveMetadata?{saveMetadata}:{})});
  if(bytes(nextPrimary)>MAX_SAVE_FILE_BYTES)fail('FILE_TOO_LARGE','준비한 진행 기록이 저장 크기 제한을 넘었습니다.');
  if(get(storage,JOURNAL_KEY)!==null)fail('STORAGE_PENDING','중단된 불러오기 복구를 먼저 완료해 주세요.',{recoveryRequired:true});
  if(record.sourceKey&&get(storage,record.sourceKey)!==record.sourceText)fail('STORAGE_CHANGED','확인한 백업이 다른 탭에서 바뀌었습니다. 미리보기를 다시 열어 주세요.');
- const journal={schemaVersion:1,stage:'prepared',beforePrimary:get(storage,SAVE_KEY),beforeBackup:get(storage,IMPORT_BACKUP_KEY),nextPrimary};
+ const journal={schemaVersion:1,stage:'prepared',beforePrimary:get(storage,SAVE_KEY),beforeBackup:get(storage,backupKey),nextPrimary,...(backupKey===IMPORT_BACKUP_KEY?{}:{backupKey})};
  try{storage.setItem(JOURNAL_KEY,JSON.stringify(journal));}catch(cause){let recoveryRequired=false;try{if(storage.getItem(JOURNAL_KEY)!==null){storage.removeItem(JOURNAL_KEY);recoveryRequired=storage.getItem(JOURNAL_KEY)!==null;}}catch{recoveryRequired=true;}fail('STORAGE_WRITE','복구용 기록을 보관할 저장 공간이 부족하거나 접근할 수 없습니다. 기존 기록은 유지했습니다.',{cause,recoveryRequired,rollbackComplete:true});}
  // Refuse a concurrent writer before modifying either game save slot.
- let unchanged;try{unchanged=get(storage,SAVE_KEY)===journal.beforePrimary&&get(storage,IMPORT_BACKUP_KEY)===journal.beforeBackup;}catch(cause){const result=rollBack(storage,journal);fail('STORAGE_WRITE','불러오기 중 저장 접근이 중단되었습니다. 기존 기록의 복구 상태를 확인해 주세요.',{cause,recoveryRequired:!result.complete||!result.cleaned,rollbackComplete:result.complete});}
+ let unchanged;try{unchanged=get(storage,SAVE_KEY)===journal.beforePrimary&&get(storage,backupKey)===journal.beforeBackup;}catch(cause){const result=rollBack(storage,journal);fail('STORAGE_WRITE','불러오기 중 저장 접근이 중단되었습니다. 기존 기록의 복구 상태를 확인해 주세요.',{cause,recoveryRequired:!result.complete||!result.cleaned,rollbackComplete:result.complete});}
  if(!unchanged){let recoveryRequired=true;try{storage.removeItem(JOURNAL_KEY);recoveryRequired=storage.getItem(JOURNAL_KEY)!==null;}catch{}fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 미리보기를 다시 열어 주세요.',{recoveryRequired});}
  try{
-  if(journal.beforePrimary!==null)storage.setItem(IMPORT_BACKUP_KEY,journal.beforePrimary);
+  if(journal.beforePrimary!==null)storage.setItem(backupKey,journal.beforePrimary);
   storage.setItem(SAVE_KEY,nextPrimary);
-  if(storage.getItem(SAVE_KEY)!==nextPrimary||storage.getItem(IMPORT_BACKUP_KEY)!==(journal.beforePrimary??journal.beforeBackup))throw new Error('Storage transaction mismatch');
+  if(storage.getItem(SAVE_KEY)!==nextPrimary||storage.getItem(backupKey)!==(journal.beforePrimary??journal.beforeBackup))throw new Error('Storage transaction mismatch');
   storage.setItem(JOURNAL_KEY,JSON.stringify({...journal,stage:'committed'}));
  }catch(cause){const result=rollBack(storage,journal);fail('STORAGE_WRITE',result.complete?'불러오기를 저장하지 못해 기존 기록과 백업을 복원했습니다.':'불러오기 중 저장 오류가 발생했습니다. 복구용 기록을 보존했으니 저장 쓰기를 멈추고 복구를 다시 시도해 주세요.',{cause,recoveryRequired:!result.complete||!result.cleaned,rollbackComplete:result.complete});}
  let cleanupPending=false;try{storage.removeItem(JOURNAL_KEY);cleanupPending=storage.getItem(JOURNAL_KEY)!==null;}catch{cleanupPending=true;}

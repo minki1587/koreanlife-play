@@ -1,6 +1,6 @@
 const clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),finite=n=>typeof n==='number'&&Number.isFinite(n),q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clamp=(n,[lo,hi])=>Math.max(lo,Math.min(hi,n));
 export const ECONOMIC_LIFE_VERSION='economic-life-v1';
-const WORKING=new Set(['재직','계약직','시간제']);
+const WORKING=new Set(['재직','계약직','시간제','프리랜서','자영업']);
 function hash(value){let h=2166136261;for(const c of String(value))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;}
 function random(seed){let h=hash(seed);return()=>{h+=0x6D2B79F5;let n=Math.imul(h^h>>>15,1|h);n^=n+Math.imul(n^n>>>7,61|n);return((n^n>>>14)>>>0)/4294967296;};}
 const fingerprint=(config,seed)=>'economic-'+hash(seed+'|'+JSON.stringify(config)).toString(16).padStart(8,'0');
@@ -18,7 +18,8 @@ export function ensureEconomicLife(s,data){if(s?.economicLife)return clone(s.eco
 function effects(config,scenarioId){return config.scenarios.find(row=>row.scenarioId===scenarioId)||{scenarioId,livingCostRate:0,wageRate:0,hiringMultiplier:1,layoffMultiplier:1};}
 function context(s){return{age:s.age,jobStatus:s.job?.status||'',jobTitle:s.job?.title||'',annualSalaryWan:s.salary||0,retired:!!s.retired,militaryActive:!!s.service?.active,academyStatus:s.academy?.status||''};}
 function validContext(c,atMonth){return c&&Object.keys(c).length===7&&c.age===Math.floor((atMonth-1)/12)&&typeof c.jobStatus==='string'&&c.jobStatus.length<=200&&typeof c.jobTitle==='string'&&c.jobTitle.length<=300&&finite(c.annualSalaryWan)&&c.annualSalaryWan>=0&&typeof c.retired==='boolean'&&typeof c.militaryActive==='boolean'&&typeof c.academyStatus==='string'&&c.academyStatus.length<=100;}
-function eligible(c){return c.age>=16&&WORKING.has(c.jobStatus)&&c.annualSalaryWan>0&&!c.retired&&!c.militaryActive&&!['cadet','officer'].includes(c.academyStatus)&&!/장교|부사관|군인|사관생도/.test(c.jobTitle);}
+function wageExposed(c){return c.age>=16&&WORKING.has(c.jobStatus)&&c.annualSalaryWan>0&&!c.retired&&!c.militaryActive&&!['cadet','officer'].includes(c.academyStatus)&&!/장교|부사관|군인|사관생도/.test(c.jobTitle);}
+function eligible(c){return wageExposed(c)&&!['프리랜서','자영업'].includes(c.jobStatus);}
 function economicMonth(original,seed,marketRecord,scenario,c,{mutate=false}={}){
  const e=mutate?original:clone(original),atMonth=marketRecord.atMonth;if(atMonth!==e.lastProcessedMonth+1||!validContext(c,atMonth))throw new RangeError('생활·고용 월 기록이 이어지지 않습니다.');
  const cfg=e.configSnapshot,fx=effects(cfg,marketRecord.scenarioId),openingLivingCostIndex=e.livingCostIndex,openingWageIndex=e.wageIndex;
@@ -34,7 +35,7 @@ export function economicLifeSummary(s){
 }
 export function economicLivingFactor(s){return economicLifeSummary(s).livingCostIndex;}
 export function economicCostWan(s,baseWan){return q(baseWan*economicLivingFactor(s));}
-export function economicAnnualSalaryWan(s,baseAnnualWan,options={}){const prospective=arguments.length>1,base=prospective?baseAnnualWan:s?.salary||0,exposed=prospective?!/장교|부사관|군인|사관생도/.test(options.occupationTitle||''):eligible(context(s));return q(base*(exposed?economicLifeSummary(s).wageIndex:1));}
+export function economicAnnualSalaryWan(s,baseAnnualWan,options={}){const prospective=arguments.length>1,base=prospective?baseAnnualWan:s?.salary||0,exposed=prospective?!/장교|부사관|군인|사관생도/.test(options.occupationTitle||''):wageExposed(context(s));return q(base*(exposed?economicLifeSummary(s).wageIndex:1));}
 function applicationCore(original,seed,atMonth,occupationId,{mutate=false}={}){const e=mutate?original:clone(original);if(atMonth!==e.lastProcessedMonth||typeof occupationId!=='string'||!/^know-[0-9]{6}$/.test(occupationId)||e.applications.at(-1)?.atMonth===atMonth)throw new Error('취업 지원은 한 달에 한 번 할 수 있습니다.');const probability=e.lastMonth?.hiringProbability??clamp(e.configSnapshot.baseHiringProbability,e.configSnapshot.bounds.hiringProbability),draw=random(`${ECONOMIC_LIFE_VERSION}|${seed}|${atMonth}|application|${occupationId}`)(),record={atMonth,occupationId,probability,draw,success:draw<probability};e.applications.push(record);return{economicLife:e,...record};}
 export function economicJobApplication(s,occupationId){if(!s.economicLife)return{economicLife:null,success:true,probability:1,draw:null};return applicationCore(s.economicLife,s.seed,s.totalMonths,occupationId);}
 export function validEconomicLife(s){try{

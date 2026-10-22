@@ -1,0 +1,4 @@
+.debt-dialog{width:min(560px,calc(100vw - 24px))}
+.debt-dialog form{display:flex;flex-direction:column;gap:14px}
+.debt-dialog input{box-sizing:border-box;max-width:100%;width:100%;padding:12px;border:1px solid var(--line);border-radius:6px;font:inherit;background:var(--paper);color:var(--ink)}
+.debt-dialog .finance-facts{margin:12px 0}

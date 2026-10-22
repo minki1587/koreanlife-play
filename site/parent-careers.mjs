@@ -1,6 +1,8 @@
-import {parentDeathCheck} from './family-estate.mjs?v=life-improvements-1';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=life-improvements-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=life-improvements-1';
+import {parentDeathCheck} from './family-estate.mjs?v=review-two-1';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=review-two-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=review-two-1';
+import {careerProgressionAssessment} from './career-progression.mjs?v=review-two-1';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=review-two-1';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
@@ -28,7 +30,7 @@ export function createParentLife(s,data){
 export function parentJobCandidates(s,p,data){
  const birth=s.profile.birthFamily.guardians.find(g=>g.id===p.id),age=Math.floor(p.ageMonths/12);
  if(age>=s.familyLife.rules.retirementAge||['retired','deceased'].includes(p.status))return [];
- return rows(data).filter(({row,requirements:q,limits:a})=>q.educationLevel<=birth.education.level&&q.requiredRegions.includes(birth.residence.region)&&(!q.qualificationRequired||p.preparedOccupationIds.includes(row.id))&&Object.entries(q.requiredAbilities).every(([key,value])=>p.abilities[key]>=value)&&!a.sex&&(a.min===null||age>=a.min)&&(a.max===null||age<=a.max));
+ return rows(data).filter(({row,requirements:q,limits:a})=>q.educationLevel<=birth.education.level&&q.requiredRegions.includes(birth.residence.region)&&(!gameVacancyRegions(row)||gameVacancyRegions(row).regions.includes(birth.residence.region))&&careerProgressionAssessment(p,row,{educationLevel:birth.education.level}).eligible&&(!q.qualificationRequired||p.preparedOccupationIds.includes(row.id))&&Object.entries(q.requiredAbilities).every(([key,value])=>p.abilities[key]>=value)&&!a.sex&&(a.min===null||age>=a.min)&&(a.max===null||age<=a.max));
 }
 export function advanceParentLife(s,data){
  if(!s.familyLife)return null;

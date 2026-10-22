@@ -1,7 +1,8 @@
-import {randomKoreanName} from './names.mjs?v=life-improvements-1';
-import {employmentRequirements} from './employment.mjs?v=life-improvements-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=life-improvements-1';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=life-improvements-1';
+import {randomKoreanName} from './names.mjs?v=review-two-1';
+import {employmentRequirements} from './employment.mjs?v=review-two-1';
+import {entryCareerAllowed} from './career-progression.mjs?v=review-two-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=review-two-1';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=review-two-1';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property
@@ -29,7 +30,7 @@ function partnerSnapshot(s,f,data){
  if(!cities.length||!Array.isArray(educationRows)||!educationRows.length||!Array.isArray(data?.occupations)||!data.occupations.length)throw new TypeError('배우자의 지역·학력·직업 자료가 없습니다.');
  const ageAtMeetingMonths=Math.max(228,Math.min(f.spouseLife?1439:1872,s.totalMonths+(Math.floor(rng()*13)-6)*12)),education=clone(pick(educationRows.filter(e=>e.entryAge*12<=ageAtMeetingMonths)));
  const verified=(v,key)=>v&&String(v.status||'').startsWith('verified')&&Array.isArray(v.sourceURLs)&&v.sourceURLs.length&&v[key]!==undefined;
- const jobs=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row),model:careerModelSnapshot(row)})).filter(({row,requirements:r,model})=>model&&r.educationLevel<=education.level&&!verified(row.sexRestriction,'allowedSexes')&&(!verified(row.ageRestriction,'minAge')||ageAtMeetingMonths>=row.ageRestriction.minAge*12)&&(!verified(row.ageRestriction,'maxAge')||ageAtMeetingMonths<(row.ageRestriction.maxAge+1)*12));
+ const jobs=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row),model:careerModelSnapshot(row)})).filter(({row,requirements:r,model})=>model&&entryCareerAllowed(row)&&r.educationLevel<=education.level&&!verified(row.sexRestriction,'allowedSexes')&&(!verified(row.ageRestriction,'minAge')||ageAtMeetingMonths>=row.ageRestriction.minAge*12)&&(!verified(row.ageRestriction,'maxAge')||ageAtMeetingMonths<(row.ageRestriction.maxAge+1)*12));
  if(!jobs.length)throw new TypeError('조건에 맞는 배우자 직업 자료가 없습니다.');const {row,requirements:r,model}=pick(jobs),workCities=cities.filter(c=>r.requiredRegions.includes(c.region));if(!workCities.length)throw new TypeError('배우자의 근무 지역을 찾지 못했습니다.');
  let name;for(let i=0;i<128;i++){name=randomKoreanName(()=>Math.floor(rng()*4294967296));if(name!==s.name&&!f.children.some(c=>c.name===name))break;}
  const p={serial:f.partnerSerial+1,metAtMonth:s.totalMonths,name,ageAtMeetingMonths,hometown:location(pick(cities)),education:{level:education.level,label:education.label,entryAge:education.entryAge},occupation:{id:row.id,name:row.occupation.name,model,initialExperienceMonths:Math.floor(rng()*(ageAtMeetingMonths-education.entryAge*12+1)),incomeScale:pick(data.familyRules.incomeScales||[1]),educationMinimum:r.educationLevel,workplace:location(pick(workCities))}};p.fingerprint=signature(p,s.seed);return p;

@@ -1,9 +1,10 @@
-import {formatMoney} from './spending.mjs?v=life-improvements-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=life-improvements-1';
-import {searchOccupations} from './career-browser.mjs?v=life-improvements-1';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=life-improvements-1';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=life-improvements-1';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=life-improvements-1';
+import {formatMoney} from './spending.mjs?v=review-two-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=review-two-1';
+import {searchOccupations} from './career-browser.mjs?v=review-two-1';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=review-two-1';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=review-two-1';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=review-two-1';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=review-two-1';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));
@@ -22,7 +23,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
  const tabs=el('nav',undefined,'employment-tabs');tabs.setAttribute('aria-label','일과 준비');
  const summary=el('div',undefined,'employment-summary'),body=el('div',undefined,'employment-body'),status=el('p','','employment-status');status.setAttribute('role','status');
  dialog.append(top,tabs,summary,status,body);document.body.append(dialog);
- let tab='jobs',query='',group='',filter='all',page=0,selectedId=null;
+ let tab='jobs',query='',group='',filter='all',page=0,selectedId=null;const selectedEmploymentTypes=new Map();
  const rows=catalog.occupations,groups=[...new Set(rows.map(row=>row.occupation.classification.middleGroupName))];
  const tabButtons=new Map();
  for(const [id,label]of [['jobs','취업·이직'],['training','자격·능력 훈련'],['move','이사']]){const b=button(label,()=>{tab=id;status.textContent='';render();});tabButtons.set(id,b);tabs.append(b);}
@@ -31,16 +32,21 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
  function renderSummary(){
   const s=getState();summary.replaceChildren();if(!s){summary.append(el('p','게임을 시작하면 취업과 준비를 선택할 수 있습니다.'));return;}
   const p=employmentProfile(s);summary.append(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['거주지역',s.residence.region],['학력',p.educationLabel],['현재 직업',s.job.title],['현재 연봉',cash(economicAnnualSalaryWan(s))]]);
+  const contract=employmentContractSummary(s);if(contract)facts(summary,[['고용형태',contract.label],['기준 연수입',cash(economicAnnualSalaryWan(s))],...(contract.lastIncomeFactor!==null?[['이번 달 수입 계수',`${Math.round(contract.lastIncomeFactor*100)}%`]]:[]),...(contract.remainingMonths!==null?[['계약 남은 기간',`${contract.remainingMonths}개월`]]:[]),...(contract.workState==='gap'||contract.workState==='closed'?[['활동 상태',contract.workState==='gap'?'일감 대기 중':'이번 달 영업 휴식']]:[])]);
   facts(summary,Object.entries(ABILITIES).map(([key,label])=>[label,`${Math.round(p.abilities[key]??0)}/100`]));
   if(p.training)facts(summary,[['준비 중',p.training.label||p.training.type],['남은 훈련',`${p.training.remainingMonths??'—'}개월`]]);
+  if(p.training){const recovery=recoveryActivityPolicy(s);if(!recovery.studyAllowed||p.training.type==='ability'&&p.training.ability==='physical'&&!recovery.physicalTrainingAllowed)facts(summary,[['훈련 상태','회복을 위해 잠시 정지 · 회복 후 자동 재개']]);}
  }
  function selectedDetails(target){
   const row=current(),s=getState(),evaluation=evaluateEmployment(s,row);target.replaceChildren();
   target.append(el('h3',row.occupation.name),el('p',row.occupation.classification.middleGroupName,'small'));
   facts(target,[...(evaluation.offeredAnnualWan===null?[]:[['제시 연봉',`${cash(evaluation.offeredAnnualWan)} / 년`]]),...(evaluation.economicContext.activated?[['합격 확률',percent(evaluation.hiringProbability)],['이달 정세',evaluation.economicContext.scenarioTitle],['지원 횟수','합격·불합격과 관계없이 한 달에 한 번']]:[]),...(evaluation.experienceMonths?[['인정 경력',`${evaluation.experienceMonths}개월`]]:[])]);
   if(evaluation.vacancy)facts(target,[['공고 근무지',`${evaluation.vacancy.label} · ${evaluation.vacancyRegions.join(' · ')}`],['지역 준비',evaluation.vacancyRegions.includes(s.residence.region)?'현재 거주지역에서 지원 가능':'공고 근무지역으로 이사 후 지원 가능']]);
+  if(s.employment?.progressionLedger?.hasUnknownEarlierMonths&&evaluation.progression.rule)target.append(el('p','직종을 확인할 수 없는 이전 근무 기간은 선행 경력에서 제외했습니다.','small'));
+  let employmentType;
+  if(data.employmentContracts===true){const options=employmentTypeOptions(row),label=el('label','고용형태'),select=el('select'),details=el('p',undefined,'small');select.setAttribute('aria-label','지원할 고용형태');for(const option of options)select.append(new Option(option.label,option.id));employmentType=selectedEmploymentTypes.get(row.id);if(!options.some(option=>option.id===employmentType))employmentType=options[0].id;select.value=employmentType;const update=()=>{employmentType=select.value;selectedEmploymentTypes.set(row.id,employmentType);details.textContent=options.find(option=>option.id===employmentType)?.details||'';};select.addEventListener('change',update);update();label.append(select);target.append(label,details);}
   target.append(el('p',s?.job.occupationId===row.id?'현재 다니는 직업입니다. 이직할 다른 직업을 선택할 수 있습니다.':evaluation.eligible?evaluation.economicContext.activated?'지원 요건을 갖췄습니다. 합격 여부는 심사 후 결정됩니다.':'현재 조건으로 지원할 수 있습니다.':'지원 전에 아래 조건을 준비해주세요.',s?.job.occupationId===row.id||evaluation.eligible?'employment-pass':'employment-blocked'));
-  const actions=el('div',undefined,'employment-actions'),apply=button(s?.job.occupationId===row.id?'현재 다니는 직업':s?.job.occupationId?'이 직업으로 이직하기':'이 직업에 지원하기',()=>act(onApply,row.id),'employment-button employment-primary');apply.disabled=!evaluation.eligible;actions.append(apply,button('이 직업을 준비하기',()=>{tab='training';render();}),button('수집한 원자료 보기',()=>{dialog.close();onReference?.(row.id);}));target.append(actions);
+  const actions=el('div',undefined,'employment-actions'),apply=button(s?.job.occupationId===row.id?'현재 다니는 직업':s?.job.occupationId?'이 직업으로 이직하기':'이 직업에 지원하기',()=>act(onApply,data.employmentContracts===true?{occupationId:row.id,employmentType}:row.id),'employment-button employment-primary');apply.disabled=!evaluation.eligible;actions.append(apply,button('이 직업을 준비하기',()=>{tab='training';render();}),button('수집한 원자료 보기',()=>{dialog.close();onReference?.(row.id);}));target.append(actions);
   if(s?.pendingDecision==='first-job')target.append(button('취업 준비하며 다음 달로',()=>act(onDefer,undefined,'취업을 미루고 준비를 이어갑니다.'),'employment-button'));
   const list=el('ul',undefined,'employment-requirements');for(const requirement of evaluation.requirements||[]){const li=el('li');li.dataset.met=String(requirement.met);li.append(el('span',`${requirement.met===true?'✓':requirement.met===false?'○':'—'} ${requirement.label}`));appendList(li,requirement.kind==='unknown'?['미확인']:displayLines(requirement.value??'미확인'),'employment-requirement-values');list.append(li);}target.append(list);
   if(evaluation.reasons?.length){const reasons=el('ul',undefined,'employment-reasons');for(const reason of evaluation.reasons)reasons.append(el('li',displayCopy(reason)));target.append(reasons);}
@@ -66,8 +72,8 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
   if(!s){body.append(el('p','먼저 게임을 시작해주세요.'));return;}
   appendList(body,['훈련비는 등록할 때 한 번 지출합니다.','자금 부족분은 차입으로 처리합니다.','동시에 한 과정, 한 달에 한 번만 등록할 수 있습니다.','복무·정규 재학 중에는 훈련이 진행되지 않습니다.']);
   if(s.pendingDecision==='first-job')body.append(button('취업을 미루고 훈련 준비하기',()=>act(onDefer,undefined,'취업 갈림길을 마쳤습니다. 이제 과정을 골라 등록할 수 있습니다.')));
-  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schoolJourney?.current||s.schooling?.status==='enrolled'&&!s.schooling.fundingPaused||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths||pendingInjuryCare(s)||injuryImpact(s).workFactor===0;
-  if(blocked)body.append(el('p',pendingInjuryCare(s)||injuryImpact(s).workFactor===0?'부상 대응과 회복을 먼저 마쳐 주세요.':p.training?'진행 중인 훈련을 마친 뒤 새 과정에 등록할 수 있습니다.':'16세 이후, 갈림길·복무·정규 학업을 마친 뒤 등록할 수 있습니다. 이달 이미 등록했다면 다음 달에 다시 선택해주세요.','employment-blocked'));
+  const blocked=s.phase!=='running'||s.age<16||s.service.active||s.schoolJourney?.current||s.schooling?.status==='enrolled'&&!s.schooling.fundingPaused||s.job.status==='재학'||!!p.training||p.lastTrainingMonth===s.totalMonths||pendingInjuryCare(s)||!recoveryActivityPolicy(s).studyAllowed;
+  if(blocked)body.append(el('p',pendingInjuryCare(s)||!recoveryActivityPolicy(s).studyAllowed?'부상 대응과 회복을 먼저 마쳐 주세요.':p.training?'진행 중인 훈련을 마친 뒤 새 과정에 등록할 수 있습니다.':'16세 이후, 갈림길·복무·정규 학업을 마친 뒤 등록할 수 있습니다. 이달 이미 등록했다면 다음 달에 다시 선택해주세요.','employment-blocked'));
   const cards=el('div',undefined,'employment-training-grid');
   function courseCard(title,request){const card=el('section',undefined,'employment-training-card');card.append(el('h4',title));let plan;try{plan=careerTrainingPlan(s,request);}catch(error){card.append(el('p',error.message));return card;}facts(card,[...(request.type==='ability'?[['현재 능력',`${Math.round(p.abilities[request.ability]??0)}/100`]]:request.type==='education'?[['현재 학력',p.educationLabel]]:[]),['기간',`${plan.durationMonths}개월`],['등록비',cash(plan.cost)],...(request.type==='ability'?[['완료 효과','능력 +8점']]:[])]);const b=button(`${plan.label} 시작`,()=>act(onTrain,request,`${plan.label}에 등록했습니다. 월별 진행으로 이수합니다.`));b.disabled=blocked;card.append(b);return card;}
   for(const [ability,label]of Object.entries(ABILITIES))cards.append(courseCard(label,{type:'ability',ability}));

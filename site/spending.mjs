@@ -1,5 +1,5 @@
-import {appendLifeEvent} from './timeline-history.mjs?v=life-improvements-1';
-import {pendingInjuryCare} from './injury-care.mjs?v=life-improvements-1';
+import {appendLifeEvent} from './timeline-history.mjs?v=review-two-1';
+import {pendingInjuryCare,recoveryActivityPolicy} from './injury-care.mjs?v=review-two-1';
 // All prices/effects are fictional game settings. This module does no I/O.
 export const EFFECT_LIMITS=Object.freeze({health:Object.freeze([-5,8]),learn:Object.freeze([0,8]),bond:Object.freeze([0,8]),joy:Object.freeze([-3,10]),skill:Object.freeze([0,.5])});
 const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');
@@ -82,6 +82,18 @@ export function validSpendingState(state){try{
 
 function ready(state){return !!state&&int(state.totalMonths,0,1440)&&state.age===Math.floor(state.totalMonths/12)&&state.month===state.totalMonths%12&&['running','decision','ended'].includes(state.phase)&&money(state.cash)&&money(state.debt)&&METRICS.every(k=>finite(state[k])&&state[k]>=0&&state[k]<=100)&&finite(state.skill)&&state.skill>=0&&Array.isArray(state.timeline)&&state.timeline.length<=120&&int(state.logSerial,state.timeline.length,Number.MAX_SAFE_INTEGER)&&plain(state.ledger)&&money(state.ledger.expenses)&&validSpendingState(state);}
 const blank=()=>({version:1,lastActionMonth:-1,lastById:{},totalSpentWan:0,ownedAssets:[],history:[]});
+/** Burden of doing the one-month activity; paying never bypasses recovery. */
+export function spendingRecoveryActivity(row){
+ const exercise=row.category==='exercise'||/체력 측정|운동 지도|달리기|등산|수영|스케이트/.test(row.title),outdoor=exercise&&/걷기|등산|달리기|축구|농구/.test(row.title)||['travel','mobility','housing-asset','vehicle-asset','community','seasons','culture','relationships','clothing'].includes(row.category)||/공원|산책|외식|나들이/.test(row.title),study=['reading','technology','digital'].includes(row.category);
+ const physicalDemand=exercise?'high':outdoor?'moderate':['arts','technology','home','pet'].includes(row.category)?'light':'minimal',essential=['wellness','food','rest','convenience'].includes(row.category)&&physicalDemand==='minimal'&&!outdoor;
+ return{physicalDemand,outdoor,study,essential};
+}
+export function spendingAllowedDuringRecovery(state,row){
+ const p=recoveryActivityPolicy(state);if(!p.active)return true;const a=spendingRecoveryActivity(row);
+ if(p.severity==='critical')return a.essential;
+ if(!p.studyAllowed&&a.study)return false;
+ const allowed=p.severity==='major'||p.mode==='rest'?['minimal']:['minimal','light'];return!a.outdoor&&allowed.includes(a.physicalDemand);
+}
 
 /** No mutation. Availability reasons are user-facing Korean strings. */
 export function spendingStatus(state,row){
@@ -89,6 +101,7 @@ export function spendingStatus(state,row){
  const reasons=[],current=int(state?.totalMonths,0,1440)?state.totalMonths:0,s=state?.spending||blank();
  if(!ready(state))return{eligible:false,reasons:['저장한 생활 기록을 확인해주세요.'],remainingMonths:0,costWan:activity.costWan,cashAvailable:money(state?.cash)?state.cash:0};
  if(pendingInjuryCare(state))reasons.push('부상 대응을 먼저 선택해 주세요.');
+ if(!spendingAllowedDuringRecovery(state,row))reasons.push('부상 회복 중에는 이 활동을 쉽니다. 부담이 적은 휴식·생활 편의 항목을 선택할 수 있습니다.');
  if(state.phase!=='running')reasons.push(state.phase==='ended'?'마친 삶에서는 소비할 수 없습니다.':'기다리는 갈림길을 먼저 결정해주세요.');
  if(state.age<row.minAge)reasons.push(`${row.minAge}세부터 선택할 수 있습니다.`);
  if(row.costWan>0&&state.age<19)reasons.push('19세 전 보호자 지원 예산은 유료 소비에 사용할 수 없습니다.');

@@ -1,5 +1,6 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=life-improvements-1';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=life-improvements-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=review-two-1';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=review-two-1';
+import {recoveryStudyAllowed} from './injury-care.mjs?v=review-two-1';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([
@@ -48,7 +49,7 @@ export function schoolLearningMonth(s,data){
   return schoolMonthlyEffects(s,data).learn;
 }
 export function schoolMonthlyEffects(s,data){
-  const current=s.schoolJourney?.current;if(!current||s.service?.active)return{learn:0,bond:0,joy:0};
+  const current=s.schoolJourney?.current;if(!current||s.service?.active||!recoveryStudyAllowed(s))return{learn:0,bond:0,joy:0};
   // Rebalance future study months without rewriting past learning or admission records.
   const row=data?.educationOptions?catalog(data).schoolOptions.find(r=>r.id===current.optionId&&r.stage===current.stage&&r.ownership===current.ownership):null;
   return{learn:(row?.annualLearningBonus??current.annualLearningBonus)/12,bond:(row?.annualBondBonus||0)/12,joy:(row?.annualJoyBonus||0)/12};

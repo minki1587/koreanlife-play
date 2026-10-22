@@ -1,7 +1,7 @@
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=life-improvements-1';
-import {livingCostSummary} from './engine.mjs?v=life-improvements-1';
-import {investmentSummary} from './market-economy.mjs?v=life-improvements-1';
-import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=life-improvements-1';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=review-two-1';
+import {livingCostSummary} from './engine.mjs?v=review-two-1';
+import {investmentSummary} from './market-economy.mjs?v=review-two-1';
+import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=review-two-1';
 
 /** The protagonist's portfolio is separate from parents, partners and child trusts. */
 export function personalFinanceOverview(state){

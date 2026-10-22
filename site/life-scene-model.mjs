@@ -1,4 +1,4 @@
-import {protagonistGender} from './person-identity.mjs?v=life-improvements-1';
+import {protagonistGender} from './person-identity.mjs?v=review-two-1';
 // Pure presentation model. It never changes life state, money or probabilities.
 // Biomes are representative art directions, not official settlement statistics.
 const AGE_STAGES = [
@@ -6,7 +6,7 @@ const AGE_STAGES = [
   [19, 'teen', '청소년'], [35, 'young', '청년'], [60, 'adult', '성인'],
   [Infinity, 'senior', '시니어'],
 ];
-const WORKING = new Set(['재직', '계약직', '시간제']);
+const WORKING = new Set(['재직', '계약직', '시간제', '프리랜서', '자영업']);
 const METROPOLITAN = new Set(['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종']);
 // Selected, clearly named coastal destinations get a coastal art backdrop.
 // This is intentionally not an exhaustive classification of coastal districts.

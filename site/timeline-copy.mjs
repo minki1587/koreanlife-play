@@ -1,4 +1,4 @@
-import {formatMoney} from './spending.mjs?v=life-improvements-1';
+import {formatMoney} from './spending.mjs?v=review-two-1';
 /** Relationship labels are a view of the save; names stay in family details. */
 function relations(state){
  const rows=[],add=(name,role)=>{if(typeof name==='string'&&name&&typeof role==='string'&&role)rows.push([name,role]);};
@@ -43,7 +43,10 @@ export function timelinePresentation(event,state){
  const text=String(event?.text||'').replace('장례비·채무를 처리하고 남은 순재산을 게임 규칙으로 분배했습니다.','장례비와 채무를 처리하고 남은 재산을 나누었다.')
   .replace('동일 학년도에는 같은 난수를 유지하며 더 낮은 문턱의 경로로 지원하거나 다음 해를 준비할 수 있다.','같은 학년도에는 지원 기준이 낮은 경로를 고르거나 다음 해를 준비할 수 있다.');
  const storageNotes=new Set(['성장 기록 유지','자녀와 계획의 기록 유지']);
+ const careerRole=event?.type==='family-career'?(String(event.title||'').match(/(?:^|[^가-힣])(친인척 보호자|할아버지|할머니|아버지|어머니|보호자)/u)?.[1]||'해당 보호자'):null;
  return{...event,title:timelineFamilyCopy(event?.title||event?.choice||'삶의 기록',state),text:timelineFamilyCopy(text,state),changes:(event?.changes||[]).filter(value=>!storageNotes.has(value)).map(value=>{
-  const copy=timelineFamilyCopy(value,state).replace('배우자 공동 기여 종료','배우자 양육비 분담 종료');return event.type==='formed-family-estate'?copy.replace(/([\d,.]+)만원/gu,(_,n)=>formatMoney(Number(n.replaceAll(',','')))):copy;
+  let copy=timelineFamilyCopy(value,state).replace('배우자 공동 기여 종료','배우자 양육비 분담 종료');
+  if(careerRole)copy=copy.replace(/^부모 연 (?:근로)?소득(?=\s+\d)/u,`${careerRole} 개인 연 근로소득`);
+  return event.type==='formed-family-estate'?copy.replace(/([\d,.]+)만원/gu,(_,n)=>formatMoney(Number(n.replaceAll(',','')))):copy;
  })};
 }

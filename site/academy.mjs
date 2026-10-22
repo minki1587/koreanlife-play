@@ -56,6 +56,7 @@ export function validAcademyState(s){
  if(!a||a.schemaVersion!==1||!row||row.branch!==a.branch||!['cadet','officer','completed'].includes(a.status)||!Number.isInteger(a.startedMonth)||a.startedMonth<228||a.startedMonth>=252||a.startedMonth>s.totalMonths)return false;
  if(!school||school.gamePath!==true||school.educationOptionId!==row.id||school.major!=='military-academy'||school.durationMonths!==48||school.annualTuitionWan!==0||school.school?.annual!==0||s.service?.active||s.service?.savings||s.service?.pay)return false;
  if(a.status==='cadet'&&s.job?.status!=='재학'||a.status==='officer'&&(s.job?.title!==academyOfficerJob(a.branch).title||s.job?.status!=='재직'))return false;
- if(a.status==='cadet'){const gap=s.totalMonths-a.startedMonth-school.progressMonths;return school.status==='enrolled'&&Number.isInteger(school.progressMonths)&&school.progressMonths>=0&&school.progressMonths<48&&!school.fundingPaused&&a.graduatedMonth===null&&(gap===0||s.phase==='ended'&&gap===1);}
- return school.status==='graduated'&&school.progressMonths===48&&Number.isInteger(a.graduatedMonth)&&a.graduatedMonth===a.startedMonth+48&&a.graduatedMonth<=s.totalMonths;
+ const recoveryPausedMonths=a.recoveryPausedMonths??0;if(!Number.isInteger(recoveryPausedMonths)||recoveryPausedMonths<0||recoveryPausedMonths>s.totalMonths-a.startedMonth)return false;
+ if(a.status==='cadet'){const gap=s.totalMonths-a.startedMonth-school.progressMonths;return school.status==='enrolled'&&Number.isInteger(school.progressMonths)&&school.progressMonths>=0&&school.progressMonths<48&&!school.fundingPaused&&a.graduatedMonth===null&&(gap===recoveryPausedMonths||s.phase==='ended'&&gap===recoveryPausedMonths+1);}
+ return school.status==='graduated'&&school.progressMonths===48&&Number.isInteger(a.graduatedMonth)&&a.graduatedMonth===a.startedMonth+48+recoveryPausedMonths&&a.graduatedMonth<=s.totalMonths;
 }

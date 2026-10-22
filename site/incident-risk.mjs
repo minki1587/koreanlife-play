@@ -1,11 +1,13 @@
-import {hobbyActivity} from './hobby-activity.mjs?v=life-improvements-1';
+import {hobbyActivity} from './hobby-activity.mjs?v=review-two-1';
+import {injuryImpact} from './injury-care.mjs?v=review-two-1';
 // Game balance only. Collected hazard levels are not statistical accident rates.
 export const INCIDENT_RISK_RULES=Object.freeze({version:'incident-risk-v1',occupation:Object.freeze([1,1.05,1.15,1.3,1.5]),military:1.25,hobby:Object.freeze([1,1,1.02,1.1,1.2]),safety:.85,lowHealth:1.25,minimum:.65,maximum:2});
 const groups={'01':1,'02':1,'03':2,11:1,12:3,13:2,14:3,15:3,21:2,22:2,23:2,24:4,25:4,30:3,41:2,42:3,51:2,52:2,53:3,54:3,55:3,56:3,61:2,62:4,70:4,81:4,82:4,83:4,84:3,85:4,86:3,87:3,88:3,90:4};
 const int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b;
 function multiplier(p){const r=INCIDENT_RISK_RULES;return Math.round(Math.max(r.minimum,Math.min(r.maximum,r.occupation[p.occupationLevel]*(p.military?r.military:1)*r.hobby[p.hobbyDemand]*(p.safety?r.safety:1)*(p.lowHealth?r.lowHealth:1)))*1000000)/1000000;}
 export function incidentRiskProfile(s,data={},{context=s.service?.active?'military':'daily'}={}){
- const military=context==='military',working=!military&&['재직','시간제','자영업','수습'].includes(s.job?.status)&&!(s.lifeHealth?.injury?.remainingRecoveryMonths>0&&s.lifeHealth.injury.care?.mode==='rest'),occupationId=working&&/^know-\d{6}$/.test(s.job?.occupationId||'')?s.job.occupationId:null;
+ const worked=s.job?.employmentContract?.lastMonth,workThisMonth=worked?.atMonth===s.totalMonths?worked.incomeFactor>0:true;
+ const military=context==='military',working=!military&&workThisMonth&&['재직','계약직','시간제','프리랜서','자영업','수습'].includes(s.job?.status)&&injuryImpact(s).workFactor>0,occupationId=working&&/^know-\d{6}$/.test(s.job?.occupationId||'')?s.job.occupationId:null;
  const row=occupationId&&(data.occupations||[]).find(r=>r.id===occupationId),collected=row?.modeled?.occupationalRisks?.level;
  // Prefix fallback uses the same published middle-group settings when the
  // optional full occupation reference has not loaded yet.

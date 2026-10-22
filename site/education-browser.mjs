@@ -1,7 +1,8 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=life-improvements-1';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=life-improvements-1';
-import {formatMoney} from './spending.mjs?v=life-improvements-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=life-improvements-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=review-two-1';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=review-two-1';
+import {formatMoney} from './spending.mjs?v=review-two-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=review-two-1';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=review-two-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -19,19 +20,19 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
   if(mode==='overview'){
    const school=schoolManagementSummary(s,data);body.append(el('h3','나의 학업'));
    facts(body,[['현재 과정',school.currentName],...(school.stage?[['이수 기간',`${school.progressMonths}/${school.durationMonths}개월`],['남은 과정',`${school.remainingMonths}개월`],['배움 보너스',`연 +${school.annualLearningBonus.toFixed(2)}`],...(school.annualBondBonus?[['관계 보너스',`연 +${school.annualBondBonus.toFixed(2)}`]]:[]),...(school.annualJoyBonus?[['만족 보너스',`연 +${school.annualJoyBonus.toFixed(2)}`]]:[]),['연 등록금',formatMoney(school.annualTuitionWan)]]:[]),['다음 입학',`${school.nextEntry.label} · ${school.nextEntry.age}세`],['남은 시간',school.nextEntry.remainingMonths?`${school.nextEntry.remainingMonths}개월`:'해당 입학 갈림길에서 선택']]);
-   list(body,[school.stage?'재학 기간에 맞춰 매달 배움이 쌓입니다.':'입학 시기가 되면 학교를 선택하는 갈림길이 열립니다.']);return;
+   list(body,[school.stage?(recoveryStudyAllowed(s)?'재학 기간에 맞춰 매달 배움이 쌓입니다.':'회복 중에는 재학 보너스를 쉬고 학년 달력은 이어갑니다.'):'입학 시기가 되면 학교를 선택하는 갈림길이 열립니다.',...recoveryActivityNotes(s)]);return;
   }
   const household=householdSummary(s);
   if(household&&!(mode==='university'&&(universityPath==='academy'||s.academy))){facts(body,[['내 소지금',formatMoney(s.cash)],['가구 금융자산',formatMoney(household.liquidAssetsWan)],['월 추가 지원 여력',formatMoney(household.familyMonthlyCapacityWan)]],'education-facts funding-note');list(body,['유료 학비는 생활비·주거비와 준비금을 제외한 12개월 예산을 확인합니다.','부모의 취업·실직·이직·은퇴·사망에 따라 지원액이 달라집니다.']);}
   if(mode==='university'&&s.academy){
    const cadet=s.academy.status==='cadet';body.append(el('h3',s.schooling.school.name));facts(body,[['학업 상태',cadet?'사관생도 재학 중':'사관학교 졸업'],['이수 기간',`${s.schooling.progressMonths}/48개월`],['등록금',formatMoney(0)],['재학 지원','학비·숙식 제공'],['진로',cadet?'졸업 후 해당 군 장교':s.academy.status==='officer'?'장교 복무 중':'장교 복무 이력 보유']]);
-   if(cadet)list(body,['48개월 교육을 마치면 해당 군의 장교로 임관합니다.','일반 병사 복무·병사 월급·군복무 적금을 중복 적용하지 않습니다.']);return;
+   if(cadet)list(body,['48개월 교육을 마치면 해당 군의 장교로 임관합니다.','일반 병사 복무·병사 월급·군복무 적금을 중복 적용하지 않습니다.',...recoveryActivityNotes(s)]);return;
   }
   if(mode==='university'&&s.schooling?.status==='enrolled'){
    const paused=!!s.schooling.fundingPaused,funding=educationFunding(s,s.schooling.annualTuitionWan,{university:true,hobbyCostWan:activeHobbyCost(s,data.hobbyCatalog)});
-   body.append(el('h3',displayLines(s.schooling.school.name).at(-1)));facts(body,[['학업 상태',paused?'학비 준비 휴학 중':'대학 재학 중']]);fundingFacts(body,{...funding,monthlyTuitionWan:s.schooling.annualTuitionWan/12});
+   body.append(el('h3',displayLines(s.schooling.school.name).at(-1)));facts(body,[['학업 상태',paused?'학비 준비 휴학 중':recoveryStudyAllowed(s)?'대학 재학 중':'회복을 위한 학업 휴식 중']]);fundingFacts(body,{...funding,monthlyTuitionWan:paused||!recoveryStudyAllowed(s)?0:s.schooling.annualTuitionWan/12});
    const b=button(paused?'학비 마련 후 복학하기':'학비 준비로 휴학하기',()=>act(onFundingPause,!paused),'life-tool-button life-tool-primary');b.disabled=s.phase!=='running'||s.service.active||paused&&!funding.eligible;body.append(b);
-   list(body,funding.reasons,'education-notes life-tool-blocked');list(body,['휴학 중에는 수업료와 학업 진행을 멈춥니다.','복학하면 근로소득을 중단하고 학업을 이어갑니다.']);return;
+   list(body,funding.reasons,'education-notes life-tool-blocked');list(body,['휴학 중에는 수업료와 학업 진행을 멈춥니다.','복학하면 근로소득을 중단하고 학업을 이어갑니다.',...recoveryActivityNotes(s)]);return;
   }
   let options;
   if(mode==='university'){
