@@ -1,0 +1,225 @@
+{
+  "version": "economic-rules-v1",
+  "kind": "game_assumption",
+  "reviewedAt": "2026-10-22",
+  "initial": {
+    "livingCostIndex": 1,
+    "wageIndex": 1
+  },
+  "bounds": {
+    "livingCostIndex": [
+      0.75,
+      3
+    ],
+    "wageIndex": [
+      0.65,
+      2
+    ],
+    "hiringProbability": [
+      0.15,
+      0.95
+    ],
+    "layoffProbability": [
+      0,
+      0.008
+    ]
+  },
+  "baseHiringProbability": 0.7,
+  "baseLayoffProbability": 0.001,
+  "scenarios": [
+    {
+      "scenarioId": "neutral",
+      "livingCostRate": 0,
+      "wageRate": 0,
+      "hiringMultiplier": 1,
+      "layoffMultiplier": 1
+    },
+    {
+      "scenarioId": "domestic-easing",
+      "livingCostRate": -0.0005,
+      "wageRate": 0.0004,
+      "hiringMultiplier": 1.08,
+      "layoffMultiplier": 0.85
+    },
+    {
+      "scenarioId": "domestic-tightening",
+      "livingCostRate": 0.002,
+      "wageRate": -0.0008,
+      "hiringMultiplier": 0.85,
+      "layoffMultiplier": 1.35
+    },
+    {
+      "scenarioId": "domestic-credit",
+      "livingCostRate": -0.0005,
+      "wageRate": -0.0003,
+      "hiringMultiplier": 0.92,
+      "layoffMultiplier": 1.15
+    },
+    {
+      "scenarioId": "domestic-housing",
+      "livingCostRate": 0.0015,
+      "wageRate": 0.0002,
+      "hiringMultiplier": 1.02,
+      "layoffMultiplier": 0.95
+    },
+    {
+      "scenarioId": "domestic-exports",
+      "livingCostRate": 0.0007,
+      "wageRate": 0.0015,
+      "hiringMultiplier": 1.18,
+      "layoffMultiplier": 0.75
+    },
+    {
+      "scenarioId": "domestic-demand",
+      "livingCostRate": -0.001,
+      "wageRate": -0.001,
+      "hiringMultiplier": 0.78,
+      "layoffMultiplier": 1.6
+    },
+    {
+      "scenarioId": "global-energy",
+      "livingCostRate": 0.004,
+      "wageRate": -0.0008,
+      "hiringMultiplier": 0.82,
+      "layoffMultiplier": 1.55
+    },
+    {
+      "scenarioId": "global-trade",
+      "livingCostRate": 0.0012,
+      "wageRate": -0.0015,
+      "hiringMultiplier": 0.75,
+      "layoffMultiplier": 1.8
+    },
+    {
+      "scenarioId": "global-easing",
+      "livingCostRate": -0.0003,
+      "wageRate": 0.0005,
+      "hiringMultiplier": 1.1,
+      "layoffMultiplier": 0.85
+    },
+    {
+      "scenarioId": "global-tech",
+      "livingCostRate": 0.0006,
+      "wageRate": 0.0013,
+      "hiringMultiplier": 1.16,
+      "layoffMultiplier": 0.78
+    },
+    {
+      "scenarioId": "global-relief",
+      "livingCostRate": -0.0008,
+      "wageRate": 0.0008,
+      "hiringMultiplier": 1.12,
+      "layoffMultiplier": 0.8
+    },
+    {
+      "scenarioId": "global-demand",
+      "livingCostRate": -0.0012,
+      "wageRate": -0.0012,
+      "hiringMultiplier": 0.8,
+      "layoffMultiplier": 1.65
+    }
+  ],
+  "sources": [
+    {
+      "id": "bok-20261022",
+      "publisher": "한국은행",
+      "title": "통화정책방향",
+      "publishedAt": "2026-10-22",
+      "observedPeriod": "2026-10-22 결정",
+      "url": "https://www.bok.or.kr/portal/bbs/P0000559/view.do?menuNo=200690&nttId=11065823",
+      "summary": "기준금리 3.00% 동결과 물가·금융안정 위험 점검. 동결을 금리 인하로 해석하지 않는다."
+    },
+    {
+      "id": "cpi-202609",
+      "publisher": "국가데이터처",
+      "title": "2026년 9월 소비자물가동향",
+      "publishedAt": "2026-10-02",
+      "observedPeriod": "2026-09",
+      "url": "https://mods.go.kr/board.es?act=view&bid=213&list_no=447322&mid=a10301040100",
+      "summary": "소비자물가는 전월 대비 0.3%, 전년 대비 2.9% 상승했다."
+    },
+    {
+      "id": "exports-202609",
+      "publisher": "산업통상부",
+      "title": "2026년 9월 수출입 동향",
+      "publishedAt": "2026-10-01",
+      "observedPeriod": "2026-09",
+      "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172254/view",
+      "summary": "수출이 전년보다 증가했고 반도체 외 품목에서도 증가가 관측됐다. 모든 기업의 호황을 의미하지 않는다."
+    },
+    {
+      "id": "activity-202608",
+      "publisher": "국가데이터처",
+      "title": "2026년 8월 산업활동동향",
+      "publishedAt": "2026-09-30",
+      "observedPeriod": "2026-08",
+      "url": "https://mods.go.kr/board.es?act=view&bid=216&list_no=447256&mid=a10301010000",
+      "summary": "생산·소매판매·설비투자는 전월보다 줄고 건설기성은 증가한 혼합 결과다."
+    },
+    {
+      "id": "credit-202609",
+      "publisher": "금융위원회",
+      "title": "2026년 9월 가계대출 동향",
+      "publishedAt": "2026-10-15",
+      "observedPeriod": "2026-09",
+      "url": "https://www.fsc.go.kr/po010101/87939",
+      "summary": "전체 가계대출은 감소했지만 주택담보대출은 증가했다. 계절요인과 업권별 차이를 구분한다."
+    },
+    {
+      "id": "housing-202609",
+      "publisher": "연합뉴스",
+      "title": "서울 9월 아파트 토지거래허가 신청 동향 보도",
+      "publishedAt": "2026-10-15",
+      "observedPeriod": "2026-09",
+      "url": "https://www.yna.co.kr/amp/view/AKR20261014161900004",
+      "summary": "서울 일부 주택 거래 신청이 전월보다 늘었으나 이전 고점보다 적고 권역별 차이가 있다. 전국 확정 실거래가격 상승으로 일반화하지 않는다."
+    },
+    {
+      "id": "imf-202610",
+      "publisher": "IMF",
+      "title": "World Economic Outlook: Resilience Under Strain, Urgent Choices",
+      "publishedAt": "2026-10-13",
+      "observedPeriod": "2026-10-01까지의 정보에 기초한 전망",
+      "url": "https://www.imf.org/en/Publications/WEO/Issues/2026/10/13/world-economic-outlook-october-2026",
+      "summary": "갈등·무역 긴장·부채 위험과 AI 투자 확대·긴장 완화의 상방 가능성을 함께 설명한다."
+    },
+    {
+      "id": "oecd-202609",
+      "publisher": "OECD",
+      "title": "Economic Outlook, Interim Report: Weathering Successive Shocks",
+      "publishedAt": "2026-09-23",
+      "observedPeriod": "2026-09 전망",
+      "url": "https://www.oecd.org/en/publications/oecd-economic-outlook-interim-report-september-2026_f751d02b-en.html",
+      "summary": "에너지 공급 충격과 높은 금리의 부담, AI 투자와 공급 조정의 완충 효과를 설명한다."
+    },
+    {
+      "id": "fed-20250917",
+      "publisher": "Federal Reserve",
+      "title": "Federal Reserve issues FOMC statement",
+      "publishedAt": "2025-09-17",
+      "observedPeriod": "2025-09-17 결정",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm",
+      "summary": "고용 하방 위험을 고려해 정책금리 목표 범위를 0.25%p 내린 과거 사례다. 현재 금리 수준을 뜻하지 않는다."
+    },
+    {
+      "id": "ap-20260306",
+      "publisher": "AP",
+      "title": "Oil surges to its highest price since 2023, and stocks drop after a weak update on the US job market",
+      "publishedAt": "2026-03-06",
+      "observedPeriod": "2026-03-06 시장 동향",
+      "url": "https://apnews.com/article/1f7bf89b783a9ba731f4b25564bf80f8",
+      "summary": "중동 충돌에 따른 유가 급등과 약한 고용 지표가 함께 나타난 날 주가가 하락한 사례다."
+    },
+    {
+      "id": "labor-202608",
+      "publisher": "고용노동부",
+      "title": "2026년 8월 사업체노동력조사 및 2026년 4월 시도별 임금·근로시간조사 결과",
+      "publishedAt": "2026-09-30",
+      "observedPeriod": "고용 2026-08, 전국 임금 2026-07, 시도별 임금 2026-04",
+      "url": "https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=20022",
+      "relatedBriefingURL": "https://www.korea.kr/briefing/policyBriefingView.do?newsId=156783676",
+      "summary": "입직·이직·임금은 관측기간과 산업에 따라 다르며 명목임금 증가와 실질임금 감소가 동시에 나타날 수 있다. 입직률·이직률을 개인의 합격·해고 확률로 대입하지 않는다."
+    }
+  ],
+  "note": "시장과 같은 월의 사건 하나를 생활·노동에도 사용한다. 확률·배율·충격·지수상한은 게임 가정이며 기사 빈도나 실제 입직·이직률로부터 추정한 값이 아니다. 개인 기준연봉·경력모형은 보존하고 현재 경제 임금지수로 지급·표시 금액을 산정한다. 물가·임금 지수는 누적하고 채용·실직 배율은 해당 달에만 적용한다. 기본생활·주거만 물가지수 대상이며 학비·취미가격·원금상환·부채이율·군월급과 군적금은 별도 규칙을 유지한다. 부모·배우자의 기존 직업·임금·생애 모형과 자산 계정은 분리한다. 실시간 뉴스·실제 금융·채용·해고·임금 계약을 재현하지 않는다."
+}

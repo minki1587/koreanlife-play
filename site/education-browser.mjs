@@ -1,7 +1,7 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=investment-1';
-import {schoolChoices,universityOptions} from './education.mjs?v=investment-1';
-import {formatMoney} from './spending.mjs?v=investment-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=investment-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=economic-life-1';
+import {schoolChoices,universityOptions} from './education.mjs?v=economic-life-1';
+import {formatMoney} from './spending.mjs?v=economic-life-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economic-life-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}

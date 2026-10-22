@@ -1,10 +1,11 @@
-import {displayCopy,displayLines} from './ui-copy.mjs?v=investment-1';
-import {timelinePresentation} from './timeline-copy.mjs?v=investment-1';
-export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=investment-1';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=economic-life-1';
+import {timelinePresentation} from './timeline-copy.mjs?v=economic-life-1';
+export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=economic-life-1';
 
 const MONEY=/수입|소득|연봉|임금|급여|월급|지원금|용돈|지출|비용|예산|생활비|양육비|등록금|학비|이자|부채|차입|상환|현금|순자산|상속|장례비|납입|적금|원금|만기|매칭|[\d,.]+\s*(?:만|억)?원/;
 const FINANCIAL_TYPES=new Set(['family-allowance','family-estate','military-savings','military-pay','formed-family-finance','formed-family-estate']);
 const MARKET_FINANCIAL_TYPES=new Set(['market-valuation','investment-trade']);
+const ECONOMIC_LIFE_TYPES=new Set(['market-news','economic-impact','economic-layoff','economic-hiring']);
 export function timelineParts(original,state){
   const event=timelinePresentation(original,state);
   const title=displayCopy(event.title||event.choice||'삶의 기록');
@@ -15,7 +16,7 @@ export function timelineParts(original,state){
   const sentences=String(event.text||'').split(/(?<=[.!?])\s+/).map(displayCopy).filter(Boolean);
   // Economic news describes the world. Portfolio movements and transactions
   // have explicit financial event types, including quantity/percentage facts.
-  if(event.type==='market-news')return{life:{title,text:sentences,changes:facts},money:null};
+  if(ECONOMIC_LIFE_TYPES.has(event.type))return{life:{title,text:sentences,changes:facts},money:null};
   if(MARKET_FINANCIAL_TYPES.has(event.type))return{life:null,money:{title,text:sentences,changes:facts}};
   const moneyFacts=facts.filter(text=>MONEY.test(text));
   const lifeFacts=facts.filter(text=>!MONEY.test(text));

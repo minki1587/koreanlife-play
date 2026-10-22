@@ -1,5 +1,7 @@
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=investment-1';
-import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=investment-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=economic-life-1';
+import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=economic-life-1';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=economic-life-1';
+import {economicLifeSummary,economicAnnualSalaryWan} from './economic-life.mjs?v=economic-life-1';
 // Public-source notes and fictional hiring rules are deliberately separate.
 export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));
@@ -27,11 +29,11 @@ export function employmentRequirements(row){
 }
 function phaseReasons(s,{firstJob=false}={}){const reasons=[];if(!s||s.phase==='ended')reasons.push('삶의 기록이 종료되었습니다.');if(s?.phase==='decision'&&!(firstJob&&s.pendingDecision==='first-job'))reasons.push('현재 갈림길을 먼저 선택해 주세요.');if(s?.service?.active)reasons.push('복무 중에는 지원·훈련·이사를 할 수 없습니다.');if(pendingInjuryCare(s)||injuryImpact(s).workFactor===0)reasons.push('부상 대응과 회복을 먼저 마쳐 주세요.');return reasons;}
 export function evaluateEmployment(s,row){
-  const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[];
+  const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[],economicContext=economicLifeSummary(s);
   const add=(label,value,met,kind='game_assumption')=>{requirements.push({label,value,met,kind});if(met===false)reasons.push(`${label}: ${value}`);};
   add('지원 나이','16세 이상 · 게임 규칙',s?.age>=16);
   add('현재 학업','정규 재학·복무를 마친 뒤 지원',!s?.schoolJourney?.current&&(s?.schooling?.status!=='enrolled'||s?.schooling?.fundingPaused===true)&&s?.job?.status!=='재학');
-  add('이달 지원','성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
+  add('이달 지원',economicContext.activated?'합격·불합격과 관계없이 한 달에 한 번 지원':'성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
   add('현재 직업','현재 직업에 중복 지원할 수 없음',s?.job?.occupationId!==row.id);
   add('게임 학위',`${rules.educationLabel} 이수 이상 · 실제 법정 학력 판정 아님`,profile.educationLevel>=rules.educationLevel);
   if(rules.profession)add('전공 이수',professionFieldRequirement(rules.profession),professionFieldMet(s,rules.profession));
@@ -57,7 +59,10 @@ export function evaluateEmployment(s,row){
   const trainingOptions=ABILITY_AXES.map(axis=>({type:'ability',ability:axis.id,label:`${axis.label} 훈련`,durationMonths:1,cost:30}));
   if(profile.educationLevel<6)trainingOptions.push({type:'education',label:`${LEVEL_LABELS[profile.educationLevel<3?3:profile.educationLevel+1]} 게임 과정`,durationMonths:profile.educationLevel<3?12:profile.educationLevel===3?48:profile.educationLevel===4?24:36,cost:profile.educationLevel<3?120:profile.educationLevel===3?2400:1200});
   if(rules.qualificationRequired&&!profile.qualifications.includes(row.id))trainingOptions.push({type:'qualification',occupationId:row.id,label:`${row.occupation.name} 직업준비`,durationMonths:24,cost:600});
-  return{eligible:reasons.length===0,reasons,requirements,warnings,requiredRegions:[...rules.requiredRegions],requiredAbilities:rules.requiredAbilities,educationLevel:rules.educationLevel,profile,trainingOptions,requiresManualReview:requirements.some(r=>r.kind==='unknown'||r.kind==='official'&&r.met===null),note:modelNote};
+  const model=careerModelSnapshot(row),saved=s?.employment?.jobHistory?.[row.id],experienceMonths=saved?.months||0,payScale=saved?.payScale||1;
+  const baseAnnualWan=model?careerModelIncome(model,experienceMonths,payScale):null;
+  const offeredAnnualWan=baseAnnualWan===null?null:economicAnnualSalaryWan(s,baseAnnualWan,{occupationTitle:row.occupation.name});
+  return{eligible:reasons.length===0,reasons,requirements,warnings,requiredRegions:[...rules.requiredRegions],requiredAbilities:rules.requiredAbilities,educationLevel:rules.educationLevel,profile,trainingOptions,hiringProbability:economicContext.hiringProbability,offeredAnnualWan,baseAnnualWan,experienceMonths,economicContext,requiresManualReview:requirements.some(r=>r.kind==='unknown'||r.kind==='official'&&r.met===null),note:modelNote};
 }
 export function careerTrainingPlan(s,request,row){
   const p=employmentProfile(s);if(!request||typeof request!=='object')throw new TypeError('훈련 종류를 선택해 주세요.');

@@ -1,6 +1,6 @@
-import {hobbyInjuryAllowed,pendingInjuryCare} from './injury-care.mjs?v=investment-1';
-import {validHobbyActivity} from './hobby-activity.mjs?v=investment-1';
-import {hasHouseholdSupport,effectiveHobbyAge,hobbyFunding} from './household-finance.mjs?v=investment-1';
+import {hobbyInjuryAllowed,pendingInjuryCare} from './injury-care.mjs?v=economic-life-1';
+import {validHobbyActivity} from './hobby-activity.mjs?v=economic-life-1';
+import {hasHouseholdSupport,effectiveHobbyAge,hobbyFunding} from './household-finance.mjs?v=economic-life-1';
 // All benefit values and age gates are explicit game assumptions.
 const clone=x=>structuredClone(x),round=x=>Math.round((x+Number.EPSILON)*10000)/10000;
 const METRICS=['health','learn','bond','joy','skill'];
@@ -16,7 +16,7 @@ function selectedRows(s,rows){return s.hobbies.selectedIds.map(id=>{const r=rows
 function ageReason(s,rows){if(rows.some(r=>s.age<effectiveHobbyAge(s,r)))return '선택한 취미의 게임 시작 연령에 도달하지 않았습니다.';if(!hasHouseholdSupport(s)&&s.age<19&&rows.some(r=>r.monthlyCostWan>0))return '유료 취미는 게임에서 19세 이상부터 활동할 수 있습니다.';return '';}
 export function hobbyAssessment(s,rows){const injuryReason=rows.some(r=>!hobbyInjuryAllowed(s,r))?'회복 중에는 제한되는 취미를 쉬며, 비용과 효과를 적용하지 않습니다.':'',reason=ageReason(s,rows),cost=rows.filter(r=>hobbyInjuryAllowed(s,r)).reduce((n,r)=>n+r.monthlyCostWan,0),funding=hobbyFunding(s,cost);return {...funding,eligible:!reason&&funding.eligible,reason:reason||funding.reason||injuryReason,costWan:cost};}
 export function setHobbies(original,ids,catalog){const rows=rowsOf(catalog),s=actionState(original);if(!Array.isArray(ids)||ids.length>3||new Set(ids).size!==ids.length||!ids.every(idOk))throw new RangeError('취미는 서로 다른 항목을 최대 3개까지 선택해주세요.');s.hobbies=hobbyProfile(s);s.hobbies.selectedIds=[...ids];const selected=selectedRows(s,rows),reason=ageReason(s,selected);if(reason)throw new Error(reason);s.hobbies.active=false;s.hobbies.activatedAtMonth=null;return s;}
-export function activateHobbies(original,active,catalog){if(typeof active!=='boolean')throw new TypeError('활동 여부를 확인해주세요.');const rows=rowsOf(catalog),s=actionState(original);s.hobbies=hobbyProfile(s);if(active){if(!s.hobbies.selectedIds.length)throw new Error('취미를 1~3개 선택해주세요.');const selected=selectedRows(s,rows),reason=ageReason(s,selected);if(reason)throw new Error(reason);if(hasHouseholdSupport(s)){const assessment=hobbyFunding(s,selected.filter(r=>hobbyInjuryAllowed(s,r)).reduce((n,r)=>n+r.monthlyCostWan,0));if(!assessment.eligible)throw new Error(assessment.reason);}if(!s.hobbies.active)s.hobbies.activatedAtMonth=s.totalMonths;}s.hobbies.active=active;if(!active)s.hobbies.activatedAtMonth=null;return s;}
+export function activateHobbies(original,active,catalog){if(typeof active!=='boolean')throw new TypeError('활동 여부를 확인해주세요.');const rows=rowsOf(catalog),s=actionState(original);s.hobbies=hobbyProfile(s);if(active){if(!s.hobbies.selectedIds.length)throw new Error('취미를 1~3개 선택해주세요.');const selected=selectedRows(s,rows),reason=ageReason(s,selected);if(reason)throw new Error(reason);if(hasHouseholdSupport(s)||s.economicLife){const assessment=hobbyFunding(s,selected.filter(r=>hobbyInjuryAllowed(s,r)).reduce((n,r)=>n+r.monthlyCostWan,0));if(!assessment.eligible)throw new Error(assessment.reason);}if(!s.hobbies.active)s.hobbies.activatedAtMonth=s.totalMonths;}s.hobbies.active=active;if(!active)s.hobbies.activatedAtMonth=null;return s;}
 export function progressHobbies(original,catalog){
  const rows=rowsOf(catalog),s=stateOf(original),h=hobbyProfile(s),zero=Object.fromEntries(METRICS.map(k=>[k,0])),base={atMonth:s.totalMonths,costWan:0,effects:zero,names:[],reason:''};
  if(!h.active)return {state:s,result:{...base,status:'inactive'}};

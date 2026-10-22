@@ -1,7 +1,9 @@
-import {academySupportActive} from './academy.mjs?v=investment-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=investment-1';
-import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=investment-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=investment-1';
+import {academySupportActive} from './academy.mjs?v=economic-life-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=economic-life-1';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=economic-life-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=economic-life-1';
+import {economicCostWan} from './economic-life.mjs?v=economic-life-1';
+import {monthlyWorkIncomeWan} from './income-rules.mjs?v=economic-life-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -36,12 +38,13 @@ const allowanceFor=s=>s.householdFinance.rules.allowances.filter(a=>a.minimumAge
 export function personalLivingWan(s,{university=false}={}){
   if(s.service?.active||academySupportActive(s))return 0;
   const living=s.age<7?40:s.age<19?60:s.retired?70:75;
-  if(s.age<19)return living;
-  const housing=university?30:s.residence?.housing==='기숙사'?30:s.residence?.housing==='보호자 집'||s.residence?.housing==='가족·지인과 동거'?15:s.residence?.region==='서울'?70:s.residence?.region==='부산'?50:40;
-  return living+housing;
+  if(s.age<19)return economicCostWan(s,living);
+  let housing=university?30:s.residence?.housing==='기숙사'?30:s.residence?.housing==='보호자 집'||s.residence?.housing==='가족·지인과 동거'?15:s.residence?.region==='서울'?70:s.residence?.region==='부산'?50:40;
+  if(s.paths?.relationship==='partner'&&(university||s.residence?.housing!=='보호자 집'))housing*=.8;
+  return round(economicCostWan(s,living)+economicCostWan(s,housing));
 }
 function baseline(s,living){
-  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(currentFamilyIncome(s)/12*r.incomeBudgetShare),home=s.familyEstate?.closed?0:round(b.housing.monthlyWan+(b.members-1-(s.familyEstate?s.familyLife.guardians.filter(p=>p.status==='deceased').length:0))*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
+  const h=s.householdFinance,b=familyBase(s),r=h.rules,income=round(currentFamilyIncome(s)/12*r.incomeBudgetShare),home=s.familyEstate?.closed?0:economicCostWan(s,b.housing.monthlyWan+(b.members-1-(s.familyEstate?s.familyLife.guardians.filter(p=>p.status==='deceased').length:0))*r.otherMemberLivingWan),repayment=Math.min(h.debtWan,b.repaymentWan),fixed=round(home+repayment),reserve=round((fixed+living)*r.reserveMonths);
   return {income,home,repayment,fixed,reserve};
 }
 export function monthlyFamilyCapacity(s,{living=personalLivingWan(s),university=false}={}){
@@ -58,7 +61,7 @@ export function activeHobbyCost(s,catalog){
 
 export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostWan=0}={}){
   if(!hasHouseholdSupport(s)){
-    const family=formedFamilyCommitment(s,12);if(!family.personalCostWan)return {eligible:true,monthlyTuitionWan:annualTuitionWan/12,familyMonthlyWan:0,personalMonthlyWan:0,reasons:[],legacy:true};
+    const family=formedFamilyCommitment(s,12);if(!family.personalCostWan&&!s.economicLife)return {eligible:true,monthlyTuitionWan:annualTuitionWan/12,familyMonthlyWan:0,personalMonthlyWan:0,reasons:[],legacy:true};
     const fee=round(annualTuitionWan/12),living=personalLivingWan(s,{university}),interest=round(s.debt*.035/12),care=round(round(s.care?.annualCost/12||0)*Math.min(12,s.care?.remainingMonths||0)),required=round((living+fee+hobbyCostWan+interest)*12+care+family.personalCostWan),eligible=fee===0||s.cash+1e-7>=required;
     return{eligible,legacy:true,monthlyTuitionWan:fee,familyMonthlyWan:0,personalMonthlyWan:fee,formedFamilyCommitmentWan:family.personalCostWan,formedFamilyMonthlyWan:round(family.personalCostWan/12),commitmentMonths:12,reasons:eligible?[]:['학비 예산 부족: 생활비·학비·취미비·이자·돌봄비와 내 가족의 순양육비를 함께 준비해야 합니다.']};
   }
@@ -77,8 +80,13 @@ export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostW
 }
 export function hobbyFunding(s,costWan){
   const formedFamilyMonthlyWan=formedFamilyMonthlyBurden(s);
-  if(!hasHouseholdSupport(s))return {eligible:s.cash+1e-9>=costWan+formedFamilyMonthlyWan,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:s.cash+1e-9>=costWan+formedFamilyMonthlyWan?'':'보유 현금이 월 취미비와 내 가족의 순양육비보다 적습니다.'};
-  const tuition=s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0,income=s.service?.active?0:s.salary/12*injuryImpact(s).workFactor,living=personalLivingWan(s),other=(s.age>=19?income*(1-s.saving)*.35:0)+(s.care?.remainingMonths>0?s.care.annualCost/12:0)+s.debt*.035/12+formedFamilyMonthlyWan;
+  if(!hasHouseholdSupport(s)){
+    if(!s.economicLife)return {eligible:s.cash+1e-9>=costWan+formedFamilyMonthlyWan,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:s.cash+1e-9>=costWan+formedFamilyMonthlyWan?'':'보유 현금이 월 취미비와 내 가족의 순양육비보다 적습니다.'};
+    const income=round(monthlyWorkIncomeWan(s)),tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),living=personalLivingWan(s),discretionary=round(s.age>=19?income*(1-s.saving)*.35:0),care=round(s.care?.remainingMonths>0?s.care.annualCost/12:0),interest=round(s.debt*.035/12);
+    const projected=s.cash+income-(s.age<19?0:living+tuition+discretionary+care)-interest-formedFamilyMonthlyWan,eligible=costWan===0||projected+1e-7>=costWan;
+    return {eligible,familyMonthlyWan:0,personalMonthlyWan:costWan,formedFamilyMonthlyWan,reason:eligible?'':'생활비·주거비·학비·이자·돌봄비와 양육비를 제외하면 월 취미비를 마련할 수 없습니다.'};
+  }
+  const tuition=round(s.service?.active||s.schooling?.fundingPaused?0:s.schooling?.status==='enrolled'?s.schooling.annualTuitionWan/12:s.schoolJourney?.current?.annualTuitionWan/12||0),income=round(monthlyWorkIncomeWan(s)),living=personalLivingWan(s),other=round(round(s.age>=19?income*(1-s.saving)*.35:0)+round(s.care?.remainingMonths>0?s.care.annualCost/12:0)+round(s.debt*.035/12)+formedFamilyMonthlyWan);
   const plan=settleHouseholdMonth(s,{livingWan:living,tuitionWan:tuition,hobbyWan:costWan,personalIncomeWan:income,otherPersonalCostWan:other}),family=plan.finance.lastMonth.hobbyWan,own=round(costWan-family),projected=s.cash+income+plan.supportWan-living-other-(plan.tuitionFunded?tuition:0),eligible=projected+1e-7>=costWan;
   return {eligible,familyMonthlyWan:round(family),personalMonthlyWan:own,formedFamilyMonthlyWan,reason:eligible?'':`가구 취미 지원 여력 ${round(family)}만원과 내 현금 ${s.cash}만원으로 취미비 ${costWan}만원과 내 가족의 순양육비를 마련할 수 없습니다.`};
 }
@@ -112,5 +120,5 @@ export function settleHouseholdMonth(s,{livingWan,tuitionWan,hobbyWan,personalIn
 export function householdSummary(s){
   if(!hasHouseholdSupport(s))return null;
   const h=s.householdFinance,b=familyBase(s),m=h.lastMonth;
-  return {eligible:familySupportEligible(s),parentsActive:!!s.familyLife,currentAnnualIncomeWan:currentFamilyIncome(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(currentFamilyIncome(s)/12*h.rules.incomeBudgetShare),monthlyHousingWan:s.familyEstate?.closed?0:b.housing.monthlyWan,familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
+  return {eligible:familySupportEligible(s),parentsActive:!!s.familyLife,currentAnnualIncomeWan:currentFamilyIncome(s),liquidAssetsWan:h.liquidAssetsWan,housingAssetWan:h.housingAssetWan,debtWan:h.debtWan,netAssetsWan:round(h.liquidAssetsWan+h.housingAssetWan-h.debtWan),monthlyIncomeWan:round(currentFamilyIncome(s)/12*h.rules.incomeBudgetShare),monthlyHousingWan:s.familyEstate?.closed?0:economicCostWan(s,b.housing.monthlyWan),familyMonthlyCapacityWan:monthlyFamilyCapacity(s),lastMonth:m,totals:clone(h.totals),activatedAtMonth:h.activatedAtMonth};
 }
