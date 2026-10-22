@@ -1,9 +1,10 @@
-import {renderEstateDetails} from './estate-views.mjs?v=save-academy-1';
-import {currentParents} from './parent-careers.mjs?v=save-academy-1';
-import {householdSummary} from './household-finance.mjs?v=save-academy-1';
-import {householdFacts} from './household-views.mjs?v=save-academy-1';
-import {formatMoney} from './spending.mjs?v=save-academy-1';
-import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=save-academy-1';
+import {renderEstateDetails} from './estate-views.mjs?v=family-life-2';
+import {currentParents} from './parent-careers.mjs?v=family-life-2';
+import {householdSummary} from './household-finance.mjs?v=family-life-2';
+import {householdFacts} from './household-views.mjs?v=family-life-2';
+import {formatMoney} from './spending.mjs?v=family-life-2';
+import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=family-life-2';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=family-life-2';
 const money=n=>formatMoney(n);
 export function familyLocationLabel(place,profiles){
  const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;
@@ -21,8 +22,9 @@ export function createFamilyBrowser({profiles,getState=()=>null,onOpen=()=>{},on
  const card=(title,pairs)=>{const section=el('section','family-section');section.append(el('h3','',title));facts(section,pairs);return section;};
  function render(f){
   body.replaceChildren();
+  const state=getState();if(state)body.append(renderFormedFamilySummary(state,{document}));
   if(!f){body.append(el('p','family-empty','이전 삶에는 출생 가족 정보가 저장되지 않았습니다. 새 삶부터 가족 배경을 확인할 수 있습니다.'));return;}
-  const state=getState(),sameFamily=state?.profile?.birthFamily?.fingerprint===f.fingerprint;
+  const sameFamily=state?.profile?.birthFamily?.fingerprint===f.fingerprint;
   if(sameFamily&&state.familyLife){
    const current=el('section','family-current');current.id='family-current';current.append(el('h3','','현재 부모·보호자'));facts(current,[['내 나이',`${state.age}세 ${state.month}개월`]]);
    const people=el('div','family-people');

@@ -1,5 +1,5 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=save-academy-1';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=save-academy-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=family-life-2';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=family-life-2';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([

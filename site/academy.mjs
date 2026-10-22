@@ -1,4 +1,3 @@
-import {protagonistGender} from './person-identity.mjs?v=save-academy-1';
 
 export const ACADEMY_PATHS=Object.freeze([
  {id:'academy-army',branch:'army',name:'육군사관학교',branchLabel:'육군',region:'서울',city:'노원구',location:'seoul',locationLabel:'서울특별시 노원구',learningThreshold:78,healthThreshold:55},
@@ -20,7 +19,6 @@ export function academyAssessment(s,row){
  if(!s?.schoolJourney)reasons.push('학교 교육 기록이 있는 삶에서 지원할 수 있습니다.');
  if(s?.phase==='ended')reasons.push('종료된 삶에서는 지원할 수 없습니다.');
  if(s?.phase!=='running'&&!(s?.phase==='decision'&&s.pendingDecision==='education'))reasons.push('현재 갈림길을 먼저 마쳐 주세요.');
- if(protagonistGender(s)!=='남성')reasons.push('이 삶에서는 군 진로를 선택하지 않습니다.');
  if(!Number.isInteger(s?.age)||s.age<19||s.age>=21)reasons.push('사관학교 지원은 19~20세에 가능합니다.');
  if(s?.schoolJourney&&s.schoolJourney.highestLevel<3)reasons.push('고교 과정을 먼저 마쳐 주세요.');
  if(s?.service?.active||s?.service?.completed)reasons.push('병사 복무를 시작했거나 마친 삶에서는 새 사관학교 경로를 선택할 수 없습니다.');
@@ -43,7 +41,7 @@ export function academyOptions(s,filters={},data){
  return rows.filter(row=>(!filters.ownership||filters.ownership==='public')&&(!filters.location||filters.location===row.location)&&(!filters.field||filters.field==='military-academy')).map(row=>({
   ...structuredClone(row),academy:true,gamePath:true,stage:'university',selection:'academy',ownership:'public',ownershipLabel:'국립 사관학교',field:'military-academy',fieldLabel:`${row.branchLabel} 장교 양성`,label:row.name,guaranteed:false,
   ...academyAssessment(s,row),funding:{legacy:false,eligible:true,reasons:[],monthlyTuitionWan:0,familyMonthlyWan:0,personalMonthlyWan:0},
-  fieldNote:'사관학교를 졸업하면 해당 군의 장교 경로로 이어집니다.',note:'게임의 남성 한정 경로와 학업·건강 선발식은 사용자 설정입니다. 현실의 남녀 지원자격과 별개이며 실제 입학·임관을 판정하지 않습니다.'
+  fieldNote:'사관학교를 졸업하면 해당 군의 장교 경로로 이어집니다.',note:'학업·건강 선발식은 게임 설정이며 실제 개인의 입학·임관을 판정하지 않습니다.'
  }));
 }
 export function academyOfficerJob(branch){
@@ -55,7 +53,7 @@ export function academySupportActive(s){return s?.academy?.status==='cadet'&&s?.
 export function validAcademyState(s){
  const a=s?.academy;if(a===undefined)return true;
  const row=ACADEMY_PATHS.find(item=>item.id===a?.schoolId),school=s?.schooling;
- if(!a||a.schemaVersion!==1||!row||row.branch!==a.branch||!['cadet','officer','completed'].includes(a.status)||protagonistGender(s)!=='남성'||!Number.isInteger(a.startedMonth)||a.startedMonth<228||a.startedMonth>=252||a.startedMonth>s.totalMonths)return false;
+ if(!a||a.schemaVersion!==1||!row||row.branch!==a.branch||!['cadet','officer','completed'].includes(a.status)||!Number.isInteger(a.startedMonth)||a.startedMonth<228||a.startedMonth>=252||a.startedMonth>s.totalMonths)return false;
  if(!school||school.gamePath!==true||school.educationOptionId!==row.id||school.major!=='military-academy'||school.durationMonths!==48||school.annualTuitionWan!==0||school.school?.annual!==0||s.service?.active||s.service?.savings||s.service?.pay)return false;
  if(a.status==='cadet'&&s.job?.status!=='재학'||a.status==='officer'&&(s.job?.title!==academyOfficerJob(a.branch).title||s.job?.status!=='재직'))return false;
  if(a.status==='cadet'){const gap=s.totalMonths-a.startedMonth-school.progressMonths;return school.status==='enrolled'&&Number.isInteger(school.progressMonths)&&school.progressMonths>=0&&school.progressMonths<48&&!school.fundingPaused&&a.graduatedMonth===null&&(gap===0||s.phase==='ended'&&gap===1);}

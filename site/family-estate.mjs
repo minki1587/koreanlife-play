@@ -1,4 +1,4 @@
-import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=save-academy-1';
+import {mortalitySnapshot,validMortality,annualDeathProbability} from './mortality.mjs?v=family-life-2';
 
 const VERSION='family-estate-1',clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
@@ -15,6 +15,12 @@ export function createFamilyEstate(s,rules,table){
 export function parentDeathCheck(s,p,atMonth){
  if(!s.familyEstate||p.status==='deceased')return null;const age=Math.floor(p.ageMonths/12),annualQx=annualDeathProbability(s.familyEstate.mortality,age),monthlyQx=monthlyDeathProbability(annualQx);
  return {atMonth,ageMonths:p.ageMonths,annualQx,monthlyQx,dies:roll(s,p.id,atMonth)<monthlyQx};
+}
+function sameDeathCheck(actual,expected){
+ // log1p/expm1 may differ by a final bit between JavaScript runtimes. Only
+ // the derived probability has tolerance; the draw, annual source and clock do not.
+ if(!actual||!nn(actual.monthlyQx)||actual.monthlyQx>1||Math.abs(actual.monthlyQx-expected.monthlyQx)>1e-12)return false;
+ return JSON.stringify({...actual,monthlyQx:expected.monthlyQx})===JSON.stringify(expected);
 }
 function split(total,weights){const entries=Object.entries(weights),result={},count=units(total);let used=0;for(const [i,[id,weight]]of entries.entries()){const part=i===entries.length-1?count-used:Math.floor(count*weight+1e-8);result[id]=fromUnits(part);used+=part;}return result;}
 const sum=values=>round(values.reduce((a,b)=>a+b,0));
@@ -55,7 +61,7 @@ export function validFamilyEstate(s){try{
  }
  if(processed.size!==dead.length||e.initialHousingAssetWan!==s.profile.birthFamily.household.housingAssetWan||s.householdFinance.housingAssetWan!==round(e.initialHousingAssetWan-sum(e.batches.flatMap(b=>b.records.map(r=>r.propertyWan)))))return false;
  for(const p of s.familyLife.guardians){if(p.status!=='deceased'&&Object.hasOwn(p,'death')||p.status==='deceased'&&p.lastChangeMonth!==p.death?.atMonth)return false;const c=p.lastMortalityCheck;if(s.totalMonths===e.activatedAtMonth){if(c!==null&&c!==undefined)return false;continue;}const checkMonth=p.status==='deceased'?p.death?.atMonth:s.totalMonths;
-  if(!c||c.atMonth!==checkMonth||c.ageMonths!==p.ageMonths)return false;const expected=parentDeathCheck({...s,familyLife:null}, {...p,status:'retired'},checkMonth);if(JSON.stringify(c)!==JSON.stringify(expected)||c.dies!==(p.status==='deceased'))return false;
+  if(!c||c.atMonth!==checkMonth||c.ageMonths!==p.ageMonths)return false;const expected=parentDeathCheck({...s,familyLife:null}, {...p,status:'retired'},checkMonth);if(!sameDeathCheck(c,expected)||c.dies!==(p.status==='deceased'))return false;
   if(p.status==='deceased'&&(!p.death||JSON.stringify(p.death)!==JSON.stringify(c)))return false;
  }
  const last=e.batches.at(-1);if(last?.atMonth===s.totalMonths&&s.householdFinance.lastMonth?.openingWan!==last.closing.liquidWan)return false;

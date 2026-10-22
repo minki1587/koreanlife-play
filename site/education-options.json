@@ -15,7 +15,7 @@
     {"title":"통계청 고시 제2025-174호 교육통계 분류 설명","url":"https://mods.go.kr/boardDownload.es?bid=107&list_no=435888&seq=2","basis":"KEDI7개 대계열과 무전공 분류 확인. 게임의8개 지원 트랙은 공식 대계열8분류라는 뜻이 아님"},
     {"title":"사관학교 설치법 제1·2·3·7·8조","url":"https://www.law.go.kr/lsSc.do?query=사관학교+설치법","basis":"육·해·공군 장교 양성기관, 수업연한4년, 입학자격 및 졸업자의 각군 소위 임명·학사학위. 게임은 현실의 법정 자격을 판정하지 않음"},
     {"title":"국회 사관학교 설치법 일부개정법률안 제2208604호 제안이유","url":"https://pal.assembly.go.kr/napal/lgsltpa/lgsltpaDone/view.do?lgsltPaId=PRC_M2K5L0K2R2S1Q1R4P0Q9O4P3X5V0W4&searchConClosed=1","basis":"2025년 제안이유의 현행제도 설명에서 사관생도 학비·급여·교육비 국고지원 확인. 제안된 비용환수 조항을 시행 법률로 취급하지 않으며 게임의 월생활비0과 장교급여는 별도 가정"},
-    {"title":"육군사관학교 공식 신보·2026학년도 입시홍보","url":"https://news.kma.ac.kr/news/articleView.html?idxno=1077","basis":"현실 남녀 생도 모집 확인. 소재지는 공식 신보 연락처의 서울특별시 노원구 화랑로574로 확인. 게임의 남성 한정 경로는 현실 모집 제한이 아님"},
+    {"title":"육군사관학교 공식 신보·2026학년도 입시홍보","url":"https://news.kma.ac.kr/news/articleView.html?idxno=1077","basis":"현실 남녀 생도 모집 확인. 소재지는 공식 신보 연락처의 서울특별시 노원구 화랑로574로 확인. 게임도 남녀 모두 자원하여 지원 가능"},
     {"title":"육군사관학교 공식 신보 소재지","url":"https://news.kma.ac.kr/","basis":"서울특별시 노원구 소재 확인. 학교 사진·기사를 게임에 복제하지 않음"},
     {"title":"대한민국 정책브리핑 해군사관학교 제77기 졸업 및 임관식","url":"https://www.korea.kr/briefing/speechView.do?newsId=132035084","basis":"4년 교육 후 장교 진출 확인. 학교 위치는 아래 정부 행사 장소자료로 교차 확인"},
     {"title":"대한민국 정책브리핑 해군사관학교 소재지","url":"https://www.korea.kr/multi/policyPhotoView.do?bbsKey=53541","basis":"경상남도 창원시 진해구 소재 확인. 사진은 재배포하지 않음"},
@@ -39,7 +39,7 @@
     {"id":"academy-navy","branch":"navy","name":"해군사관학교","branchLabel":"해군","region":"경남","city":"창원시 진해구","location":"regional","locationLabel":"경상남도 창원시 진해구","durationMonths":48,"annualTuitionWan":0,"learningThreshold":80,"healthThreshold":55,"support":{"tuition":true,"lodging":true,"meals":true}},
     {"id":"academy-airforce","branch":"airforce","name":"공군사관학교","branchLabel":"공군","region":"충북","city":"청주시 상당구","location":"regional","locationLabel":"충청북도 청주시 상당구","durationMonths":48,"annualTuitionWan":0,"learningThreshold":82,"healthThreshold":55,"support":{"tuition":true,"lodging":true,"meals":true}}
   ],
-  "academyModel":{"kind":"game_assumption","verifiedAsOf":"2026-10-22","entryAges":[19,20],"gameMaleOnly":true,"realRecruitment":"현실의 세 사관학교는 남녀 생도를 모집하며 게임의 성별 경로 제한과 별개","selectionScore":"learn*0.7+health*0.3","chanceFormula":"clamp(0.4+(score-learningThreshold)/70,0.03,0.85)","officerAnnualSalaryWan":3600,"cadetAllowanceWan":0,"note":"재학48개월의 게임 등록금·기본생활비·주거비0, 생도 수당은 별도 지급하지 않는 단순화. 졸업시각군장교 전용경로이며 537개 직업목록·국가자격을 추가하지 않고 일반 병사복무·월급·적금을 중복 제공하지 않음"},
+  "academyModel":{"kind":"game_assumption","verifiedAsOf":"2026-10-22","entryAges":[19,20],"gameMaleOnly":false,"realRecruitment":"현실의 세 사관학교는 남녀 생도를 모집하며 게임에서도 남녀 모두 자원 지원 가능. 여성의 일반 병사 복무 갈림길 생략과 구분","selectionScore":"learn*0.7+health*0.3","chanceFormula":"clamp(0.4+(score-learningThreshold)/70,0.03,0.85)","officerAnnualSalaryWan":3600,"cadetAllowanceWan":0,"note":"재학48개월의 게임 등록금·기본생활비·주거비0, 생도 수당은 별도 지급하지 않는 단순화. 졸업시각군장교 전용경로이며 537개 직업목록·국가자격을 추가하지 않고 일반 병사복무·월급·적금을 중복 제공하지 않음"},
   "universityFields": [
     {"id":"humanities","label":"인문학","durationMonths":48,"learningThreshold":48,"tuitionMultiplier":0.95},
     {"id":"natural","label":"자연과학","durationMonths":48,"learningThreshold":56,"tuitionMultiplier":1.10},
