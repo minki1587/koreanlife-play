@@ -46,6 +46,7 @@ function educationState(state) {
 function activeRole(state, study) {
   // A student on military leave keeps education history but uses military props.
   if (state.service?.active === true) return {key:'military', reason:'service.active'};
+  if (['cadet','officer'].includes(state.academy?.status)) return {key:'military', reason:`academy.${state.academy.status}`};
   if (study === 'enrolled' || study === 'school') return {key:'school', reason:study === 'enrolled' ? 'schooling.enrolled' : 'education.current-school'};
   const status = text(state.job?.status);
   if (WORKING.has(status)) {
@@ -92,9 +93,10 @@ export function deriveLifeScene(state, data = {}) {
   const educationLabel = text(state.education);
   const residenceLabel = [region, city].filter(Boolean).join(' · ') || '거주지 미기록';
   const serviceActive = state.service?.active === true;
-  const serviceBranch = text(state.service?.branch);
-  const jobIdentity = JSON.stringify([jobLabel, employmentLabel, state.retired === true, serviceActive, serviceBranch, study]);
-  const roleLabel = serviceActive ? `${serviceBranch || '군'} 복무 중` : ROLE_LABELS[role];
+  const academyActive = ['cadet','officer'].includes(state.academy?.status);
+  const serviceBranch = text(state.service?.branch) || (academyActive ? ({army:'육군',navy:'해군',airforce:'공군'})[state.academy?.branch] || '' : '');
+  const jobIdentity = JSON.stringify([jobLabel, employmentLabel, state.retired === true, serviceActive, serviceBranch, study,...(academyActive?[state.academy.status]:[])]);
+  const roleLabel = serviceActive ? `${serviceBranch || '군'} 복무 중` : academyActive ? jobLabel : ROLE_LABELS[role];
   // This includes location identity even when two places share one biome or a
   // renderer chooses the same bounded atlas variant from cityVariant.
   const sceneKey = [ageStage, role, biome, housing, locationIdentity, housingLabel, jobIdentity].map(encodeURIComponent).join(':');

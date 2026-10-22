@@ -1,6 +1,6 @@
-import {estateSummary} from './family-estate.mjs?v=audit-fixes-1';
-import {formatMoney} from './spending.mjs?v=audit-fixes-1';
-import {appendUiFacts} from './ui-copy.mjs?v=audit-fixes-1';
+import {estateSummary} from './family-estate.mjs?v=save-academy-1';
+import {formatMoney} from './spending.mjs?v=save-academy-1';
+import {appendUiFacts} from './ui-copy.mjs?v=save-academy-1';
 const percent=n=>`${(n*100).toLocaleString('ko-KR',{maximumFractionDigits:4})}%`;
 export function renderEstateDetails(s,{document=globalThis.document}={}){
  const e=estateSummary(s);if(!e)return null;

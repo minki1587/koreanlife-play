@@ -1,9 +1,9 @@
-import {formatMoney} from './spending.mjs?v=audit-fixes-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=audit-fixes-1';
-import {searchOccupations} from './career-browser.mjs?v=audit-fixes-1';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=audit-fixes-1';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=audit-fixes-1';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=audit-fixes-1';
+import {formatMoney} from './spending.mjs?v=save-academy-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=save-academy-1';
+import {searchOccupations} from './career-browser.mjs?v=save-academy-1';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=save-academy-1';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=save-academy-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=save-academy-1';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

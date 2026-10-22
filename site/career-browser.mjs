@@ -1,5 +1,5 @@
-import {careerModelFieldViews} from './career-model-views.mjs?v=audit-fixes-1';
-import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=audit-fixes-1';
+import {careerModelFieldViews} from './career-model-views.mjs?v=save-academy-1';
+import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=save-academy-1';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],

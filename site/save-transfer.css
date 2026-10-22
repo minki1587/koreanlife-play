@@ -1,0 +1,14 @@
+.save-transfer-dialog{width:min(860px,calc(100% - 24px))}
+.save-transfer-dialog .life-tool-body{display:grid;gap:14px}
+.save-transfer-dialog p{margin:0;overflow-wrap:anywhere}
+.save-file-label{font-weight:700}
+#save-import-file{display:block;max-width:100%;width:100%;min-width:0;border:1px solid var(--line,#d6dacd);padding:12px;border-radius:8px;background:#fff;font:inherit}
+#save-import-file::file-selector-button{font:inherit;margin-right:12px;border:1px solid #b5c4ae;border-radius:5px;padding:8px;background:#e8eee0;color:inherit;cursor:pointer}
+.save-transfer-actions{display:flex;flex-wrap:wrap;gap:10px}
+.save-transfer-actions button{min-height:46px;max-width:100%;white-space:normal}
+.save-transfer-error{color:#9e3028;line-height:1.6}
+.save-transfer-error:empty,#save-import-status:empty{display:none}
+.save-backup-section{border-top:1px solid var(--line,#d6dacd);padding-top:18px;display:grid;gap:12px}
+.save-backup-section h3{margin:0}
+.save-start-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+@media(max-width:480px){.save-transfer-actions>*{flex:1 1 100%}#save-import-file{padding:8px}#save-import-file::file-selector-button{display:block;margin:0 0 10px}.save-start-actions>*{width:100%}}

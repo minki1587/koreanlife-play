@@ -1,4 +1,5 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=audit-fixes-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=save-academy-1';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=save-academy-1';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([
@@ -8,7 +9,7 @@ export const SCHOOL_EVENTS=Object.freeze([
 ].map(Object.freeze));
 const STAGES=['primary','middle','high'],STAGE_LABEL={primary:'초등학교',middle:'중학교',high:'고등학교'};
 export const educationEvent=id=>SCHOOL_EVENTS.find(e=>e.id===id)||null;
-export function validEducationCatalog(c){return!!c&&c.schemaVersion===1&&c.kind==='game_education_paths'&&typeof c.modelVersion==='string'&&Array.isArray(c.schoolOptions)&&c.schoolOptions.length===9&&Array.isArray(c.universityFields)&&c.universityFields.length>=8&&c.universityFields.length<=32&&new Set(c.universityFields.map(f=>f?.id)).size===c.universityFields.length&&c.schoolOptions.every(r=>r&&typeof r.id==='string'&&STAGES.includes(r.stage)&&['public','private'].includes(r.ownership)&&typeof r.name==='string'&&[36,72].includes(r.durationMonths)&&finite(r.annualTuitionWan)&&r.annualTuitionWan>=0&&finite(r.learningThreshold)&&typeof r.guaranteed==='boolean'&&finite(r.annualLearningBonus))&&new Set(c.schoolOptions.map(r=>r.id)).size===9&&c.universityFields.every(f=>typeof f.id==='string'&&typeof f.label==='string'&&[48,72].includes(f.durationMonths)&&finite(f.learningThreshold)&&finite(f.tuitionMultiplier)&&f.tuitionMultiplier>0);}
+export function validEducationCatalog(c){return!!c&&c.schemaVersion===1&&c.kind==='game_education_paths'&&typeof c.modelVersion==='string'&&validAcademyCatalog(c.academyOptions)&&Array.isArray(c.schoolOptions)&&c.schoolOptions.length===9&&Array.isArray(c.universityFields)&&c.universityFields.length>=8&&c.universityFields.length<=32&&new Set(c.universityFields.map(f=>f?.id)).size===c.universityFields.length&&c.schoolOptions.every(r=>r&&typeof r.id==='string'&&STAGES.includes(r.stage)&&['public','private'].includes(r.ownership)&&typeof r.name==='string'&&[36,72].includes(r.durationMonths)&&finite(r.annualTuitionWan)&&r.annualTuitionWan>=0&&finite(r.learningThreshold)&&typeof r.guaranteed==='boolean'&&finite(r.annualLearningBonus))&&new Set(c.schoolOptions.map(r=>r.id)).size===9&&c.universityFields.every(f=>typeof f.id==='string'&&typeof f.label==='string'&&[48,72].includes(f.durationMonths)&&finite(f.learningThreshold)&&finite(f.tuitionMultiplier)&&f.tuitionMultiplier>0);}
 function catalog(data){const c=data?.educationOptions;if(!validEducationCatalog(c))throw new TypeError('검토한 교육 경로 자료가 없습니다.');return c;}
 export function createSchoolJourney(data){if(!data?.educationOptions)return null;const c=catalog(data);return{schemaVersion:1,modelVersion:c.modelVersion,highestLevel:0,completedStages:[],current:null,applications:[],lastOutcome:null,university:null};}
 export function schoolDecisionDue(s){if(!s?.schoolJourney||s.month!==0)return null;return SCHOOL_EVENTS.find(e=>s.age===e.age&&!s.schoolJourney.completedStages.includes(e.stage)&&s.schoolJourney.current?.stage!==e.stage)||null;}
@@ -19,7 +20,7 @@ function applicantReasons(s,row,stage){
   if(stage!=='university'){if(s?.phase!=='decision'||educationEvent(s.pendingDecision)?.stage!==stage)reasons.push('해당 학교 입학 갈림길에서 선택해 주세요.');}
   else{if(s?.age<19)reasons.push('대학 지원은 게임에서19세부터 가능합니다.');if(s?.phase!=='running'&&!(s?.phase==='decision'&&s.pendingDecision==='education'))reasons.push('현재 갈림길을 먼저 마쳐 주세요.');if(s?.schooling?.status==='enrolled'||s?.schooling?.status==='graduated')reasons.push('현재 대학 과정이 있거나 이미 대학을 졸업했습니다.');if(s?.schoolJourney&&s.schoolJourney.highestLevel<3)reasons.push('고교 과정을 먼저 마쳐 주세요.');}
   const applications=currentCycleApplications(s,stage);if(applications.some(a=>a.optionId===row.id))reasons.push('같은 학년도·같은 경로를 다시 추첨할 수 없습니다.');if(applications.some(a=>a.status==='accepted'||a.status==='deferred'))reasons.push('이 학년도의 입학 선택을 이미 마쳤습니다.');
-  const rejected=applications.filter(a=>a.status==='rejected');if(rejected.length&&!row.guaranteed&&row.learningThreshold>=Math.min(...rejected.map(a=>a.learningThreshold)))reasons.push('불합격 후에는 더 낮은 게임 문턱의 경로로 지원하거나 유예해 주세요.');
+  const rejected=applications.filter(a=>a.status==='rejected'&&a.selection!=='academy');if(rejected.length&&!row.guaranteed&&row.learningThreshold>=Math.min(...rejected.map(a=>a.learningThreshold)))reasons.push('불합격 후에는 더 낮은 게임 문턱의 경로로 지원하거나 유예해 주세요.');
   return reasons;
 }
 function displayRow(s,row,stage,data){const reasons=applicantReasons(s,row,stage),funding=educationFunding(s,row.annualTuitionWan,{university:stage==='university',hobbyCostWan:activeHobbyCost(s,data?.hobbyCatalog)});reasons.push(...funding.reasons);return{...clone(row),funding,label:row.name,ownershipLabel:row.ownership==='public'?'국공립':'사립',admissionChance:chanceFor(s,row,stage),eligible:reasons.length===0,reasons,note:'합격식·입학 연령·비용·학습 효과는 게임 설정입니다. 실제 개인의 합격확률·성적·학교 등급을 나타내지 않습니다.'};}
@@ -27,16 +28,16 @@ export function schoolChoices(s,data){const event=educationEvent(s?.pendingDecis
 function stableIndex(key,length){let h=2166136261;for(const ch of key)h=Math.imul(h^ch.charCodeAt(0),16777619);return(h>>>0)%length;}
 export function universityOptions(s,filters={},data){
   const c=catalog(data),result=[];
-  for(const ownership of ['public','private'])for(const location of ['seoul','regional'])for(const field of c.universityFields){
+  if(filters.path!=='academy')for(const ownership of ['public','private'])for(const location of ['seoul','regional'])for(const field of c.universityFields){
     if(field.publicOnly&&ownership!=='public')continue;if(filters.ownership&&filters.ownership!==ownership||filters.location&&filters.location!==location||filters.field&&filters.field!==field.id)continue;
     const type=ownership==='public'?'국공립':'사립',rows=(data?.tuition||[]).filter(r=>r.type===type&&finite(r.annual)&&r.annual>0&&typeof r.region==='string'&&(location==='seoul'?r.region==='서울':r.region!=='서울'));
     if(!rows.length)continue;const mean=rows.reduce((sum,r)=>sum+r.annual,0)/rows.length,regions=[...new Set(rows.map(r=>r.region))].sort(),id=`university-${ownership}-${location}-${field.id}`,region=regions[stableIndex(id,regions.length)],annualTuitionWan=Math.round(mean/10000*field.tuitionMultiplier*100)/100;
     const locationLabel=location==='seoul'?'서울':'서울 외 지역',name=`${type} · ${locationLabel} · ${field.label} 게임 과정`,row={id,stage:'university',name,ownership,location,locationLabel,field:field.id,fieldLabel:field.label,region,durationMonths:field.durationMonths,annualTuitionWan,learningThreshold:field.learningThreshold+(ownership==='public'?3:0)+(location==='seoul'?8:0),guaranteed:false,costNote:'수집한 대학의 설립별×서울/서울외 연간 등록금 평균에 가상 전공 배율을 적용한 게임 학비. 특정 학교·학과의 실제 등록금이 아님.',tuitionBasis:{kind:'observed-average-with-game-multiplier',sampleSchools:rows.length,averageAnnualWon:mean,fieldMultiplier:field.tuitionMultiplier},fieldNote:field.note||'게임 전공 경로이며 특정 자격을 자동 부여하지 않음'};
     result.push(displayRow(s,row,'university',data));
   }
-  return result;
+  return [...result,...academyOptions(s,filters,data)];
 }
-export function admissionResult(s,row,draw){const stage=row.stage,first=currentCycleApplications(s,stage)[0],learn=first?.learn??s.learn,chance=chanceFor(s,row,stage);return{stage,cycle:s.age,optionId:row.id,label:row.name,status:draw<chance?'accepted':'rejected',chance,learn,learningThreshold:row.learningThreshold,atMonth:s.totalMonths};}
+export function admissionResult(s,row,draw){const stage=row.stage,first=currentCycleApplications(s,stage)[0],assessment=row.academy?academyAssessment(s,row):null,learn=assessment?.learn??first?.learn??s.learn,chance=assessment?.admissionChance??chanceFor(s,row,stage);return{stage,cycle:s.age,optionId:row.id,label:row.name,status:draw<chance?'accepted':'rejected',chance,learn,learningThreshold:row.learningThreshold,atMonth:s.totalMonths,...(assessment?{selection:'academy',health:assessment.health,selectionScore:assessment.selectionScore}:{})};}
 export function progressSchoolJourney(s){
   if(!s.schoolJourney?.current||s.service?.active)return null;const journey=clone(s.schoolJourney),current=journey.current;current.progressMonths++;
   if(current.progressMonths<current.durationMonths)return{journey,completed:null};

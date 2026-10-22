@@ -1,7 +1,9 @@
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=audit-fixes-1';
-import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=audit-fixes-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=save-academy-1';
+import {protagonistGender} from './person-identity.mjs?v=save-academy-1';
+import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=save-academy-1';
 // Public-source notes and fictional hiring rules are deliberately separate.
 export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
+export const isMilitaryOccupation=row=>['know-250201','know-250301'].includes(typeof row==='string'?row:row?.id);
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));
 const LEVEL_LABELS=['학업 준비','초등 과정','중등 과정','고교 과정','대학 과정','대학원 과정','박사 과정'];
 const AXES=ABILITY_AXES.map(x=>x.id),finite=n=>typeof n==='number'&&Number.isFinite(n),clamp=n=>Math.min(100,Math.max(0,n)),clone=x=>structuredClone(x),idOk=id=>typeof id==='string'&&/^know-[0-9]{6}$/.test(id);
@@ -30,6 +32,7 @@ export function evaluateEmployment(s,row){
   const rules=employmentRequirements(row),profile=employmentProfile(s),reasons=phaseReasons(s,{firstJob:true}),requirements=[],warnings=[];
   const add=(label,value,met,kind='game_assumption')=>{requirements.push({label,value,met,kind});if(met===false)reasons.push(`${label}: ${value}`);};
   add('지원 나이','16세 이상 · 게임 규칙',s?.age>=16);
+  if(isMilitaryOccupation(row)){const allowed=protagonistGender(s)==='남성';add('군 진로',allowed?'군 진로 선택 가능':'이 삶에서는 군 진로를 선택하지 않습니다.',allowed);}
   add('현재 학업','정규 재학·복무를 마친 뒤 지원',!s?.schoolJourney?.current&&(s?.schooling?.status!=='enrolled'||s?.schooling?.fundingPaused===true)&&s?.job?.status!=='재학');
   add('이달 지원','성공한 취업·이직은 한 달에 한 번',profile.lastAppliedMonth!==s?.totalMonths);
   add('현재 직업','현재 직업에 중복 지원할 수 없음',s?.job?.occupationId!==row.id);
