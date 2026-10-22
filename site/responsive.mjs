@@ -1,4 +1,4 @@
-import {initScrollHints} from './scroll-hints.mjs?v=ux-design-1';
+import {initScrollHints} from './scroll-hints.mjs?v=focused-play-1';
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 
@@ -15,6 +15,8 @@ export function initResponsiveLayout(options = {}) {
   const button = document?.getElementById('profile-details-toggle');
   const content = document?.getElementById('profile-details-content');
   const root = document?.documentElement;
+  // The focused interface owns its single disclosure inside the management dialog.
+  if(document?.getElementById('life-manager'))return Object.freeze({mode:'focused',open:false});
   const native = details?.tagName?.toLowerCase() === 'details';
   if (!details || (!native && (!button || !content)) || !root?.dataset) return null;
   if (controllers.has(details)) return controllers.get(details);

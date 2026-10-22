@@ -1,9 +1,10 @@
-import {academySupportActive} from './academy.mjs?v=ux-design-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=ux-design-1';
-import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=ux-design-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=ux-design-1';
-import {economicCostWan} from './economic-life.mjs?v=ux-design-1';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=ux-design-1';
+import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=focused-play-1';
+import {academySupportActive} from './academy.mjs?v=focused-play-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=focused-play-1';
+import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=focused-play-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=focused-play-1';
+import {economicCostWan} from './economic-life.mjs?v=focused-play-1';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=focused-play-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -56,7 +57,7 @@ export function activeHobbyCost(s,catalog){
   if(!s.hobbies?.active)return 0;const rows=Array.isArray(catalog)?catalog:catalog?.hobbies;
   if(!Array.isArray(rows))return 0;let cost=0;
   for(const id of s.hobbies.selectedIds){const row=rows.find(r=>r.id===id);if(!row||s.age<effectiveHobbyAge(s,row))return 0;if(hobbyInjuryAllowed(s,row))cost+=row.monthlyCostWan;}
-  return round(cost);
+  cost=round(cost);return hobbyWithinMonthlyBudget(s,cost)?cost:0;
 }
 
 export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostWan=0}={}){

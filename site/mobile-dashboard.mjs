@@ -1,5 +1,5 @@
 /** Keep narrow-screen essentials nearby without duplicating or moving save state. */
-export function createMobileDashboard({document=globalThis.document,matchMedia=globalThis.matchMedia}={}){
+export function createMobileDashboard({document=globalThis.document,matchMedia=globalThis.matchMedia,compact=false}={}){
  const game=document.getElementById('game'),history=document.querySelector('.history-rail');
  if(!game||!history)return{update(){},select(){},destroy(){}};
  const media=matchMedia('(max-width: 1023px)'),summary=document.createElement('section'),nav=document.createElement('nav'),buttons=new Map(),values={};let active='life';
@@ -16,7 +16,7 @@ export function createMobileDashboard({document=globalThis.document,matchMedia=g
   b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const target=e.key==='Home'?'life':e.key==='End'?'money':active==='life'?'money':'life';select(target);buttons.get(target).focus();});buttons.set(id,b);nav.append(b);
  }
  history.insertBefore(nav,history.firstChild);
- function paint(){const narrow=media.matches;summary.hidden=!narrow;nav.hidden=!narrow;for(const [id,panel]of Object.entries(panels)){panel.hidden=narrow&&active!==id;panel.setAttribute('role',narrow?'tabpanel':'region');panel.setAttribute('aria-labelledby',narrow?buttons.get(id).id:id==='life'?'timeline-title':'finance-title');const b=buttons.get(id);b.setAttribute('aria-selected',String(active===id));b.tabIndex=active===id?0:-1;}}
+ function paint(){const narrow=media.matches||compact;summary.hidden=compact||!narrow;nav.hidden=!narrow;for(const [id,panel]of Object.entries(panels)){panel.hidden=narrow&&active!==id;panel.setAttribute('role',narrow?'tabpanel':'region');panel.setAttribute('aria-labelledby',narrow?buttons.get(id).id:id==='life'?'timeline-title':'finance-title');const b=buttons.get(id);b.setAttribute('aria-selected',String(active===id));b.tabIndex=active===id?0:-1;}}
  function select(id){if(!Object.hasOwn(panels,id))return;active=id;paint();}
  const onChange=()=>paint();media.addEventListener?.('change',onChange);if(!media.addEventListener)media.addListener?.(onChange);paint();
  return{update({ageText,cashText,livingText}){values.age.textContent=ageText;values.cash.textContent=cashText;values.living.textContent=livingText;},select,destroy(){media.removeEventListener?.('change',onChange);media.removeListener?.(onChange);summary.remove();nav.remove();for(const panel of Object.values(panels)){panel.hidden=false;panel.setAttribute('role','region');}}};

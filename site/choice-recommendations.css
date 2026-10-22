@@ -1,0 +1,14 @@
+.choice-view-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem;margin:1rem 0}
+.choice-view-bar p{margin:0;flex:1 1 16rem}
+.choice-reason{display:block;font-size:.82em;line-height:1.5;color:#456350;font-weight:normal;margin:.35rem 0 0}
+.choice-view-toggle{flex:0 1 auto;min-height:44px}
+.choice-empty{padding:1rem;border:1px solid #d8dfd0;border-radius:.7rem;background:#f4f6ef}
+.choice-introduction{line-height:1.6;margin:.6rem 0 1rem}
+.choice-remove{padding:.25rem .6rem;min-height:36px;margin-left:.6rem}
+.hobby-budget{display:grid;grid-template-columns:minmax(0,1fr) minmax(7rem,12rem);gap:.6rem;align-items:center;margin:.75rem 0}
+.hobby-budget input{width:100%;min-width:0}
+.hobby-budget small{grid-column:1/-1}
+.choice-core{padding:.6rem 0}
+.education-filters[hidden]{display:none!important}
+.choice-requirement-summary{line-height:1.6;font-weight:600}
+@media(max-width:500px){.choice-view-bar{align-items:stretch}.choice-view-bar p,.choice-view-toggle{flex-basis:100%}.hobby-budget{grid-template-columns:1fr}}

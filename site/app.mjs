@@ -1,71 +1,75 @@
-import {createTimelineFeed} from './timeline-feed.mjs?v=ux-design-1';
-import {renderActionMenu} from './action-menu.mjs?v=ux-design-1';
-import {clockPresentation} from './clock-status.mjs?v=ux-design-1';
-import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=ux-design-1';
-import {createInvestmentBrowser} from './investment-browser.mjs?v=ux-design-1';
-import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=ux-design-1';
-import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=ux-design-1';
-import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=ux-design-1';
-import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=ux-design-1';
-import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=ux-design-1';
-import {createSaveCoordinator} from './save-coordination.mjs?v=ux-design-1';
-import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=ux-design-1';
-import {createDebtBrowser} from './debt-browser.mjs?v=ux-design-1';
-import {repayDebt} from './engine.mjs?v=ux-design-1';
-import {normalizeMilitaryPath} from './engine.mjs?v=ux-design-1';
-import {personalFinanceOverview} from './finance-overview.mjs?v=ux-design-1';
-import {lifeHistoryEvents} from './timeline-history.mjs?v=ux-design-1';
-import {storyView} from './story-view.mjs?v=ux-design-1';
-import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=ux-design-1';
-import {chooseInjuryCare} from './engine.mjs?v=ux-design-1';
-import {lifeHealthSummary} from './life-health.mjs?v=ux-design-1';
-import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=ux-design-1';
-import {livingCostSummary} from './engine.mjs?v=ux-design-1';
-import {militaryPaySummary} from './military-pay.mjs?v=ux-design-1';
-import {militaryFinanceView} from './military-finance-view.mjs?v=ux-design-1';
-import {displayCopy,displayLines} from './ui-copy.mjs?v=ux-design-1';
-import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=ux-design-1';
-import {focusEffects} from './focus-effects.mjs?v=ux-design-1';
-import {militarySavingsSummary} from './military-savings.mjs?v=ux-design-1';
-import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=ux-design-1';
-import {validateEstateRules} from './family-estate.mjs?v=ux-design-1';
-import {validateParentRules} from './parent-careers.mjs?v=ux-design-1';
-import {protagonistGender} from './person-identity.mjs?v=ux-design-1';
-import {validateHouseholdRules} from './household-finance.mjs?v=ux-design-1';
-import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=ux-design-1';
-import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=ux-design-1';
-import {createFamilyBrowser} from './family-browser.mjs?v=ux-design-1';
-import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=ux-design-1';
-import {createEducationBrowser} from './education-browser.mjs?v=ux-design-1';
-import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=ux-design-1';
-import {setHobbies,activateHobbies} from './hobby-rules.mjs?v=ux-design-1';
-import {validEducationCatalog} from './education.mjs?v=ux-design-1';
-import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=ux-design-1';
-import {createEmploymentBrowser} from './employment-browser.mjs?v=ux-design-1';
-import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=ux-design-1';
-import {occupationModelIndex} from './career-economy.mjs?v=ux-design-1';
-import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=ux-design-1';
-import {createAssetLoader} from './asset-loader.mjs?v=ux-design-1';
-import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=ux-design-1';
-import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=ux-design-1';
-import {birthPresentation} from './birth-presentation.mjs?v=ux-design-1';
-import {createMobileDashboard} from './mobile-dashboard.mjs?v=ux-design-1';
-import {initResponsiveLayout} from './responsive.mjs?v=ux-design-1';
-import {initTextSize} from './text-size.mjs?v=ux-design-1';
-import {createLifeScene} from './life-scene.mjs?v=ux-design-1';
-import {randomKoreanName,resolveLifeName} from './names.mjs?v=ux-design-1';
-import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=ux-design-1';
+import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=focused-play-1';
+import {createFocusedLife} from './focused-life.mjs?v=focused-play-1';
+import {createTimelineFeed} from './timeline-feed.mjs?v=focused-play-1';
+import {renderActionMenu} from './action-menu.mjs?v=focused-play-1';
+import {clockPresentation} from './clock-status.mjs?v=focused-play-1';
+import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=focused-play-1';
+import {createInvestmentBrowser} from './investment-browser.mjs?v=focused-play-1';
+import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=focused-play-1';
+import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=focused-play-1';
+import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=focused-play-1';
+import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=focused-play-1';
+import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=focused-play-1';
+import {createSaveCoordinator} from './save-coordination.mjs?v=focused-play-1';
+import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=focused-play-1';
+import {createDebtBrowser} from './debt-browser.mjs?v=focused-play-1';
+import {repayDebt} from './engine.mjs?v=focused-play-1';
+import {normalizeMilitaryPath} from './engine.mjs?v=focused-play-1';
+import {personalFinanceOverview} from './finance-overview.mjs?v=focused-play-1';
+import {lifeHistoryEvents} from './timeline-history.mjs?v=focused-play-1';
+import {storyView} from './story-view.mjs?v=focused-play-1';
+import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=focused-play-1';
+import {chooseInjuryCare} from './engine.mjs?v=focused-play-1';
+import {lifeHealthSummary} from './life-health.mjs?v=focused-play-1';
+import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=focused-play-1';
+import {livingCostSummary} from './engine.mjs?v=focused-play-1';
+import {militaryPaySummary} from './military-pay.mjs?v=focused-play-1';
+import {militaryFinanceView} from './military-finance-view.mjs?v=focused-play-1';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=focused-play-1';
+import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=focused-play-1';
+import {focusEffects} from './focus-effects.mjs?v=focused-play-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=focused-play-1';
+import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=focused-play-1';
+import {validateEstateRules} from './family-estate.mjs?v=focused-play-1';
+import {validateParentRules} from './parent-careers.mjs?v=focused-play-1';
+import {protagonistGender} from './person-identity.mjs?v=focused-play-1';
+import {validateHouseholdRules} from './household-finance.mjs?v=focused-play-1';
+import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=focused-play-1';
+import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=focused-play-1';
+import {createFamilyBrowser} from './family-browser.mjs?v=focused-play-1';
+import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=focused-play-1';
+import {createEducationBrowser} from './education-browser.mjs?v=focused-play-1';
+import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=focused-play-1';
+import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=focused-play-1';
+import {validEducationCatalog} from './education.mjs?v=focused-play-1';
+import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=focused-play-1';
+import {createEmploymentBrowser} from './employment-browser.mjs?v=focused-play-1';
+import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=focused-play-1';
+import {occupationModelIndex} from './career-economy.mjs?v=focused-play-1';
+import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=focused-play-1';
+import {createAssetLoader} from './asset-loader.mjs?v=focused-play-1';
+import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=focused-play-1';
+import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=focused-play-1';
+import {birthPresentation} from './birth-presentation.mjs?v=focused-play-1';
+import {createMobileDashboard} from './mobile-dashboard.mjs?v=focused-play-1';
+import {initResponsiveLayout} from './responsive.mjs?v=focused-play-1';
+import {initTextSize} from './text-size.mjs?v=focused-play-1';
+import {createLifeScene} from './life-scene.mjs?v=focused-play-1';
+import {randomKoreanName,resolveLifeName} from './names.mjs?v=focused-play-1';
+import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=focused-play-1';
 const $=id=>document.getElementById(id), KEY='koreanlife-save-v2', OLD_KEY='koreanlife-save-v1', BIRTH_KEY=KEY+'-pending-birth';
 initTextSize();
 initResponsiveLayout();
 const lifeScene=createLifeScene($('life-scene'));
-const mobileDashboard=createMobileDashboard({document,matchMedia:query=>window.matchMedia(query)});
+const mobileDashboard=createMobileDashboard({document,matchMedia:query=>window.matchMedia(query),compact:true});
 const descriptions={balance:'일·건강·관계를 고르게 돌봅니다. 효과는 시간이 흐르며 반영됩니다.',learning:'배움에 시간을 씁니다. 지식은 이후의 일과 선택에 영향을 줍니다.',career:'일과 기술에 힘을 쏟습니다. 성장의 기회와 생활의 부담이 함께 생깁니다.',health:'운동과 휴식에 시간을 씁니다. 건강 관리 효과가 조금씩 쌓입니다.',relationships:'가까운 사람에게 시간을 냅니다. 관계와 만족이 조금씩 달라집니다.'};
 let familyBrowser,cityProfiles,profileCatalog,data,state,timer=null,view='welcome',paused=false,speed=1,busy=false,storageIssue=false,feedLimit=16,moneyFeedLimit=16,endingFeedLimit=80,lastChanges=[],pendingBirth=null,spinTimer=null,spinToken=0,suggestedName='',policyData=null,mapManifest=null,careerBrowser=null,employmentBrowser=null,lifestyleBrowser=null,educationBrowser=null,fastForward=false;
 const timelinePartCache=new Map();let timelinePartSeed=null;
-const timelineFeed=createTimelineFeed({document,parts:eventParts,renderFacts});let timelineFeedSeed=null;
+const timelineFeed=createTimelineFeed({document,parts:eventParts,renderFacts});let timelineFeedSeed=null,renderedDecisionKey=null;
 let runtimeStatusPromise=null,saveBrowser=null,formedFamilyBrowser=null,investmentBrowser=null,transferRecoveryError=null,transferReloadRequired=false;
-let saveCoordinator=null,saveConflictPanel=null,saveCapacityPanel=null,storageQuotaBlocked=false,debtBrowser=null;
+let saveCoordinator=null,saveConflictPanel=null,saveCapacityPanel=null,storageQuotaBlocked=false,debtBrowser=null,focusDashboard=null,toolTransition=false;
+focusDashboard=createFocusedLife({document,storage:localStorage,getState:()=>state,parts:eventParts,beforeOpen:()=>{if(busy)return false;toolTransition=true;try{cancelPendingAssetOpen();if(!closeOtherToolDialogs(focusDashboard))return false;stopClock();if(state)lifeScene.update(state,data,{running:false});return true;}finally{toolTransition=false;}},onClose:()=>{if(toolTransition)return;syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();},onAction:id=>{if(busy||saveBlocked())return;toolTransition=true;try{focusDashboard.close({silent:true});$(id)?.click();}finally{toolTransition=false;syncDecisionDialog();schedule();}}});
+focusDashboard.setRecordSelector(channel=>{mobileDashboard.select(channel);if(view==='game'&&state)render();});
 try{saveCoordinator=createSaveCoordinator({storage:localStorage,locks:navigator.locks,key:KEY,onConflict:showSaveConflict});await saveCoordinator.initialize(()=>recoverSaveTransfer(localStorage));}catch(error){storageIssue=true;if(error?.recoveryRequired)transferRecoveryError=error.message||'이전 저장을 복구하지 못했습니다. 파일과 백업을 보관한 뒤 새로고침해 주세요.';}
 function saveBlocked(){return transferReloadRequired||!!saveCoordinator?.conflicted;}
 function placeProgressNotice(node){const host=$('progress-notices');if(host)host.append(node);else $('message').before(node);}
@@ -105,8 +109,8 @@ $('clock-help')?.addEventListener('click',handleClockHelp);
 function syncDecisionDialog(){
  const care=view==='game'&&pendingInjuryCare(state);
  if(care)decisionDialog.update(null);
- injuryDialog.update(care?`${state.seed}|${state.lifeHealth.pendingCare}`:null,{blocked:assetBusy||!!document.querySelector('dialog[open]:not(#injury-care-dialog):not(#decision-dialog)')});
- decisionDialog.update(!care&&view==='game'?decisionKey(state):null,{blocked:assetBusy||!!document.querySelector('dialog[open]:not(#decision-dialog)')});
+ injuryDialog.update(care?`${state.seed}|${state.lifeHealth.pendingCare}`:null,{blocked:toolTransition||assetBusy||!!document.querySelector('dialog[open]:not(#injury-care-dialog):not(#decision-dialog)')});
+ decisionDialog.update(!care&&view==='game'?decisionKey(state):null,{blocked:toolTransition||assetBusy||!!document.querySelector('dialog[open]:not(#decision-dialog)')});
 }
 const money=formatMoney;
 function suggestName(){suggestedName=randomKoreanName();$('name').placeholder=suggestedName;$('name-hint').textContent=`비워두면 ‘${suggestedName}’이라는 이름으로 태어납니다.`;}
@@ -117,7 +121,7 @@ function clockFlags(){
  return{inGame:view==='game',phase:state?.phase,carePending:!!state&&pendingInjuryCare(state),paused,documentHidden:document.hidden,
   saveConflict:!!saveCoordinator?.conflicted,recoveryRequired:!!transferRecoveryError||transferReloadRequired,quotaBlocked:storageQuotaBlocked,
   assetBusy,decisionOpen:decisionDialog.isOpen,fastForward,
-  toolOpen:!!($('info').open||careerBrowser?.isOpen||employmentBrowser?.isOpen||lifestyleBrowser?.isOpen||educationBrowser?.isOpen||familyBrowser?.isOpen||saveBrowser?.isOpen||formedFamilyBrowser?.isOpen||investmentBrowser?.isOpen||debtBrowser?.isOpen||$('military-info').open)};
+  toolOpen:!!(toolTransition||focusDashboard?.isOpen||$('info').open||careerBrowser?.isOpen||employmentBrowser?.isOpen||lifestyleBrowser?.isOpen||educationBrowser?.isOpen||familyBrowser?.isOpen||saveBrowser?.isOpen||formedFamilyBrowser?.isOpen||investmentBrowser?.isOpen||debtBrowser?.isOpen||$('military-info').open)};
 }
 function renderClockStatus(){
  // Save recovery can report a problem before the scene and asset controllers exist.
@@ -127,7 +131,7 @@ function renderClockStatus(){
  $('clockbar')?.setAttribute('data-clock-reason',clock.reason);
  $('live-dot').classList.toggle('still',clock.still);$('pause').textContent=clock.pauseLabel;$('pause').disabled=clock.pauseDisabled;
  $('next').disabled=clock.nextDisabled;$('next').textContent=clock.nextLabel;$('next').setAttribute('aria-pressed',String(clock.fastForward));
- const help=$('clock-help');if(help){help.hidden=!clock.helpAction||clock.helpAction==='resume';help.textContent=clock.helpLabel;help.dataset.action=clock.helpAction||'';}
+ const help=$('clock-help');if(help){help.hidden=!clock.helpAction||['resume','decision','injury'].includes(clock.helpAction);help.textContent=clock.helpLabel;help.dataset.action=clock.helpAction||'';}
  renderProgressRecovery();
 }
 function canRun(){return clockPresentation(clockFlags()).canRun;}
@@ -140,7 +144,7 @@ async function resumeLatest({forcePaused=false}={}){try{if(!saveCoordinator)thro
 
 function stored(){try{const raw=localStorage.getItem(KEY);if(raw){const s=JSON.parse(raw),life=s.life||s;if(validSave(life))return {life,settings:s.settings||{}};}
  const old=localStorage.getItem(OLD_KEY);if(old){const life=migrateSave(JSON.parse(old),data);if(life&&validSave(life))return {life,settings:{},migrated:true};}}catch{}return null;}
-function show(id){if(view!==id){cancelPendingAssetOpen();debtBrowser?.close();}if(id!=='game'){decisionDialog.update(null);injuryDialog.update(null);}if(view!==id)familyBrowser?.close();view=id;for(const name of ['welcome','birth','game','ending'])$(name).hidden=name!==id;}
+function show(id){if(view!==id){focusDashboard?.close({silent:true});cancelPendingAssetOpen();debtBrowser?.close();}if(id!=='game'){decisionDialog.update(null);injuryDialog.update(null);}if(view!==id)familyBrowser?.close();view=id;for(const name of ['welcome','birth','game','ending'])$(name).hidden=name!==id;}
 const integer=n=>new Intl.NumberFormat('ko-KR').format(n);
 function cityLabel(city){return city.sourceRegion&&city.sourceRegion!==city.name?`${city.sourceRegion} · ${city.name}`:city.name;}
 function stopSpin(){spinToken++;if(spinTimer!==null){clearTimeout(spinTimer);spinTimer=null;}}
@@ -154,7 +158,7 @@ function ageText(s){return `${s.age}세 ${s.month||0}개월`;}
 function itemText(node,text){node.textContent=displayCopy(text??'');}
 function renderTags(node,items){node.replaceChildren();for(const text of displayLines(items)){const span=document.createElement(node.tagName==='UL'?'li':'span');span.textContent=text;node.append(span);}}
 function renderFacts(node,items){node.replaceChildren();for(const text of displayLines(items)){const li=document.createElement('li');li.textContent=text;node.append(li);}}
-function renderTimeline(node,events,reverse=false,channel='life',limit=Infinity){if(timelineFeedSeed!==state?.seed){timelineFeed.reset();timelineFeedSeed=state?.seed;}return timelineFeed.render(node,events,{reverse,channel,limit});}
+function renderTimeline(node,events,reverse=false,channel='life',limit=Infinity){if(timelineFeedSeed!==state?.seed){timelineFeed.reset();timelineFeedSeed=state?.seed;}return timelineFeed.render(node,events,{reverse,channel,limit,groupRoutine:['life-feed','money-feed'].includes(node.id)});}
 function netAssets(s){return s.cash-s.debt+(militarySavingsSummary(s)?.lockedPrincipalWan||0)+investmentSummary(s).totals.totalValueWan;}
 function renderFinanceFacts(id,pairs){const list=$(id);list.replaceChildren();for(const[label,value]of pairs){const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;row.append(dt,dd);list.append(row);}}
 function renderFinance(){
@@ -183,12 +187,13 @@ function render(){
  $('person').textContent=state.name;itemText($('person-gender'),protagonistGender(state));itemText($('origin'),`태어난 곳: ${state.profile.birthCity?cityLabel(state.profile.birthCity):state.profile.region+' (도시 미기록)'}`);itemText($('age'),state.age);itemText($('month'),`${state.month}개월`);renderTags($('status-tags'),(state.status||[]).filter(tag=>!displayLines(state.education||'').includes(displayCopy(tag))));
  itemText($('job'),state.job.title);itemText($('employment'),state.job.status);itemText($('residence'),residenceLabel(state.residence));itemText($('housing'),state.residence.housing);renderFacts($('education'),state.education||'배우는 중');
  for(const metric of ['health','joy','learn','bond']){$(metric).textContent=Math.round(state[metric])+'/100';$(metric+'-meter').value=state[metric];}$('seed').textContent='삶의 번호 '+state.seed;
+ const currentDecisionKey=decisionKey(state);if(renderedDecisionKey!==currentDecisionKey){$('decision-error').textContent='';renderedDecisionKey=currentDecisionKey;}
  $('story-card').classList.toggle('waiting',waiting);$('card-number').textContent=waiting?`${state.age}세의 갈림길`:'LIFE IS HAPPENING';$('card-state').textContent=waiting?'시간이 멈췄어요':paused?'일시정지':'자동 진행';$('event-title').textContent=displayCopy(story.title);$('event-text').textContent=displayCopy(story.text);$('choices').replaceChildren();
- if(decisionWaiting&&state.schoolJourney&&(['school-primary','school-middle','school-high'].includes(state.pendingDecision)||state.pendingDecision==='education')){const school=document.createElement('button');school.type='button';school.className='choice';school.textContent=state.pendingDecision==='education'?'대학 설립·지역·전공 선택하고 지원하기 ›':'국공립·사립 학교 선택하고 지원하기 ›';school.addEventListener('click',()=>openEducation(state.pendingDecision==='education'?'university':'school'));$('choices').append(school);if(state.pendingDecision==='education'){const defer=document.createElement('button');defer.type='button';defer.className='choice';defer.textContent='대학 진학을 미루고 경험 쌓기 →';defer.addEventListener('click',()=>employmentAction(()=>deferUniversity(state,data),'대학 진학을 미뤘습니다.'));$('choices').append(defer);}}else if(decisionWaiting&&state.pendingDecision==='first-job'&&data.occupations?.length){const apply=document.createElement('button'),defer=document.createElement('button');apply.type=defer.type='button';apply.className=defer.className='choice';apply.textContent='537개 직업에서 지원할 곳 고르기 ›';defer.textContent='취업 준비하며 다음 달로 →';apply.addEventListener('click',()=>openEmployment('jobs'));defer.addEventListener('click',()=>employmentAction(()=>deferEmployment(state,data),'취업을 미루고 준비를 이어갑니다.'));$('choices').append(apply,defer);}else if(decisionWaiting)choicesFor(state,data).forEach((option,index)=>{const button=document.createElement('button'),copy=document.createElement('span'),title=document.createElement('b'),detail=document.createElement('ul'),arrow=document.createElement('span');button.className='choice';title.textContent=displayCopy(option[0]);detail.className='choice-details';renderFacts(detail,option[1]);arrow.textContent='›';copy.append(title,detail);button.append(copy,arrow);button.addEventListener('click',()=>pick(index));$('choices').append(button);});
+ if(decisionWaiting&&renderDecisionRecommendations({document,host:$('choices'),state,data,onChoose:request=>{ $('decision-error').textContent='';return employmentAction(()=>request.kind==='jobs'?applyForJob(state,request.id,data,{employmentType:request.employmentType}):request.kind==='school'?applyToSchool(state,request.id,data):applyToUniversity(state,request.id,data),'선택을 반영했습니다.');},onBrowse:kind=>kind==='jobs'?openEmployment('jobs',{all:true}):openEducation(kind,{all:true}),onDefer:kind=>employmentAction(()=>kind==='jobs'?deferEmployment(state,data):deferUniversity(state,data),'준비를 이어갑니다.'),onError:error=>{$('decision-error').textContent=displayCopy(error?.message||'조건을 확인해주세요.');}})){}else if(decisionWaiting)choicesFor(state,data).forEach((option,index)=>{const button=document.createElement('button'),copy=document.createElement('span'),title=document.createElement('b'),detail=document.createElement('ul'),arrow=document.createElement('span');button.className='choice';title.textContent=displayCopy(option[0]);detail.className='choice-details';renderFacts(detail,option[1]);arrow.textContent='›';copy.append(title,detail);button.append(copy,arrow);button.addEventListener('click',()=>pick(index));$('choices').append(button);});
  $('flow-note').hidden=waiting;$('flow-note').classList.toggle('stopped',paused);$('flow-copy').textContent=paused?'계속 흐르기를 누르면 시간이 이어집니다.':`시간은 자동으로 흐릅니다.${next?' 다음 큰 갈림길은 '+next.age+'세입니다.':''}`;
- $('change-card').hidden=!lastChanges.length;renderFacts($('changes'),lastChanges);
+ $('change-card').hidden=true;renderFacts($('changes'),lastChanges);
  for(const button of document.querySelectorAll('[data-focus]'))button.setAttribute('aria-pressed',String(button.dataset.focus===state.focus));$('focus-description').textContent=descriptions[state.focus]||descriptions.balance;const focusLines=displayLines(focusEffects(state)),focusKey=JSON.stringify(focusLines);if($('focus-effects').dataset.factsKey!==focusKey){renderFacts($('focus-effects'),focusLines);$('focus-effects').dataset.factsKey=focusKey;}
- const events=displayEvents(),lifeEvents=[],moneyEvents=[];for(const event of events){const parts=eventParts(event);if(parts.life)lifeEvents.push(event);if(parts.money)moneyEvents.push(event);}$('history-count').textContent=`${lifeEvents.length}개의 기록`;$('money-history-count').textContent=`${moneyEvents.length}개의 기록`;const lifeFeed=renderTimeline($('life-feed'),lifeEvents,true,'life',feedLimit),moneyFeed=renderTimeline($('money-feed'),moneyEvents,true,'money',moneyFeedLimit);$('more-history').hidden=lifeFeed.total<=lifeFeed.shown;$('more-money-history').hidden=moneyFeed.total<=moneyFeed.shown;renderFinance();renderHealth();renderInjuryCare();syncDecisionDialog();schedule();
+ const events=displayEvents(),lifeEvents=[],moneyEvents=[];for(const event of events){const parts=eventParts(event);if(parts.life)lifeEvents.push(event);if(parts.money)moneyEvents.push(event);}$('history-count').textContent=`${lifeEvents.length}개의 기록`;$('money-history-count').textContent=`${moneyEvents.length}개의 기록`;const lifeFeed=renderTimeline($('life-feed'),lifeEvents,true,'life',feedLimit),moneyFeed=renderTimeline($('money-feed'),moneyEvents,true,'money',moneyFeedLimit);$('more-history').hidden=lifeFeed.total<=lifeFeed.shown;$('more-money-history').hidden=moneyFeed.total<=moneyFeed.shown;renderFinance();renderHealth();renderInjuryCare();focusDashboard.update(state,events);syncDecisionDialog();schedule();
 }
 function goHome(){if(busy)return;investmentBrowser?.close();fastForward=false;if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();stopClock();stopSpin();if(!pendingBirth)suggestName();else{$('name').placeholder=pendingBirth.name;$('name-hint').textContent='추첨한 삶의 이름을 보관했습니다. 게임 시작 후 새 삶에서 다시 추천할 수 있습니다.';}$('name').disabled=!!pendingBirth;$('suggest-name').disabled=!!pendingBirth;show('welcome');$('resume').hidden=!stored();$('start').firstChild.textContent=pendingBirth?'추첨 결과 보기 ':'태어나기 ';message(pendingBirth?'추첨한 도시는 그대로 보관했습니다. 추첨 결과를 다시 보거나 이전 삶을 이어갈 수 있습니다.':'기록은 기기에 저장했습니다. 이어하기로 돌아올 수 있습니다.');window.scrollTo({top:0,behavior:'smooth'});}
 window.addEventListener('pageshow',e=>{if(!e.persisted)return;if(view==='birth'&&pendingBirth)revealBirth();else if(view==='game')render();});
@@ -231,45 +236,45 @@ function openFormedFamily(){investmentBrowser?.close();if($('military-info').ope
 $('formed-family-open').addEventListener('click',openFormedFamily);
 function openFamily(){investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();if(!familyBrowser||!['game','ending'].includes(view))return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(familyBrowser))return;debtBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();familyBrowser.open(state?.profile?.birthFamily);}
 $('family-open').addEventListener('click',openFamily);$('ending-family-open').addEventListener('click',openFamily);
-async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=ux-design-1',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
+async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=focused-play-1',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
 
 $('careers').addEventListener('click',()=>{familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();openCareerReference(state?.job?.occupationId);});$('start').addEventListener('click',startBirthDraw);$('begin-life').addEventListener('click',startLife);$('birth-redraw').addEventListener('click',()=>startBirthDraw({redraw:true}));$('birth-back').addEventListener('click',goHome);$('resume').addEventListener('click',()=>resumeLatest());
 async function setPlayback(options){if(saveBlocked()||busy)return;busy=true;stopClock();try{fastForward=false;await updateSavedLife(current=>current,options);render();message(options.nextSpeed?`진행 속도를 ${speed}배로 바꿨습니다.`:paused?'시간을 잠시 멈췄습니다.':'시간이 다시 흐릅니다.');}catch(error){message(error.message);}finally{busy=false;}}
 $('pause').addEventListener('click',()=>setPlayback({nextPaused:!paused}));
 for(const button of document.querySelectorAll('[data-speed]'))button.addEventListener('click',()=>setPlayback({nextSpeed:Number(button.dataset.speed)}));
 async function employmentAction(action,note){if(saveBlocked())throw new Error('다른 탭의 최신 기록을 확인해 주세요.');if(!state||busy)throw new Error('진행 중인 선택을 마친 뒤 다시 시도해 주세요.');busy=true;stopClock();try{const {before,next}=await updateSavedLife(()=>action());if(state.phase==='decision')decisionDialog.minimize();lastChanges=summarizeChanges(before,next);message(state.timeline.at(-1)?.title||note);render();return next;}catch(error){message(error?.message||'지원 조건을 확인해주세요.');throw error;}finally{busy=false;}}
-function openEmployment(which='jobs'){investmentBrowser?.close();familyBrowser?.close();if(!state||!employmentBrowser)return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(employmentBrowser))return;debtBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();careerBrowser?.close();employmentBrowser.open(which);}
+function openEmployment(which='jobs',options={}){investmentBrowser?.close();familyBrowser?.close();if(!state||!employmentBrowser)return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(employmentBrowser))return;debtBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();careerBrowser?.close();employmentBrowser.open(which,options);}
 function openLifestyle(which='spending'){investmentBrowser?.close();familyBrowser?.close();if(!state)return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(lifestyleBrowser))return;debtBrowser?.close();if($('info').open)$('info').close();employmentBrowser?.close();educationBrowser?.close();careerBrowser?.close();lifestyleBrowser.open(which);}
-function openEducation(which=['school-primary','school-middle','school-high'].includes(state?.pendingDecision)?'school':'university'){investmentBrowser?.close();familyBrowser?.close();if(!state||!state.schoolJourney)return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(educationBrowser))return;debtBrowser?.close();if($('info').open)$('info').close();employmentBrowser?.close();lifestyleBrowser?.close();careerBrowser?.close();educationBrowser.open(which);}
+function openEducation(which=['school-primary','school-middle','school-high'].includes(state?.pendingDecision)?'school':'university',options={}){investmentBrowser?.close();familyBrowser?.close();if(!state||!state.schoolJourney)return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(educationBrowser))return;debtBrowser?.close();if($('info').open)$('info').close();employmentBrowser?.close();lifestyleBrowser?.close();careerBrowser?.close();educationBrowser.open(which,options);}
 $('spending-open').addEventListener('click',()=>openLifestyle('spending'));
 $('hobbies-open').addEventListener('click',()=>openLifestyle('hobbies'));
 $('education-manage').addEventListener('click',()=>openEducation());
 $('employment-open').addEventListener('click',()=>openEmployment('jobs'));
 $('training-open').addEventListener('click',()=>openEmployment('training'));
 $('next').addEventListener('click',()=>{if(saveBlocked())return;if(state?.phase!=='running'||pendingInjuryCare(state))return;fastForward=!fastForward;paused=!fastForward;render();message(fastForward?'1개월씩 빠르게 진행합니다. 다음 갈림길에서 멈춥니다.':'빠른 월 진행을 멈췄습니다.');});
-for(const button of document.querySelectorAll('[data-focus]'))button.addEventListener('click',()=>{if(!state||saveBlocked())return;employmentAction(()=>setFocus(state,button.dataset.focus),`${button.textContent}에 초점을 두었습니다.`).catch(()=>{});});
+for(const button of document.querySelectorAll('[data-focus]'))button.addEventListener('click',()=>{if(!state||saveBlocked())return;employmentAction(()=>setFocus(state,button.dataset.focus),`${button.textContent}에 초점을 두었습니다.`).then(()=>{$('focus-options').open=false;}).catch(()=>{});});
 $('more-history').addEventListener('click',()=>{feedLimit+=20;render();});$('more-money-history').addEventListener('click',()=>{moneyFeedLimit+=20;render();});for(const id of ['restart','again'])$(id).addEventListener('click',goHome);for(const id of ['quick-download','download'])$(id).addEventListener('click',download);$('about').addEventListener('click',()=>openInfo('terms'));for(const button of document.querySelectorAll('[data-policy]'))button.addEventListener('click',()=>openInfo(button.dataset.policy));$('close-info').addEventListener('click',()=>$('info').close());$('info').addEventListener('close',()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});$('info').addEventListener('click',e=>{if(e.target!==$('info'))return;const r=$('info').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('info').close();});$('suggest-name').addEventListener('click',suggestName);$('copy-contact').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(contactTemplate());$('contact-status').textContent='문의 양식을 복사했습니다. 실제 전송된 내용은 없습니다.';}catch{$('contact-status').textContent='자동 복사를 사용할 수 없습니다. 위 문의 양식을 직접 선택해 복사해주세요.'}});
-document.addEventListener('visibilitychange',()=>{if(view==='game')render();else stopClock();});window.addEventListener('storage',event=>{if(event.storageArea===localStorage&&(event.key===KEY||event.key===null)){try{saveCoordinator?.observeChange(event.key===KEY?event.newValue:null);}catch{storageIssue=true;stopClock();}}});window.addEventListener('pagehide',()=>{stopClock();stopSpin();});document.addEventListener('keydown',e=>{if(e.code==='Space'&&!saveBlocked()&&!e.repeat&&view==='game'&&state.phase==='running'&&!$('info').open&&!careerBrowser?.isOpen&&!employmentBrowser?.isOpen&&!lifestyleBrowser?.isOpen&&!educationBrowser?.isOpen&&!familyBrowser?.isOpen&&!saveBrowser?.isOpen&&!formedFamilyBrowser?.isOpen&&!investmentBrowser?.isOpen&&!debtBrowser?.isOpen&&!storageQuotaBlocked&&!assetBusy&&!$('military-info').open&&!e.target.closest?.('#timeline-panel')&&!['INPUT','BUTTON','TEXTAREA','SELECT','SUMMARY','A'].includes(document.activeElement?.tagName)){e.preventDefault();setPlayback({nextPaused:!paused});}});
+document.addEventListener('visibilitychange',()=>{if(view==='game')render();else stopClock();});window.addEventListener('storage',event=>{if(event.storageArea===localStorage&&(event.key===KEY||event.key===null)){try{saveCoordinator?.observeChange(event.key===KEY?event.newValue:null);}catch{storageIssue=true;stopClock();}}});window.addEventListener('pagehide',()=>{stopClock();stopSpin();});document.addEventListener('keydown',e=>{if(e.code==='Space'&&!saveBlocked()&&!e.repeat&&view==='game'&&state.phase==='running'&&!$('info').open&&!careerBrowser?.isOpen&&!employmentBrowser?.isOpen&&!lifestyleBrowser?.isOpen&&!educationBrowser?.isOpen&&!familyBrowser?.isOpen&&!saveBrowser?.isOpen&&!formedFamilyBrowser?.isOpen&&!investmentBrowser?.isOpen&&!debtBrowser?.isOpen&&!storageQuotaBlocked&&!assetBusy&&!focusDashboard?.isOpen&&!$('military-info').open&&!e.target.closest?.('#timeline-panel')&&!['INPUT','BUTTON','TEXTAREA','SELECT','SUMMARY','A'].includes(document.activeElement?.tagName)){e.preventDefault();setPlayback({nextPaused:!paused});}});
 function refreshModalClock(event){if(event.target?.tagName?.toLowerCase()==='dialog')renderClockStatus();}
 document.addEventListener('toggle',refreshModalClock,true);
 document.addEventListener('close',refreshModalClock,true);
 const assetStates=new Map();let bootReady=false,assetBusy=false,initializing=false,assetRetryAction=null,assetOpenSerial=0;
 function cancelPendingAssetOpen(){assetOpenSerial++;if(bootReady){assetBusy=false;assetRetryAction=null;$('asset-load-panel').hidden=true;}}
 function beginAssetOpen(){cancelPendingAssetOpen();assetBusy=true;stopClock();return assetOpenSerial;}
-function closeOtherToolDialogs(except){for(const browser of [debtBrowser,investmentBrowser,formedFamilyBrowser,familyBrowser,employmentBrowser,lifestyleBrowser,educationBrowser,careerBrowser,saveBrowser])if(browser&&browser!==except){browser.close?.();if(browser.isOpen)return false;}for(const id of ['info','military-info'])if(id!==except&&$(id).open)$(id).close();decisionDialog.suspend();injuryDialog.suspend();return true;}
+function closeOtherToolDialogs(except){for(const browser of [focusDashboard,debtBrowser,investmentBrowser,formedFamilyBrowser,familyBrowser,employmentBrowser,lifestyleBrowser,educationBrowser,careerBrowser,saveBrowser])if(browser&&browser!==except){browser.close?.();if(browser.isOpen)return false;}for(const id of ['info','military-info'])if(id!==except&&$(id).open)$(id).close();decisionDialog.suspend();injuryDialog.suspend();return true;}
 const assetLoader=createAssetLoader({onStatus:event=>{assetStates.set(event.url,event.status);if(!bootReady){const done=[...assetStates.values()].filter(x=>x==='ready').length;$('asset-load-status').textContent=event.status==='failed'?event.error.message:`게임 자료 준비 중 · ${done}/${assetStates.size} · ${event.label}`;}}});
 function showAssetFailure(error,retry,optional=false){if(optional&&!bootReady){message(error?.message||'추가 자료를 불러오지 못했습니다.');return;}assetBusy=true;assetRetryAction=retry;$('asset-load-panel').hidden=false;$('asset-load-status').textContent=error?.message||'자료를 불러오지 못했습니다. 다시 시도해 주세요.';$('asset-load-retry').hidden=false;$('asset-load-dismiss').hidden=!optional;stopClock();}
 $('asset-load-retry').addEventListener('click',async()=>{if(!assetRetryAction)return;const retry=assetRetryAction;assetRetryAction=null;$('asset-load-retry').disabled=true;try{await retry();}finally{$('asset-load-retry').disabled=false;}});
 $('asset-load-dismiss').addEventListener('click',()=>{if(!bootReady)return;cancelPendingAssetOpen();syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});
 async function openCareerReference(id){
  if(!bootReady)return;const ticket=beginAssetOpen();if(!closeOtherToolDialogs(careerBrowser)){cancelPendingAssetOpen();return;}debtBrowser?.close();if($('info').open)$('info').close();decisionDialog.suspend();injuryDialog.suspend();
- try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=ux-design-1',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
+ try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=focused-play-1',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
  catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openCareerReference(id),true);}
 }
 async function initializeGame(){
  if(initializing)return;initializing=true;assetBusy=true;$('asset-load-panel').hidden=false;$('asset-load-retry').hidden=true;$('asset-load-dismiss').hidden=true;
  try{
- const base=await assetLoader.json('./game-data.json?v=ux-design-1',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
+ const base=await assetLoader.json('./game-data.json?v=focused-play-1',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
  const entries=await Promise.all([
   ['marketScenarios','market-scenarios.json','국내외 정세',validateMarketScenarios],['economicRules','economic-rules.json','경제 규칙',validateEconomicRules],
   ['mortality','mortality.json','생명표',value=>mortalitySnapshot(value,'data-readiness')],['spendingCatalog','spending.json','돈쓰기 활동',validateSpendingCatalog],
@@ -279,11 +284,11 @@ async function initializeGame(){
   ['profileCatalog','city-profiles.json','도시 특징',value=>cityProfileIndex(value,base.birthCities)],
   ['mapManifest','assets/city-maps-manifest.json','지도 안내',value=>value.cityCount===base.birthCities.length],
   ['catalog','occupations-runtime.json','직업 실행 자료',value=>{validateCareerCatalog(value);return value.occupations.length===537&&!!value.sourceCatalog?.sha256;}]
- ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=ux-design-1`,{label,validate})]));
+ ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=focused-play-1`,{label,validate})]));
  const loaded=Object.fromEntries(entries),catalog=loaded.catalog;profileCatalog=loaded.profileCatalog;mapManifest=loaded.mapManifest;delete loaded.catalog;delete loaded.profileCatalog;delete loaded.mapManifest;
  data={...base,...loaded,lifeHealthEvents:true,injuryCareChoices:true,lifeHealthRisk:true,childPlanningRules:true,employmentContracts:true,occupations:catalog.occupations,occupationModels:occupationModelIndex(catalog)};
  cityProfiles=cityProfileIndex(profileCatalog,data.birthCities);
- employmentBrowser=createEmploymentBrowser({catalog,data,getState:()=>state,onApply:request=>employmentAction(()=>applyForJob(state,typeof request==='string'?request:request.occupationId,data,typeof request==='string'?{}:{employmentType:request.employmentType}),'지원 결과를 확인했습니다.'),onTrain:course=>employmentAction(()=>trainForCareer(state,course,data),'월별 훈련을 시작했습니다.'),onMove:region=>employmentAction(()=>moveForCareer(state,region,data),'거주지역을 바꿨습니다.'),onDefer:()=>employmentAction(()=>deferEmployment(state,data),'취업을 미루고 준비를 이어갑니다.'),onReference:id=>openCareerReference(id),onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});const stopForTools=()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},resumeFromTools=()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();};investmentBrowser=createInvestmentBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>investmentAction(state,action,data),action.type==='buy'?'매수를 마쳤습니다.':'매도를 마쳤습니다.'),onOpen:stopForTools,onClose:resumeFromTools});formedFamilyBrowser=createFormedFamilyBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>familyAction(state,action,data),'가족의 선택을 반영했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});familyBrowser=createFamilyBrowser({profiles:cityProfiles,getState:()=>state,onOpen:stopForTools,onClose:resumeFromTools,onManage:openFormedFamily});lifestyleBrowser=createLifestyleBrowser({spendingCatalog:data.spendingCatalog,hobbyCatalog:data.hobbyCatalog,getState:()=>state,onSpend:id=>employmentAction(()=>spend(state,data.spendingCatalog.choices.find(r=>r.id===id),data.spendingCatalog),'소비 선택을 반영했습니다.'),onHobbies:ids=>employmentAction(()=>setHobbies(state,ids,data.hobbyCatalog),'취미 목록을 저장했습니다.'),onPlan:plan=>employmentAction(()=>activateHobbies(setHobbies(state,plan.ids,data.hobbyCatalog),plan.active,data.hobbyCatalog),'취미 활동을 시작했습니다.'),onActivity:active=>employmentAction(()=>activateHobbies(state,active,data.hobbyCatalog),active?'정기 취미 활동을 시작했습니다.':'정기 취미 활동을 멈췄습니다.'),onOpen:stopForTools,onClose:resumeFromTools});educationBrowser=createEducationBrowser({getState:()=>state,data,onSchool:id=>employmentAction(()=>applyToSchool(state,id,data),'학교 지원 결과를 반영했습니다.'),onUniversity:id=>employmentAction(()=>applyToUniversity(state,id,data),'대학 지원 결과를 반영했습니다.'),onDefer:()=>employmentAction(()=>deferUniversity(state,data),'대학 진학을 미뤘습니다.'),onFundingPause:paused=>employmentAction(()=>setUniversityFundingPause(state,paused,data),paused?'학비 준비 휴학을 시작했습니다.':'학비 예산을 확인하고 복학했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});$('careers').disabled=false;suggestName();
+ employmentBrowser=createEmploymentBrowser({catalog,data,getState:()=>state,onApply:request=>employmentAction(()=>applyForJob(state,typeof request==='string'?request:request.occupationId,data,typeof request==='string'?{}:{employmentType:request.employmentType}),'지원 결과를 확인했습니다.'),onTrain:course=>employmentAction(()=>trainForCareer(state,course,data),'월별 훈련을 시작했습니다.'),onMove:region=>employmentAction(()=>moveForCareer(state,region,data),'거주지역을 바꿨습니다.'),onDefer:()=>employmentAction(()=>deferEmployment(state,data),'취업을 미루고 준비를 이어갑니다.'),onReference:id=>openCareerReference(id),onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});const stopForTools=()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},resumeFromTools=()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();};investmentBrowser=createInvestmentBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>investmentAction(state,action,data),action.type==='buy'?'매수를 마쳤습니다.':'매도를 마쳤습니다.'),onOpen:stopForTools,onClose:resumeFromTools});formedFamilyBrowser=createFormedFamilyBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>familyAction(state,action,data),'가족의 선택을 반영했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});familyBrowser=createFamilyBrowser({profiles:cityProfiles,getState:()=>state,onOpen:stopForTools,onClose:resumeFromTools,onManage:openFormedFamily});lifestyleBrowser=createLifestyleBrowser({spendingCatalog:data.spendingCatalog,hobbyCatalog:data.hobbyCatalog,getState:()=>state,onSpend:id=>employmentAction(()=>spend(state,data.spendingCatalog.choices.find(r=>r.id===id),data.spendingCatalog),'소비 선택을 반영했습니다.'),onHobbies:ids=>employmentAction(()=>setHobbies(state,ids,data.hobbyCatalog),'취미 목록을 저장했습니다.'),onPlan:plan=>employmentAction(()=>setHobbyPlan(state,plan,data.hobbyCatalog),'취미 활동을 설정했습니다.'),onPolicy:policy=>employmentAction(()=>setHobbyMonthlyBudget(state,policy.monthlyBudgetWan),'취미 월 한도를 저장했습니다.'),onActivity:active=>employmentAction(()=>activateHobbies(state,active,data.hobbyCatalog),active?'정기 취미 활동을 시작했습니다.':'정기 취미 활동을 멈췄습니다.'),onOpen:stopForTools,onClose:resumeFromTools});educationBrowser=createEducationBrowser({getState:()=>state,data,onSchool:id=>employmentAction(()=>applyToSchool(state,id,data),'학교 지원 결과를 반영했습니다.'),onUniversity:id=>employmentAction(()=>applyToUniversity(state,id,data),'대학 지원 결과를 반영했습니다.'),onDefer:()=>employmentAction(()=>deferUniversity(state,data),'대학 진학을 미뤘습니다.'),onFundingPause:paused=>employmentAction(()=>setUniversityFundingPause(state,paused,data),paused?'학비 준비 휴학을 시작했습니다.':'학비 예산을 확인하고 복학했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});$('careers').disabled=false;suggestName();
  const mapSource=document.createElement('li'),mapLink=document.createElement('a');mapLink.href=mapManifest.licenseUrl;mapLink.target='_blank';mapLink.rel='noopener noreferrer';mapLink.textContent='행정경계 출처·CC BY 4.0 이용조건';mapSource.append(mapLink,document.createTextNode(' — '+mapManifest.attribution));$('map-source-list').append(mapSource);const mapNote=document.createElement('li');mapNote.textContent=`경계 기준 ${mapManifest.boundaryDate}, 통계 기준 ${data.birthCitySource.sourceDate}. ${mapManifest.normalization}`;$('map-source-list').append(mapNote);if(!data.tuition?.length||!data.service?.army||!data.birthCities?.length||!drawBirthCity('data-readiness',data))throw new Error('schema');for(const source of [...data.sources,...profileCatalog.sources,...(data.hobbyCatalog.sources||[])]){const li=document.createElement('li'),a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=source.title||source.name||source.id;li.append(a,document.createTextNode(' — '+(source.note||source.publisher||source.license||'')));$('source-list').append(li);}for(const source of [...(data.mortality.source?[{...data.mortality.source,note:data.mortality.source.publisher+' · '+data.mortality.source.publishedAt+' · 공공누리 제1유형 · 연령대 평균으로 가공'}]:[]),...(data.mortality.sources||[]),...(catalog.modelSources||[])]){if(!source.url)continue;const li=document.createElement('li'),a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=source.title||source.id||'추가 통계 출처';li.append(a,document.createTextNode(' — '+(source.note||source.license||'')));$('source-list').append(li);}for(const source of [...(data.marketScenarios.sources||[]),...(data.economicRules.sources||[]).filter(row=>!(data.marketScenarios.sources||[]).some(item=>item.url===row.url))]){if(!source.url)continue;const li=document.createElement('li'),link=document.createElement('a');link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=source.title||'정세 참고 자료';li.append(link,document.createTextNode(' — '+['정세 참고 자료',source.publisher,source.publishedAt].filter(Boolean).join(' · ')));$('source-list').append(li);}$('birth-definition').textContent=birthPresentation(drawBirthCity('definition',data),data.birthCitySource).definition;$('data-version').textContent=`1개월 진행·소비300·취미48·학교와대학·537개 직업 · 자동 진행 v2 · 데이터팩 ${data.version} · ${data.referenceMode}`;$('start').disabled=!!transferRecoveryError;for(const id of ['import-save','game-import-save','ending-import-save'])$(id).disabled=false;$('resume').hidden=!stored();if(transferRecoveryError)message(transferRecoveryError);pendingBirth=readBirth();if(pendingBirth){show('birth');revealBirth();}
  debtBrowser=createDebtBrowser({getState:()=>state,onAction:amount=>employmentAction(()=>repayDebt(state,amount),'대출을 상환했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});
  bootReady=true;assetBusy=false;$('asset-load-panel').hidden=true;assetRetryAction=null;renderStorageCapacity();

@@ -1,8 +1,9 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=ux-design-1';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=ux-design-1';
-import {formatMoney} from './spending.mjs?v=ux-design-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=ux-design-1';
-import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=ux-design-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=focused-play-1';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=focused-play-1';
+import {formatMoney} from './spending.mjs?v=focused-play-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=focused-play-1';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=focused-play-1';
+import {recommendEducation} from './choice-recommendations.mjs?v=focused-play-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -13,7 +14,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
  const top=el('div',undefined,'dialog-top'),heading=el('h2','학교·대학 지원');heading.id='education-title';heading.tabIndex=-1;
  const close=button('×',()=>dialog.close(),'dialog-close');close.setAttribute('aria-label','학교 지원 창 닫기');top.append(heading,close);
  const summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(top,summary,status,body);document.body.append(dialog);
- let mode='overview',universityPath='university',filters={ownership:'',location:'',field:''};
+ let mode='overview',universityPath='university',filters={ownership:'',location:'',field:''},showAll=false;
  const act=(callback,id,anchor)=>completeModalAction(dialog,status,callback,id,'지원 조건을 확인해주세요.',{anchor});
  const fundingFacts=(host,funding)=>facts(host,[['월 학비',formatMoney(funding.monthlyTuitionWan)],['가족 지원 예상',formatMoney(funding.familyMonthlyWan)],['월 내 준비액',formatMoney(funding.personalMonthlyWan)],...(funding.commitmentMonths?[['예산 확인 기간',`${funding.commitmentMonths}개월`]]:[])],'education-facts funding-note');
  function render(){
@@ -36,26 +37,31 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
    const b=button(paused?'학비 마련 후 복학하기':'학비 준비로 휴학하기',event=>act(onFundingPause,!paused,event.currentTarget),'life-tool-button life-tool-primary');b.disabled=s.phase!=='running'||s.service.active||paused&&!funding.eligible;body.append(b);
    list(body,funding.reasons,'education-notes life-tool-blocked');list(body,['휴학 중에는 수업료와 학업 진행을 멈춥니다.','복학하면 근로소득을 중단하고 학업을 이어갑니다.',...recoveryActivityNotes(s)]);return;
   }
-  let options;
+  let options,allOptions;
   if(mode==='university'){
    const paths=el('div',undefined,'life-tool-actions');paths.setAttribute('role','group');paths.setAttribute('aria-label','대학 진학 경로');
    for(const [path,title]of [['university','일반대학'],['academy','사관학교 · 3개']]){const b=button(title,()=>{universityPath=path;render();});b.setAttribute('aria-pressed',String(universityPath===path));paths.append(b);}body.append(paths);
    if(universityPath==='academy'){
-    body.append(el('h3','육군·해군·공군 사관학교'));list(body,['학업·건강을 함께 평가하는 장교 양성 경로입니다.','등록금과 재학 중 기본 생활비·주거비를 지원받습니다.','4년 교육 후 해당 군의 장교로 이어집니다.']);options=universityOptions(s,{path:'academy'},data);
+    body.append(el('h3','육군·해군·공군 사관학교'));body.append(el('p','학비·숙식을 지원받으며 4년 교육 후 해당 군 장교로 이어집니다.','choice-introduction'));options=allOptions=universityOptions(s,{path:'academy'},data);
    }else{
-   const all=universityOptions(s,{path:'university'},data),controls=el('div',undefined,'education-filters');
+   const all=universityOptions(s,{path:'university'},data),controls=el('div',undefined,'education-filters');allOptions=all;controls.hidden=!showAll;
    for(const [key,label,values]of [['ownership','1. 대학 설립',[['public','국공립'],['private','사립']]],['location','2. 대학 지역',[['seoul','서울'],['regional','서울 외 지역']]],['field','3. 계열·전공',[...new Map(all.map(row=>[row.field,[row.field,row.fieldLabel]])).values()]]]){
     const l=el('label',label),select=el('select');select.setAttribute('aria-label',label);select.append(new Option('선택해주세요',''));for(const [value,text]of values)select.append(new Option(text,value));select.value=filters[key];
-    select.addEventListener('change',()=>{filters[key]=select.value;render();body.querySelector(`[aria-label="${label}"]`)?.focus({preventScroll:true});});l.append(select);controls.append(l);
+    select.addEventListener('change',()=>{filters[key]=select.value;showAll=true;render();body.querySelector(`[aria-label="${label}"]`)?.focus({preventScroll:true});});l.append(select);controls.append(l);
    }
    body.append(controls);
-   if(Object.values(filters).some(value=>!value)){body.append(el('p','설립 유형 → 지역 → 계열·전공을 선택해주세요.'));options=[];}else options=universityOptions(s,{...filters,path:'university'},data);
+   if(Object.values(filters).some(value=>!value)){if(showAll)body.append(el('p','설립 유형 → 지역 → 계열·전공을 선택해주세요.'));options=showAll?[]:all;}else options=universityOptions(s,{...filters,path:'university'},data);
    const guide=disclosure('대학 경로 안내');list(guide,['서울 외 지역에는 경기·인천도 포함됩니다.','의학·치의학·수의학·한의학·약학 과정은 6년입니다.']);body.append(guide);list(body,['교대 계열은 국공립 경로를 제공합니다.','같은 입학 시기의 같은 과정에 중복 지원할 수 없습니다.']);
    }
-  }else options=schoolChoices(s,data);
+  }else options=allOptions=schoolChoices(s,data);
+  const recommendations=recommendEducation(options.map(row=>({row,assessment:row})),{university:mode==='university'}),reasonById=new Map(recommendations.map(item=>[item.row.id,item.reason]));
+  const view=el('div',undefined,'choice-view-bar'),toggle=button(showAll?'추천만 보기':`전체 경로 보기 (${allOptions.length}개)`,()=>{showAll=!showAll;render();},'life-tool-button choice-view-toggle');toggle.setAttribute('aria-expanded',String(showAll));view.append(el('p',showAll?'설립 유형과 과정별 비용·조건을 비교해보세요.':recommendations.length?`현재 지원 가능한 추천 경로 ${recommendations.length}개`:'현재 바로 지원할 수 있는 경로가 없습니다.'),toggle);body.append(view);
+  if(!showAll&&!recommendations.length)body.append(el('p','전체 경로에서 부족한 조건과 학비를 확인해보세요. 대학 진학 갈림길에서는 진학을 미루고 경험을 쌓을 수도 있습니다.','choice-empty'));
+  const visible=showAll?options:recommendations.map(item=>item.row);
   const cards=el('div',undefined,'education-options');
-  for(const row of options){
+  for(const row of visible){
    const card=el('article',undefined,'life-tool-detail');card.append(el('h3',displayLines(row.label||row.name).at(-1)));
+   if(!showAll)card.append(el('p',reasonById.get(row.id),'choice-reason'));
    facts(card,[['연 등록금',formatMoney(row.annualTuitionWan)],['과정',`${row.durationMonths}개월`],...(mode==='school'?[['배움 보너스',`연 +${row.annualLearningBonus.toFixed(2)}`],...(row.annualBondBonus?[['관계 보너스',`연 +${row.annualBondBonus.toFixed(2)}`]]:[]),...(row.annualJoyBonus?[['만족 보너스',`연 +${row.annualJoyBonus.toFixed(2)}`]]:[])]:[]),['합격 가능성',`${(row.admissionChance*100).toFixed(1)}%`],['지원 기준',row.learningThreshold],['나의 배움',Math.round(s.learn)],...(row.academy?[['건강 기준',`${row.healthThreshold}/100`],['현재 건강',`${Math.round(s.health)}/100`],['재학 지원','학비·숙식 제공'],['졸업 후',`${row.branchLabel} 장교 경로`]]:[])]);
    const b=button(row.academy?'이 사관학교에 지원하기':mode==='university'?'이 대학 과정에 지원하기':'이 학교에 지원하기',event=>act(mode==='university'?onUniversity:onSchool,row.id,event.currentTarget),'life-tool-button life-tool-primary');b.disabled=!row.eligible;card.append(b);
    if(row.funding&&!row.funding.legacy)fundingFacts(card,row.funding);list(card,row.reasons||[],'education-notes life-tool-blocked');const course=disclosure('과정 정보');facts(course,[['설립 유형',row.ownershipLabel],...(row.locationLabel?[['지역',row.locationLabel]]:[]),...(row.fieldLabel?[['계열·전공',row.fieldLabel]]:[])]);card.append(course);cards.append(card);
@@ -64,5 +70,5 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
   if(mode==='university'&&s.pendingDecision==='education')body.append(button('대학 진학을 미루고 경험 쌓기',event=>act(onDefer,undefined,event.currentTarget),'life-tool-button'));
  }
  dialog.addEventListener('close',()=>onClose?.());dialog.addEventListener('click',e=>{if(e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});
- return{get isOpen(){return dialog.open;},open(which){const s=getState();which??=['school-primary','school-middle','school-high'].includes(s.pendingDecision)?'school':s.age<19||s.schoolJourney?.current?'overview':'university';mode=which==='university'&&(s.age<19||s.schoolJourney?.current)?'overview':which;heading.textContent=mode==='overview'?'학업 관리':'학교·대학 지원';clearActionError(status);onOpen?.();render();if(!dialog.open)dialog.showModal();heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
+ return{get isOpen(){return dialog.open;},open(which,options={}){if(options.all===true)showAll=true;const s=getState();which??=['school-primary','school-middle','school-high'].includes(s.pendingDecision)?'school':s.age<19||s.schoolJourney?.current?'overview':'university';mode=which==='university'&&(s.age<19||s.schoolJourney?.current)?'overview':which;heading.textContent=mode==='overview'?'학업 관리':'학교·대학 지원';clearActionError(status);onOpen?.();render();if(!dialog.open)dialog.showModal();heading.focus({preventScroll:true});},close(){if(dialog.open)dialog.close();}};
 }

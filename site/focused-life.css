@@ -1,0 +1,97 @@
+/* The default view follows one life; management and the complete archive are opt-in. */
+[hidden]{display:none!important}
+#game .journey-meta,#game>.progress,#game>.decision-reminder{display:none!important}
+.focused-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 14px}
+.focused-toolbar button{min-height:44px;margin:0}
+#current-life-task{margin-right:auto}
+.milestone-guide{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;margin:0 0 16px;border:1px solid #a3ae93;border-radius:8px;background:#edf2e5}
+.milestone-guide p{margin:0;flex:1;line-height:1.65;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.milestone-guide button{flex:none;min-height:44px;margin:0;padding:5px 9px}
+#game .game-grid.game-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,340px);gap:28px;align-items:start;max-width:1100px;margin-inline:auto}
+.focused-current{display:flex;flex-direction:column;gap:16px;min-width:0}
+#game .focused-current>.profile{position:static;display:block;order:0;grid-area:auto;width:auto;max-width:none;min-width:0;margin:0;padding:0 0 12px;border:0;border-bottom:1px solid var(--line);background:transparent}
+.focused-current>.daily-life-panel{order:1}
+.focused-current .profile-identity{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'name age' 'origin age';align-items:center;gap:5px 14px}
+.focused-current .profile-identity #person{font-size:calc(20px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.3}
+.focused-current .profile-identity #origin{grid-area:origin;margin:0;font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+.focused-current .profile-identity .age{grid-area:age;display:flex;align-items:baseline;gap:4px;margin:0;padding:0}
+.focused-current .profile-identity .age strong{font-size:calc(25px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.2}
+.focused-current .profile-identity .age div{display:flex;align-items:baseline;gap:5px}
+.focused-current .profile-identity .age b,.focused-current .profile-identity .age span{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.focused-current .daily-life-panel{gap:13px}
+.focused-current .life-scene{max-width:430px}
+.focused-current .daily-stats{margin:0;padding-block:10px}
+.cash-glance{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border:1px solid var(--line);border-radius:8px;background:#fafaf6}
+.cash-glance>div{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 12px;min-width:0}
+.cash-glance span,.cash-glance small{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+.cash-glance strong{font-size:calc(15px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-variant-numeric:tabular-nums}
+.cash-glance small{flex-basis:100%}
+.cash-glance button{min-height:44px;flex:none;margin:0}
+#focus-options>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:8px 0;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));list-style:none}
+#focus-options>summary::-webkit-details-marker{display:none}
+.focus-change-label{border:1px solid #93a186;border-radius:5px;padding:5px 10px;font-size:.92em}
+#focus-options[open] .focus-change-label::after{content:' ▴'}
+#focus-options:not([open]) .focus-change-label::after{content:' ▾'}
+.focus-panel #focus-effects{margin:0;font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.recent-panel{min-width:0;padding:18px 20px;border:1px solid var(--line);border-radius:9px;background:var(--paper)}
+.recent-panel h3{margin:0 0 12px;font-size:calc(15px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+#recent-important{padding:0;margin:0;list-style:none}
+#recent-important li{display:grid;gap:7px;padding:14px 0;border-bottom:1px solid var(--line)}
+#recent-important li:last-child{border-bottom:0}
+#recent-important span{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+#recent-important strong{font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.65;font-weight:500}
+.focused-dialog{width:min(920px,calc(100vw - 32px));max-width:none;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);max-height:90dvh;overflow:auto;overscroll-behavior:contain}
+.focused-dialog::backdrop{background:#152b25a8}
+.focused-dialog>.dialog-top{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:var(--paper);border-bottom:1px solid var(--line)}
+.focused-dialog>.dialog-top h2{margin:0;font-size:calc(17px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.manager-body{padding:18px 20px}
+.manager-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.manager-tabs button{margin:0;min-height:48px;min-width:0;padding:9px 4px;border:1px solid #98a78a;border-radius:6px;background:var(--paper);color:var(--ink);font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.manager-tabs [aria-selected=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.manager-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-height:60px;margin-bottom:16px}
+.manager-panel>button{min-height:52px;margin:0;padding:12px;border:1px solid #9caa91;border-radius:7px;background:#eef2e7;color:var(--ink);text-align:left;font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.manager-panel>button::after{content:' ›';float:right}
+.manager-panel>button:disabled{opacity:.45}
+#manager-help .future-actions{margin:0 0 16px;padding-top:8px}
+.manager-person,.manager-record-menu{padding:12px 0;border-top:1px solid var(--line)}
+.manager-person>summary,.manager-record-menu>summary{font-weight:600;min-height:44px;padding:10px 0}
+#manager-profile .profile-details-content{padding:0}
+#manager-profile .life-context{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#manager-profile .health-status-panel{margin-top:18px}
+#manager-save-actions{display:flex;flex-wrap:wrap;gap:10px;margin-block:10px}
+#manager-save-actions>button{min-height:44px;margin:0}
+.manager-return{min-height:44px;padding:6px 10px;margin:0!important;font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))!important}
+.dialog-top:has(.manager-return),.employment-top:has(.manager-return){flex-wrap:wrap}
+.records-dialog .history-rail{display:flex;flex-direction:column;width:auto;margin:0;padding:16px;gap:14px;scroll-margin:0}
+.records-dialog .history-rail>.timeline-panel,.records-dialog .history-rail>.finance-panel{width:100%;max-width:none;min-height:0;max-height:62dvh;overflow:auto;padding:16px;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+.records-dialog .finance-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.records-dialog .finance-facts>div{padding:10px;border-bottom:1px solid var(--line)}
+.records-dialog .finance-facts dd{margin:5px 0 0}
+.records-dialog .mobile-record-tabs{position:static;margin:0}
+.records-dialog .life-feed{max-height:none;overflow:visible}
+header .header-action#careers{display:none}
+@media(max-width:1023px){
+ #game .game-grid.game-layout{grid-template-columns:minmax(0,1fr);gap:18px}
+ .focused-toolbar{gap:7px;margin-bottom:10px}.focused-toolbar button{padding:8px 12px}
+ .recent-panel{padding:14px 16px}.milestone-guide{padding:10px 12px;gap:5px}
+ .focused-current .profile-identity .age{padding:0}
+ .records-dialog .history-rail{scroll-margin:0}
+}
+@media(max-width:599px){
+ .focused-dialog{width:calc(100vw - 20px);max-height:94dvh;border-radius:9px}
+ .focused-dialog>.dialog-top{padding:12px}.manager-body{padding:12px}
+ .manager-panel{grid-template-columns:minmax(0,1fr)}
+ .manager-tabs{gap:5px}.manager-tabs button{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+ #manager-profile .life-context,.records-dialog .finance-facts{grid-template-columns:minmax(0,1fr)}
+ .cash-glance{padding:10px}.cash-glance button{padding:5px}
+ .focused-current .profile-identity .age div{display:grid;gap:2px}
+ .focused-current .profile-identity #origin{font-size:calc(9px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+ .records-dialog .history-rail{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){.focused-dialog *{scroll-behavior:auto!important}}
+.decision-recommendation{padding:16px;margin:12px 0;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+.decision-recommendation h3{margin:0 0 7px;font-size:calc(15px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6}
+.decision-recommendation ul{margin:8px 0 12px;padding-left:20px;display:grid;gap:6px;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.6}
+.decision-recommendation button{width:100%;min-height:48px;margin:0}
+#decision-error:empty{display:none}
+#decision-error{color:#804921;padding:10px;background:#fff4e6;border-radius:6px}

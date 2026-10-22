@@ -1,0 +1,18 @@
+/* Routine summaries only change presentation; the original records stay readable. */
+.timeline-filter{display:flex;align-items:center;justify-content:space-between;gap:.7rem;margin:.7rem 0;font-size:calc(11px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted,#647165)}
+.timeline-filter select{width:auto;max-width:75%;min-height:2.75rem;padding:.35rem .65rem;border:1px solid var(--line,#d5ddce);border-radius:.5rem;background:var(--paper,#fff);font:inherit;color:var(--ink,#233d32)}
+.timeline-routine-group{display:block!important;padding:.65rem 0;border-bottom:1px solid var(--line,#d5ddce)}
+.timeline-routine-group>details{min-width:0;border:1px solid var(--line,#d5ddce);border-radius:.65rem;background:var(--paper,#fff)}
+.timeline-routine-group>details>summary{cursor:pointer;min-height:2.75rem;padding:.7rem .8rem;overflow-wrap:anywhere;color:var(--ink,#233d32)}
+.timeline-routine-group>details>summary b{font-weight:650}
+.timeline-group-range{display:block;margin:.25rem 0 0 1.1rem;color:var(--muted,#647165);font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.timeline-group-records{list-style:none;margin:0;padding:0 .8rem .6rem}
+.timeline-group-records>.timeline-event{margin:0;padding:.7rem 0;border-bottom:1px solid var(--line,#d5ddce)}
+.timeline-group-records>.timeline-event:last-child{border-bottom:0}
+.finance-panel .timeline-group-records>.timeline-event{grid-template-columns:minmax(0,1fr)}
+.timeline-filter[hidden]{display:none}
+.timeline-record-details{margin-top:.35rem;border:0;background:transparent}
+.timeline-record-details>summary{cursor:pointer;min-height:2.75rem;padding:.4rem 0;color:var(--muted,#647165);font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
+.timeline-record-details>summary:focus-visible{outline:3px solid var(--accent,#477c50);outline-offset:2px}
+.timeline-filter select:focus-visible,.timeline-routine-group summary:focus-visible{outline:3px solid var(--accent,#477c50);outline-offset:2px}
+@media(max-width:480px){.timeline-filter{align-items:flex-start}.timeline-routine-group>details>summary{padding:.65rem}.timeline-group-records{padding-inline:.6rem}}

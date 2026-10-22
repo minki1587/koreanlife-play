@@ -1,6 +1,6 @@
-import {investmentSummary,investmentAssessment} from './market-economy.mjs?v=ux-design-1';
-import {appendUiFacts,clearActionError,reportActionError} from './ui-copy.mjs?v=ux-design-1';
-import {pendingInjuryCare} from './injury-care.mjs?v=ux-design-1';
+import {investmentSummary,investmentAssessment} from './market-economy.mjs?v=focused-play-1';
+import {appendUiFacts,clearActionError,reportActionError} from './ui-copy.mjs?v=focused-play-1';
+import {pendingInjuryCare} from './injury-care.mjs?v=focused-play-1';
 
 const TABS=Object.freeze([['property','부동산'],['stock','주식'],['fund','펀드']]);
 const units=value=>`${Number(value||0).toLocaleString('ko-KR',{maximumFractionDigits:0})}단위`;
