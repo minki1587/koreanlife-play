@@ -1,6 +1,6 @@
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=economic-life-1';
-import {livingCostSummary} from './engine.mjs?v=economic-life-1';
-import {investmentSummary} from './market-economy.mjs?v=economic-life-1';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=injury-copy-1';
+import {livingCostSummary} from './engine.mjs?v=injury-copy-1';
+import {investmentSummary} from './market-economy.mjs?v=injury-copy-1';
 
 /** The protagonist's portfolio is separate from parents, partners and child trusts. */
 export function personalFinanceOverview(state){

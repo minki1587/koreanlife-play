@@ -1,9 +1,9 @@
-import {formatMoney} from './spending.mjs?v=economic-life-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=economic-life-1';
-import {searchOccupations} from './career-browser.mjs?v=economic-life-1';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=economic-life-1';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=economic-life-1';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=economic-life-1';
+import {formatMoney} from './spending.mjs?v=injury-copy-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction} from './ui-copy.mjs?v=injury-copy-1';
+import {searchOccupations} from './career-browser.mjs?v=injury-copy-1';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=injury-copy-1';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=injury-copy-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=injury-copy-1';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

@@ -1,10 +1,10 @@
-import {renderEstateDetails} from './estate-views.mjs?v=economic-life-1';
-import {currentParents} from './parent-careers.mjs?v=economic-life-1';
-import {householdSummary} from './household-finance.mjs?v=economic-life-1';
-import {householdFacts} from './household-views.mjs?v=economic-life-1';
-import {formatMoney} from './spending.mjs?v=economic-life-1';
-import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=economic-life-1';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=economic-life-1';
+import {renderEstateDetails} from './estate-views.mjs?v=injury-copy-1';
+import {currentParents} from './parent-careers.mjs?v=injury-copy-1';
+import {householdSummary} from './household-finance.mjs?v=injury-copy-1';
+import {householdFacts} from './household-views.mjs?v=injury-copy-1';
+import {formatMoney} from './spending.mjs?v=injury-copy-1';
+import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=injury-copy-1';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=injury-copy-1';
 const money=n=>formatMoney(n);
 export function familyLocationLabel(place,profiles){
  const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;
