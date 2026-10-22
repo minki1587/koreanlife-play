@@ -57,7 +57,7 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   for(const panel of document.querySelectorAll('[data-manager-panel]'))panel.hidden=panel.dataset.managerPanel!==id;
  }
  function openManager(id=group){selectGroup(id);if(open(manager))$('manager-title').focus({preventScroll:true});}
- function openRecords(channel='life'){if(open(records)){selectRecords(channel);$('records-title').focus({preventScroll:true});}}
+ function openRecords(channel){if(open(records)){selectRecords(channel);$('records-title').focus({preventScroll:true});}}
  function close({silent=false}={}){const old=switching;switching=silent;try{for(const dialog of [manager,records])if(dialog.open)dialog.close();}finally{switching=old;}}
  for(const dialog of [manager,records]){
   dialog.addEventListener('close',()=>{if(!switching)onClose();});
