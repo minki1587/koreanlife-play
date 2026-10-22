@@ -1,4 +1,4 @@
-import {formatMoney} from './spending.mjs?v=ui-spouse-1';
+import {formatMoney} from './spending.mjs?v=investment-1';
 /** Relationship labels are a view of the save; names stay in family details. */
 function relations(state){
  const rows=[],add=(name,role)=>{if(typeof name==='string'&&name&&typeof role==='string'&&role)rows.push([name,role]);};

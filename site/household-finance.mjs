@@ -1,7 +1,7 @@
-import {academySupportActive} from './academy.mjs?v=ui-spouse-1';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=ui-spouse-1';
-import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=ui-spouse-1';
-import {currentFamilyIncome} from './parent-careers.mjs?v=ui-spouse-1';
+import {academySupportActive} from './academy.mjs?v=investment-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=investment-1';
+import {hobbyInjuryAllowed,injuryImpact} from './injury-care.mjs?v=investment-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=investment-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

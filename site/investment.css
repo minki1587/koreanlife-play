@@ -1,0 +1,24 @@
+.finance-asset-link{display:inline;text-align:left;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;text-decoration:underline;text-underline-offset:4px;min-width:0;overflow-wrap:anywhere}
+.finance-asset-link:hover:not(:disabled){color:var(--green)}
+.finance-asset-link:disabled{cursor:default}
+.investment-dialog{width:min(1040px,calc(100% - 24px));max-height:calc(94dvh - 24px)}
+.investment-dialog::backdrop{background:#142c219e;backdrop-filter:blur(3px)}
+.investment-tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 24px;border-bottom:1px solid var(--line)}
+.investment-tabs button{flex:1 0 auto;min-height:44px;white-space:nowrap}
+.investment-tabs [aria-selected=true]{color:var(--paper);background:var(--green);border-color:var(--green)}
+.investment-body{display:grid;gap:18px;font-size:calc(14px * var(--base-text-scale,1.44) * var(--user-text-scale,1));min-width:0}
+.investment-facts{display:grid;gap:10px;margin:0;font-size:.86em;line-height:1.6;min-width:0}
+.investment-facts>div{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:8px;min-width:0}
+.investment-facts dt{color:var(--muted)}.investment-facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.investment-month,.investment-guide{margin:0;color:var(--muted);font-size:.84em;line-height:1.7;overflow-wrap:anywhere}
+.investment-product,.investment-order{display:grid;gap:14px;min-width:0;padding:18px;border:1px solid var(--line);border-radius:8px}
+.investment-product h3,.investment-order h4{margin:0;font-size:1em;line-height:1.5;overflow-wrap:anywhere}
+.investment-orders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-width:0}
+.investment-order label{font-size:.86em;margin:0}
+.investment-order input{width:100%;min-width:0;min-height:46px;padding:10px;font:inherit}
+.investment-order button{width:100%;min-height:46px}
+.investment-quote{display:grid;gap:10px}.investment-reasons{display:grid;gap:6px;margin:0;padding-left:20px;color:#89522f;font-size:.84em;line-height:1.7}
+.investment-error{margin:0;padding:12px 24px;color:#983c2d;font-size:calc(12px * var(--base-text-scale,1.44) * var(--user-text-scale,1));line-height:1.7}
+.investment-error:empty{display:none}
+@media(max-width:680px){.investment-orders{grid-template-columns:minmax(0,1fr)}.investment-tabs{padding:12px 14px}}
+@media(max-width:440px){.investment-facts>div{grid-template-columns:minmax(0,1fr);gap:0}.investment-facts dd{padding-left:8px}.investment-product,.investment-order{padding:14px}}

@@ -1,6 +1,8 @@
-import {livingCostSummary} from './engine.mjs?v=ui-spouse-1';
+import {livingCostSummary} from './engine.mjs?v=investment-1';
+import {investmentSummary} from './market-economy.mjs?v=investment-1';
 
-/** Personal property and investment ledgers do not exist yet; parent assets stay separate. */
+/** The protagonist's portfolio is separate from parents, partners and child trusts. */
 export function personalFinanceOverview(state){
- return{cashWan:state.cash,propertyWan:0,investmentWan:0,debtWan:state.debt,annualSalaryWan:state.salary,monthlyLivingWan:livingCostSummary(state).totalWan};
+ const portfolio=investmentSummary(state);
+ return{cashWan:state.cash,propertyWan:portfolio.totals.propertyValueWan,investmentWan:portfolio.totals.securityValueWan,debtWan:state.debt,annualSalaryWan:state.salary,monthlyLivingWan:livingCostSummary(state).totalWan};
 }

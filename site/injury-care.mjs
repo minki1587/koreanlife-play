@@ -1,4 +1,4 @@
-import {hobbyAllowedDuringRecovery} from './hobby-activity.mjs?v=ui-spouse-1';
+import {hobbyAllowedDuringRecovery} from './hobby-activity.mjs?v=investment-1';
 // Explicit, versioned game choices; amounts are in ten thousand won.
 export const CARE_VERSION='injury-care-v1';
 const q=n=>Math.round(n*10000)/10000;

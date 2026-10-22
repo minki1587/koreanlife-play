@@ -1,0 +1,342 @@
+{
+  "version": "market-scenarios-v1",
+  "kind": "game_assumption",
+  "reviewedAt": "2026-10-22",
+  "products": [
+    {
+      "id": "property",
+      "kind": "property",
+      "name": "부동산",
+      "initialUnitPriceWan": 1,
+      "monthlyDrift": 0.001,
+      "monthlyVolatility": 0.012,
+      "minMonthlyRate": -0.08,
+      "maxMonthlyRate": 0.08,
+      "description": "분산 부동산 지분. 거주지와 생활 주거비는 바뀌지 않습니다."
+    },
+    {
+      "id": "stock",
+      "kind": "stock",
+      "name": "주식",
+      "initialUnitPriceWan": 1,
+      "monthlyDrift": 0.003,
+      "monthlyVolatility": 0.055,
+      "minMonthlyRate": -0.2,
+      "maxMonthlyRate": 0.2,
+      "description": "여러 기업에 분산한 주식 지분."
+    },
+    {
+      "id": "fund",
+      "kind": "fund",
+      "name": "펀드",
+      "initialUnitPriceWan": 1,
+      "monthlyDrift": 0.0024,
+      "monthlyVolatility": 0.03,
+      "minMonthlyRate": -0.12,
+      "maxMonthlyRate": 0.12,
+      "description": "주식과 채권을 섞은 분산 혼합형 지분."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "neutral",
+      "title": "큰 정세 변화 없음",
+      "scope": "neutral",
+      "weight": 60,
+      "impacts": {
+        "property": 0,
+        "stock": 0,
+        "fund": 0
+      },
+      "summary": "새로운 큰 소식 없이 시장이 움직였습니다.",
+      "sourceIds": []
+    },
+    {
+      "id": "domestic-easing",
+      "title": "금리 인하 기대",
+      "scope": "domestic",
+      "weight": 4,
+      "impacts": {
+        "property": 0.006,
+        "stock": 0.009,
+        "fund": 0.005
+      },
+      "summary": "자금 조달 부담이 줄어들 것이라는 기대가 퍼졌습니다.",
+      "sourceIds": [
+        "bok-20261022",
+        "fed-20250917"
+      ]
+    },
+    {
+      "id": "domestic-tightening",
+      "title": "물가·긴축 우려",
+      "scope": "domestic",
+      "weight": 3,
+      "impacts": {
+        "property": -0.008,
+        "stock": -0.01,
+        "fund": -0.006
+      },
+      "summary": "물가 부담과 높은 금리 우려로 투자 심리가 식었습니다.",
+      "sourceIds": [
+        "bok-20261022",
+        "cpi-202609"
+      ]
+    },
+    {
+      "id": "domestic-credit",
+      "title": "주택 대출 문턱 상승",
+      "scope": "domestic",
+      "weight": 4,
+      "impacts": {
+        "property": -0.01,
+        "stock": -0.003,
+        "fund": -0.002
+      },
+      "summary": "대출 여건이 까다로워지며 부동산 매수세가 약해졌습니다.",
+      "sourceIds": [
+        "credit-202609"
+      ]
+    },
+    {
+      "id": "domestic-housing",
+      "title": "일부 지역 주택 수요 회복",
+      "scope": "domestic",
+      "weight": 3,
+      "impacts": {
+        "property": 0.009,
+        "stock": 0.003,
+        "fund": 0.002
+      },
+      "summary": "일부 지역의 주택 거래가 살아나며 부동산 수요가 늘었습니다.",
+      "sourceIds": [
+        "housing-202609"
+      ]
+    },
+    {
+      "id": "domestic-exports",
+      "title": "수출 업황 개선",
+      "scope": "domestic",
+      "weight": 4,
+      "impacts": {
+        "property": 0.002,
+        "stock": 0.014,
+        "fund": 0.008
+      },
+      "summary": "수출기업의 실적 기대가 높아지며 투자 심리가 좋아졌습니다.",
+      "sourceIds": [
+        "exports-202609"
+      ]
+    },
+    {
+      "id": "domestic-demand",
+      "title": "내수 둔화 우려",
+      "scope": "domestic",
+      "weight": 2,
+      "impacts": {
+        "property": -0.004,
+        "stock": -0.008,
+        "fund": -0.004
+      },
+      "summary": "소비와 투자 둔화 소식에 시장이 신중해졌습니다.",
+      "sourceIds": [
+        "activity-202608"
+      ]
+    },
+    {
+      "id": "global-energy",
+      "title": "에너지 공급 불안",
+      "scope": "global",
+      "weight": 5,
+      "impacts": {
+        "property": -0.005,
+        "stock": -0.02,
+        "fund": -0.011
+      },
+      "summary": "국제 유가 부담과 공급 불안으로 세계 시장이 흔들렸습니다.",
+      "sourceIds": [
+        "ap-20260306",
+        "imf-202610",
+        "oecd-202609"
+      ]
+    },
+    {
+      "id": "global-trade",
+      "title": "무역 갈등 확대",
+      "scope": "global",
+      "weight": 4,
+      "impacts": {
+        "property": -0.003,
+        "stock": -0.018,
+        "fund": -0.01
+      },
+      "summary": "관세와 무역 마찰 우려가 커져 수출·투자 기대가 낮아졌습니다.",
+      "sourceIds": [
+        "imf-202610"
+      ]
+    },
+    {
+      "id": "global-easing",
+      "title": "해외 통화 완화",
+      "scope": "global",
+      "weight": 3,
+      "impacts": {
+        "property": 0.003,
+        "stock": 0.013,
+        "fund": 0.008
+      },
+      "summary": "해외 금리 부담이 완화되며 위험자산 수요가 늘었습니다.",
+      "sourceIds": [
+        "fed-20250917"
+      ]
+    },
+    {
+      "id": "global-tech",
+      "title": "기술 투자 확대",
+      "scope": "global",
+      "weight": 4,
+      "impacts": {
+        "property": 0.001,
+        "stock": 0.017,
+        "fund": 0.01
+      },
+      "summary": "AI와 기술 분야 투자 확대가 기업 성장 기대를 높였습니다.",
+      "sourceIds": [
+        "imf-202610",
+        "oecd-202609"
+      ]
+    },
+    {
+      "id": "global-relief",
+      "title": "국제 긴장 완화",
+      "scope": "global",
+      "weight": 2,
+      "impacts": {
+        "property": 0.002,
+        "stock": 0.012,
+        "fund": 0.007
+      },
+      "summary": "국제 갈등과 무역 불안이 누그러져 시장 심리가 회복됐습니다.",
+      "sourceIds": [
+        "imf-202610"
+      ]
+    },
+    {
+      "id": "global-demand",
+      "title": "세계 경기 둔화 우려",
+      "scope": "global",
+      "weight": 2,
+      "impacts": {
+        "property": -0.004,
+        "stock": -0.013,
+        "fund": -0.008
+      },
+      "summary": "해외 수요와 성장 둔화 우려로 투자자들이 조심스러워졌습니다.",
+      "sourceIds": [
+        "imf-202610",
+        "oecd-202609"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "bok-20261022",
+      "publisher": "한국은행",
+      "title": "통화정책방향",
+      "publishedAt": "2026-10-22",
+      "observedPeriod": "2026-10-22 결정",
+      "url": "https://www.bok.or.kr/portal/bbs/P0000559/view.do?menuNo=200690&nttId=11065823",
+      "summary": "기준금리 3.00% 동결과 물가·금융안정 위험 점검. 동결을 금리 인하로 해석하지 않는다."
+    },
+    {
+      "id": "cpi-202609",
+      "publisher": "국가데이터처",
+      "title": "2026년 9월 소비자물가동향",
+      "publishedAt": "2026-10-02",
+      "observedPeriod": "2026-09",
+      "url": "https://mods.go.kr/board.es?act=view&bid=213&list_no=447322&mid=a10301040100",
+      "summary": "소비자물가는 전월 대비 0.3%, 전년 대비 2.9% 상승했다."
+    },
+    {
+      "id": "exports-202609",
+      "publisher": "산업통상부",
+      "title": "2026년 9월 수출입 동향",
+      "publishedAt": "2026-10-01",
+      "observedPeriod": "2026-09",
+      "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172254/view",
+      "summary": "수출이 전년보다 증가했고 반도체 외 품목에서도 증가가 관측됐다. 모든 기업의 호황을 의미하지 않는다."
+    },
+    {
+      "id": "activity-202608",
+      "publisher": "국가데이터처",
+      "title": "2026년 8월 산업활동동향",
+      "publishedAt": "2026-09-30",
+      "observedPeriod": "2026-08",
+      "url": "https://mods.go.kr/board.es?act=view&bid=216&list_no=447256&mid=a10301010000",
+      "summary": "생산·소매판매·설비투자는 전월보다 줄고 건설기성은 증가한 혼합 결과다."
+    },
+    {
+      "id": "credit-202609",
+      "publisher": "금융위원회",
+      "title": "2026년 9월 가계대출 동향",
+      "publishedAt": "2026-10-15",
+      "observedPeriod": "2026-09",
+      "url": "https://www.fsc.go.kr/po010101/87939",
+      "summary": "전체 가계대출은 감소했지만 주택담보대출은 증가했다. 계절요인과 업권별 차이를 구분한다."
+    },
+    {
+      "id": "housing-202609",
+      "publisher": "연합뉴스",
+      "title": "서울 9월 아파트 토지거래허가 신청 동향 보도",
+      "publishedAt": "2026-10-15",
+      "observedPeriod": "2026-09",
+      "url": "https://www.yna.co.kr/amp/view/AKR20261014161900004",
+      "summary": "서울 일부 주택 거래 신청이 전월보다 늘었으나 이전 고점보다 적고 권역별 차이가 있다. 전국 확정 실거래가격 상승으로 일반화하지 않는다."
+    },
+    {
+      "id": "imf-202610",
+      "publisher": "IMF",
+      "title": "World Economic Outlook: Resilience Under Strain, Urgent Choices",
+      "publishedAt": "2026-10-13",
+      "observedPeriod": "2026-10-01까지의 정보에 기초한 전망",
+      "url": "https://www.imf.org/en/Publications/WEO/Issues/2026/10/13/world-economic-outlook-october-2026",
+      "summary": "갈등·무역 긴장·부채 위험과 AI 투자 확대·긴장 완화의 상방 가능성을 함께 설명한다."
+    },
+    {
+      "id": "oecd-202609",
+      "publisher": "OECD",
+      "title": "Economic Outlook, Interim Report: Weathering Successive Shocks",
+      "publishedAt": "2026-09-23",
+      "observedPeriod": "2026-09 전망",
+      "url": "https://www.oecd.org/en/publications/oecd-economic-outlook-interim-report-september-2026_f751d02b-en.html",
+      "summary": "에너지 공급 충격과 높은 금리의 부담, AI 투자와 공급 조정의 완충 효과를 설명한다."
+    },
+    {
+      "id": "fed-20250917",
+      "publisher": "Federal Reserve",
+      "title": "Federal Reserve issues FOMC statement",
+      "publishedAt": "2025-09-17",
+      "observedPeriod": "2025-09-17 결정",
+      "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm",
+      "summary": "고용 하방 위험을 고려해 정책금리 목표 범위를 0.25%p 내린 과거 사례다. 현재 금리 수준을 뜻하지 않는다."
+    },
+    {
+      "id": "ap-20260306",
+      "publisher": "AP",
+      "title": "Oil surges to its highest price since 2023, and stocks drop after a weak update on the US job market",
+      "publishedAt": "2026-03-06",
+      "observedPeriod": "2026-03-06 시장 동향",
+      "url": "https://apnews.com/article/1f7bf89b783a9ba731f4b25564bf80f8",
+      "summary": "중동 충돌에 따른 유가 급등과 약한 고용 지표가 함께 나타난 날 주가가 하락한 사례다."
+    }
+  ],
+  "probabilityMethod": {
+    "unit": "one_shared_draw_per_game_month",
+    "neutralWeight": 60,
+    "domesticWeight": 20,
+    "globalWeight": 20,
+    "empiricallyEstimated": false,
+    "statement": "기사와 공식 자료로 사건의 종류·전달 경로를 검토하고, 월 발동 가중치와 수익률은 플레이 빈도·난이도를 위한 별도 가정으로 정한다. 기사 건수·기사 속 증감률·경제전망을 발생확률로 환산하지 않는다."
+  },
+  "note": "실시간 뉴스나 실제 금융상품·자산가격과 연동하지 않는 가상 시장이다. 원문 기사·사진·표를 복제하지 않으며 원문 링크와 직접 작성한 짧은 요약만 보관한다. 여러 자료의 전망을 평균내거나 같은 사건의 재보도를 독립 확률 근거로 세지 않는다."
+}

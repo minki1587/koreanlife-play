@@ -1,7 +1,7 @@
-import {randomKoreanName} from './names.mjs?v=ui-spouse-1';
-import {employmentRequirements} from './employment.mjs?v=ui-spouse-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=ui-spouse-1';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=ui-spouse-1';
+import {randomKoreanName} from './names.mjs?v=investment-1';
+import {employmentRequirements} from './employment.mjs?v=investment-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=investment-1';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=investment-1';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 export const FORMED_FAMILY_VERSION='formed-family-v1';
