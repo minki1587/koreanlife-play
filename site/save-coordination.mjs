@@ -1,4 +1,4 @@
-import {peekSaveMetadata} from './save-codec.mjs?v=continuity-2';
+import {peekSaveMetadata} from './save-codec.mjs?v=refinements-1';
 /** All same-origin save writers share a Web Lock; exact observed bytes also
  * protect against older releases that do not use this lock. No unload writes. */
 export class SaveConflictError extends Error {

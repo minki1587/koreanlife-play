@@ -1,80 +1,82 @@
-import {enableContinuity,participateReserve} from './engine.mjs?v=continuity-2';
-import {militaryObligation} from './military-obligation.mjs?v=continuity-2';
-import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=continuity-2';
-import {serviceDeferralSummary} from './service-deferral.mjs?v=continuity-2';
-import {reserveSummary} from './reserve-service.mjs?v=continuity-2';
-import {serviceReviewMessage} from './service-review-view.mjs?v=continuity-2';
-import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=continuity-2';
-import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=continuity-2';
-import {freezeSaveSnapshot} from './immutable-save.mjs?v=continuity-2';
-import {laterLifeCard} from './later-life.mjs?v=continuity-2';
-import {chooseLaterLife} from './engine.mjs?v=continuity-2';
-import {eventGuidance} from './event-guidance.mjs?v=continuity-2';
-import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=continuity-2';
-import {createBootLoadStatus} from './boot-load-status.mjs?v=continuity-2';
-import {careerMilestone} from './career-milestone.mjs?v=continuity-2';
-import {serviceReadiness} from './service-readiness.mjs?v=continuity-2';
-import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=continuity-2';
-import {createCareFundingView} from './care-funding-browser.mjs?v=continuity-2';
-import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=continuity-2';
-import {createFocusedLife} from './focused-life.mjs?v=continuity-2';
-import {createTimelineFeed} from './timeline-feed.mjs?v=continuity-2';
-import {renderActionMenu} from './action-menu.mjs?v=continuity-2';
-import {clockPresentation} from './clock-status.mjs?v=continuity-2';
-import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=continuity-2';
-import {createInvestmentBrowser} from './investment-browser.mjs?v=continuity-2';
-import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=continuity-2';
-import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=continuity-2';
-import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=continuity-2';
-import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=continuity-2';
-import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=continuity-2';
-import {createSaveCoordinator} from './save-coordination.mjs?v=continuity-2';
-import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=continuity-2';
-import {createDebtBrowser} from './debt-browser.mjs?v=continuity-2';
-import {repayDebt} from './engine.mjs?v=continuity-2';
-import {normalizeMilitaryPath} from './engine.mjs?v=continuity-2';
-import {personalFinanceOverview} from './finance-overview.mjs?v=continuity-2';
-import {lifeHistoryEvents} from './timeline-history.mjs?v=continuity-2';
-import {storyView} from './story-view.mjs?v=continuity-2';
-import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=continuity-2';
-import {chooseInjuryCare} from './engine.mjs?v=continuity-2';
-import {lifeHealthSummary} from './life-health.mjs?v=continuity-2';
-import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=continuity-2';
-import {livingCostSummary} from './engine.mjs?v=continuity-2';
-import {militaryPaySummary} from './military-pay.mjs?v=continuity-2';
-import {militaryFinanceView} from './military-finance-view.mjs?v=continuity-2';
-import {displayCopy,displayLines} from './ui-copy.mjs?v=continuity-2';
-import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=continuity-2';
-import {focusEffects} from './focus-effects.mjs?v=continuity-2';
-import {militarySavingsSummary} from './military-savings.mjs?v=continuity-2';
-import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=continuity-2';
-import {validateEstateRules} from './family-estate.mjs?v=continuity-2';
-import {validateParentRules} from './parent-careers.mjs?v=continuity-2';
-import {protagonistGender} from './person-identity.mjs?v=continuity-2';
-import {validateHouseholdRules} from './household-finance.mjs?v=continuity-2';
-import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=continuity-2';
-import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=continuity-2';
-import {createFamilyBrowser} from './family-browser.mjs?v=continuity-2';
-import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=continuity-2';
-import {createEducationBrowser} from './education-browser.mjs?v=continuity-2';
-import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=continuity-2';
-import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=continuity-2';
-import {validEducationCatalog} from './education.mjs?v=continuity-2';
-import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=continuity-2';
-import {createEmploymentBrowser} from './employment-browser.mjs?v=continuity-2';
-import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=continuity-2';
-import {occupationModelIndex} from './career-economy.mjs?v=continuity-2';
-import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=continuity-2';
-import {createAssetLoader} from './asset-loader.mjs?v=continuity-2';
-import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=continuity-2';
-import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=continuity-2';
-import {birthPresentation} from './birth-presentation.mjs?v=continuity-2';
-import {createMobileDashboard} from './mobile-dashboard.mjs?v=continuity-2';
-import {initResponsiveLayout} from './responsive.mjs?v=continuity-2';
-import {initTextSize} from './text-size.mjs?v=continuity-2';
-import {createLifeScene} from './life-scene.mjs?v=continuity-2';
-import {randomKoreanName,resolveLifeName} from './names.mjs?v=continuity-2';
-import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=continuity-2';
+import {createPortableSaveDownload} from './portable-save.mjs?v=refinements-1';
+import {enableContinuity,enableRefinements,participateReserve,setReserveAutomation,settleAutomaticReserve} from './engine.mjs?v=refinements-1';
+import {militaryObligation} from './military-obligation.mjs?v=refinements-1';
+import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=refinements-1';
+import {serviceDeferralSummary} from './service-deferral.mjs?v=refinements-1';
+import {reserveSummary} from './reserve-service.mjs?v=refinements-1';
+import {serviceReviewMessage} from './service-review-view.mjs?v=refinements-1';
+import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=refinements-1';
+import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=refinements-1';
+import {freezeSaveSnapshot} from './immutable-save.mjs?v=refinements-1';
+import {laterLifeCard} from './later-life.mjs?v=refinements-1';
+import {chooseLaterLife} from './engine.mjs?v=refinements-1';
+import {eventGuidance} from './event-guidance.mjs?v=refinements-1';
+import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=refinements-1';
+import {createBootLoadStatus} from './boot-load-status.mjs?v=refinements-1';
+import {careerMilestone} from './career-milestone.mjs?v=refinements-1';
+import {serviceReadiness} from './service-readiness.mjs?v=refinements-1';
+import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=refinements-1';
+import {createCareFundingView} from './care-funding-browser.mjs?v=refinements-1';
+import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=refinements-1';
+import {createFocusedLife} from './focused-life.mjs?v=refinements-1';
+import {createTimelineFeed} from './timeline-feed.mjs?v=refinements-1';
+import {renderActionMenu} from './action-menu.mjs?v=refinements-1';
+import {clockPresentation,playbackShortcutAllowed} from './clock-status.mjs?v=refinements-1';
+import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=refinements-1';
+import {createInvestmentBrowser} from './investment-browser.mjs?v=refinements-1';
+import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=refinements-1';
+import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=refinements-1';
+import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=refinements-1';
+import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=refinements-1';
+import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=refinements-1';
+import {createSaveCoordinator} from './save-coordination.mjs?v=refinements-1';
+import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=refinements-1';
+import {createDebtBrowser} from './debt-browser.mjs?v=refinements-1';
+import {repayDebt} from './engine.mjs?v=refinements-1';
+import {normalizeMilitaryPath} from './engine.mjs?v=refinements-1';
+import {personalFinanceOverview} from './finance-overview.mjs?v=refinements-1';
+import {lifeHistoryEvents} from './timeline-history.mjs?v=refinements-1';
+import {storyView} from './story-view.mjs?v=refinements-1';
+import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=refinements-1';
+import {chooseInjuryCare} from './engine.mjs?v=refinements-1';
+import {lifeHealthSummary} from './life-health.mjs?v=refinements-1';
+import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=refinements-1';
+import {livingCostSummary} from './engine.mjs?v=refinements-1';
+import {militaryPaySummary} from './military-pay.mjs?v=refinements-1';
+import {militaryFinanceView} from './military-finance-view.mjs?v=refinements-1';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=refinements-1';
+import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=refinements-1';
+import {focusEffects} from './focus-effects.mjs?v=refinements-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=refinements-1';
+import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=refinements-1';
+import {validateEstateRules} from './family-estate.mjs?v=refinements-1';
+import {validateParentRules} from './parent-careers.mjs?v=refinements-1';
+import {protagonistGender} from './person-identity.mjs?v=refinements-1';
+import {validateHouseholdRules} from './household-finance.mjs?v=refinements-1';
+import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=refinements-1';
+import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=refinements-1';
+import {createFamilyBrowser} from './family-browser.mjs?v=refinements-1';
+import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=refinements-1';
+import {createEducationBrowser} from './education-browser.mjs?v=refinements-1';
+import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=refinements-1';
+import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=refinements-1';
+import {validEducationCatalog} from './education.mjs?v=refinements-1';
+import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=refinements-1';
+import {createEmploymentBrowser} from './employment-browser.mjs?v=refinements-1';
+import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=refinements-1';
+import {occupationModelIndex} from './career-economy.mjs?v=refinements-1';
+import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=refinements-1';
+import {createAssetLoader} from './asset-loader.mjs?v=refinements-1';
+import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=refinements-1';
+import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=refinements-1';
+import {birthPresentation} from './birth-presentation.mjs?v=refinements-1';
+import {createMobileDashboard} from './mobile-dashboard.mjs?v=refinements-1';
+import {createCashGlanceLayout} from './mobile-cash-layout.mjs?v=refinements-1';
+import {initResponsiveLayout} from './responsive.mjs?v=refinements-1';
+import {initTextSize} from './text-size.mjs?v=refinements-1';
+import {createLifeScene} from './life-scene.mjs?v=refinements-1';
+import {randomKoreanName,resolveLifeName} from './names.mjs?v=refinements-1';
+import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=refinements-1';
 const $=id=>document.getElementById(id), KEY='koreanlife-save-v2', OLD_KEY='koreanlife-save-v1', BIRTH_KEY=KEY+'-pending-birth';
 const playEnvironment=checkPlayEnvironment({getStorage:()=>globalThis.localStorage,getLocks:()=>navigator.locks}),saveStorage=playEnvironment.storage;
 const environmentNotice=document.createElement('section');environmentNotice.id='play-environment-notice';$('welcome').before(environmentNotice);renderPlayEnvironmentNotice(environmentNotice,playEnvironment,{document,onRetry:()=>location.reload()});
@@ -82,6 +84,7 @@ initTextSize();
 initResponsiveLayout();
 const lifeScene=createLifeScene($('life-scene'));
 const mobileDashboard=createMobileDashboard({document,matchMedia:query=>window.matchMedia(query),compact:true});
+createCashGlanceLayout({document,matchMedia:query=>window.matchMedia(query)});
 const descriptions={balance:'일·건강·관계를 고르게 돌봅니다. 효과는 시간이 흐르며 반영됩니다.',learning:'배움에 시간을 씁니다. 지식은 이후의 일과 선택에 영향을 줍니다.',career:'일과 기술에 힘을 쏟습니다. 성장의 기회와 생활의 부담이 함께 생깁니다.',health:'운동과 휴식에 시간을 씁니다. 건강 관리 효과가 조금씩 쌓입니다.',relationships:'가까운 사람에게 시간을 냅니다. 관계와 만족이 조금씩 달라집니다.'};
 let familyBrowser,cityProfiles,profileCatalog,data,state,timer=null,view='welcome',paused=false,speed=1,busy=false,storageIssue=false,feedLimit=16,moneyFeedLimit=16,endingFeedLimit=80,lastChanges=[],pendingBirth=null,spinTimer=null,spinToken=0,suggestedName='',policyData=null,mapManifest=null,careerBrowser=null,employmentBrowser=null,lifestyleBrowser=null,educationBrowser=null,fastForward=false;
 const timelinePartCache=new Map();let timelinePartSeed=null;
@@ -116,7 +119,7 @@ function handleClockHelp(){
 function showSaveConflict(error){paused=true;fastForward=false;stopClock();if(!saveConflictPanel){saveConflictPanel=document.createElement('section');saveConflictPanel.id='save-conflict-panel';saveConflictPanel.className='save-backup-section';saveConflictPanel.setAttribute('role','alert');const text=document.createElement('p'),actions=document.createElement('div'),downloadButton=document.createElement('button'),resumeButton=document.createElement('button');text.textContent='다른 탭에서 최신 기록을 저장했습니다. 이 화면의 진행을 멈췄습니다. 현재 화면의 기록은 파일로 보관하거나 최신 기록을 이어갈 수 있습니다.';actions.className='save-transfer-actions';downloadButton.type=resumeButton.type='button';downloadButton.className=resumeButton.className='secondary';downloadButton.id='save-conflict-download';resumeButton.id='save-conflict-resume';downloadButton.textContent='이 화면 기록 내려받기';resumeButton.textContent='최신 기록 이어하기';downloadButton.addEventListener('click',download);resumeButton.addEventListener('click',()=>resumeLatest({forcePaused:true}));actions.append(downloadButton,resumeButton);saveConflictPanel.append(text,actions);placeProgressNotice(saveConflictPanel);}saveConflictPanel.hidden=false;saveConflictPanel.querySelector('#save-conflict-download').disabled=!state;message(error?.message||'최신 기록을 확인해 주세요.');}
 function hideSaveConflict(){if(saveConflictPanel)saveConflictPanel.hidden=true;}
 function currentRecordAvailable(){try{return!!state||saveStorage.getItem(KEY)!==null;}catch{return!!state;}}
-function downloadCurrentRecord(){if(state){download();return;}const copy=createBackupDownload(saveStorage,{key:KEY});if(!copy)throw new Error('내려받을 현재 기록이 없습니다.');downloadText(copy.text,copy.fileName);}
+function downloadCurrentRecord(){if(state){download();return;}const copy=createBackupDownload(saveStorage,{key:KEY,migrationData:data});if(!copy)throw new Error('내려받을 현재 기록이 없습니다.');downloadText(copy.text,copy.fileName);}
 function renderStorageCapacity(){
  let usage;try{usage=saveStorageUsage(saveStorage);}catch{return;}
  if(!storageQuotaBlocked&&!usage.warning){if(saveCapacityPanel)saveCapacityPanel.hidden=true;return;}
@@ -162,10 +165,10 @@ function renderClockStatus(){
 function canRun(){return clockPresentation(clockFlags()).canRun;}
 function schedule(){stopClock();if(canRun())timer=setTimeout(async()=>{timer=null;try{await updateSavedLife(current=>advanceLife(current,data,1));if(state.phase!=='running'||pendingInjuryCare(state)||militaryObligation(state))fastForward=false;if(view==='game')render();}catch(error){paused=true;message(saveBlocked()?'다른 탭의 최신 기록을 확인해 주세요.':error?.message||'시간 진행을 잠시 멈췄습니다. 기록을 저장한 뒤 새로고침해주세요.');if(view==='game')render();}},fastForward?35:800/speed);}
 function checkTransferRecovery(){const recovered=recoverSaveTransfer(saveStorage);if(recovered.recovered&&state){transferReloadRequired=true;paused=true;stopClock();transferRecoveryError='중단 전의 저장을 복구했습니다. 현재 화면의 기록은 파일로 보관한 뒤 새로고침하고 이전 삶 이어하기를 선택해 주세요.';throw new Error(transferRecoveryError);}transferRecoveryError=null;}
-async function updateSavedLife(action,{nextPaused,nextSpeed}={}){if(saveBlocked())throw new Error('다른 탭의 최신 기록을 확인해 주세요.');if(!saveCoordinator)throw new Error('안전한 자동 저장을 준비하지 못했습니다.');try{return await saveCoordinator.run(({metadata})=>{checkTransferRecovery();const before=state,next=freezeSaveSnapshot(action(before)),settings={paused:nextPaused??paused,speed:nextSpeed??speed};if(next&&!validSave(next))throw new Error('변경된 기록을 확인하지 못해 이전 기록을 유지합니다.');const raw=encodeSaveRecord({life:next,settings,saveMetadata:metadata});saveStorage.setItem(KEY,raw);if(saveStorage.getItem(KEY)!==raw)throw new Error('저장 기록을 확인하지 못했습니다. 진행 기록을 파일로 보관해 주세요.');state=next;paused=settings.paused;speed=settings.speed;storageIssue=false;storageQuotaBlocked=false;renderStorageCapacity();return{before,next};});}catch(error){if(error?.code==='SAVE_CONFLICT')showSaveConflict(error);else{handleStorageQuota(error);storageIssue=true;if(error?.recoveryRequired)transferRecoveryError=error.message;message(transferRecoveryError||error?.message||'');}throw error;}}
+async function updateSavedLife(action,{nextPaused,nextSpeed}={}){if(saveBlocked())throw new Error('다른 탭의 최신 기록을 확인해 주세요.');if(!saveCoordinator)throw new Error('안전한 자동 저장을 준비하지 못했습니다.');try{return await saveCoordinator.run(({metadata})=>{checkTransferRecovery();const before=state,next=freezeSaveSnapshot(settleAutomaticReserve(action(before))),settings={paused:nextPaused??paused,speed:nextSpeed??speed};if(next&&!validSave(next))throw new Error('변경된 기록을 확인하지 못해 이전 기록을 유지합니다.');const raw=encodeSaveRecord({life:next,settings,saveMetadata:metadata});saveStorage.setItem(KEY,raw);if(saveStorage.getItem(KEY)!==raw)throw new Error('저장 기록을 확인하지 못했습니다. 진행 기록을 파일로 보관해 주세요.');state=next;paused=settings.paused;speed=settings.speed;storageIssue=false;storageQuotaBlocked=false;renderStorageCapacity();return{before,next};});}catch(error){if(error?.code==='SAVE_CONFLICT')showSaveConflict(error);else{handleStorageQuota(error);storageIssue=true;if(error?.recoveryRequired)transferRecoveryError=error.message;message(transferRecoveryError||error?.message||'');}throw error;}}
 async function save(){if(saveBlocked())return false;try{await updateSavedLife(current=>current);return true;}catch{return false;}}
 
-async function resumeLatest({forcePaused=false}={}){try{if(!saveCoordinator)throw new Error('안전한 저장을 준비하지 못했습니다. 새로고침 후 다시 시도해 주세요.');const saved=await saveCoordinator.adopt(()=>stored(),{recover:()=>recoverSaveTransfer(saveStorage)});if(!saved){message('저장된 기록을 읽지 못했습니다. 기록 파일과 백업을 확인해 주세요.');return;}transferRecoveryError=null;transferReloadRequired=false;hideSaveConflict();saveBrowser?.close();state=enableContinuity(enableRemedies(enableEconomicLife(enableMarket(enableFormedFamily(normalizeMilitaryPath(enableHouseholdFinance(saved.life,data),data),data),data),data),data),data);paused=forcePaused||!!saved.settings.paused;fastForward=false;speed=[1,2,5].includes(saved.settings.speed)?saved.settings.speed:1;lastChanges=[];endingFeedLimit=80;if(!await save())return;message(saved.migrated?'이전 버전의 선택 기록을 보존해 이어왔습니다.':'최신 저장한 시점부터 삶이 이어집니다.');render();}catch(error){paused=true;stopClock();message(error?.message||'최신 저장을 확인하지 못했습니다.');}}
+async function resumeLatest({forcePaused=false}={}){try{if(!saveCoordinator)throw new Error('안전한 저장을 준비하지 못했습니다. 새로고침 후 다시 시도해 주세요.');const saved=await saveCoordinator.adopt(()=>stored(),{recover:()=>recoverSaveTransfer(saveStorage)});if(!saved){message('저장된 기록을 읽지 못했습니다. 기록 파일과 백업을 확인해 주세요.');return;}transferRecoveryError=null;transferReloadRequired=false;hideSaveConflict();saveBrowser?.close();state=enableRefinements(enableContinuity(enableRemedies(enableEconomicLife(enableMarket(enableFormedFamily(normalizeMilitaryPath(enableHouseholdFinance(saved.life,data),data),data),data),data),data),data),data);paused=forcePaused||!!saved.settings.paused;fastForward=false;speed=[1,2,5].includes(saved.settings.speed)?saved.settings.speed:1;lastChanges=[];endingFeedLimit=80;if(!await save())return;message(saved.migrated?'이전 버전의 선택 기록을 보존해 이어왔습니다.':'최신 저장한 시점부터 삶이 이어집니다.');render();}catch(error){paused=true;stopClock();message(error?.message||'최신 저장을 확인하지 못했습니다.');}}
 
 function stored(){try{const raw=saveStorage.getItem(KEY);if(raw){const s=decodeSaveRecord(raw),life=s.life||s;if(validSave(life))return {life,settings:s.settings||{}};}
  const old=saveStorage.getItem(OLD_KEY);if(old){const life=migrateSave(JSON.parse(old),data);if(life&&validSave(life))return {life,settings:{},migrated:true};}}catch{}return null;}
@@ -200,7 +203,11 @@ function renderServiceReview(){
  let panel=$('service-review-panel');if(!panel){panel=document.createElement('section');panel.id='service-review-panel';$('military-info').append(panel);}panel.replaceChildren();
  const review=state.serviceReview,deferral=serviceDeferralSummary(state),reserve=reserveSummary(state);panel.hidden=!review&&!deferral&&!reserve;if(panel.hidden)return;
  if(deferral){const copy=document.createElement('p');copy.textContent=deferral.legacyExpired?'입대 재검토 기간이 지난 기록입니다. 지난 일상과 복무 이력은 그대로 보관합니다.':deferral.status==='resolved'?'입대를 선택해 유예를 마쳤습니다.':deferral.status==='waiting-recovery'?'유예 24개월을 모두 사용했습니다. 회복을 마친 뒤 복무할 군을 선택합니다.':`대학 재학 기간 외 유예 ${deferral.outsideMonths}/24개월 · 남은 기간 ${deferral.remainingMonths}개월${deferral.collegeExcluded?' · 재학 중에는 유예 개월이 늘지 않습니다.':''}`;panel.append(copy);}
- if(reserve){const heading=document.createElement('h3'),copy=document.createElement('p'),list=document.createElement('ul');heading.textContent='예비군';copy.textContent=`${reserve.status}${reserve.currentYear>0&&reserve.currentYear<=8?' · '+reserve.currentYear+'년차':''}`;for(const row of reserve.years){const item=document.createElement('li');item.textContent=`${row.year}년차 · ${row.completedHours}/${row.requiredHours}시간 이수${row.postponedUntilMonth!==null&&row.completedHours<row.requiredHours?' · 회복 후 일정 재검토':''}`;list.append(item);}panel.append(heading,copy,list);if(reserve.due){const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='예비군 훈련 선택하기';button.addEventListener('click',()=>{$('military-info').close();syncDecisionDialog();militaryDutyBrowser.reopen();});panel.append(button);}}
+ if(reserve){const heading=document.createElement('h3'),copy=document.createElement('p'),list=document.createElement('ul');heading.textContent='예비군';copy.textContent=`${reserve.status}${reserve.currentYear>0&&reserve.currentYear<=8?' · '+reserve.currentYear+'년차':''}`;for(const row of reserve.years){const item=document.createElement('li');item.textContent=`${row.year}년차 · ${row.completedHours}/${row.requiredHours}시간 이수${row.postponedUntilMonth!==null&&row.completedHours<row.requiredHours?' · 회복 후 일정 재검토':''}`;list.append(item);}panel.append(heading,copy,list);if(state.phase!=='ended'){
+ const label=document.createElement('label'),toggle=document.createElement('input'),caption=document.createElement('span'),help=document.createElement('p');
+ label.className='reserve-auto-setting';toggle.type='checkbox';toggle.id='reserve-auto-enabled';toggle.checked=state.reserveAutomation?.enabled===true;toggle.disabled=saveBlocked()||state.phase!=='running'||pendingInjuryCare(state);caption.textContent='정상 예비군 훈련 자동 참여';label.append(toggle,caption);help.className='small';help.textContent='켜면 정상 훈련에 자동으로 참여합니다. 부상·연기된 일정은 직접 확인합니다.';
+ toggle.addEventListener('change',()=>{if(busy||saveBlocked()){toggle.checked=state.reserveAutomation?.enabled===true;return;}const enabled=toggle.checked;employmentAction(()=>setReserveAutomation(state,enabled),'예비군 참여 설정을 저장했습니다.').catch(()=>renderServiceReview());});panel.append(label,help);
+ }if(reserve.due){const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='예비군 훈련 선택하기';button.addEventListener('click',()=>{$('military-info').close();syncDecisionDialog();militaryDutyBrowser.reopen();});panel.append(button);}}
  if(!review)return;
  const p=document.createElement('p');p.textContent=serviceReviewMessage(state);panel.append(p);
  if(!['recovering','ready'].includes(review.status)||state.phase==='ended'||deferral?.legacyExpired)return;
@@ -244,19 +251,19 @@ function renderCareerMilestone(){
 }
 function goHome(){if(busy)return;investmentBrowser?.close();fastForward=false;if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();stopClock();stopSpin();if(!pendingBirth)suggestName();else{$('name').placeholder=pendingBirth.name;$('name-hint').textContent='추첨한 삶의 이름을 보관했습니다. 게임 시작 후 새 삶에서 다시 추천할 수 있습니다.';}$('name').disabled=!!pendingBirth;$('suggest-name').disabled=!!pendingBirth;show('welcome');$('resume').hidden=!stored();$('start').firstChild.textContent=pendingBirth?'추첨 결과 보기 ':'태어나기 ';message(pendingBirth?'추첨한 도시는 그대로 보관했습니다. 추첨 결과를 다시 보거나 이전 삶을 이어갈 수 있습니다.':'기록은 기기에 저장했습니다. 이어하기로 돌아올 수 있습니다.');window.scrollTo({top:0,behavior:'smooth'});}
 window.addEventListener('pageshow',e=>{if(!e.persisted)return;if(view==='birth'&&pendingBirth)revealBirth();else if(view==='game')render();});
-function download(){if(!state)return;const report={title:'한국인 시뮬레이션',...state,notice:'월 단위 자동 진행 가상 게임 기록. 실제 인생 확률·건강·금융 예측이 아닙니다.',dataVersion:data.version};const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='koreanlife-story-v2.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),3000);message('한평생의 흐름과 선택을 파일로 저장했습니다.');}
+function download(){if(!state)return;try{const copy=createPortableSaveDownload(state,{settings:{paused,speed},dataVersion:data.version});downloadText(copy.text,copy.fileName);message('한평생의 흐름과 선택을 파일로 저장했습니다.');}catch(error){message(error?.message||'진행 기록 파일을 만들지 못했습니다. 현재 기록은 유지합니다.');}}
 
 function downloadText(text,fileName){const blob=new Blob([text],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=fileName;link.click();setTimeout(()=>URL.revokeObjectURL(url),3000);}
-function transferBackups(){try{return listStoredBackups(saveStorage);}catch{return[];}}
+function transferBackups(){try{return listStoredBackups(saveStorage,{migrationData:data});}catch{return[];}}
 function transferBackupKey(){return transferBackups()[0]?.key||IMPORT_BACKUP_KEY;}
 async function cleanupTransferBackup(key,snapshot){if(!saveCoordinator)throw new Error('안전한 저장을 준비하지 못했습니다.');await saveCoordinator.run(()=>removeStoredBackup(saveStorage,{key,expectedRaw:snapshot?.raw,confirmed:true}));renderStorageCapacity();}
-function transferRecoveryDownloads(){try{return getPendingRecoveryDownloads(saveStorage);}catch{if(!transferRecoveryError)return[];try{return[createBackupDownload(saveStorage),createBackupDownload(saveStorage,{key:IMPORT_BACKUP_KEY})].filter(Boolean);}catch{return[];}}}
+function transferRecoveryDownloads(){try{return getPendingRecoveryDownloads(saveStorage,{migrationData:data});}catch{if(!transferRecoveryError)return[];try{return[createBackupDownload(saveStorage,{migrationData:data}),createBackupDownload(saveStorage,{key:IMPORT_BACKUP_KEY,migrationData:data})].filter(Boolean);}catch{return[];}}}
 async function applyTransfer(preview){
  if(saveBlocked())throw new Error('다른 탭의 최신 기록을 먼저 이어받은 뒤 파일을 불러와 주세요.');
  if(!data)throw new Error('게임 자료를 확인한 뒤 다시 시도해 주세요.');
  if(transferReloadRequired)throw new Error(transferRecoveryError);
  if(transferRecoveryError){try{const recovered=await saveCoordinator.run(()=>recoverSaveTransfer(saveStorage));if(recovered.recovered&&state){transferReloadRequired=true;paused=true;stopClock();transferRecoveryError='이전 저장을 복구했습니다. 현재 기록을 파일로 보관한 뒤 새로고침해 주세요.';throw new Error(transferRecoveryError);}transferRecoveryError=null;}catch(error){throw new Error(error.message);}}
- const next=enableContinuity(enableRemedies(enableEconomicLife(enableMarket(enableFormedFamily(normalizeMilitaryPath(enableHouseholdFinance(preview.life,data),data),data),data),data),data),data);
+ const next=enableRefinements(enableContinuity(enableRemedies(enableEconomicLife(enableMarket(enableFormedFamily(normalizeMilitaryPath(enableHouseholdFinance(preview.life,data),data),data),data),data),data),data),data);
  if(!validSave(next))throw new Error('현재 버전에서 기록을 이어갈 수 없습니다. 기존 기록은 유지합니다.');
  if(state&&!await save())throw new Error('현재 기록을 저장하지 못해 불러오기를 중단했습니다. 먼저 진행 기록을 파일로 보관해 주세요.');
  let result;try{result=await saveCoordinator.run(({beforePrimary,metadata})=>commitSaveTransfer(saveStorage,preview,{confirmed:true,life:next,saveMetadata:metadata,expectedPrimary:beforePrimary}));}catch(error){handleStorageQuota(error);if(error?.recoveryRequired){transferRecoveryError=error.message;storageIssue=true;paused=true;stopClock();}throw error;}
@@ -265,7 +272,7 @@ async function applyTransfer(preview){
  if(result.cleanupPending){try{await saveCoordinator.run(()=>recoverSaveTransfer(saveStorage));}catch(error){transferRecoveryError=error.message;storageIssue=true;}}
  storageQuotaBlocked=false;renderStorageCapacity();render();message(transferRecoveryError||'기록을 불러왔습니다. 일시정지 상태이며 기존 저장은 백업했습니다.');window.scrollTo({top:0,behavior:'instant'});
 }
-saveBrowser=createSaveTransferBrowser({prepareFile:readSaveFile,onImport:applyTransfer,getBackups:transferBackups,getStorageUsage:()=>saveStorageUsage(saveStorage),getStorageError:()=>storageQuotaBlocked,onDownloadCurrent:downloadCurrentRecord,canDownloadCurrent:currentRecordAvailable,onRetrySave:retryStorageSave,onDeleteBackup:cleanupTransferBackup,getRecoveryDownloads:transferRecoveryDownloads,getRecoveryError:()=>transferRecoveryError,onDownloadRecovery:copy=>downloadText(copy.text,copy.fileName),onRestore:(key,snapshot)=>{const preview=previewStoredBackup(saveStorage,{key:key||transferBackupKey(),expectedRaw:snapshot?.raw});if(!preview)throw new Error('복원할 백업이 없습니다.');return applyTransfer(preview);},onDownloadBackup:(key,snapshot)=>{const copy=typeof snapshot?.raw==='string'?{text:snapshot.raw,fileName:snapshot.fileName}:createBackupDownload(saveStorage,{key:key||transferBackupKey()});if(!copy)throw new Error('내려받을 백업이 없습니다.');downloadText(copy.text,copy.fileName||'koreanlife-previous-backup-v2.json');},onOpen:()=>{cancelPendingAssetOpen();if(!closeOtherToolDialogs(saveBrowser))return false;debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});if(transferRecoveryError)message(transferRecoveryError);schedule();}});
+saveBrowser=createSaveTransferBrowser({prepareFile:file=>readSaveFile(file,{migrationData:data}),onImport:applyTransfer,getBackups:transferBackups,getStorageUsage:()=>saveStorageUsage(saveStorage),getStorageError:()=>storageQuotaBlocked,onDownloadCurrent:downloadCurrentRecord,canDownloadCurrent:currentRecordAvailable,onRetrySave:retryStorageSave,onDeleteBackup:cleanupTransferBackup,getRecoveryDownloads:transferRecoveryDownloads,getRecoveryError:()=>transferRecoveryError,onDownloadRecovery:copy=>downloadText(copy.text,copy.fileName),onRestore:(key,snapshot)=>{const preview=previewStoredBackup(saveStorage,{key:key||transferBackupKey(),expectedRaw:snapshot?.raw,migrationData:data});if(!preview)throw new Error('복원할 백업이 없습니다.');return applyTransfer(preview);},onDownloadBackup:(key,snapshot)=>{const copy=typeof snapshot?.raw==='string'?{text:snapshot.raw,fileName:snapshot.fileName}:createBackupDownload(saveStorage,{key:key||transferBackupKey(),migrationData:data});if(!copy)throw new Error('내려받을 백업이 없습니다.');downloadText(copy.text,copy.fileName||'koreanlife-previous-backup-v2.json');},onOpen:()=>{cancelPendingAssetOpen();if(!closeOtherToolDialogs(saveBrowser))return false;debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});if(transferRecoveryError)message(transferRecoveryError);schedule();}});
 for(const id of ['import-save','game-import-save','ending-import-save'])$(id).addEventListener('click',()=>{if(data)saveBrowser.open();});
 
 function renderPolicy(which){const doc=policyData.documents[which];if(!doc)return;$('policy-title').textContent=doc.title;$('policy-copy').replaceChildren();if(doc.notice){const note=document.createElement('p');note.className='policy-notice';note.textContent=doc.notice;$('policy-copy').append(note);}for(const section of doc.sections){const el=document.createElement('section'),h=document.createElement('h3');h.textContent=section.heading;el.append(h);for(const text of section.paragraphs||[]){const p=document.createElement('p');p.textContent=text;el.append(p);}for(const link of section.links||[]){const p=document.createElement('p'),a=document.createElement('a');a.textContent=link.label;a.href=link.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);el.append(p);}$('policy-copy').append(el);}$('terms-appendix').hidden=which!=='terms';$('contact-actions').hidden=which!=='contact';for(const b of document.querySelectorAll('.policy-tabs [data-policy]'))b.setAttribute('aria-pressed',String(b.dataset.policy===which));if(which==='contact'){const operator=policyData.operator||{},email=operator.email;$('contact-operator').textContent=operator.name||operator.displayName||'운영 문의';$('contact-email').textContent=email||'문의 주소 미등록';$('contact-channel-note').textContent=email?'아래 버튼으로 메일 앱을 열 수 있습니다. 전송은 메일 앱에서 직접 확인해주세요.':'문의 이메일을 확인할 수 없습니다. 잠시 후 다시 확인해 주세요.';$('contact-template').value=contactTemplate();$('contact-status').textContent='';$('contact-mail').hidden=!email;if(email)$('contact-mail').href=`mailto:${email}?subject=${encodeURIComponent('[Korean Life] 서비스 문의')}&body=${encodeURIComponent(contactTemplate())}`;}$('info').scrollTop=0;}
@@ -283,7 +290,7 @@ function openFormedFamily(){investmentBrowser?.close();if($('military-info').ope
 $('formed-family-open').addEventListener('click',openFormedFamily);
 function openFamily(){investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();if(!familyBrowser||!['game','ending'].includes(view))return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(familyBrowser))return;debtBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();familyBrowser.open(state?.profile?.birthFamily);}
 $('family-open').addEventListener('click',openFamily);$('ending-family-open').addEventListener('click',openFamily);
-async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=continuity-2',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
+async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=refinements-1',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
 
 $('careers').addEventListener('click',()=>{familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();openCareerReference(state?.job?.occupationId);});$('start').addEventListener('click',startBirthDraw);$('begin-life').addEventListener('click',startLife);$('birth-redraw').addEventListener('click',()=>startBirthDraw({redraw:true}));$('birth-back').addEventListener('click',goHome);$('resume').addEventListener('click',()=>resumeLatest());
 async function setPlayback(options){if(saveBlocked()||busy)return;busy=true;stopClock();try{fastForward=false;await updateSavedLife(current=>current,options);render();message(options.nextSpeed?`진행 속도를 ${speed}배로 바꿨습니다.`:paused?'시간을 잠시 멈췄습니다.':'시간이 다시 흐릅니다.');}catch(error){message(error.message);}finally{busy=false;}}
@@ -301,7 +308,7 @@ $('training-open').addEventListener('click',()=>openEmployment('training'));
 $('next').addEventListener('click',()=>{if(saveBlocked())return;if(state?.phase!=='running'||pendingInjuryCare(state))return;fastForward=!fastForward;paused=!fastForward;render();message(fastForward?'1개월씩 빠르게 진행합니다. 다음 갈림길에서 멈춥니다.':'빠른 월 진행을 멈췄습니다.');});
 for(const button of document.querySelectorAll('[data-focus]'))button.addEventListener('click',()=>{if(!state||saveBlocked())return;employmentAction(()=>setFocus(state,button.dataset.focus),`${button.textContent}에 초점을 두었습니다.`).then(()=>{$('focus-options').open=false;}).catch(()=>{});});
 $('more-history').addEventListener('click',()=>{feedLimit+=20;render();});$('more-money-history').addEventListener('click',()=>{moneyFeedLimit+=20;render();});for(const id of ['restart','again'])$(id).addEventListener('click',goHome);for(const id of ['quick-download','download'])$(id).addEventListener('click',download);$('about').addEventListener('click',()=>openInfo('terms'));for(const button of document.querySelectorAll('[data-policy]'))button.addEventListener('click',()=>openInfo(button.dataset.policy));$('close-info').addEventListener('click',()=>$('info').close());$('info').addEventListener('close',()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});$('info').addEventListener('click',e=>{if(e.target!==$('info'))return;const r=$('info').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('info').close();});$('suggest-name').addEventListener('click',suggestName);$('copy-contact').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(contactTemplate());$('contact-status').textContent='문의 양식을 복사했습니다. 실제 전송된 내용은 없습니다.';}catch{$('contact-status').textContent='자동 복사를 사용할 수 없습니다. 위 문의 양식을 직접 선택해 복사해주세요.'}});
-document.addEventListener('visibilitychange',()=>{if(view==='game')render();else stopClock();});window.addEventListener('storage',event=>{if(event.storageArea===saveStorage&&(event.key===KEY||event.key===null)){try{saveCoordinator?.observeChange(event.key===KEY?event.newValue:null);}catch{storageIssue=true;stopClock();}}});window.addEventListener('pagehide',()=>{stopClock();stopSpin();});document.addEventListener('keydown',e=>{if(e.code==='Space'&&!saveBlocked()&&!e.repeat&&view==='game'&&state.phase==='running'&&!$('info').open&&!careerBrowser?.isOpen&&!employmentBrowser?.isOpen&&!lifestyleBrowser?.isOpen&&!educationBrowser?.isOpen&&!familyBrowser?.isOpen&&!saveBrowser?.isOpen&&!formedFamilyBrowser?.isOpen&&!investmentBrowser?.isOpen&&!debtBrowser?.isOpen&&!storageQuotaBlocked&&!assetBusy&&!focusDashboard?.isOpen&&!$('military-info').open&&!e.target.closest?.('#timeline-panel')&&!['INPUT','BUTTON','TEXTAREA','SELECT','SUMMARY','A'].includes(document.activeElement?.tagName)){e.preventDefault();setPlayback({nextPaused:!paused});}});
+document.addEventListener('visibilitychange',()=>{if(view==='game')render();else stopClock();});window.addEventListener('storage',event=>{if(event.storageArea===saveStorage&&(event.key===KEY||event.key===null)){try{saveCoordinator?.observeChange(event.key===KEY?event.newValue:null);}catch{storageIssue=true;stopClock();}}});window.addEventListener('pagehide',()=>{stopClock();stopSpin();});document.addEventListener('keydown',e=>{if(!playbackShortcutAllowed(e,clockFlags(),document.activeElement)||busy||saveBlocked())return;e.preventDefault();setPlayback({nextPaused:!paused});});
 function refreshModalClock(event){if(event.target?.tagName?.toLowerCase()==='dialog')renderClockStatus();}
 document.addEventListener('toggle',refreshModalClock,true);
 document.addEventListener('close',refreshModalClock,true);
@@ -316,13 +323,13 @@ $('asset-load-retry').addEventListener('click',async()=>{if(!assetRetryAction)re
 $('asset-load-dismiss').addEventListener('click',()=>{if(!bootReady)return;cancelPendingAssetOpen();syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});
 async function openCareerReference(id){
  if(!bootReady)return;const ticket=beginAssetOpen();if(!closeOtherToolDialogs(careerBrowser)){cancelPendingAssetOpen();return;}debtBrowser?.close();if($('info').open)$('info').close();decisionDialog.suspend();injuryDialog.suspend();
- try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=continuity-2',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
+ try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=refinements-1',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
  catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openCareerReference(id),true);}
 }
 async function initializeGame(){
  if(initializing)return;initializing=true;assetBusy=true;$('asset-load-panel').hidden=false;$('asset-load-retry').hidden=true;$('asset-load-dismiss').hidden=true;
  try{
- const base=await assetLoader.json('./game-data.json?v=continuity-2',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
+ const base=await assetLoader.json('./game-data.json?v=refinements-1',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
  const entries=await Promise.all([
   ['marketScenarios','market-scenarios.json','국내외 정세',validateMarketScenarios],['economicRules','economic-rules.json','경제 규칙',validateEconomicRules],
   ['mortality','mortality.json','생명표',value=>mortalitySnapshot(value,'data-readiness')],['spendingCatalog','spending.json','돈쓰기 활동',validateSpendingCatalog],
@@ -332,9 +339,9 @@ async function initializeGame(){
   ['profileCatalog','city-profiles.json','도시 특징',value=>cityProfileIndex(value,base.birthCities)],
   ['mapManifest','assets/city-maps-runtime.json','지도 안내',value=>value.schemaVersion===1&&value.cityCount===base.birthCities.length&&!!value.licenseUrl&&!!value.attribution],
   ['catalog','occupations-runtime.json','직업 실행 자료',value=>{validateCareerCatalog(value);return value.occupations.length===537&&!!value.sourceCatalog?.sha256;}]
- ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=continuity-2`,{label,validate})]));
+ ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=refinements-1`,{label,validate})]));
  const loaded=Object.fromEntries(entries),catalog=loaded.catalog;profileCatalog=loaded.profileCatalog;mapManifest=loaded.mapManifest;delete loaded.catalog;delete loaded.profileCatalog;delete loaded.mapManifest;
- data={...base,...loaded,lifeHealthEvents:true,injuryCareChoices:true,lifeHealthRisk:true,childPlanningRules:true,employmentContracts:true,remedyRules:true,continuityRules:true,occupations:catalog.occupations,occupationModels:occupationModelIndex(catalog)};
+ data={...base,...loaded,lifeHealthEvents:true,injuryCareChoices:true,lifeHealthRisk:true,childPlanningRules:true,employmentContracts:true,remedyRules:true,continuityRules:true,refinementsRules:true,childSupportRules:true,occupations:catalog.occupations,occupationModels:occupationModelIndex(catalog)};
  cityProfiles=cityProfileIndex(profileCatalog,data.birthCities);
  employmentBrowser=createEmploymentBrowser({catalog,data,getState:()=>state,onApply:request=>employmentAction(()=>applyForJob(state,typeof request==='string'?request:request.occupationId,data,typeof request==='string'?{}:{employmentType:request.employmentType}),'지원 결과를 확인했습니다.'),onTrain:course=>employmentAction(()=>trainForCareer(state,course,data),'월별 훈련을 시작했습니다.'),onMove:region=>employmentAction(()=>moveForCareer(state,region,data),'거주지역을 바꿨습니다.'),onDefer:()=>employmentAction(()=>deferEmployment(state,data),'취업을 미루고 준비를 이어갑니다.'),onReference:id=>openCareerReference(id),onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});const stopForTools=()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},resumeFromTools=()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();};investmentBrowser=createInvestmentBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>investmentAction(state,action,data),action.type==='buy'?'매수를 마쳤습니다.':'매도를 마쳤습니다.'),onOpen:stopForTools,onClose:resumeFromTools});formedFamilyBrowser=createFormedFamilyBrowser({getState:()=>state,data,onAction:action=>employmentAction(()=>familyAction(state,action,data),'가족의 선택을 반영했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});familyBrowser=createFamilyBrowser({profiles:cityProfiles,getState:()=>state,onOpen:stopForTools,onClose:resumeFromTools,onManage:openFormedFamily});lifestyleBrowser=createLifestyleBrowser({spendingCatalog:data.spendingCatalog,hobbyCatalog:data.hobbyCatalog,getState:()=>state,onSpend:id=>employmentAction(()=>spend(state,data.spendingCatalog.choices.find(r=>r.id===id),data.spendingCatalog),'소비 선택을 반영했습니다.'),onHobbies:ids=>employmentAction(()=>setHobbies(state,ids,data.hobbyCatalog),'취미 목록을 저장했습니다.'),onPlan:plan=>employmentAction(()=>setHobbyPlan(state,plan,data.hobbyCatalog),'취미 활동을 설정했습니다.'),onPolicy:policy=>employmentAction(()=>setHobbyMonthlyBudget(state,policy.monthlyBudgetWan),'취미 월 한도를 저장했습니다.'),onActivity:active=>employmentAction(()=>activateHobbies(state,active,data.hobbyCatalog),active?'정기 취미 활동을 시작했습니다.':'정기 취미 활동을 멈췄습니다.'),onOpen:stopForTools,onClose:resumeFromTools});educationBrowser=createEducationBrowser({getState:()=>state,data,onSchool:id=>employmentAction(()=>applyToSchool(state,id,data),'학교 지원 결과를 반영했습니다.'),onUniversity:id=>employmentAction(()=>applyToUniversity(state,id,data),'대학 지원 결과를 반영했습니다.'),onDefer:()=>employmentAction(()=>deferUniversity(state,data),'대학 진학을 미뤘습니다.'),onFundingPause:paused=>employmentAction(()=>setUniversityFundingPause(state,paused,data),paused?'학비 준비 휴학을 시작했습니다.':'학비 예산을 확인하고 복학했습니다.'),onOpen:stopForTools,onClose:resumeFromTools});$('careers').disabled=false;suggestName();
  const mapSource=document.createElement('li'),mapLink=document.createElement('a');mapLink.href=mapManifest.licenseUrl;mapLink.target='_blank';mapLink.rel='noopener noreferrer';mapLink.textContent='행정경계 출처·CC BY 4.0 이용조건';mapSource.append(mapLink,document.createTextNode(' — '+mapManifest.attribution));$('map-source-list').append(mapSource);const mapNote=document.createElement('li');mapNote.textContent=`경계 기준 ${mapManifest.boundaryDate}, 통계 기준 ${data.birthCitySource.sourceDate}. ${mapManifest.normalization}`;$('map-source-list').append(mapNote);if(!data.tuition?.length||!data.service?.army||!data.birthCities?.length||!drawBirthCity('data-readiness',data))throw new Error('schema');for(const source of [...data.sources,...profileCatalog.sources,...(data.hobbyCatalog.sources||[])]){const li=document.createElement('li'),a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=source.title||source.name||source.id;li.append(a,document.createTextNode(' — '+(source.note||source.publisher||source.license||'')));$('source-list').append(li);}for(const source of [...(data.mortality.source?[{...data.mortality.source,note:data.mortality.source.publisher+' · '+data.mortality.source.publishedAt+' · 공공누리 제1유형 · 연령대 평균으로 가공'}]:[]),...(data.mortality.sources||[]),...(catalog.modelSources||[])]){if(!source.url)continue;const li=document.createElement('li'),a=document.createElement('a');a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=source.title||source.id||'추가 통계 출처';li.append(a,document.createTextNode(' — '+(source.note||source.license||'')));$('source-list').append(li);}for(const source of [...(data.marketScenarios.sources||[]),...(data.economicRules.sources||[]).filter(row=>!(data.marketScenarios.sources||[]).some(item=>item.url===row.url))]){if(!source.url)continue;const li=document.createElement('li'),link=document.createElement('a');link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=source.title||'정세 참고 자료';li.append(link,document.createTextNode(' — '+['정세 참고 자료',source.publisher,source.publishedAt].filter(Boolean).join(' · ')));$('source-list').append(li);}$('birth-definition').textContent=birthPresentation(drawBirthCity('definition',data),data.birthCitySource).definition;$('data-version').textContent=`1개월 진행·소비300·취미48·학교와대학·537개 직업 · 자동 진행 v2 · 데이터팩 ${data.version} · ${data.referenceMode}`;$('start').disabled=!!transferRecoveryError||!playEnvironment.supported;for(const id of ['import-save','game-import-save','ending-import-save'])$(id).disabled=!playEnvironment.supported;$('resume').hidden=!stored();$('resume').disabled=!playEnvironment.supported;if(transferRecoveryError)message(transferRecoveryError);pendingBirth=playEnvironment.supported?readBirth():null;if(pendingBirth){show('birth');revealBirth();}

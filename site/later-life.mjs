@@ -1,4 +1,4 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=continuity-2';
+import {pendingInjuryCare} from './injury-care.mjs?v=refinements-1';
 
 // Optional suggestions only. All actual spending, moves and jobs use existing APIs.
 const TOPICS=['budget','experience','care'],INTERVAL=60,MIN_MONTH=73*12,MAX_MONTH=120*12;

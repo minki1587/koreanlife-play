@@ -1,10 +1,10 @@
-import {militaryObligation} from './military-obligation.mjs?v=continuity-2';
-import {careerMilestone} from './career-milestone.mjs?v=continuity-2';
-import {displayCopy} from './ui-copy.mjs?v=continuity-2';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=continuity-2';
-import {formatMoney} from './spending.mjs?v=continuity-2';
-import {focusedImportantEvents} from './history-digest.mjs?v=continuity-2';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=continuity-2';
+import {militaryObligation} from './military-obligation.mjs?v=refinements-1';
+import {careerMilestone} from './career-milestone.mjs?v=refinements-1';
+import {displayCopy} from './ui-copy.mjs?v=refinements-1';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=refinements-1';
+import {formatMoney} from './spending.mjs?v=refinements-1';
+import {focusedImportantEvents} from './history-digest.mjs?v=refinements-1';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=refinements-1';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},

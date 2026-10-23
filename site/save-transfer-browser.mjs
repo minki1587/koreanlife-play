@@ -1,11 +1,11 @@
-import {formatStorageBytes} from './save-capacity.mjs?v=continuity-2';
-import {reportActionError,clearActionError} from './ui-copy.mjs?v=continuity-2';
+import {formatStorageBytes} from './save-capacity.mjs?v=refinements-1';
+import {reportActionError,clearActionError} from './ui-copy.mjs?v=refinements-1';
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}
-function facts(host,life){
+function facts(host,life,migration){
  const list=el('dl',undefined,'finance-facts');
  for(const [label,value] of [['이름',life.name],['나이',`${life.age}세 ${life.month}개월`],['직업',life.job.title],['거주지',`${life.residence.region} · ${life.residence.city}`],['진행 상태',life.phase==='ended'?'종료된 삶':life.phase==='decision'?'갈림길 선택 대기':'이어서 진행 가능']]){const row=el('div');row.append(el('dt',label),el('dd',String(value)));list.append(row);}
- host.replaceChildren(list);
+ host.replaceChildren(list,...(migration?[el('p',`버전 ${migration.fromVersion} → 버전 ${migration.toVersion}로 변환합니다. 확인하면 현재 기록을 백업하고 이어갑니다.`,'small')]:[]));
 }
 export function createSaveTransferBrowser({prepareFile,onImport,getBackup,getBackups,onRestore,onDownloadBackup,onDeleteBackup,getStorageUsage,getStorageError,onDownloadCurrent,canDownloadCurrent,onRetrySave,getRecoveryDownloads,getRecoveryError,onDownloadRecovery,onOpen,onClose}){
  const dialog=el('dialog',undefined,'life-tools-dialog save-transfer-dialog');dialog.id='save-transfer-dialog';dialog.setAttribute('aria-labelledby','save-transfer-title');
@@ -42,6 +42,7 @@ export function createSaveTransferBrowser({prepareFile,onImport,getBackup,getBac
   for(const [index,info]of infos.entries()){
    const card=el('article',undefined,'save-backup-section');card.dataset.backupKey=info.key||'';const heading=el('h4',`${index===0&&info.savedAt?'최근 백업 · ':''}${info.label||'저장 백업'}`),details=el('ul');
    if(info.life)details.append(el('li',`이름: ${info.life.name}`),el('li',`나이: ${info.life.age}세 ${info.life.month}개월`));else details.append(el('li','현재 버전에서 검증되지 않아 복원은 제한합니다. 원본 파일은 내려받을 수 있습니다.'));
+   if(info.migration)details.append(el('li',`버전 ${info.migration.fromVersion} → 버전 ${info.migration.toVersion}로 변환합니다. 복원하면 현재 기록을 백업합니다.`));
    details.append(el('li',`저장일: ${info.savedAt?new Date(info.savedAt).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'}):'미기록'}`));
    const actions=el('div',undefined,'save-transfer-actions');
    const download=button('백업 파일 내려받기 ↓',()=>run(async()=>{await onDownloadBackup(info.key,info);downloadedSnapshots.set(info.key,info.raw);status.textContent='표시된 백업 원본의 다운로드를 요청했습니다. 저장된 JSON 파일을 확인한 뒤에만 백업을 정리해 주세요.';},()=>download,'백업 파일을 확인할 수 없습니다.'));download.id=`save-backup-download${index?'-'+index:''}`;
@@ -58,7 +59,7 @@ export function createSaveTransferBrowser({prepareFile,onImport,getBackup,getBac
   }
   recovery.replaceChildren();const copies=getRecoveryDownloads?.()||[];recovery.hidden=!copies.length;if(copies.length){recovery.append(el('h3','중단 전 기록 보관'));for(const [i,copy]of copies.entries()){const download=button(`복구용 원본 ${i+1} 내려받기 ↓`,()=>run(()=>onDownloadRecovery(copy),()=>download,'복구용 원본을 내려받지 못했습니다.'));recovery.append(download);}}refreshUsage();setBusy();
  }
- input.addEventListener('change',async()=>{const ticket=++token,file=input.files?.[0];prepared=null;preview.hidden=true;preview.replaceChildren();clearActionError(error);if(!file){status.textContent='';setBusy();return;}working=true;status.textContent='파일을 확인하고 있습니다.';setBusy();try{const next=await prepareFile(file);if(ticket!==token||!dialog.open)return;prepared=next;facts(preview,next.life);preview.hidden=false;status.textContent=`${file.name} · 기록 확인 완료. 내용을 확인하고 불러오기를 눌러 주세요.`;}catch(e){if(ticket===token)reportActionError(error,e,{dialog,anchor:input,fallback:'파일을 확인하지 못했습니다. 기존 기록은 유지합니다.'});}finally{if(ticket===token){working=false;if(!prepared)status.textContent='';setBusy();}}});
+ input.addEventListener('change',async()=>{const ticket=++token,file=input.files?.[0];prepared=null;preview.hidden=true;preview.replaceChildren();clearActionError(error);if(!file){status.textContent='';setBusy();return;}working=true;status.textContent='파일을 확인하고 있습니다.';setBusy();try{const next=await prepareFile(file);if(ticket!==token||!dialog.open)return;prepared=next;facts(preview,next.life,next.migration);preview.hidden=false;status.textContent=`${file.name} · 기록 확인 완료. 내용을 확인하고 불러오기를 눌러 주세요.`;}catch(e){if(ticket===token)reportActionError(error,e,{dialog,anchor:input,fallback:'파일을 확인하지 못했습니다. 기존 기록은 유지합니다.'});}finally{if(ticket===token){working=false;if(!prepared)status.textContent='';setBusy();}}});
  dialog.addEventListener('cancel',e=>{if(working)e.preventDefault();});
  dialog.addEventListener('close',()=>{token++;working=false;prepared=null;input.value='';onClose?.();});
  dialog.addEventListener('click',e=>{if(working||e.target!==dialog)return;const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();});

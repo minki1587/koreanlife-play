@@ -1,6 +1,6 @@
-import {serviceDeferralSummary} from './service-deferral.mjs?v=continuity-2';
-import {reserveTrainingDue} from './reserve-service.mjs?v=continuity-2';
-import {pendingInjuryCare} from './injury-care.mjs?v=continuity-2';
+import {serviceDeferralSummary} from './service-deferral.mjs?v=refinements-1';
+import {reserveTrainingDue} from './reserve-service.mjs?v=refinements-1';
+import {pendingInjuryCare} from './injury-care.mjs?v=refinements-1';
 
 /** Existing fixed-age decisions and urgent injury care keep their own priority. */
 export function militaryObligation(s){

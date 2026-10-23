@@ -1,4 +1,4 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=continuity-2';
+import {pendingInjuryCare} from './injury-care.mjs?v=refinements-1';
 
 const WORKING=new Set(['재직','계약직','시간제','프리랜서','자영업','수습']);
 const action=(id,label,intent,target=null)=>({id,label,intent,target});

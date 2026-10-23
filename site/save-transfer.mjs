@@ -1,7 +1,7 @@
-import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=continuity-2';
-import {validSave,VERSION} from './engine.mjs?v=continuity-2';
-import {validCareerModel} from './career-economy.mjs?v=continuity-2';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=continuity-2';
+import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=refinements-1';
+import {validSave,migrateSave,VERSION} from './engine.mjs?v=refinements-1';
+import {validCareerModel} from './career-economy.mjs?v=refinements-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=refinements-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';
@@ -65,33 +65,47 @@ function checkLife(life){
  if(previous!==null&&previous!==undefined&&(!plain(previous)||typeof previous.title!=='string'||typeof previous.status!=='string'||!Number.isFinite(previous.income)||previous.income<0||own(previous,'occupationId')&&!/^know-\d{6}$/u.test(previous.occupationId)||own(previous,'careerModel')&&(!validCareerModel(previous.careerModel)||previous.careerModel.occupationId!==previous.occupationId||!Number.isInteger(previous.experienceMonths)||previous.experienceMonths<0||!Number.isFinite(previous.payScale)||previous.payScale<=0)))fail('SAVE_INVALID','복무 전 직업 기록이 올바르지 않습니다.');
  if(!life.legacyHistory.every(h=>plain(h)&&Number.isInteger(h.age)&&h.age>=0&&h.age<=life.age&&(typeof h.choice==='string'||typeof h.title==='string')&&(!own(h,'changes')||Array.isArray(h.changes)&&h.changes.every(v=>typeof v==='string'))))fail('SAVE_INVALID','이전 버전의 선택 기록이 올바르지 않습니다.');
 }
-function previewFrom(text,{fileName='koreanlife-save-v2.json',mimeType='',sourceKey=null}={}){
- checkFileType(fileName,mimeType);const parsed=unpackParsedSaveRecord(parseText(text));checkGraph(parsed);const wrapped=plain(parsed)&&own(parsed,'life'),life=wrapped?parsed.life:parsed,settings=normalizeSettings(wrapped?parsed.settings:undefined);checkLife(life);
+function migrateFileLife(original,migrationData){
+ // A file must not acquire an invented region, retired flag or filtered history
+ // merely because the older in-browser migrator supplies permissive defaults.
+ const money=value=>Number.isFinite(value)&&value>=0;
+ if(typeof original.seed!=='string'||!original.seed.trim()||typeof original.name!=='string'||!original.name.trim()||typeof original.retired!=='boolean'||!Array.isArray(original.tags)||!original.tags.every(tag=>typeof tag==='string')||!plain(original.profile)||typeof original.profile.region!=='string'||!original.profile.region.trim()||!money(original.skill)||!Number.isFinite(original.saving)||original.saving<0||original.saving>1||!Array.isArray(original.history)||!original.history.every(h=>plain(h)&&Number.isInteger(h.age)&&h.age>=0&&h.age<=original.age&&(typeof h.choice==='string'||typeof h.title==='string')&&(!own(h,'changes')||Array.isArray(h.changes)&&h.changes.every(v=>typeof v==='string'))&&['cash','debt'].every(key=>!own(h,key)||money(h[key]))))fail('SAVE_INVALID','이전 버전 진행 기록의 구조나 수치가 올바르지 않습니다. 기존 기록은 변경하지 않았습니다.');
+ const schoolType=type=>migrationData?.tuition?.some(row=>plain(row)&&row.type===type&&typeof row.name==='string'&&Number.isFinite(row.annual)&&row.annual>0);
+ if(!plain(migrationData)||typeof migrationData.version!=='string'||!migrationData.version.trim()||!Array.isArray(migrationData.tuition)||!['국공립','사립'].every(schoolType))fail('SAVE_MIGRATION_DATA','버전 1 기록을 불러오려면 현재 게임 자료가 필요합니다. 자료를 모두 받은 뒤 다시 선택해 주세요.');
+ const life=migrateSave(structuredClone(original),migrationData);
+ if(!life)fail('SAVE_INVALID','이전 버전 진행 기록을 변환하지 못했습니다. 기존 기록은 변경하지 않았습니다.');
+ return life;
+}
+function previewFrom(text,{fileName='koreanlife-save-v2.json',mimeType='',sourceKey=null,migrationData}={}){
+ checkFileType(fileName,mimeType);const parsed=unpackParsedSaveRecord(parseText(text));checkGraph(parsed);const wrapped=plain(parsed)&&own(parsed,'life'),original=wrapped?parsed.life:parsed,settings=normalizeSettings(wrapped?parsed.settings:undefined),migrating=plain(original)&&original.version===1;
+ const life=migrating?migrateFileLife(original,migrationData):original;checkLife(life);
+ if(migrating&&bytes(JSON.stringify({life,settings}))>MAX_SAVE_FILE_BYTES)fail('FILE_TOO_LARGE','변환한 진행 기록이 8 MiB 제한을 넘었습니다. 기존 기록은 변경하지 않았습니다.');
  checkGraph(life,{freeze:true});Object.freeze(settings);
- const summary=Object.freeze({name:life.name,age:life.age,month:life.month,job:life.job.title,residence:[life.residence.region,life.residence.city].filter(Boolean).join(' '),phase:life.phase,choices:life.history.length+life.legacyHistory.length});
- const preview=Object.freeze({life,settings,summary,fileName,bytes:bytes(text),formatVersion:VERSION});previews.set(preview,{life,settings,sourceKey,sourceText:sourceKey?text:null});return preview;
+ const migration=migrating?Object.freeze({fromVersion:1,toVersion:VERSION}):null;
+ const summary=Object.freeze({name:life.name,age:life.age,month:life.month,job:life.job.title,residence:[life.residence.region,life.residence.city].filter(Boolean).join(' '),phase:life.phase,choices:life.history.length+life.legacyHistory.length,fromVersion:migration?.fromVersion??VERSION});
+ const preview=Object.freeze({life,settings,summary,migration,fileName,bytes:bytes(text),formatVersion:VERSION});previews.set(preview,{life,settings,sourceKey,sourceText:sourceKey?text:null});return preview;
 }
 
 /** Inspection has no storage writes. Only an explicit confirmation may commit. */
 export function inspectSaveText(text,options={}){return previewFrom(text,options);}
-export async function readSaveFile(file){
+export async function readSaveFile(file,{migrationData}={}){
  if(!file||!Number.isSafeInteger(file.size)||file.size<0||typeof file.text!=='function')fail('FILE_READ','선택한 파일을 읽을 수 없습니다.');
  checkFileType(file.name,file.type);
  if(file.size>MAX_SAVE_FILE_BYTES)fail('FILE_TOO_LARGE','저장 파일은 8 MiB 이하만 불러올 수 있습니다.');
  let text;try{text=await file.text();}catch(cause){fail('FILE_READ','파일을 읽지 못했습니다. 파일 접근 권한을 확인해 주세요.',{cause});}
- return previewFrom(text,{fileName:file.name,mimeType:file.type});
+ return previewFrom(text,{fileName:file.name,mimeType:file.type,migrationData});
 }
 function get(storage,key){try{return storage.getItem(key);}catch(cause){fail('STORAGE_READ','브라우저의 저장 기록을 읽지 못했습니다. 저장 공간 접근을 확인해 주세요.',{cause});}}
-export function previewStoredBackup(storage,{key=IMPORT_BACKUP_KEY,expectedRaw}={}){const raw=get(storage,key);if(expectedRaw!==undefined&&raw!==expectedRaw)fail('STORAGE_CHANGED','표시한 백업이 다른 탭에서 변경되었습니다. 새 목록에서 내용을 다시 확인해 주세요.');return raw===null?null:previewFrom(raw,{fileName:'koreanlife-backup-v2.json',mimeType:'application/json',sourceKey:key});}
-function downloadDescriptor(raw,fileName){
- let valid=false,life=null;try{const preview=previewFrom(raw,{fileName});valid=true;life=preview.life;}catch{}
- return{text:raw,raw,fileName,mimeType:'application/json',bytes:bytes(raw),valid,life};
+export function previewStoredBackup(storage,{key=IMPORT_BACKUP_KEY,expectedRaw,migrationData}={}){const raw=get(storage,key);if(expectedRaw!==undefined&&raw!==expectedRaw)fail('STORAGE_CHANGED','표시한 백업이 다른 탭에서 변경되었습니다. 새 목록에서 내용을 다시 확인해 주세요.');return raw===null?null:previewFrom(raw,{fileName:'koreanlife-backup-v2.json',mimeType:'application/json',sourceKey:key,migrationData});}
+function downloadDescriptor(raw,fileName,{migrationData}={}){
+ let valid=false,life=null,migration=null;try{const preview=previewFrom(raw,{fileName,migrationData});valid=true;life=preview.life;migration=preview.migration;}catch{}
+ return{text:raw,raw,fileName,mimeType:'application/json',bytes:bytes(raw),valid,life,migration};
 }
 /** Return the exact stored bytes, even for a damaged backup that must be preserved. */
-export function createBackupDownload(storage,{key=SAVE_KEY}={}){const raw=get(storage,key);return raw===null?null:downloadDescriptor(raw,key===SAVE_KEY?'koreanlife-current-backup-v2.json':key===IMPORT_BACKUP_KEY?'koreanlife-import-backup-v2.json':'koreanlife-previous-backup-v2.json');}
+export function createBackupDownload(storage,{key=SAVE_KEY,migrationData}={}){const raw=get(storage,key);return raw===null?null:downloadDescriptor(raw,key===SAVE_KEY?'koreanlife-current-backup-v2.json':key===IMPORT_BACKUP_KEY?'koreanlife-import-backup-v2.json':'koreanlife-previous-backup-v2.json',{migrationData});}
 /** Both independent backup slots remain visible. Undated legacy files are not
  * assigned a timestamp using character age or the time this menu was opened. */
-export function listStoredBackups(storage){return [[PREVIOUS_BACKUP_KEY,'이전 삶의 기록'],[IMPORT_BACKUP_KEY,'불러오기 전 기록']].flatMap(([key,label])=>{const copy=createBackupDownload(storage,{key});return copy?[{...copy,key,label,savedAt:storedSaveMetadata(copy.text)?.savedAt??null}]:[];}).sort((a,b)=>a.savedAt&&b.savedAt?Date.parse(b.savedAt)-Date.parse(a.savedAt):a.savedAt?-1:b.savedAt?1:0);}
+export function listStoredBackups(storage,{migrationData}={}){return [[PREVIOUS_BACKUP_KEY,'이전 삶의 기록'],[IMPORT_BACKUP_KEY,'불러오기 전 기록']].flatMap(([key,label])=>{const copy=createBackupDownload(storage,{key,migrationData});return copy?[{...copy,key,label,savedAt:storedSaveMetadata(copy.text)?.savedAt??null}]:[];}).sort((a,b)=>a.savedAt&&b.savedAt?Date.parse(b.savedAt)-Date.parse(a.savedAt):a.savedAt?-1:b.savedAt?1:0);}
 /** Explicit cleanup never touches the current save or a pending import journal.
  * The caller also holds the same cross-tab writer lock used for save/import. */
 export function removeStoredBackup(storage,{key,expectedRaw,confirmed=false}={}){
@@ -122,7 +136,7 @@ export function recoverSaveTransfer(storage){
  if(![journal.beforePrimary,journal.nextPrimary].includes(current)||![journal.beforeBackup,expectedBackup].includes(backup))fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 현재 기록을 내려받은 뒤 복구를 확인해 주세요.',{recoveryRequired:true});
  const result=rollBack(storage,journal);if(!result.complete||!result.cleaned)fail('STORAGE_RECOVERY_REQUIRED','이전 기록 복구를 완료하지 못했습니다. 저장 쓰기를 멈추고 복구용 파일을 보관해 주세요.',{recoveryRequired:true,rollbackComplete:result.complete});return{recovered:true,cleanedCommitted:false};
 }
-export function getPendingRecoveryDownloads(storage){const journal=readJournal(storage);return journal?[...(journal.beforePrimary===null?[]:[downloadDescriptor(journal.beforePrimary,'koreanlife-recovery-original-v2.json')]),...(journal.beforeBackup===null?[]:[downloadDescriptor(journal.beforeBackup,'koreanlife-recovery-earlier-backup-v2.json')])]:[];}
+export function getPendingRecoveryDownloads(storage,{migrationData}={}){const journal=readJournal(storage);return journal?[...(journal.beforePrimary===null?[]:[downloadDescriptor(journal.beforePrimary,'koreanlife-recovery-original-v2.json',{migrationData})]),...(journal.beforeBackup===null?[]:[downloadDescriptor(journal.beforeBackup,'koreanlife-recovery-earlier-backup-v2.json',{migrationData})])]:[];}
 
 /** Transaction journal + rollback protect both the current save and its import backup.
  * LocalStorage has atomic individual writes, not multi-key browser transactions.

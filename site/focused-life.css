@@ -71,6 +71,7 @@
 .records-dialog .life-feed{max-height:none;overflow:visible}
 header .header-action#careers{display:none}
 @media(max-width:1023px){
+ #game>.cash-glance{margin:0 0 12px;min-width:0}
  #game .game-grid.game-layout{grid-template-columns:minmax(0,1fr);gap:18px}
  .focused-toolbar{gap:7px;margin-bottom:10px}.focused-toolbar button{padding:8px 12px}
  .recent-panel{padding:14px 16px}.milestone-guide{padding:10px 12px;gap:5px}
@@ -95,3 +96,5 @@ header .header-action#careers{display:none}
 .decision-recommendation button{width:100%;min-height:48px;margin:0}
 #decision-error:empty{display:none}
 #decision-error{color:#804921;padding:10px;background:#fff4e6;border-radius:6px}
+
+.reserve-auto-setting{display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 0;cursor:pointer}.reserve-auto-setting input{width:22px;height:22px;flex:none;accent-color:var(--ink)}

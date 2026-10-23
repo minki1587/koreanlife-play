@@ -1,7 +1,7 @@
-import {formedFamilySummary} from './formed-family.mjs?v=continuity-2';
-import {formatMoney} from './spending.mjs?v=continuity-2';
-import {appendUiFacts} from './ui-copy.mjs?v=continuity-2';
-import {withChildInheritanceSummary} from './child-inheritance.mjs?v=continuity-2';
+import {formedFamilySummary} from './formed-family.mjs?v=refinements-1';
+import {formatMoney} from './spending.mjs?v=refinements-1';
+import {appendUiFacts} from './ui-copy.mjs?v=refinements-1';
+import {withChildInheritanceSummary} from './child-inheritance.mjs?v=refinements-1';
 
 export const RELATIONSHIP_LABELS=Object.freeze({single:'아직 교제 중인 사람이 없음',dating:'교제 중',married:'결혼하여 함께 생활 중',separated:'관계를 정리함',widowed:'배우자와 사별함',bereaved:'인연을 떠나보냄'});
 export const PARENTING_LABELS=Object.freeze({balanced:'균형 있게 돌보기',learning:'배움 함께하기',active:'함께 몸 움직이기',connection:'대화와 관계 돌보기'});
@@ -34,6 +34,7 @@ export function renderFormedFamilySummary(state,{document=globalThis.document,su
  for(const child of summary.children||[]){
   const card=el('article',undefined,'formed-family-card formed-child-card');card.dataset.childId=child.id;card.append(el('h5',child.name));
   facts(card,[['나이',age(child)],['교육 단계',STAGES[child.educationStage]||child.educationStage||'교육 준비'],['건강',score(child.health)],['배움',score(child.learn)],['관계',score(child.bond)],['양육 방식',child.parentingStyleLabel||PARENTING_LABELS[child.parentingStyle]||child.parentingStyle||'균형 있게 돌보기'],...(Number.isFinite(summary.estate?.childTrusts?.[child.id])?[['자녀 명의 상속 보관금',amount(summary.estate.childTrusts[child.id])]]:[]),...(child.inheritance?[['자녀 상속 누적 배정',amount(child.inheritance.grantedWan)],['추가 교육비 누적 지원',amount(child.inheritance.educationPaidWan)],['성년 자녀계정 인계 누적',amount(child.inheritance.handedOverWan)]]:[])]);
+  if(state?.phase!=='ended'&&Number.isInteger(child.supportUntilAge))facts(card,[['정기 양육지원',child.supportActive?`${child.supportUntilAge}세가 되기 전까지`:`${child.supportUntilAge}세 기준 지원 종료`]]);
   onChild?.(child,card);children.append(card);
  }root.append(children);
  const estate=summary.estate;

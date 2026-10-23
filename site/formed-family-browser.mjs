@@ -1,9 +1,9 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=continuity-2';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=continuity-2';
-import {formatMoney} from './spending.mjs?v=continuity-2';
-import {clearActionError,reportActionError} from './ui-copy.mjs?v=continuity-2';
-import {childInheritanceAssessment} from './child-inheritance.mjs?v=continuity-2';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=continuity-2';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=refinements-1';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=refinements-1';
+import {formatMoney} from './spending.mjs?v=refinements-1';
+import {clearActionError,reportActionError} from './ui-copy.mjs?v=refinements-1';
+import {childInheritanceAssessment} from './child-inheritance.mjs?v=refinements-1';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=refinements-1';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}

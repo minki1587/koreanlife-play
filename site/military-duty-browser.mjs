@@ -1,4 +1,4 @@
-import {createDecisionDialog} from './decision-dialog.mjs?v=continuity-2';
+import {createDecisionDialog} from './decision-dialog.mjs?v=refinements-1';
 
 export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose}={}){
  const node=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=text;return n;};

@@ -24,3 +24,10 @@ export function clockPresentation(flags={}){
   pauseLabel:flags.paused?'▶ 계속 흐르기':'Ⅱ 일시정지',pauseDisabled:controlsBlocked,nextDisabled:controlsBlocked,
   nextLabel:flags.fastForward?'빠른 월 진행 멈추기 ■':'다음 갈림길까지 ›',fastForward:!!flags.fastForward};
 }
+
+/** Keyboard playback uses the same blockers as the visible pause control. */
+export function playbackShortcutAllowed(event,flags={},activeElement=null){
+ if(event?.code!=='Space'||event.repeat||event.isComposing||event.defaultPrevented||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||clockPresentation(flags).pauseDisabled)return false;
+ const interactive='input,button,textarea,select,summary,a,[contenteditable]:not([contenteditable="false"]),[role="button"],[role="textbox"],[role="slider"],[role="checkbox"],[role="switch"],#timeline-panel';
+ return![event.target,activeElement].some(node=>node&&(node.isContentEditable||['INPUT','BUTTON','TEXTAREA','SELECT','SUMMARY','A'].includes(node.tagName)||node.closest?.(interactive)));
+}

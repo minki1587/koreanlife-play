@@ -1,10 +1,10 @@
-import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=continuity-2';
-import {academySupportActive} from './academy.mjs?v=continuity-2';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment,formedFamilyCommitmentSchedule} from './formed-family.mjs?v=continuity-2';
-import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=continuity-2';
-import {currentFamilyIncome} from './parent-careers.mjs?v=continuity-2';
-import {economicCostWan} from './economic-life.mjs?v=continuity-2';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=continuity-2';
+import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=refinements-1';
+import {academySupportActive} from './academy.mjs?v=refinements-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment,formedFamilyCommitmentSchedule} from './formed-family.mjs?v=refinements-1';
+import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=refinements-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=refinements-1';
+import {economicCostWan} from './economic-life.mjs?v=refinements-1';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=refinements-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';
@@ -78,7 +78,7 @@ export function educationFunding(s,annualTuitionWan,{university=false,hobbyCostW
   // short final care payment cannot disappear below a monthly one-won unit.
   const requiredPersonalWan=round((livingGap+personalInterestMonthlyWan+own+ownHobby)*n+personalCareCommitmentWan+formedFamilyCommitmentWan),eligible=fee===0||s.cash+1e-7>=requiredPersonalWan;
   const quote={eligible,legacy:false,monthlyTuitionWan:fee,familyMonthlyWan:family,personalMonthlyWan:own,hobbyMonthlyWan:hobbyCostWan,familyHobbyMonthlyWan:familyHobby,personalHobbyMonthlyWan:ownHobby,personalInterestMonthlyWan,personalCareMonthlyWan,personalCareCommitmentWan,careCommitmentMonths,formedFamilyCommitmentWan,formedFamilyMonthlyWan,formedFamilyMandatoryMonthlyWan:round(familyCommitment.mandatoryPersonalCostWan/n),formedFamilyExtraMonthlyWan:round(familyCommitment.extraPersonalCostWan/n),commitmentMonths:n,reasons:eligible?[]:[`학비 예산 부족: 월 학비 ${fee.toFixed(2)}만원과 취미비 ${hobbyCostWan.toFixed(2)}만원을 함께 준비해야 합니다. 가구 월 지원 여력 ${capacity.toFixed(2)}만원과 생활비·이자·남은 돌봄비·내 가족의 양육비를 제외한 내 월 예산 ${personal.toFixed(2)}만원으로 ${n}개월을 준비할 수 없습니다.`]};
-  return scheduledRetirementEducationFunding(s,quote,{university,hobbyCostWan});
+  return scheduledEducationFunding(s,quote,{university,hobbyCostWan});
 }
 
 function retirementDue(p,atAgeMonths,rules){return p.status==='employed'&&(atAgeMonths>=rules.retirementAge*12||p.occupation?.limits?.max!==null&&p.occupation?.limits?.max!==undefined&&Math.floor(atAgeMonths/12)>p.occupation.limits.max);}
@@ -88,18 +88,28 @@ export function scheduledParentRetirements(s,months=12){
  for(const p of s.familyLife.guardians){for(let offset=1;offset<=months;offset++)if(retirementDue(p,p.ageMonths+offset,s.familyLife.rules)){const birth=s.profile?.birthFamily?.guardians?.find(g=>g.id===p.id);rows.push({guardianId:p.id,role:birth?.role||'보호자',atMonth:s.totalMonths+offset,monthsUntil:offset});break;}}
  return rows;
 }
-function scheduledRetirementEducationFunding(s,quote,{university,hobbyCostWan}){
- const n=quote.commitmentMonths,retirements=scheduledParentRetirements(s,n);if(!retirements.length)return quote;
+function scheduledFamilySupportEnd(s,months,{university}){
+ if(!familySupportEligible(s,{university}))return null;
+ // Settlement uses the opening age, including the month that reaches the
+ // birthday. Forecast the first unsupported settlement on the same clock.
+ for(let offset=1;offset<months;offset++){
+  const openingMonth=s.totalMonths+offset,age=Math.floor(openingMonth/12);
+  if(!familySupportEligible({...s,totalMonths:openingMonth,age},{university}))return{atMonth:openingMonth+1,monthsUntil:offset+1,age,maximumStudentAge:s.householdFinance.rules.maximumStudentAge};
+ }
+ return null;
+}
+function scheduledEducationFunding(s,quote,{university,hobbyCostWan}){
+ const n=quote.commitmentMonths,retirements=scheduledParentRetirements(s,n),supportEnd=scheduledFamilySupportEnd(s,n,{university});if(!retirements.length&&!supportEnd)return quote;
  let finance=s.householdFinance,balance=s.cash,firstUnfundedMonth=null;const forecastMonths=[],familyCosts=formedFamilyCommitmentSchedule(s,n),interest=round(s.debt*.035/12);
  for(let offset=0;offset<n;offset++){
-  const totalMonths=s.totalMonths+offset,guardians=s.familyLife.guardians.map(p=>{const retired=retirementDue(p,p.ageMonths+offset+1,s.familyLife.rules);return{...p,ageMonths:p.status==='deceased'?p.ageMonths:p.ageMonths+offset+1,status:retired?'retired':p.status,annualIncomeWan:retired?0:p.annualIncomeWan};}),state={...s,totalMonths,age:Math.floor(totalMonths/12),month:totalMonths%12,cash:Math.max(0,balance),householdFinance:finance,familyLife:{...s.familyLife,guardians},...(university?{schooling:{...s.schooling,status:'enrolled'},residence:{...s.residence,housing:'기숙사'}}:{})};
+  const totalMonths=s.totalMonths+offset,guardians=s.familyLife?.guardians.map(p=>{const retired=retirementDue(p,p.ageMonths+offset+1,s.familyLife.rules);return{...p,ageMonths:p.status==='deceased'?p.ageMonths:p.ageMonths+offset+1,status:retired?'retired':p.status,annualIncomeWan:retired?0:p.annualIncomeWan};}),state={...s,totalMonths,age:Math.floor(totalMonths/12),month:totalMonths%12,cash:Math.max(0,balance),householdFinance:finance,...(s.familyLife?{familyLife:{...s.familyLife,guardians}}:{}),...(university?{schooling:{...s.schooling,status:'enrolled'},residence:{...s.residence,housing:'기숙사'}}:{})};
   const living=personalLivingWan(state,{university}),care=offset<(s.care?.remainingMonths||0)?round((s.care?.annualCost||0)/12):0,other=round(interest+care+familyCosts[offset].personalCostWan),plan=settleHouseholdMonth(state,{livingWan:living,tuitionWan:quote.monthlyTuitionWan,hobbyWan:hobbyCostWan,personalIncomeWan:0,otherPersonalCostWan:other});
   balance=round(balance+plan.supportWan-living-quote.monthlyTuitionWan-hobbyCostWan-other);finance=plan.finance;
   if(firstUnfundedMonth===null&&(!plan.tuitionFunded||balance<-.0000001))firstUnfundedMonth=totalMonths+1;
   forecastMonths.push({atMonth:totalMonths+1,familyIncomeWan:finance.lastMonth.incomeWan,familyTuitionWan:finance.lastMonth.tuitionWan,familyHobbyWan:finance.lastMonth.hobbyWan,personalBalanceWan:balance,tuitionFunded:plan.tuitionFunded});
  }
- const eligible=quote.monthlyTuitionWan===0||quote.eligible&&firstUnfundedMonth===null,familyMonthlyWan=round(forecastMonths.reduce((sum,row)=>sum+row.familyTuitionWan,0)/n),familyHobbyMonthlyWan=round(forecastMonths.reduce((sum,row)=>sum+row.familyHobbyWan,0)/n),reasons=eligible?[]:firstUnfundedMonth!==null?[`학비 예산 부족: ${retirements.map(row=>`${row.role} ${row.monthsUntil}개월 뒤 은퇴 예정`).join(', ')}을 반영하면 ${firstUnfundedMonth-s.totalMonths}개월째부터 생활비·학비·취미비·이자·돌봄비와 내 가족의 양육비를 함께 마련할 수 없습니다.`]:quote.reasons;
- return{...quote,eligible,familyMonthlyWan,personalMonthlyWan:round(quote.monthlyTuitionWan-familyMonthlyWan),familyHobbyMonthlyWan,personalHobbyMonthlyWan:round(hobbyCostWan-familyHobbyMonthlyWan),scheduledRetirements:retirements,forecastMonths,firstUnfundedMonth,reasons};
+ const eligible=quote.monthlyTuitionWan===0||quote.eligible&&firstUnfundedMonth===null,familyMonthlyWan=round(forecastMonths.reduce((sum,row)=>sum+row.familyTuitionWan,0)/n),familyHobbyMonthlyWan=round(forecastMonths.reduce((sum,row)=>sum+row.familyHobbyWan,0)/n),reasons=eligible?[]:firstUnfundedMonth!==null?[`학비 예산 부족: ${[...retirements.map(row=>`${row.role} ${row.monthsUntil}개월 뒤 은퇴 예정`),...(supportEnd?[`${supportEnd.monthsUntil}개월째부터 ${supportEnd.age}세 가구 지원 종료`]:[])].join(', ')}을 반영하면 ${firstUnfundedMonth-s.totalMonths}개월째부터 생활비·학비·취미비·이자·돌봄비와 내 가족의 양육비를 함께 마련할 수 없습니다.`]:quote.reasons;
+ return{...quote,eligible,familyMonthlyWan,personalMonthlyWan:round(quote.monthlyTuitionWan-familyMonthlyWan),familyHobbyMonthlyWan,personalHobbyMonthlyWan:round(hobbyCostWan-familyHobbyMonthlyWan),scheduledRetirements:retirements,...(supportEnd?{scheduledSupportEnd:supportEnd}:{}),forecastMonths,firstUnfundedMonth,reasons};
 }
 export function hobbyFunding(s,costWan){
   const formedFamilyMonthlyWan=formedFamilyMonthlyBurden(s),militaryNetWan=round(monthlyMilitaryNetIncomeWan(s));
