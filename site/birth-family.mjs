@@ -1,6 +1,6 @@
-import {randomKoreanName} from './names.mjs?v=refinements-1';
-import {employmentRequirements} from './employment.mjs?v=refinements-1';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=refinements-1';
+import {randomKoreanName} from './names.mjs?v=refinements-2';
+import {employmentRequirements} from './employment.mjs?v=refinements-2';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=refinements-2';
 
 const VERSION='birth-family-1',round=n=>Math.round(n*100)/100;
 const positive=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

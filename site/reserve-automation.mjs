@@ -1,6 +1,6 @@
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-1';
-import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=refinements-1';
-import {militaryObligation} from './military-obligation.mjs?v=refinements-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-2';
+import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=refinements-2';
+import {militaryObligation} from './military-obligation.mjs?v=refinements-2';
 
 const month=value=>Number.isInteger(value)&&value>=0&&value<=1800;
 const FIELDS=['version','activatedAtMonth','updatedAtMonth','enabled'];

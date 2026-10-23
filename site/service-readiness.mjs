@@ -1,5 +1,5 @@
-import {protagonistGender} from './person-identity.mjs?v=refinements-1';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-1';
+import {protagonistGender} from './person-identity.mjs?v=refinements-2';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-2';
 
 // New soldier-entry policy only. Existing service/pay/savings are never rewritten.
 const clone=value=>structuredClone(value);

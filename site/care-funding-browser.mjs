@@ -1,8 +1,8 @@
-import {injuryCareOptions,pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-1';
-import {PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=refinements-1';
-import {investmentSummary} from './market-economy.mjs?v=refinements-1';
-import {previewCareFunding} from './care-funding.mjs?v=refinements-1';
-import {formatMoney} from './spending.mjs?v=refinements-1';
+import {injuryCareOptions,pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-2';
+import {PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=refinements-2';
+import {investmentSummary} from './market-economy.mjs?v=refinements-2';
+import {previewCareFunding} from './care-funding.mjs?v=refinements-2';
+import {formatMoney} from './spending.mjs?v=refinements-2';
 
 // Debt is rounded to one won by the ledger; keep small interest visible too.
 export const careInterestMoney=value=>`${Math.round(value*10000).toLocaleString('ko-KR')}원`;

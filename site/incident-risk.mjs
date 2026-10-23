@@ -1,5 +1,5 @@
-import {hobbyActivity} from './hobby-activity.mjs?v=refinements-1';
-import {injuryImpact} from './injury-care.mjs?v=refinements-1';
+import {hobbyActivity} from './hobby-activity.mjs?v=refinements-2';
+import {injuryImpact} from './injury-care.mjs?v=refinements-2';
 // Game balance only. Collected hazard levels are not statistical accident rates.
 export const INCIDENT_RISK_RULES=Object.freeze({version:'incident-risk-v1',occupation:Object.freeze([1,1.05,1.15,1.3,1.5]),military:1.25,hobby:Object.freeze([1,1,1.02,1.1,1.2]),safety:.85,lowHealth:1.25,minimum:.65,maximum:2});
 const groups={'01':1,'02':1,'03':2,11:1,12:3,13:2,14:3,15:3,21:2,22:2,23:2,24:4,25:4,30:3,41:2,42:3,51:2,52:2,53:3,54:3,55:3,56:3,61:2,62:4,70:4,81:4,82:4,83:4,84:3,85:4,86:3,87:3,88:3,90:4};

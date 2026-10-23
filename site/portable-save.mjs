@@ -1,6 +1,6 @@
-import {validSave} from './engine.mjs?v=refinements-1';
-import {encodeSaveRecord} from './save-codec.mjs?v=refinements-1';
-import {inspectSaveText,SaveTransferError} from './save-transfer.mjs?v=refinements-1';
+import {validSave} from './engine.mjs?v=refinements-2';
+import {encodeSaveRecord} from './save-codec.mjs?v=refinements-2';
+import {inspectSaveText,SaveTransferError} from './save-transfer.mjs?v=refinements-2';
 
 /** Prepare a portable file before creating a Blob or download link. The same
  * importer verifies the exact output bytes, expanded size and complete graph.

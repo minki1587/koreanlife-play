@@ -1,10 +1,10 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=refinements-1';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=refinements-1';
-import {formatMoney} from './spending.mjs?v=refinements-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=refinements-1';
-import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=refinements-1';
-import {recommendEducation} from './choice-recommendations.mjs?v=refinements-1';
-import {completedDegrees} from './degree-history.mjs?v=refinements-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=refinements-2';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=refinements-2';
+import {formatMoney} from './spending.mjs?v=refinements-2';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=refinements-2';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=refinements-2';
+import {recommendEducation} from './choice-recommendations.mjs?v=refinements-2';
+import {completedDegrees} from './degree-history.mjs?v=refinements-2';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
