@@ -23,7 +23,7 @@
 .focused-current .daily-stats{margin:0;padding-block:10px}
 .cash-glance{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border:1px solid var(--line);border-radius:8px;background:#fafaf6}
 .cash-glance>div{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 12px;min-width:0}
-.cash-glance span,.cash-glance small{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}
+.cash-glance span,.cash-glance small{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted,#5e685b)}
 .cash-glance strong{font-size:calc(15px * var(--base-text-scale,1.44) * var(--user-text-scale,1));font-variant-numeric:tabular-nums}
 .cash-glance small{flex-basis:100%}
 .cash-glance button{min-height:44px;flex:none;margin:0}

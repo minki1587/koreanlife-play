@@ -1,10 +1,10 @@
-import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=focused-play-2';
-import {academySupportActive} from './academy.mjs?v=focused-play-2';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=focused-play-2';
-import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=focused-play-2';
-import {currentFamilyIncome} from './parent-careers.mjs?v=focused-play-2';
-import {economicCostWan} from './economic-life.mjs?v=focused-play-2';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=focused-play-2';
+import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=remedy-1';
+import {academySupportActive} from './academy.mjs?v=remedy-1';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment} from './formed-family.mjs?v=remedy-1';
+import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=remedy-1';
+import {currentFamilyIncome} from './parent-careers.mjs?v=remedy-1';
+import {economicCostWan} from './economic-life.mjs?v=remedy-1';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=remedy-1';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

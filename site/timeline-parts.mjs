@@ -1,9 +1,9 @@
-import {displayCopy,displayLines} from './ui-copy.mjs?v=focused-play-2';
-import {timelinePresentation} from './timeline-copy.mjs?v=focused-play-2';
-export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=focused-play-2';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=remedy-1';
+import {timelinePresentation} from './timeline-copy.mjs?v=remedy-1';
+export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=remedy-1';
 
 const MONEY=/수입|소득|연봉|임금|급여|월급|지원금|용돈|지출|비용|예산|생활비|양육비|등록금|학비|이자|부채|차입|상환|현금|순자산|상속|장례비|납입|적금|원금|만기|매칭|[\d,.]+\s*(?:만|억)?원/;
-const FINANCIAL_TYPES=new Set(['monthly-finance','family-allowance','family-estate','military-savings','military-pay','formed-family-finance','formed-family-estate']);
+const FINANCIAL_TYPES=new Set(['monthly-finance','family-allowance','family-estate','military-savings','military-pay','formed-family-finance','formed-family-estate','family-medical-support','medical-loan','child-inheritance']);
 const MARKET_FINANCIAL_TYPES=new Set(['market-valuation','investment-trade']);
 const ECONOMIC_LIFE_TYPES=new Set(['market-news','economic-impact','economic-layoff','economic-hiring']);
 export function timelineParts(original,state){

@@ -1,9 +1,9 @@
-import {schoolChoices,universityOptions} from './education.mjs?v=focused-play-2';
-import {evaluateEmployment} from './employment.mjs?v=focused-play-2';
-import {employmentTypeOptions} from './employment-contract.mjs?v=focused-play-2';
-import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=focused-play-2';
-import {formatMoney} from './spending.mjs?v=focused-play-2';
-import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=focused-play-2';
+import {schoolChoices,universityOptions} from './education.mjs?v=remedy-1';
+import {evaluateEmployment} from './employment.mjs?v=remedy-1';
+import {employmentTypeOptions} from './employment-contract.mjs?v=remedy-1';
+import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=remedy-1';
+import {formatMoney} from './spending.mjs?v=remedy-1';
+import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=remedy-1';
 
 /** Same real support checks as the full browsers; presentation consumes no RNG. */
 export function decisionRecommendations(state,data){

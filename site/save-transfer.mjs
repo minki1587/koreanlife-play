@@ -1,6 +1,6 @@
-import {validSave,VERSION} from './engine.mjs?v=focused-play-2';
-import {validCareerModel} from './career-economy.mjs?v=focused-play-2';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=focused-play-2';
+import {validSave,VERSION} from './engine.mjs?v=remedy-1';
+import {validCareerModel} from './career-economy.mjs?v=remedy-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=remedy-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';

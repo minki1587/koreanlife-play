@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "cityCount": 229,
+  "boundaryDate": "2025-12-31",
+  "statisticYear": 2025,
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://github.com/vuski/admdongkor/blob/d5d5a821c8de6cc337d47eeca604d7af76271c9b/LICENSE-DATA",
+  "upstreamLicense": "KOGL-Type-1",
+  "attribution": "통계청 통계지리정보서비스 SGIS에서 공공누리 제1유형으로 개방한 행정동 경계를 가공한 vuski/admdongkor 자료(CC BY 4.0). 본 게임은 2025-12-31 버전의 읍면동을 2025 출생률 통계지역으로 합치고 EPSG:5179로 투영·간소화하여 SVG로 변환했습니다. https://sgis.kostat.go.kr / https://github.com/vuski/admdongkor / https://creativecommons.org/licenses/by/4.0/",
+  "normalization": "북쪽 위. EPSG:5179에서 선택 지역 전체 bbox의 가로·세로를 각각 1.25배로 넓힌 뒤 320:240 화면 비율에 맞춰 중앙 배치. 선택 영역의 모든 섬과 구멍 유지. 이 공통 범위와 실제 교차하는 다른 시군구 일부를 회색으로 표시. 섬 이동·가상 연결 없음. 지도 간 실측 면적 비교용 아님.",
+  "sourceUrl": "https://raw.githubusercontent.com/vuski/admdongkor/d5d5a821c8de6cc337d47eeca604d7af76271c9b/ver20251231/HangJeongDong_ver20251231.geojson",
+  "sourceCommit": "d5d5a821c8de6cc337d47eeca604d7af76271c9b",
+  "sourceSha256": "e873fb7b94b917d1bf0005a386d480e5fb742fdd6ab7d3f52e62c3ba7f524d31",
+  "renderVersion": "map-context-1",
+  "fullManifest": {
+    "path": "assets/city-maps-manifest.json",
+    "sha256": "0d42ae93a43d477d1d408bcae66e0c5337ea12b7bbbb69413dccbc39b9513bf0"
+  }
+}

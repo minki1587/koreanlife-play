@@ -1,16 +1,32 @@
 const ROUTINE=Object.freeze({important:false,kind:'routine',label:''});
 const mark=(kind,label)=>({important:true,kind,label});
+export const FAMILY_CAREER_SUBTYPES=Object.freeze(['job-hire','job-loss','job-change','retirement','job-search','wage-rise']);
+const IMPORTANT_FAMILY_CAREERS=new Set(['job-hire','job-loss','job-change','retirement','legacy-promotion']);
+
+/** New records carry a stable subtype. Only older records without that field
+ * use the known legacy title endings; source text is never rewritten. */
+export function familyCareerSubtype(event={}){
+ if(event.type!=='family-career')return null;
+ if(Object.hasOwn(event,'subtype'))return FAMILY_CAREER_SUBTYPES.includes(event.subtype)?event.subtype:null;
+ const title=String(event.title||event.choice||'').trim();
+ const legacy=[['job-loss',/실직해 구직을 시작했다[.!]?$/u],['job-hire',/(?:취업했다|취업을 시작했다|일을 시작했다)[.!]?$/u],['job-change',/이직했다[.!]?$/u],['retirement',/은퇴했다[.!]?$/u],['job-search',/구직을 시작했다[.!]?$/u],['wage-rise',/경력 임금이 올랐다[.!]?$/u],['legacy-promotion',/승진했다[.!]?$/u]];
+ return legacy.find(([,pattern])=>pattern.test(title))?.[0]||null;
+}
 
 /** View-only classification: persisted records, dates and IDs are never rewritten. */
 export function timelineImportance(event={}){
  const type=String(event.type||''),title=String(event.title||event.choice||'');
+ if(type==='child-inheritance')return mark('family','자녀의 재산');
+ if(type==='family-medical-support'||type==='medical-loan')return mark('health','치료비 마련');
+ if(type==='service-review')return mark('military','복무 재검토');
+ if(type==='later-life')return mark('choice','노년의 일상');
  if(type==='ending')return mark('ending','삶의 마지막 기록');
  if(type==='family-death'||type==='spouse-death'||type==='formed-family'&&/세상을 떠|별세|사망/.test(title))return mark('loss','가족의 부고');
  if(['family-estate','formed-family-estate'].includes(type))return mark('estate','장례·상속');
  if(['life-injury','life-recovery','life-recovered','injury-care'].includes(type))return mark('health',type==='life-injury'?'부상':'치료·회복');
  if(['decision','choice'].includes(type))return mark('choice','갈림길');
  if(['employment','economic-hiring','economic-layoff','contract-ended','contract-ending','academy-commission','career-training','career-move'].includes(type))return mark('career',type==='economic-layoff'?'실직':'진로 변화');
- if(type==='family-career'&&/취업|이직|실직|은퇴|승진/.test(title))return mark('career','가족의 직업 변화');
+ if(type==='family-career'&&IMPORTANT_FAMILY_CAREERS.has(familyCareerSubtype(event)))return mark('career','가족의 직업 변화');
  if(['school-admission','school-milestone','household-school'].includes(type)||type==='milestone'&&/학교|교실|배움|졸업|학업/.test(title))return mark('education','학업 변화');
  if(['military-path','military-savings'].includes(type)||type==='milestone'&&/입대|전역|복무/.test(title))return mark('military','군복무');
  if(type==='formed-family'&&/결혼|가족으로 맞이|관계를 정리|교제를 시작|출산|태어|입양|독립/.test(title))return mark('family','가족 변화');

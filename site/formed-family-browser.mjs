@@ -1,8 +1,9 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=focused-play-2';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=focused-play-2';
-import {formatMoney} from './spending.mjs?v=focused-play-2';
-import {clearActionError,reportActionError} from './ui-copy.mjs?v=focused-play-2';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=focused-play-2';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=remedy-1';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=remedy-1';
+import {formatMoney} from './spending.mjs?v=remedy-1';
+import {clearActionError,reportActionError} from './ui-copy.mjs?v=remedy-1';
+import {childInheritanceAssessment} from './child-inheritance.mjs?v=remedy-1';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=remedy-1';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}
@@ -32,9 +33,15 @@ export function createFormedFamilyBrowser({getState,data,onAction,onOpen,onClose
   const summary=formedFamilySummary(state),options=formedFamilyOptions(state,data)||[];
   const intro=el('p',`${state.name} · ${state.age}세 ${state.month}개월`,'formed-person-line');body.append(intro);
   const family=renderFormedFamilySummary(state,{summary,onChild:(child,card)=>{
-   foldFactRows(card,['자녀 명의 상속 보관금'],'자녀 상속 보관금 상세');
+   foldFactRows(card,['자녀 명의 상속 보관금','자녀 상속 누적 배정','추가 교육비 누적 지원','성년 자녀계정 인계 누적'],'자녀 상속 보관금 상세');
    const childOptions=options.filter(option=>option.action.type==='parenting'&&option.action.childId===child.id);
    if(childOptions.length){const section=el('div',undefined,'formed-parenting-actions');section.setAttribute('role','group');section.setAttribute('aria-label',`${child.name} 양육 방식`);for(const option of childOptions)section.append(optionCard(option,{child}));card.append(section);}
+   if(child.inheritance&&child.inheritance.ageMonths<228&&child.inheritance.grantedWan>0){
+    const assessment=childInheritanceAssessment(state,child.id),section=el('section',undefined,'formed-action-card'),support=button('상속 보관금으로 이번 달 추가 교육비 지원',event=>act({type:'inheritance-education',childId:child.id},event.currentTarget),'secondary');
+    support.dataset.familyAction=`inheritance-education-${child.id}`;support.disabled=!assessment.eligible;actionButtons.push([support,assessment.eligible]);
+    section.append(support,lines([`자녀 상속 보관금에서 ${formatMoney(assessment.costWan)} 사용`,`자녀 배움 +${assessment.learnGain}`,'자녀별 월 1회 · 이번 한 달의 추가 교육비','내 소지금과 정기 양육비는 바뀌지 않습니다.'],'formed-action-effects'));
+    if(assessment.reasons.length)section.append(lines(assessment.reasons,'formed-action-reasons'));card.append(section);
+   }
   }});const sections=[...family.children].map(section=>{const classes=String(section.className||'').split(/\s+/);if(classes.includes('formed-spouse-card'))foldFactRows(section,['고향','학력','개인 자산','개인 부채'],'인연의 배경·자산 상세');return classes.includes('formed-estate-card')?disclosure('장례·상속 상세',section):section;});family.replaceChildren(...sections);body.append(family);
   group('교제와 결혼',options.filter(option=>['meet','date','marry','separate'].includes(option.action.type)));
   group('아이를 맞이할 계획',options.filter(option=>['plan-child','cancel-plan'].includes(option.action.type)));

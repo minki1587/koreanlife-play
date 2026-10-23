@@ -1,5 +1,5 @@
-import {effectiveHobbyAge} from './household-finance.mjs?v=focused-play-2';
-import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=focused-play-2';
+import {effectiveHobbyAge} from './household-finance.mjs?v=remedy-1';
+import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=remedy-1';
 
 /** Discoverability only. The engine remains the authority for every action. */
 export function lifeActionMenu(state,data={}){
@@ -8,7 +8,7 @@ export function lifeActionMenu(state,data={}){
  const spendAge=minimum(data.spendingCatalog?.choices,row=>row.minAge,120);
  const hobbyAge=minimum(data.hobbyCatalog?.hobbies,row=>effectiveHobbyAge(state,row),120);
  return [
-  ['education-manage','학업 관리',6,Boolean(state?.schoolJourney)&&age>=6],
+  ['education-manage','학업 관리',6,Boolean(state?.schoolJourney||state?.schooling||state?.academy)&&age>=6],
   ['family-open','가족 정보',0,true],
   ['hobbies-open','취미활동',hobbyAge,age>=hobbyAge],
   ['spending-open','돈쓰기',spendAge,age>=spendAge],

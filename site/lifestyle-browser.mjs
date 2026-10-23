@@ -1,12 +1,12 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=focused-play-2';
-import {militarySavingsSummary} from './military-savings.mjs?v=focused-play-2';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=focused-play-2';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=focused-play-2';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=focused-play-2';
-import {createPixelIcon} from './pixel-icons.mjs?v=focused-play-2';
-import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=focused-play-2';
-import {investmentSummary} from './market-economy.mjs?v=focused-play-2';
-import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=focused-play-2';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=remedy-1';
+import {militarySavingsSummary} from './military-savings.mjs?v=remedy-1';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=remedy-1';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=remedy-1';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=remedy-1';
+import {createPixelIcon} from './pixel-icons.mjs?v=remedy-1';
+import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=remedy-1';
+import {investmentSummary} from './market-economy.mjs?v=remedy-1';
+import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=remedy-1';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const FOCUS_METRICS={learning:['learn'],health:['health'],relationships:['bond'],career:['skill','learn'],balance:['joy','health','learn','bond']};

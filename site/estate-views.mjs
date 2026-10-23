@@ -1,6 +1,6 @@
-import {estateSummary} from './family-estate.mjs?v=focused-play-2';
-import {formatMoney} from './spending.mjs?v=focused-play-2';
-import {appendUiFacts} from './ui-copy.mjs?v=focused-play-2';
+import {estateSummary} from './family-estate.mjs?v=remedy-1';
+import {formatMoney} from './spending.mjs?v=remedy-1';
+import {appendUiFacts} from './ui-copy.mjs?v=remedy-1';
 const percent=n=>`${(n*100).toLocaleString('ko-KR',{maximumFractionDigits:4})}%`;
 export function renderEstateDetails(s,{document=globalThis.document}={}){
  const e=estateSummary(s);if(!e)return null;

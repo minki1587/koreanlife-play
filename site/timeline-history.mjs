@@ -8,7 +8,7 @@ export function appendLifeEvent(s,event){
  s.timeline.push(event);
  if(s.timeline.length>RECENT_EVENT_LIMIT)s.timelineArchive.events.push(...s.timeline.splice(0,s.timeline.length-RECENT_EVENT_LIMIT));
 }
-const validEvent=(h,s)=>h&&typeof h.id==='string'&&Number.isInteger(h.age)&&h.age>=0&&h.age<=s.age&&Number.isInteger(h.month)&&h.month>=0&&h.month<=11&&h.age*12+h.month<=s.totalMonths&&typeof h.type==='string'&&typeof h.title==='string'&&typeof h.text==='string'&&Array.isArray(h.changes)&&h.changes.every(x=>typeof x==='string');
+const validEvent=(h,s)=>h&&(h.subtype===undefined||h.type==='family-career'&&['job-hire','job-loss','job-change','retirement','job-search','wage-rise'].includes(h.subtype))&&typeof h.id==='string'&&Number.isInteger(h.age)&&h.age>=0&&h.age<=s.age&&Number.isInteger(h.month)&&h.month>=0&&h.month<=11&&h.age*12+h.month<=s.totalMonths&&typeof h.type==='string'&&typeof h.title==='string'&&typeof h.text==='string'&&Array.isArray(h.changes)&&h.changes.every(x=>typeof x==='string');
 export function validTimelineHistory(s){
  if(!Array.isArray(s.timeline)||s.timeline.length>RECENT_EVENT_LIMIT||!Number.isInteger(s.logSerial)||s.logSerial<s.timeline.length||!s.timeline.every(e=>validEvent(e,s)))return false;
  const a=s.timelineArchive;if(a===undefined)return true;
