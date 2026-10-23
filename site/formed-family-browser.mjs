@@ -1,9 +1,9 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=remedy-1';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=remedy-1';
-import {formatMoney} from './spending.mjs?v=remedy-1';
-import {clearActionError,reportActionError} from './ui-copy.mjs?v=remedy-1';
-import {childInheritanceAssessment} from './child-inheritance.mjs?v=remedy-1';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=remedy-1';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=continuity-1';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=continuity-1';
+import {formatMoney} from './spending.mjs?v=continuity-1';
+import {clearActionError,reportActionError} from './ui-copy.mjs?v=continuity-1';
+import {childInheritanceAssessment} from './child-inheritance.mjs?v=continuity-1';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=continuity-1';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}
@@ -27,7 +27,15 @@ export function createFormedFamilyBrowser({getState,data,onAction,onOpen,onClose
   card.append(lines([...facts,...(option.effects||[])],'formed-action-effects'));
   if(option.reasons?.length)card.append(lines(option.reasons,'formed-action-reasons'));return card;
  }
- function group(title,options){if(!options.length)return;const section=el('section',undefined,'formed-action-group');section.append(el('h3',title));for(const option of options)section.append(optionCard(option));body.append(section);}
+ function appendOptions(host,options,{child}={}){
+  const selected=option=>child&&option.action.type==='parenting'&&child.parentingStyle===option.action.mode,visible=options.filter(option=>option.eligible||selected(option)),unavailable=options.filter(option=>!option.eligible&&!selected(option));
+  for(const option of visible)host.append(optionCard(option,{child}));
+  if(unavailable.length){
+   if(!visible.length)host.append(el('p','지금 선택할 수 있는 항목이 없습니다. 조건을 펼쳐 확인할 수 있습니다.'));
+   const more=disclosure(`지금 선택할 수 없는 항목 · ${unavailable.length}개`);for(const option of unavailable)more.append(optionCard(option,{child}));host.append(more);
+  }
+ }
+ function group(title,options){if(!options.length)return;const section=el('section',undefined,'formed-action-group');section.append(el('h3',title));appendOptions(section,options);body.append(section);}
  function render(){
   const state=getState();body.replaceChildren();actionButtons=[];if(!state){body.append(el('p','게임을 시작한 뒤 가족의 일상을 선택할 수 있습니다.'));return;}
   const summary=formedFamilySummary(state),options=formedFamilyOptions(state,data)||[];
@@ -35,7 +43,7 @@ export function createFormedFamilyBrowser({getState,data,onAction,onOpen,onClose
   const family=renderFormedFamilySummary(state,{summary,onChild:(child,card)=>{
    foldFactRows(card,['자녀 명의 상속 보관금','자녀 상속 누적 배정','추가 교육비 누적 지원','성년 자녀계정 인계 누적'],'자녀 상속 보관금 상세');
    const childOptions=options.filter(option=>option.action.type==='parenting'&&option.action.childId===child.id);
-   if(childOptions.length){const section=el('div',undefined,'formed-parenting-actions');section.setAttribute('role','group');section.setAttribute('aria-label',`${child.name} 양육 방식`);for(const option of childOptions)section.append(optionCard(option,{child}));card.append(section);}
+   if(childOptions.length){const section=el('div',undefined,'formed-parenting-actions');section.setAttribute('role','group');section.setAttribute('aria-label',`${child.name} 양육 방식`);appendOptions(section,childOptions,{child});card.append(section);}
    if(child.inheritance&&child.inheritance.ageMonths<228&&child.inheritance.grantedWan>0){
     const assessment=childInheritanceAssessment(state,child.id),section=el('section',undefined,'formed-action-card'),support=button('상속 보관금으로 이번 달 추가 교육비 지원',event=>act({type:'inheritance-education',childId:child.id},event.currentTarget),'secondary');
     support.dataset.familyAction=`inheritance-education-${child.id}`;support.disabled=!assessment.eligible;actionButtons.push([support,assessment.eligible]);

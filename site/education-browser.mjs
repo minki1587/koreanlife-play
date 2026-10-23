@@ -1,9 +1,10 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=remedy-1';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=remedy-1';
-import {formatMoney} from './spending.mjs?v=remedy-1';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=remedy-1';
-import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=remedy-1';
-import {recommendEducation} from './choice-recommendations.mjs?v=remedy-1';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=continuity-1';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=continuity-1';
+import {formatMoney} from './spending.mjs?v=continuity-1';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=continuity-1';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=continuity-1';
+import {recommendEducation} from './choice-recommendations.mjs?v=continuity-1';
+import {completedDegrees} from './degree-history.mjs?v=continuity-1';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -20,6 +21,7 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
  function render(){
   clearActionError(status);
   const s=getState();summary.replaceChildren(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['배움',`${Math.round(s.learn)}/100`],['학업',s.education]]);body.replaceChildren();
+  if(mode==='university'&&s.degreeHistory){const completed=completedDegrees(s);if(completed.length){const history=disclosure('완료한 대학 과정');for(const degree of completed)facts(history,[['이수 전공',degree.fieldLabel],['학업 이수',`${degree.studyMonths}개월`],['완료 시점',degree.graduatedAtMonth===null?'이전 졸업 기록 보존':`내 나이 ${Math.floor(degree.graduatedAtMonth/12)}세 ${degree.graduatedAtMonth%12}개월`]]);body.append(history);if(s.schooling?.status==='graduated'&&!s.academy)body.append(el('p','완료한 전공과 준비 증표는 보존합니다. 다른 전공을 새로 공부할 수 있습니다.','choice-introduction'));}}
   if(mode==='overview'){
    const school=schoolManagementSummary(s,data);body.append(el('h3','나의 학업'));
    facts(body,[['현재 과정',school.currentName],...(school.stage?[['이수 기간',`${school.progressMonths}/${school.durationMonths}개월`],['남은 과정',`${school.remainingMonths}개월`],['배움 보너스',`연 +${school.annualLearningBonus.toFixed(2)}`],...(school.annualBondBonus?[['관계 보너스',`연 +${school.annualBondBonus.toFixed(2)}`]]:[]),...(school.annualJoyBonus?[['만족 보너스',`연 +${school.annualJoyBonus.toFixed(2)}`]]:[]),['연 등록금',formatMoney(school.annualTuitionWan)]]:[]),['다음 입학',`${school.nextEntry.label} · ${school.nextEntry.age}세`],['남은 시간',school.nextEntry.remainingMonths?`${school.nextEntry.remainingMonths}개월`:'해당 입학 갈림길에서 선택']]);

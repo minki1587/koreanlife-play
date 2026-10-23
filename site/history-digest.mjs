@@ -19,6 +19,7 @@ export function timelineImportance(event={}){
  if(type==='child-inheritance')return mark('family','자녀의 재산');
  if(type==='family-medical-support'||type==='medical-loan')return mark('health','치료비 마련');
  if(type==='service-review')return mark('military','복무 재검토');
+ if(['service-deadline','service-expired','reserve-service','reserve-training'].includes(type))return mark('choice','복무와 예비군');
  if(type==='later-life')return mark('choice','노년의 일상');
  if(type==='ending')return mark('ending','삶의 마지막 기록');
  if(type==='family-death'||type==='spouse-death'||type==='formed-family'&&/세상을 떠|별세|사망/.test(title))return mark('loss','가족의 부고');

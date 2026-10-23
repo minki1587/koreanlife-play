@@ -1,6 +1,6 @@
-import {debtRepaymentQuote} from './debt-rules.mjs?v=remedy-1';
-import {investmentMoney} from './investment-browser.mjs?v=remedy-1';
-import {appendUiFacts,reportActionError,clearActionError} from './ui-copy.mjs?v=remedy-1';
+import {debtRepaymentQuote} from './debt-rules.mjs?v=continuity-1';
+import {investmentMoney} from './investment-browser.mjs?v=continuity-1';
+import {appendUiFacts,reportActionError,clearActionError} from './ui-copy.mjs?v=continuity-1';
 
 export function createDebtBrowser({getState,onAction,onOpen,onClose,document=globalThis.document}){
  const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;};

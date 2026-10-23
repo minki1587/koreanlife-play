@@ -1,8 +1,9 @@
-import {randomKoreanName} from './names.mjs?v=remedy-1';
-import {employmentRequirements} from './employment.mjs?v=remedy-1';
-import {entryCareerAllowed} from './career-progression.mjs?v=remedy-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=remedy-1';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=remedy-1';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=continuity-1';
+import {randomKoreanName} from './names.mjs?v=continuity-1';
+import {employmentRequirements} from './employment.mjs?v=continuity-1';
+import {entryCareerAllowed} from './career-progression.mjs?v=continuity-1';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=continuity-1';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=continuity-1';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property
@@ -44,8 +45,11 @@ function allocation(f,cashAvailableWan){
  const extraChildCostWan=extraActivitiesPaused?0:requestedExtraChildCostWan,childCostWan=q(basicChildCostWan+extraChildCostWan),spouseContributionWan=q(Math.min(spouseBudgetWan,childCostWan)),personalCostWan=q(childCostWan-spouseContributionWan);
  return{basicChildCostWan,requestedExtraChildCostWan,extraChildCostWan,childCostWan,spouseBudgetWan,spouseContributionWan,personalCostWan,mandatoryPersonalCostWan,requestedPersonalCostWan,extraPersonalCostWan:q(requestedPersonalCostWan-mandatoryPersonalCostWan),shortfallWan:q(Math.max(0,personalCostWan-cashAvailableWan)),extraActivitiesPaused};
 }
+// Budget projections never replay mortality or append historical actions. Copy
+// only mutable forward state; immutable/read-only old ledgers stay untouched.
+function projectionDraft(f){return{...f,spouse:clone(f.spouse),children:clone(f.children),months:[],events:[],totals:{...f.totals},...(f.spouseLife?{spouseLife:{...f.spouseLife,accounts:clone(f.spouseLife.accounts)}}:{})};}
 function monthCore(original,seed,atMonth,cashAvailableWan,{projection=false,mutate=false}={}){
- const f=mutate?original:clone(original),events=[],fx=effects();if(atMonth!==f.lastProcessedMonth+1)throw new RangeError('가족의 월 기록이 이어지지 않습니다.');
+ const f=mutate?original:projection?projectionDraft(original):clone(original),events=[],fx=effects();if(atMonth!==f.lastProcessedMonth+1)throw new RangeError('가족의 월 기록이 이어지지 않습니다.');
  // Before the first optional family action, no family expense/event exists to
  // archive. Preserve the activation boundary while advancing this idle range.
  if(f.activityStartedAtMonth===null){f.lastProcessedMonth=atMonth;return{formedFamily:f,family:f,settlement:allocation(f,cashAvailableWan),effects:fx,events};}
@@ -95,8 +99,14 @@ export function progressFormedFamily(s,atMonth=s.totalMonths+1){checkHost(s);if(
 export const prepareFormedFamilyMonth=progressFormedFamily;
 export function formedFamilyMonthlyBudget(s){if(!s?.formedFamily)return{childCostWan:0,spouseContributionWan:0,personalCostWan:0,mandatoryPersonalCostWan:0,requestedPersonalCostWan:0,extraPersonalCostWan:0};return monthCore(s.formedFamily,s.seed,s.formedFamily.lastProcessedMonth+1,Number.MAX_SAFE_INTEGER,{projection:true}).settlement;}
 export const formedFamilyMonthlyBurden=s=>formedFamilyMonthlyBudget(s).requestedPersonalCostWan;
-export function formedFamilyCommitment(s,months=12){if(!int(months,1,24))throw new RangeError('가족 예산 확인 기간을 확인해 주세요.');const result={personalCostWan:0,mandatoryPersonalCostWan:0,extraPersonalCostWan:0};if(!s?.formedFamily||s.formedFamily.activityStartedAtMonth===null)return result;let f=clone(s.formedFamily);for(let i=0;i<months;i++){const step=monthCore(f,s.seed,f.lastProcessedMonth+1,Number.MAX_SAFE_INTEGER,{projection:true,mutate:true});f=step.formedFamily;result.personalCostWan=q(result.personalCostWan+step.settlement.requestedPersonalCostWan);result.mandatoryPersonalCostWan=q(result.mandatoryPersonalCostWan+step.settlement.mandatoryPersonalCostWan);result.extraPersonalCostWan=q(result.extraPersonalCostWan+step.settlement.extraPersonalCostWan);}return result;}
-export function validFormedFamily(s){try{
+export function formedFamilyCommitment(s,months=12){if(!int(months,1,24))throw new RangeError('가족 예산 확인 기간을 확인해 주세요.');const result={personalCostWan:0,mandatoryPersonalCostWan:0,extraPersonalCostWan:0};if(!s?.formedFamily||s.formedFamily.activityStartedAtMonth===null)return result;let f=projectionDraft(s.formedFamily);for(let i=0;i<months;i++){const step=monthCore(f,s.seed,f.lastProcessedMonth+1,Number.MAX_SAFE_INTEGER,{projection:true,mutate:true});f=step.formedFamily;result.personalCostWan=q(result.personalCostWan+step.settlement.requestedPersonalCostWan);result.mandatoryPersonalCostWan=q(result.mandatoryPersonalCostWan+step.settlement.mandatoryPersonalCostWan);result.extraPersonalCostWan=q(result.extraPersonalCostWan+step.settlement.extraPersonalCostWan);}return result;}
+/** Known child arrivals/ages and spouse retirement only, never future deaths. */
+export function formedFamilyCommitmentSchedule(s,months=12){
+ if(!int(months,1,24))throw new RangeError('가족 예산 확인 기간을 확인해 주세요.');
+ if(!s?.formedFamily||s.formedFamily.activityStartedAtMonth===null)return Array.from({length:months},(_,index)=>({atMonth:(s?.totalMonths||0)+index+1,personalCostWan:0,mandatoryPersonalCostWan:0,extraPersonalCostWan:0}));
+ let f=projectionDraft(s.formedFamily);const rows=[];for(let index=0;index<months;index++){const step=monthCore(f,s.seed,f.lastProcessedMonth+1,Number.MAX_SAFE_INTEGER,{projection:true,mutate:true});f=step.formedFamily;rows.push({atMonth:f.lastProcessedMonth,personalCostWan:step.settlement.requestedPersonalCostWan,mandatoryPersonalCostWan:step.settlement.mandatoryPersonalCostWan,extraPersonalCostWan:step.settlement.extraPersonalCostWan});}return rows;
+}
+function fullvalidFormedFamily(s){try{
  const f=s?.formedFamily;if(f===undefined)return true;if(!f||f.version!==FORMED_FAMILY_VERSION||f.kind!=='game_assumption'||!same(f.rulesSnapshot,FORMED_FAMILY_RULES)||!int(f.activatedAtMonth,0,s.totalMonths)||f.lastProcessedMonth!==s.totalMonths||!Array.isArray(f.actions)||f.actions.length>1801||!Array.isArray(f.months)||!Array.isArray(f.events)||f.events.length>10000)return false;
  const life=f.spouseLife;if(life!==undefined&&(!validSpouseLifeHeader(life,s.seed,s.totalMonths)||life.activatedAtMonth<f.activatedAtMonth))return false;
  const childPolicy=f.childPlanningPolicy;if(childPolicy!==undefined&&(!childPolicy||Object.keys(childPolicy).length!==4||childPolicy.version!==CHILD_PLANNING_RULES.version||!same(childPolicy.rulesSnapshot,CHILD_PLANNING_RULES)||!int(childPolicy.activatedAtMonth,f.activatedAtMonth,s.totalMonths)||!int(childPolicy.legacyActionCount,0,f.actions.length)||f.actions.slice(0,childPolicy.legacyActionCount).some(a=>a.atMonth>childPolicy.activatedAtMonth)||f.actions.slice(childPolicy.legacyActionCount).some(a=>a.atMonth<childPolicy.activatedAtMonth)))return false;
@@ -122,3 +132,6 @@ export function formedFamilyOptions(s,data){
  for(const child of f.children.filter(c=>c.ageMonths<216))for(const [mode,r]of Object.entries(PARENTING_MODES))add(`parent-${child.id}-${mode}`,{type:'parenting',childId:child.id,mode},`${child.name} · ${r.label}`,0,r.extraWan,[`자녀 건강 +${r.health}/월`,`자녀 배움 +${r.learn}/월`,`자녀 관계 +${r.bond}/월`]);return options;
 }
 export const familyOptions=formedFamilyOptions;
+
+const cachedvalidFormedFamily=createFrozenValidationCache(fullvalidFormedFamily);
+export function validFormedFamily(s){return cachedvalidFormedFamily(s);}

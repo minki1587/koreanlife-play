@@ -1,6 +1,7 @@
-import {validSave,VERSION} from './engine.mjs?v=remedy-1';
-import {validCareerModel} from './career-economy.mjs?v=remedy-1';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=remedy-1';
+import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=continuity-1';
+import {validSave,VERSION} from './engine.mjs?v=continuity-1';
+import {validCareerModel} from './career-economy.mjs?v=continuity-1';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=continuity-1';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';
@@ -19,16 +20,16 @@ export class SaveTransferError extends Error{
  constructor(code,message,options={}){super(message,options.cause?{cause:options.cause}:undefined);this.name='SaveTransferError';this.code=code;this.recoveryRequired=!!options.recoveryRequired;if(options.rollbackComplete!==undefined)this.rollbackComplete=options.rollbackComplete;}
 }
 function fail(code,message,options){throw new SaveTransferError(code,message,options);}
-function checkGraph(root,{freeze=false}={}){
+function checkGraph(root,{freeze=false,maxDepth=MAX_SAVE_DEPTH,maxNodes=MAX_SAVE_NODES}={}){
  const stack=[{value:root,depth:0}],active=new WeakSet(),objects=new Set();let count=0;
  while(stack.length){const frame=stack.pop(),v=frame.value;
   if(frame.leave){active.delete(v);continue;}
-  if(++count>MAX_SAVE_NODES)fail('JSON_COMPLEXITY','파일의 항목 수가 너무 많습니다.');
-  if(frame.depth>MAX_SAVE_DEPTH)fail('JSON_DEPTH','파일의 중첩 구조가 너무 깊습니다.');
+  if(++count>maxNodes)fail('JSON_COMPLEXITY','파일의 항목 수가 너무 많습니다.');
+  if(frame.depth>maxDepth)fail('JSON_DEPTH','파일의 중첩 구조가 너무 깊습니다.');
   if(typeof v==='number'&&(!Number.isFinite(v)||Math.abs(v)>Number.MAX_SAFE_INTEGER/10))fail('JSON_NUMBER','파일에 허용 범위를 벗어난 숫자가 있습니다.');
   if(v===null||typeof v!=='object'){if(!['string','number','boolean'].includes(typeof v)&&v!==null)fail('SAVE_INVALID','저장 파일의 값 형식을 확인해 주세요.');continue;}
   if(!Array.isArray(v)&&!plain(v)||active.has(v))fail('SAVE_INVALID','저장 파일의 객체 구조가 올바르지 않습니다.');
-  if(Array.isArray(v)&&v.length>MAX_SAVE_NODES)fail('JSON_COMPLEXITY','파일의 항목 수가 너무 많습니다.');
+  if(Array.isArray(v)&&v.length>maxNodes)fail('JSON_COMPLEXITY','파일의 항목 수가 너무 많습니다.');
   active.add(v);objects.add(v);stack.push({value:v,leave:true});
   for(const key of Object.keys(v)){if(unsafeKeys.has(key))fail('JSON_UNSAFE_KEY','허용되지 않는 객체 키가 포함된 파일입니다.');stack.push({value:v[key],depth:frame.depth+1});}
  }
@@ -39,9 +40,12 @@ function parseText(text,{maxBytes=MAX_SAVE_FILE_BYTES}={}){
  if(text.length>maxBytes||bytes(text)>maxBytes)fail('FILE_TOO_LARGE','저장 파일은 8 MiB 이하만 불러올 수 있습니다.');
  const source=text.charCodeAt(0)===0xfeff?text.slice(1):text;let depth=0,quoted=false,escaped=false;
  // Reject excessive nesting before native JSON parsing allocates that structure.
- for(const char of source){if(quoted){if(escaped)escaped=false;else if(char==='\\')escaped=true;else if(char==='"')quoted=false;}else if(char==='"')quoted=true;else if(char==='{'||char==='['){if(++depth>MAX_SAVE_DEPTH)fail('JSON_DEPTH','파일의 중첩 구조가 너무 깊습니다.');}else if(char==='}'||char===']')depth--;}
+ for(const char of source){if(quoted){if(escaped)escaped=false;else if(char==='\\')escaped=true;else if(char==='"')quoted=false;}else if(char==='"')quoted=true;else if(char==='{'||char==='['){if(++depth>MAX_SAVE_DEPTH+2)fail('JSON_DEPTH','파일의 중첩 구조가 너무 깊습니다.');}else if(char==='}'||char===']')depth--;}
  let parsed;try{parsed=JSON.parse(source);}catch(cause){fail('JSON_INVALID','JSON 형식이 올바르지 않습니다. 저장한 원본 파일을 선택해 주세요.',{cause});}
- checkGraph(parsed);return parsed;
+ // Tuples add tag/index nodes; they are representation overhead, not additional
+ // decoded game facts. Unpack and the following graph check retain the original
+ // one-million-node limit, 64-level depth and 8 MiB expansion ceiling.
+ checkGraph(parsed,{maxDepth:MAX_SAVE_DEPTH+2,maxNodes:parsed?.codec===SAVE_CODEC?MAX_SAVE_NODES*4+110020:MAX_SAVE_NODES});return parsed;
 }
 function checkFileType(fileName,mimeType){
  if(typeof fileName!=='string'||!fileName.toLowerCase().endsWith('.json'))fail('FILE_TYPE','확장자가 .json인 진행 기록 파일을 선택해 주세요.');
@@ -62,7 +66,7 @@ function checkLife(life){
  if(!life.legacyHistory.every(h=>plain(h)&&Number.isInteger(h.age)&&h.age>=0&&h.age<=life.age&&(typeof h.choice==='string'||typeof h.title==='string')&&(!own(h,'changes')||Array.isArray(h.changes)&&h.changes.every(v=>typeof v==='string'))))fail('SAVE_INVALID','이전 버전의 선택 기록이 올바르지 않습니다.');
 }
 function previewFrom(text,{fileName='koreanlife-save-v2.json',mimeType='',sourceKey=null}={}){
- checkFileType(fileName,mimeType);const parsed=parseText(text),wrapped=plain(parsed)&&own(parsed,'life'),life=wrapped?parsed.life:parsed,settings=normalizeSettings(wrapped?parsed.settings:undefined);checkLife(life);
+ checkFileType(fileName,mimeType);const parsed=unpackParsedSaveRecord(parseText(text));checkGraph(parsed);const wrapped=plain(parsed)&&own(parsed,'life'),life=wrapped?parsed.life:parsed,settings=normalizeSettings(wrapped?parsed.settings:undefined);checkLife(life);
  checkGraph(life,{freeze:true});Object.freeze(settings);
  const summary=Object.freeze({name:life.name,age:life.age,month:life.month,job:life.job.title,residence:[life.residence.region,life.residence.city].filter(Boolean).join(' '),phase:life.phase,choices:life.history.length+life.legacyHistory.length});
  const preview=Object.freeze({life,settings,summary,fileName,bytes:bytes(text),formatVersion:VERSION});previews.set(preview,{life,settings,sourceKey,sourceText:sourceKey?text:null});return preview;
@@ -132,7 +136,7 @@ export function commitSaveTransfer(storage,preview,{confirmed=false,life:prepare
  if(expectedPrimary!==undefined&&get(storage,SAVE_KEY)!==expectedPrimary)fail('STORAGE_CHANGED','다른 탭에서 저장 기록이 바뀌었습니다. 최신 기록을 다시 확인해 주세요.');
  if(![IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY].includes(backupKey))fail('BACKUP_SLOT_INVALID','허용된 백업 위치를 확인해 주세요.');
  if(preparedSettings!==undefined)normalizeSettings(preparedSettings);
- const life=structuredClone(preparedLife??record.life);checkLife(life);const settings=preparedSettings?{paused:preparedSettings.paused??true,speed:preparedSettings.speed??1}:{paused:true,speed:record.settings.speed},nextPrimary=JSON.stringify({life,settings,...(saveMetadata?{saveMetadata}:{})});
+ const life=structuredClone(preparedLife??record.life);checkLife(life);const settings=preparedSettings?{paused:preparedSettings.paused??true,speed:preparedSettings.speed??1}:{paused:true,speed:record.settings.speed},nextPrimary=encodeSaveRecord({life,settings,...(saveMetadata?{saveMetadata}:{})});
  if(bytes(nextPrimary)>MAX_SAVE_FILE_BYTES)fail('FILE_TOO_LARGE','준비한 진행 기록이 저장 크기 제한을 넘었습니다.');
  if(get(storage,JOURNAL_KEY)!==null)fail('STORAGE_PENDING','중단된 불러오기 복구를 먼저 완료해 주세요.',{recoveryRequired:true});
  if(record.sourceKey&&get(storage,record.sourceKey)!==record.sourceText)fail('STORAGE_CHANGED','확인한 백업이 다른 탭에서 바뀌었습니다. 미리보기를 다시 열어 주세요.');

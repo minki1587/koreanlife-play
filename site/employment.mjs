@@ -1,9 +1,10 @@
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=remedy-1';
-import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=remedy-1';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=remedy-1';
-import {economicLifeSummary,economicAnnualSalaryWan} from './economic-life.mjs?v=remedy-1';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=remedy-1';
-import {careerProgressionAssessment,recordedCareerMonths} from './career-progression.mjs?v=remedy-1';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=continuity-1';
+import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=continuity-1';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=continuity-1';
+import {economicLifeSummary,economicAnnualSalaryWan} from './economic-life.mjs?v=continuity-1';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=continuity-1';
+import {careerProgressionAssessment,recordedCareerMonths} from './career-progression.mjs?v=continuity-1';
+import {protagonistGender} from './person-identity.mjs?v=continuity-1';
 // Public-source notes and fictional hiring rules are deliberately separate.
 export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));
@@ -66,11 +67,12 @@ export function evaluateEmployment(s,row){
   if(!min)requirements.push({label:'직업별 법적 나이',value:'미확인 · 종사자 평균나이로 제한하지 않음',met:null,kind:'unknown'});
   if(publicStructured(row.regionRestriction,'allowedRegions')&&Array.isArray(row.regionRestriction.allowedRegions))add('확인된 지역 조건',row.regionRestriction.allowedRegions.join(' · '),row.regionRestriction.allowedRegions.includes(s?.residence?.region),'official');
   else requirements.push({label:'직업 자체의 법적 지역 제한',value:'미확인',met:null,kind:'unknown'});
-  const sex=s?.profile?.sex;
+  const sex=protagonistGender(s),sexLabels={male:'남성',female:'여성',남:'남성',여:'여성'};
   if(publicStructured(row.sexRestriction,'allowedSexes')&&Array.isArray(row.sexRestriction.allowedSexes)){
-    if(typeof sex==='string'&&sex) add('확인된 성별 조건',row.sexRestriction.allowedSexes.join(' · '),row.sexRestriction.allowedSexes.includes(sex),'official');
+    const allowed=row.sexRestriction.allowedSexes.map(value=>sexLabels[value]||value);
+    if(sex!=='미기록') add('확인된 성별 조건',allowed.join(' · '),allowed.includes(sex),'official');
     else{requirements.push({label:'성별 조건 심사',value:'캐릭터 성별 미기록 · 수동 확인 필요',met:null,kind:'unknown'});warnings.push('성별을 추측하지 않았습니다. 실제 자격은 수동 확인이 필요합니다.');}
-  }else requirements.push({label:'직업별 성별 조건',value:sex?'제약 미확인 · 성별분포로 제한하지 않음':'성별 미기록·법적 제약 미확인 · 필요한 경우 수동 확인',met:null,kind:'unknown'});
+  }else requirements.push({label:'직업별 성별 조건',value:sex!=='미기록'?'제약 미확인 · 성별분포로 제한하지 않음':'성별 미기록·법적 제약 미확인 · 필요한 경우 수동 확인',met:null,kind:'unknown'});
   warnings.push(modelNote,rules.regionNote);
   const trainingOptions=ABILITY_AXES.map(axis=>({type:'ability',ability:axis.id,label:`${axis.label} 훈련`,durationMonths:1,cost:30}));
   if(profile.educationLevel<6)trainingOptions.push({type:'education',label:`${LEVEL_LABELS[profile.educationLevel<3?3:profile.educationLevel+1]} 게임 과정`,durationMonths:profile.educationLevel<3?12:profile.educationLevel===3?48:profile.educationLevel===4?24:36,cost:profile.educationLevel<3?120:profile.educationLevel===3?2400:1200});

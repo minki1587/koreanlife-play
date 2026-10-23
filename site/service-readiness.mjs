@@ -1,5 +1,5 @@
-import {protagonistGender} from './person-identity.mjs?v=remedy-1';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=remedy-1';
+import {protagonistGender} from './person-identity.mjs?v=continuity-1';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=continuity-1';
 
 // New soldier-entry policy only. Existing service/pay/savings are never rewritten.
 const clone=value=>structuredClone(value);
@@ -13,8 +13,10 @@ export function serviceReadiness(s){
  else if(protagonistGender(s)!=='남성'){code='identity';reason='주인공의 성별 기록을 확인해 주세요.';}
  else if(s.academy){code='academy';reason='사관학교·장교 경로는 병사 복무와 별도로 이어집니다.';}
  else if(s.service?.active||s.service?.branch||s.service?.completed||s.service?.pay||s.service?.savings){code='already-served';reason='이미 시작했거나 마친 병사 복무를 다시 시작할 수 없습니다.';}
+ else if(s.serviceDeferral?.status==='legacy-expired'){code='expired';reason='이전 입대 검토 기간이 지나 새 입대 경로는 종료되었습니다. 지난 기록은 유지합니다.';}
  else if(!Number.isInteger(s.age)||s.age<21){code='not-due';reason='병사 복무를 검토하는 시기는 21세부터입니다.';}
  else if(s.phase!=='running'&&!(s.phase==='decision'&&s.pendingDecision==='service')){code='other-choice';reason='현재 갈림길을 먼저 마쳐 주세요.';}
+ else if(s.serviceDeferral?.status==='legacy-expired'){code='expired';reason='입대 재검토 기간이 지난 기존 기록입니다.';}
  else if(recoveryBlocked){code='recovery';reason='부상 대응과 회복을 마친 뒤 입대를 검토할 수 있습니다.';}
  return{eligible:code==='ready',recoveryBlocked,code,reasons:reason?[reason]:[]};
 }

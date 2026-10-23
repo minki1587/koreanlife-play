@@ -1,4 +1,4 @@
-import {initScrollHints} from './scroll-hints.mjs?v=remedy-1';
+import {initScrollHints} from './scroll-hints.mjs?v=continuity-1';
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 

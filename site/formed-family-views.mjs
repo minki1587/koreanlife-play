@@ -1,7 +1,7 @@
-import {formedFamilySummary} from './formed-family.mjs?v=remedy-1';
-import {formatMoney} from './spending.mjs?v=remedy-1';
-import {appendUiFacts} from './ui-copy.mjs?v=remedy-1';
-import {withChildInheritanceSummary} from './child-inheritance.mjs?v=remedy-1';
+import {formedFamilySummary} from './formed-family.mjs?v=continuity-1';
+import {formatMoney} from './spending.mjs?v=continuity-1';
+import {appendUiFacts} from './ui-copy.mjs?v=continuity-1';
+import {withChildInheritanceSummary} from './child-inheritance.mjs?v=continuity-1';
 
 export const RELATIONSHIP_LABELS=Object.freeze({single:'아직 교제 중인 사람이 없음',dating:'교제 중',married:'결혼하여 함께 생활 중',separated:'관계를 정리함',widowed:'배우자와 사별함',bereaved:'인연을 떠나보냄'});
 export const PARENTING_LABELS=Object.freeze({balanced:'균형 있게 돌보기',learning:'배움 함께하기',active:'함께 몸 움직이기',connection:'대화와 관계 돌보기'});

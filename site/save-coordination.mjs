@@ -1,10 +1,11 @@
+import {decodeSaveRecord} from './save-codec.mjs?v=continuity-1';
 /** All same-origin save writers share a Web Lock; exact observed bytes also
  * protect against older releases that do not use this lock. No unload writes. */
 export class SaveConflictError extends Error {
  constructor(message='다른 탭에서 더 최신 기록을 저장했습니다. 이 화면의 진행을 멈췄습니다.') {super(message);this.name='SaveConflictError';this.code='SAVE_CONFLICT';}
 }
 export function storedSaveMetadata(raw){
- try{const record=JSON.parse(raw);const meta=record?.saveMetadata;return meta&&Number.isSafeInteger(meta.revision)&&meta.revision>=0&&typeof meta.writer==='string'?{revision:meta.revision,writer:meta.writer,savedAt:validSavedAt(meta.savedAt)}:null;}catch{return null;}
+ try{const record=decodeSaveRecord(raw);const meta=record?.saveMetadata;return meta&&Number.isSafeInteger(meta.revision)&&meta.revision>=0&&typeof meta.writer==='string'?{revision:meta.revision,writer:meta.writer,savedAt:validSavedAt(meta.savedAt)}:null;}catch{return null;}
 }
 export function validSavedAt(value){return typeof value==='string'&&Number.isFinite(Date.parse(value))?value:null;}
 export function createSaveCoordinator({storage,locks,key='koreanlife-save-v2',writer=globalThis.crypto?.randomUUID?.()||`tab-${Math.random().toString(36).slice(2)}`,now=()=>new Date().toISOString(),onConflict=()=>{}}){

@@ -1,5 +1,6 @@
 // Explicit gameplay prerequisites, separate from verified source/legal fields.
 // Durations and a 24-month preparation course are game design, not license rules.
+import {completedDegrees} from './degree-history.mjs?v=continuity-1';
 export const PROFESSION_RULES_VERSION='profession-paths-v1';
 const entries=[
  ...Array.from({length:13},(_,index)=>[`know-3011${String(index+1).padStart(2,'0')}`,'medicine','의학',72]),
@@ -26,8 +27,7 @@ export function completedProfessionField(state){
 }
 export function professionFieldMet(state,rule){
  if(!rule)return true;
- const completed=completedProfessionField(state);
- return !!completed&&completed.field===rule.field&&completed.studyMonths>=rule.minimumStudyMonths&&completed.durationMonths>=rule.minimumStudyMonths;
+ return completedDegrees(state).some(completed=>completed.field===rule.field&&completed.studyMonths>=rule.minimumStudyMonths&&completed.durationMonths>=rule.minimumStudyMonths);
 }
 export function professionFieldRequirement(rule){return `${rule.fieldLabel} 과정 졸업 · ${rule.minimumStudyMonths}개월 학업 이수`;}
 export function professionRules(){return [...rules.values()].map(row=>({...row}));}

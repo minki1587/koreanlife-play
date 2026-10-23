@@ -1,3 +1,4 @@
+import {createFrozenValidationCache} from './immutable-save.mjs?v=continuity-1';
 const clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),finite=n=>typeof n==='number'&&Number.isFinite(n),q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clamp=(n,[lo,hi])=>Math.max(lo,Math.min(hi,n));
 export const ECONOMIC_LIFE_VERSION='economic-life-v1';
 const WORKING=new Set(['재직','계약직','시간제','프리랜서','자영업']);
@@ -38,9 +39,12 @@ export function economicCostWan(s,baseWan){return q(baseWan*economicLivingFactor
 export function economicAnnualSalaryWan(s,baseAnnualWan,options={}){const prospective=arguments.length>1,base=prospective?baseAnnualWan:s?.salary||0,exposed=prospective?!/장교|부사관|군인|사관생도/.test(options.occupationTitle||''):wageExposed(context(s));return q(base*(exposed?economicLifeSummary(s).wageIndex:1));}
 function applicationCore(original,seed,atMonth,occupationId,{mutate=false}={}){const e=mutate?original:clone(original);if(atMonth!==e.lastProcessedMonth||typeof occupationId!=='string'||!/^know-[0-9]{6}$/.test(occupationId)||e.applications.at(-1)?.atMonth===atMonth)throw new Error('취업 지원은 한 달에 한 번 할 수 있습니다.');const probability=e.lastMonth?.hiringProbability??clamp(e.configSnapshot.baseHiringProbability,e.configSnapshot.bounds.hiringProbability),draw=random(`${ECONOMIC_LIFE_VERSION}|${seed}|${atMonth}|application|${occupationId}`)(),record={atMonth,occupationId,probability,draw,success:draw<probability};e.applications.push(record);return{economicLife:e,...record};}
 export function economicJobApplication(s,occupationId){if(!s.economicLife)return{economicLife:null,success:true,probability:1,draw:null};return applicationCore(s.economicLife,s.seed,s.totalMonths,occupationId);}
-export function validEconomicLife(s){try{
+function fullvalidEconomicLife(s){try{
  const e=s?.economicLife;if(e===undefined)return true;if(!e||e.version!==ECONOMIC_LIFE_VERSION||e.kind!=='game_assumption'||!s.market||e.marketFingerprint!==s.market.configFingerprint||!Number.isInteger(e.activatedAtMonth)||e.activatedAtMonth<s.market.activatedAtMonth||e.activatedAtMonth>s.totalMonths||e.lastProcessedMonth!==s.totalMonths||e.configFingerprint!==fingerprint(e.configSnapshot,s.seed)||!Array.isArray(e.months)||e.months.length!==s.totalMonths-e.activatedAtMonth||!Array.isArray(e.applications)||e.applications.length>1801)return false;
  validateEconomicRules(e.configSnapshot);let expected=empty({...s,totalMonths:e.activatedAtMonth,market:{...s.market,lastProcessedMonth:e.activatedAtMonth}},e.configSnapshot),applicationIndex=0,monthIndex=0;
  for(let at=e.activatedAtMonth;at<=s.totalMonths;at++){if(at>e.activatedAtMonth){const row=e.months[monthIndex++],marketRecord=s.market.months[at-s.market.activatedAtMonth-1],scenario=s.market.configSnapshot.scenarios.find(row=>row.id===marketRecord?.scenarioId);if(!row||!marketRecord||!scenario)return false;const result=economicMonth(expected,s.seed,marketRecord,scenario,row.employmentContext,{mutate:true});if(!same(result.record,row))return false;expected=result.economicLife;}while(e.applications[applicationIndex]?.atMonth===at){const actual=e.applications[applicationIndex++],result=applicationCore(expected,s.seed,at,actual.occupationId,{mutate:true});if(!same(result.economicLife.applications.at(-1),actual))return false;expected=result.economicLife;}}
  return applicationIndex===e.applications.length&&same(expected,e);
  }catch{return false;}}
+
+const cachedvalidEconomicLife=createFrozenValidationCache(fullvalidEconomicLife);
+export function validEconomicLife(s){return cachedvalidEconomicLife(s);}

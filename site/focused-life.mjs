@@ -1,9 +1,10 @@
-import {careerMilestone} from './career-milestone.mjs?v=remedy-1';
-import {displayCopy} from './ui-copy.mjs?v=remedy-1';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=remedy-1';
-import {formatMoney} from './spending.mjs?v=remedy-1';
-import {focusedImportantEvents} from './history-digest.mjs?v=remedy-1';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=remedy-1';
+import {militaryObligation} from './military-obligation.mjs?v=continuity-1';
+import {careerMilestone} from './career-milestone.mjs?v=continuity-1';
+import {displayCopy} from './ui-copy.mjs?v=continuity-1';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=continuity-1';
+import {formatMoney} from './spending.mjs?v=continuity-1';
+import {focusedImportantEvents} from './history-digest.mjs?v=continuity-1';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=continuity-1';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},
@@ -20,6 +21,7 @@ export function recentEventTitle(event,state){return displayCopy(timelineFamilyC
 export function currentLifeTask(state){
  if(!state||state.phase==='ended')return null;
  if(state.lifeHealth?.pendingCare)return{id:'injury-care-reopen',label:'몸 돌보기 선택',kind:'care'};
+ const duty=militaryObligation(state);if(duty)return{id:'military-duty-reopen',label:duty.kind==='service'?'복무 선택하기':'예비군 훈련 선택',kind:'military'};
  if(state.phase!=='decision')return null;
  const id=state.pendingDecision;
  if(SCHOOL_IDS.has(id))return{id:'education-manage',label:'학교 선택하기',kind:'school'};
@@ -106,8 +108,8 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   $('personal-cash').textContent=formatMoney(state.cash);
   $('debt-balance').textContent=`대출금 · ${formatMoney(state.debt)}`;$('record-debt-value').textContent=formatMoney(state.debt);
   const cash=cashFlowSummary(state);$('cash-month-change').textContent=cash?`이번 달 ${cash.deltaWan>=0?'+':''}${formatMoney(cash.deltaWan)}`:'이번 달 정산 전';
-  const pendingGuide=activeGuide&&(['school-primary','school-middle','school-high','school-ready','university','jobs'].includes(activeGuide.id));
-  const expected=activeGuide?.id==='university'?'education':activeGuide?.id==='jobs'?'first-job':activeGuide?.id;
+  const pendingGuide=activeGuide&&(['school-primary','school-middle','school-high','school-ready','university','jobs','career-context'].includes(activeGuide.id));
+  const expected=activeGuide?.id==='university'?'education':['jobs','career-context'].includes(activeGuide?.id)?'first-job':activeGuide?.id;
   if(pendingGuide&&state.pendingDecision!==expected){seen.add(activeGuide.id);activeGuide=null;persist();}
   const candidate=milestoneGuide(state,{initialMonth,seen:[...seen]});if(candidate&&candidate.id!==activeGuide?.id)activeGuide=candidate;
   if(activeGuide&&seen.has(activeGuide.id))activeGuide=null;

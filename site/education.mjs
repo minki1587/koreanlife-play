@@ -1,6 +1,7 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=remedy-1';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=remedy-1';
-import {recoveryStudyAllowed} from './injury-care.mjs?v=remedy-1';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=continuity-1';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=continuity-1';
+import {recoveryStudyAllowed} from './injury-care.mjs?v=continuity-1';
+import {completedDegrees,canStartSecondDegree,prepareDegreeJourney} from './degree-history.mjs?v=continuity-1';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([
@@ -19,7 +20,7 @@ function chanceFor(s,row,stage){if(row.guaranteed)return 1;const first=currentCy
 function applicantReasons(s,row,stage){
   const reasons=[];if(!s?.schoolJourney)reasons.push('이전 기록은 기존 교육 경로를 유지합니다.');if(s?.phase==='ended')reasons.push('종료된 기록입니다.');if(s?.service?.active)reasons.push('복무 중에는 입학 지원을 할 수 없습니다.');
   if(stage!=='university'){if(s?.phase!=='decision'||educationEvent(s.pendingDecision)?.stage!==stage)reasons.push('해당 학교 입학 갈림길에서 선택해 주세요.');}
-  else{if(s?.age<19)reasons.push('대학 지원은 게임에서19세부터 가능합니다.');if(s?.phase!=='running'&&!(s?.phase==='decision'&&s.pendingDecision==='education'))reasons.push('현재 갈림길을 먼저 마쳐 주세요.');if(s?.schooling?.status==='enrolled'||s?.schooling?.status==='graduated')reasons.push('현재 대학 과정이 있거나 이미 대학을 졸업했습니다.');if(s?.schoolJourney&&s.schoolJourney.highestLevel<3)reasons.push('고교 과정을 먼저 마쳐 주세요.');}
+  else{if(s?.age<19)reasons.push('대학 지원은 게임에서19세부터 가능합니다.');if(s?.phase!=='running'&&!(s?.phase==='decision'&&s.pendingDecision==='education'))reasons.push('현재 갈림길을 먼저 마쳐 주세요.');if(s?.schooling?.status==='enrolled'||s?.schooling?.status==='graduated'&&!canStartSecondDegree(s))reasons.push('현재 대학 과정이 있거나 이미 대학을 졸업했습니다.');if(s?.schoolJourney&&s.schoolJourney.highestLevel<3)reasons.push('고교 과정을 먼저 마쳐 주세요.');if(s?.degreeHistory&&completedDegrees(s).some(degree=>degree.field===row.field))reasons.push('이미 이수한 전공입니다. 다른 전공의 재교육 경로를 선택해 주세요.');}
   const applications=currentCycleApplications(s,stage);if(applications.some(a=>a.optionId===row.id))reasons.push('같은 학년도·같은 경로를 다시 추첨할 수 없습니다.');if(applications.some(a=>a.status==='accepted'||a.status==='deferred'))reasons.push('이 학년도의 입학 선택을 이미 마쳤습니다.');
   const rejected=applications.filter(a=>a.status==='rejected'&&a.selection!=='academy');if(rejected.length&&!row.guaranteed&&row.learningThreshold>=Math.min(...rejected.map(a=>a.learningThreshold)))reasons.push('불합격 후에는 더 낮은 게임 문턱의 경로로 지원하거나 유예해 주세요.');
   return reasons;
@@ -28,6 +29,7 @@ function displayRow(s,row,stage,data){const reasons=applicantReasons(s,row,stage
 export function schoolChoices(s,data){const event=educationEvent(s?.pendingDecision);if(!event)return[];return catalog(data).schoolOptions.filter(r=>r.stage===event.stage).map(r=>displayRow(s,r,event.stage,data));}
 function stableIndex(key,length){let h=2166136261;for(const ch of key)h=Math.imul(h^ch.charCodeAt(0),16777619);return(h>>>0)%length;}
 export function universityOptions(s,filters={},data){
+  if(!s?.schoolJourney&&canStartSecondDegree(s))s={...s,schoolJourney:prepareDegreeJourney(s,data)};
   const c=catalog(data),result=[];
   if(filters.path!=='academy')for(const ownership of ['public','private'])for(const location of ['seoul','regional'])for(const field of c.universityFields){
     if(field.publicOnly&&ownership!=='public')continue;if(filters.ownership&&filters.ownership!==ownership||filters.location&&filters.location!==location||filters.field&&filters.field!==field.id)continue;
@@ -64,9 +66,11 @@ export function validSchoolJourney(s){
   if(!j.applications.every(a=>a&&[...STAGES,'university'].includes(a.stage)&&Number.isInteger(a.cycle)&&a.cycle>=7&&a.cycle<=s.age&&typeof a.optionId==='string'&&typeof a.label==='string'&&['accepted','rejected','deferred'].includes(a.status)&&Number.isInteger(a.atMonth)&&a.atMonth>=0&&a.atMonth<=s.totalMonths&&(a.status==='deferred'||finite(a.chance)&&a.chance>=0&&a.chance<=1&&finite(a.learn)&&a.learn>=0&&a.learn<=100&&finite(a.learningThreshold))))return false;
   const keys=j.applications.map(a=>`${a.stage}|${a.cycle}|${a.optionId}`);if(keys.length!==new Set(keys).size)return false;
   const c=j.current;if(c!==null&&(!c||!STAGES.includes(c.stage)||typeof c.name!=='string'||typeof c.optionId!=='string'||!['public','private'].includes(c.ownership)||!Number.isInteger(c.startedMonth)||c.startedMonth<0||c.startedMonth>s.totalMonths||!Number.isInteger(c.progressMonths)||c.progressMonths<0||!Number.isInteger(c.durationMonths)||c.durationMonths!==(c.stage==='primary'?72:36)||c.progressMonths>=c.durationMonths||!finite(c.annualTuitionWan)||c.annualTuitionWan<0||!finite(c.annualLearningBonus)||c.annualLearningBonus<0||j.completedStages.includes(c.stage)||STAGES[j.completedStages.length]!==c.stage))return false;
-  if(j.highestLevel!==j.completedStages.length+(s.schooling?.status==='graduated'?1:0))return false;
+  const credited=j.legacyCreditLevel===3?3:j.completedStages.length,hasDegree=s.schooling?.status==='graduated'||!!s.degreeHistory?.completed?.length;
+  if(j.legacyCreditLevel!==undefined&&(j.legacyCreditLevel!==3||j.completedStages.length!==0||j.current!==null||!s.degreeHistory?.completed?.length))return false;
+  if(j.highestLevel!==credited+(hasDegree?1:0))return false;
   if(j.university!==null&&(!j.university||typeof j.university.optionId!=='string'||typeof j.university.field!=='string'||![48,72].includes(j.university.durationMonths)||!s.schooling||s.schooling.gamePath!==true||s.schooling.educationOptionId!==j.university.optionId||s.schooling.major!==j.university.field||s.schooling.durationMonths!==j.university.durationMonths||s.schooling.status!==j.university.status))return false;
-  if(j.university===null&&s.schooling)return false;
+  if(j.university===null&&s.schooling&&!(j.legacyCreditLevel===3&&s.schooling.status==='graduated'&&s.degreeHistory?.completed?.length))return false;
   if(j.lastOutcome!==null&&(!j.lastOutcome||!j.applications.some(a=>JSON.stringify(a)===JSON.stringify(j.lastOutcome))))return false;
   return true;
 }
