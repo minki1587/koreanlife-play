@@ -1,80 +1,80 @@
-import {enableContinuity,participateReserve} from './engine.mjs?v=continuity-1';
-import {militaryObligation} from './military-obligation.mjs?v=continuity-1';
-import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=continuity-1';
-import {serviceDeferralSummary} from './service-deferral.mjs?v=continuity-1';
-import {reserveSummary} from './reserve-service.mjs?v=continuity-1';
-import {serviceReviewMessage} from './service-review-view.mjs?v=continuity-1';
-import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=continuity-1';
-import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=continuity-1';
-import {freezeSaveSnapshot} from './immutable-save.mjs?v=continuity-1';
-import {laterLifeCard} from './later-life.mjs?v=continuity-1';
-import {chooseLaterLife} from './engine.mjs?v=continuity-1';
-import {eventGuidance} from './event-guidance.mjs?v=continuity-1';
-import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=continuity-1';
-import {createBootLoadStatus} from './boot-load-status.mjs?v=continuity-1';
-import {careerMilestone} from './career-milestone.mjs?v=continuity-1';
-import {serviceReadiness} from './service-readiness.mjs?v=continuity-1';
-import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=continuity-1';
-import {createCareFundingView} from './care-funding-browser.mjs?v=continuity-1';
-import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=continuity-1';
-import {createFocusedLife} from './focused-life.mjs?v=continuity-1';
-import {createTimelineFeed} from './timeline-feed.mjs?v=continuity-1';
-import {renderActionMenu} from './action-menu.mjs?v=continuity-1';
-import {clockPresentation} from './clock-status.mjs?v=continuity-1';
-import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=continuity-1';
-import {createInvestmentBrowser} from './investment-browser.mjs?v=continuity-1';
-import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=continuity-1';
-import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=continuity-1';
-import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=continuity-1';
-import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=continuity-1';
-import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=continuity-1';
-import {createSaveCoordinator} from './save-coordination.mjs?v=continuity-1';
-import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=continuity-1';
-import {createDebtBrowser} from './debt-browser.mjs?v=continuity-1';
-import {repayDebt} from './engine.mjs?v=continuity-1';
-import {normalizeMilitaryPath} from './engine.mjs?v=continuity-1';
-import {personalFinanceOverview} from './finance-overview.mjs?v=continuity-1';
-import {lifeHistoryEvents} from './timeline-history.mjs?v=continuity-1';
-import {storyView} from './story-view.mjs?v=continuity-1';
-import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=continuity-1';
-import {chooseInjuryCare} from './engine.mjs?v=continuity-1';
-import {lifeHealthSummary} from './life-health.mjs?v=continuity-1';
-import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=continuity-1';
-import {livingCostSummary} from './engine.mjs?v=continuity-1';
-import {militaryPaySummary} from './military-pay.mjs?v=continuity-1';
-import {militaryFinanceView} from './military-finance-view.mjs?v=continuity-1';
-import {displayCopy,displayLines} from './ui-copy.mjs?v=continuity-1';
-import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=continuity-1';
-import {focusEffects} from './focus-effects.mjs?v=continuity-1';
-import {militarySavingsSummary} from './military-savings.mjs?v=continuity-1';
-import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=continuity-1';
-import {validateEstateRules} from './family-estate.mjs?v=continuity-1';
-import {validateParentRules} from './parent-careers.mjs?v=continuity-1';
-import {protagonistGender} from './person-identity.mjs?v=continuity-1';
-import {validateHouseholdRules} from './household-finance.mjs?v=continuity-1';
-import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=continuity-1';
-import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=continuity-1';
-import {createFamilyBrowser} from './family-browser.mjs?v=continuity-1';
-import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=continuity-1';
-import {createEducationBrowser} from './education-browser.mjs?v=continuity-1';
-import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=continuity-1';
-import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=continuity-1';
-import {validEducationCatalog} from './education.mjs?v=continuity-1';
-import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=continuity-1';
-import {createEmploymentBrowser} from './employment-browser.mjs?v=continuity-1';
-import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=continuity-1';
-import {occupationModelIndex} from './career-economy.mjs?v=continuity-1';
-import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=continuity-1';
-import {createAssetLoader} from './asset-loader.mjs?v=continuity-1';
-import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=continuity-1';
-import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=continuity-1';
-import {birthPresentation} from './birth-presentation.mjs?v=continuity-1';
-import {createMobileDashboard} from './mobile-dashboard.mjs?v=continuity-1';
-import {initResponsiveLayout} from './responsive.mjs?v=continuity-1';
-import {initTextSize} from './text-size.mjs?v=continuity-1';
-import {createLifeScene} from './life-scene.mjs?v=continuity-1';
-import {randomKoreanName,resolveLifeName} from './names.mjs?v=continuity-1';
-import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=continuity-1';
+import {enableContinuity,participateReserve} from './engine.mjs?v=continuity-2';
+import {militaryObligation} from './military-obligation.mjs?v=continuity-2';
+import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=continuity-2';
+import {serviceDeferralSummary} from './service-deferral.mjs?v=continuity-2';
+import {reserveSummary} from './reserve-service.mjs?v=continuity-2';
+import {serviceReviewMessage} from './service-review-view.mjs?v=continuity-2';
+import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=continuity-2';
+import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=continuity-2';
+import {freezeSaveSnapshot} from './immutable-save.mjs?v=continuity-2';
+import {laterLifeCard} from './later-life.mjs?v=continuity-2';
+import {chooseLaterLife} from './engine.mjs?v=continuity-2';
+import {eventGuidance} from './event-guidance.mjs?v=continuity-2';
+import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=continuity-2';
+import {createBootLoadStatus} from './boot-load-status.mjs?v=continuity-2';
+import {careerMilestone} from './career-milestone.mjs?v=continuity-2';
+import {serviceReadiness} from './service-readiness.mjs?v=continuity-2';
+import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=continuity-2';
+import {createCareFundingView} from './care-funding-browser.mjs?v=continuity-2';
+import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=continuity-2';
+import {createFocusedLife} from './focused-life.mjs?v=continuity-2';
+import {createTimelineFeed} from './timeline-feed.mjs?v=continuity-2';
+import {renderActionMenu} from './action-menu.mjs?v=continuity-2';
+import {clockPresentation} from './clock-status.mjs?v=continuity-2';
+import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=continuity-2';
+import {createInvestmentBrowser} from './investment-browser.mjs?v=continuity-2';
+import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=continuity-2';
+import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=continuity-2';
+import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=continuity-2';
+import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=continuity-2';
+import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=continuity-2';
+import {createSaveCoordinator} from './save-coordination.mjs?v=continuity-2';
+import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=continuity-2';
+import {createDebtBrowser} from './debt-browser.mjs?v=continuity-2';
+import {repayDebt} from './engine.mjs?v=continuity-2';
+import {normalizeMilitaryPath} from './engine.mjs?v=continuity-2';
+import {personalFinanceOverview} from './finance-overview.mjs?v=continuity-2';
+import {lifeHistoryEvents} from './timeline-history.mjs?v=continuity-2';
+import {storyView} from './story-view.mjs?v=continuity-2';
+import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=continuity-2';
+import {chooseInjuryCare} from './engine.mjs?v=continuity-2';
+import {lifeHealthSummary} from './life-health.mjs?v=continuity-2';
+import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=continuity-2';
+import {livingCostSummary} from './engine.mjs?v=continuity-2';
+import {militaryPaySummary} from './military-pay.mjs?v=continuity-2';
+import {militaryFinanceView} from './military-finance-view.mjs?v=continuity-2';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=continuity-2';
+import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=continuity-2';
+import {focusEffects} from './focus-effects.mjs?v=continuity-2';
+import {militarySavingsSummary} from './military-savings.mjs?v=continuity-2';
+import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=continuity-2';
+import {validateEstateRules} from './family-estate.mjs?v=continuity-2';
+import {validateParentRules} from './parent-careers.mjs?v=continuity-2';
+import {protagonistGender} from './person-identity.mjs?v=continuity-2';
+import {validateHouseholdRules} from './household-finance.mjs?v=continuity-2';
+import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=continuity-2';
+import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=continuity-2';
+import {createFamilyBrowser} from './family-browser.mjs?v=continuity-2';
+import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=continuity-2';
+import {createEducationBrowser} from './education-browser.mjs?v=continuity-2';
+import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=continuity-2';
+import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=continuity-2';
+import {validEducationCatalog} from './education.mjs?v=continuity-2';
+import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=continuity-2';
+import {createEmploymentBrowser} from './employment-browser.mjs?v=continuity-2';
+import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=continuity-2';
+import {occupationModelIndex} from './career-economy.mjs?v=continuity-2';
+import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=continuity-2';
+import {createAssetLoader} from './asset-loader.mjs?v=continuity-2';
+import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=continuity-2';
+import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=continuity-2';
+import {birthPresentation} from './birth-presentation.mjs?v=continuity-2';
+import {createMobileDashboard} from './mobile-dashboard.mjs?v=continuity-2';
+import {initResponsiveLayout} from './responsive.mjs?v=continuity-2';
+import {initTextSize} from './text-size.mjs?v=continuity-2';
+import {createLifeScene} from './life-scene.mjs?v=continuity-2';
+import {randomKoreanName,resolveLifeName} from './names.mjs?v=continuity-2';
+import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=continuity-2';
 const $=id=>document.getElementById(id), KEY='koreanlife-save-v2', OLD_KEY='koreanlife-save-v1', BIRTH_KEY=KEY+'-pending-birth';
 const playEnvironment=checkPlayEnvironment({getStorage:()=>globalThis.localStorage,getLocks:()=>navigator.locks}),saveStorage=playEnvironment.storage;
 const environmentNotice=document.createElement('section');environmentNotice.id='play-environment-notice';$('welcome').before(environmentNotice);renderPlayEnvironmentNotice(environmentNotice,playEnvironment,{document,onRetry:()=>location.reload()});
@@ -283,7 +283,7 @@ function openFormedFamily(){investmentBrowser?.close();if($('military-info').ope
 $('formed-family-open').addEventListener('click',openFormedFamily);
 function openFamily(){investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();if(!familyBrowser||!['game','ending'].includes(view))return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(familyBrowser))return;debtBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();familyBrowser.open(state?.profile?.birthFamily);}
 $('family-open').addEventListener('click',openFamily);$('ending-family-open').addEventListener('click',openFamily);
-async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=continuity-1',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
+async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=continuity-2',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
 
 $('careers').addEventListener('click',()=>{familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();openCareerReference(state?.job?.occupationId);});$('start').addEventListener('click',startBirthDraw);$('begin-life').addEventListener('click',startLife);$('birth-redraw').addEventListener('click',()=>startBirthDraw({redraw:true}));$('birth-back').addEventListener('click',goHome);$('resume').addEventListener('click',()=>resumeLatest());
 async function setPlayback(options){if(saveBlocked()||busy)return;busy=true;stopClock();try{fastForward=false;await updateSavedLife(current=>current,options);render();message(options.nextSpeed?`진행 속도를 ${speed}배로 바꿨습니다.`:paused?'시간을 잠시 멈췄습니다.':'시간이 다시 흐릅니다.');}catch(error){message(error.message);}finally{busy=false;}}
@@ -316,13 +316,13 @@ $('asset-load-retry').addEventListener('click',async()=>{if(!assetRetryAction)re
 $('asset-load-dismiss').addEventListener('click',()=>{if(!bootReady)return;cancelPendingAssetOpen();syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});
 async function openCareerReference(id){
  if(!bootReady)return;const ticket=beginAssetOpen();if(!closeOtherToolDialogs(careerBrowser)){cancelPendingAssetOpen();return;}debtBrowser?.close();if($('info').open)$('info').close();decisionDialog.suspend();injuryDialog.suspend();
- try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=continuity-1',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
+ try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=continuity-2',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
  catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openCareerReference(id),true);}
 }
 async function initializeGame(){
  if(initializing)return;initializing=true;assetBusy=true;$('asset-load-panel').hidden=false;$('asset-load-retry').hidden=true;$('asset-load-dismiss').hidden=true;
  try{
- const base=await assetLoader.json('./game-data.json?v=continuity-1',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
+ const base=await assetLoader.json('./game-data.json?v=continuity-2',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
  const entries=await Promise.all([
   ['marketScenarios','market-scenarios.json','국내외 정세',validateMarketScenarios],['economicRules','economic-rules.json','경제 규칙',validateEconomicRules],
   ['mortality','mortality.json','생명표',value=>mortalitySnapshot(value,'data-readiness')],['spendingCatalog','spending.json','돈쓰기 활동',validateSpendingCatalog],
@@ -332,7 +332,7 @@ async function initializeGame(){
   ['profileCatalog','city-profiles.json','도시 특징',value=>cityProfileIndex(value,base.birthCities)],
   ['mapManifest','assets/city-maps-runtime.json','지도 안내',value=>value.schemaVersion===1&&value.cityCount===base.birthCities.length&&!!value.licenseUrl&&!!value.attribution],
   ['catalog','occupations-runtime.json','직업 실행 자료',value=>{validateCareerCatalog(value);return value.occupations.length===537&&!!value.sourceCatalog?.sha256;}]
- ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=continuity-1`,{label,validate})]));
+ ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=continuity-2`,{label,validate})]));
  const loaded=Object.fromEntries(entries),catalog=loaded.catalog;profileCatalog=loaded.profileCatalog;mapManifest=loaded.mapManifest;delete loaded.catalog;delete loaded.profileCatalog;delete loaded.mapManifest;
  data={...base,...loaded,lifeHealthEvents:true,injuryCareChoices:true,lifeHealthRisk:true,childPlanningRules:true,employmentContracts:true,remedyRules:true,continuityRules:true,occupations:catalog.occupations,occupationModels:occupationModelIndex(catalog)};
  cityProfiles=cityProfileIndex(profileCatalog,data.birthCities);

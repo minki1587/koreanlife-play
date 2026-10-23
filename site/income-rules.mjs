@@ -1,7 +1,7 @@
-import {injuryImpact} from './injury-care.mjs?v=continuity-1';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=continuity-1';
-import {progressMilitaryPay} from './military-pay.mjs?v=continuity-1';
-import {employmentIncomeFactor} from './employment-contract.mjs?v=continuity-1';
+import {injuryImpact} from './injury-care.mjs?v=continuity-2';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=continuity-2';
+import {progressMilitaryPay} from './military-pay.mjs?v=continuity-2';
+import {employmentIncomeFactor} from './employment-contract.mjs?v=continuity-2';
 export function monthlyWorkIncomeWan(s){
  return s.service?.active?0:economicAnnualSalaryWan(s)/12*injuryImpact(s).workFactor*employmentIncomeFactor(s);
 }

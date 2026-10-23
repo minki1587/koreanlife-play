@@ -1,7 +1,7 @@
-import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=continuity-1';
-import {validSave,VERSION} from './engine.mjs?v=continuity-1';
-import {validCareerModel} from './career-economy.mjs?v=continuity-1';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=continuity-1';
+import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=continuity-2';
+import {validSave,VERSION} from './engine.mjs?v=continuity-2';
+import {validCareerModel} from './career-economy.mjs?v=continuity-2';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=continuity-2';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';

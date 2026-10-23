@@ -20,11 +20,14 @@ export function encodeSaveRecord(value,{minimumBytes=SAVE_CODEC_THRESHOLD_BYTES}
  const packed=JSON.stringify({codec:SAVE_CODEC,keys,strings,data:pack(source)});return bytes(packed)<originalBytes?packed:ordinary;
 }
 
+function checkPackedEnvelope(parsed){
+ if(Object.keys(parsed).length!==4||!['codec','keys','strings','data'].every(key=>Object.hasOwn(parsed,key))||!Array.isArray(parsed.keys)||!Array.isArray(parsed.strings)||parsed.keys.length>10000||parsed.strings.length>100000||parsed.keys.some(key=>typeof key!=='string'||unsafe.has(key))||new Set(parsed.keys).size!==parsed.keys.length||parsed.strings.some(text=>typeof text!=='string'))fail('CODEC_INVALID','저장 압축 사전의 구조를 확인해 주세요.');
+}
 /** Use after an existing parser's raw-size/depth checks, before validSave. */
 export function unpackParsedSaveRecord(parsed){
  if(!parsed||typeof parsed!=='object'||Array.isArray(parsed)||!Object.hasOwn(parsed,'codec'))return parsed;
  if(parsed.codec!==SAVE_CODEC){if(typeof parsed.codec==='string'&&parsed.codec.startsWith('koreanlife-'))fail('CODEC_VERSION','지원하지 않는 저장 압축 형식입니다.');return parsed;}
- if(Object.keys(parsed).length!==4||!['codec','keys','strings','data'].every(key=>Object.hasOwn(parsed,key))||!Array.isArray(parsed.keys)||!Array.isArray(parsed.strings)||parsed.keys.length>10000||parsed.strings.length>100000||parsed.keys.some(key=>typeof key!=='string'||unsafe.has(key))||new Set(parsed.keys).size!==parsed.keys.length||parsed.strings.some(text=>typeof text!=='string'))fail('CODEC_INVALID','저장 압축 사전의 구조를 확인해 주세요.');
+ checkPackedEnvelope(parsed);
  let nodes=0,characters=0;const consume=n=>{characters+=n;if(characters>MAX_EXPANDED_SAVE_BYTES)sizeError();},quoted=text=>JSON.stringify(text).length;
  function unpack(node,depth){
   if(depth>MAX_DEPTH||++nodes>MAX_NODES)fail('JSON_COMPLEXITY','저장 기록의 중첩 구조나 항목 수를 확인해 주세요.');
@@ -40,3 +43,32 @@ export function unpackParsedSaveRecord(parsed){
  const result=unpack(parsed.data,0);if(bytes(JSON.stringify(result))>MAX_EXPANDED_SAVE_BYTES)sizeError();return result;
 }
 export function decodeSaveRecord(raw){return unpackParsedSaveRecord(parse(raw));}
+
+function boundedMetadata(value,{strings=null}={}){
+ const stack=[{value,depth:0}];let nodes=0,characters=0;
+ while(stack.length){const item=stack.pop(),node=item.value;if(++nodes>64||item.depth>8)return false;
+  if(typeof node==='string'){characters+=node.length;if(characters>4096)return false;}
+  else if(node&&typeof node==='object'){
+   if(strings&&Array.isArray(node)&&node[0]===2){if(node.length!==2||!Number.isSafeInteger(node[1])||node[1]<0||node[1]>=strings.length)return false;characters+=strings[node[1]].length;if(characters>4096)return false;}
+   for(const [key,child]of Object.entries(node)){if(unsafe.has(key))return false;stack.push({value:child,depth:item.depth+1});}
+  }
+ }
+ return true;
+}
+/** Read only the small save revision header. This is NOT life validation:
+ * imports/resumes still decode and validate the entire life through their
+ * existing paths. The coordinator separately compares the exact stored bytes.
+ */
+export function peekSaveMetadata(raw){try{
+ const parsed=parse(raw);if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))return null;let metadata;
+ if(parsed.codec===SAVE_CODEC){
+  checkPackedEnvelope(parsed);const root=parsed.data;if(!Array.isArray(root)||root[0]!==0||root.length%2!==1)return null;
+  const seen=new Set();let found=false,tuple;
+  for(let index=1;index<root.length;index+=2){const id=root[index],node=root[index+1];if(!Number.isSafeInteger(id)||id<0||id>=parsed.keys.length||seen.has(id))return null;seen.add(id);
+   if(node!==null&&typeof node==='object'&&(!Array.isArray(node)||![0,1,2].includes(node[0])||node[0]===0&&node.length%2!==1||node[0]===2&&(node.length!==2||!Number.isSafeInteger(node[1])||node[1]<0||node[1]>=parsed.strings.length)))return null;
+   if(parsed.keys[id]==='saveMetadata'){found=true;tuple=node;}
+  }
+  if(!found||!boundedMetadata(tuple,{strings:parsed.strings}))return null;metadata=unpackParsedSaveRecord({...parsed,data:tuple});
+ }else{if(typeof parsed.codec==='string'&&parsed.codec.startsWith('koreanlife-'))return null;metadata=parsed.saveMetadata;if(!boundedMetadata(metadata))return null;}
+ if(!metadata||typeof metadata!=='object'||Array.isArray(metadata)||bytes(JSON.stringify(metadata))>4096)return null;return metadata;
+}catch{return null;}}

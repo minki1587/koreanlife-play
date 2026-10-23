@@ -1,9 +1,9 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=continuity-1';
-import {randomKoreanName} from './names.mjs?v=continuity-1';
-import {employmentRequirements} from './employment.mjs?v=continuity-1';
-import {entryCareerAllowed} from './career-progression.mjs?v=continuity-1';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=continuity-1';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=continuity-1';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=continuity-2';
+import {randomKoreanName} from './names.mjs?v=continuity-2';
+import {employmentRequirements} from './employment.mjs?v=continuity-2';
+import {entryCareerAllowed} from './career-progression.mjs?v=continuity-2';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=continuity-2';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=continuity-2';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property
