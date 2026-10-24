@@ -1,7 +1,7 @@
-import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=birth-draw-20261024';
-import {validSave,migrateSave,VERSION} from './engine.mjs?v=birth-draw-20261024';
-import {validCareerModel} from './career-economy.mjs?v=birth-draw-20261024';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=birth-draw-20261024';
+import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=birth-speed-20261024';
+import {validSave,migrateSave,VERSION} from './engine.mjs?v=birth-speed-20261024';
+import {validCareerModel} from './career-economy.mjs?v=birth-speed-20261024';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=birth-speed-20261024';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';

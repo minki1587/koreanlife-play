@@ -1,6 +1,6 @@
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=birth-draw-20261024';
-import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=birth-draw-20261024';
-import {militaryObligation} from './military-obligation.mjs?v=birth-draw-20261024';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=birth-speed-20261024';
+import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=birth-speed-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=birth-speed-20261024';
 
 const month=value=>Number.isInteger(value)&&value>=0&&value<=1800;
 const FIELDS=['version','activatedAtMonth','updatedAtMonth','enabled'];

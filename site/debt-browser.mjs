@@ -1,6 +1,6 @@
-import {debtRepaymentQuote} from './debt-rules.mjs?v=birth-draw-20261024';
-import {investmentMoney} from './investment-browser.mjs?v=birth-draw-20261024';
-import {appendUiFacts,reportActionError,clearActionError} from './ui-copy.mjs?v=birth-draw-20261024';
+import {debtRepaymentQuote} from './debt-rules.mjs?v=birth-speed-20261024';
+import {investmentMoney} from './investment-browser.mjs?v=birth-speed-20261024';
+import {appendUiFacts,reportActionError,clearActionError} from './ui-copy.mjs?v=birth-speed-20261024';
 
 export function createDebtBrowser({getState,onAction,onOpen,onClose,document=globalThis.document}){
  const el=(tag,text,className)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;};

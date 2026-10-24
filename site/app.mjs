@@ -1,83 +1,83 @@
-import {createBirthReel} from './birth-reel.mjs?v=birth-draw-20261024';
-import {createPortableSaveDownload} from './portable-save.mjs?v=birth-draw-20261024';
-import {enableContinuity,enableRefinements,participateReserve,setReserveAutomation,settleAutomaticReserve} from './engine.mjs?v=birth-draw-20261024';
-import {militaryObligation} from './military-obligation.mjs?v=birth-draw-20261024';
-import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=birth-draw-20261024';
-import {serviceDeferralSummary} from './service-deferral.mjs?v=birth-draw-20261024';
-import {reserveSummary} from './reserve-service.mjs?v=birth-draw-20261024';
-import {serviceReviewMessage} from './service-review-view.mjs?v=birth-draw-20261024';
-import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=birth-draw-20261024';
-import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=birth-draw-20261024';
-import {freezeSaveSnapshot} from './immutable-save.mjs?v=birth-draw-20261024';
-import {laterLifeCard} from './later-life.mjs?v=birth-draw-20261024';
-import {chooseLaterLife} from './engine.mjs?v=birth-draw-20261024';
-import {eventGuidance} from './event-guidance.mjs?v=birth-draw-20261024';
-import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=birth-draw-20261024';
-import {createBootLoadStatus} from './boot-load-status.mjs?v=birth-draw-20261024';
-import {careerMilestone} from './career-milestone.mjs?v=birth-draw-20261024';
-import {serviceReadiness} from './service-readiness.mjs?v=birth-draw-20261024';
-import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=birth-draw-20261024';
-import {createCareFundingView} from './care-funding-browser.mjs?v=birth-draw-20261024';
-import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=birth-draw-20261024';
-import {createFocusedLife} from './focused-life.mjs?v=birth-draw-20261024';
-import {createTimelineFeed} from './timeline-feed.mjs?v=birth-draw-20261024';
-import {renderActionMenu} from './action-menu.mjs?v=birth-draw-20261024';
-import {clockPresentation,playbackShortcutAllowed} from './clock-status.mjs?v=birth-draw-20261024';
-import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=birth-draw-20261024';
-import {createInvestmentBrowser} from './investment-browser.mjs?v=birth-draw-20261024';
-import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=birth-draw-20261024';
-import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=birth-draw-20261024';
-import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=birth-draw-20261024';
-import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=birth-draw-20261024';
-import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=birth-draw-20261024';
-import {createSaveCoordinator} from './save-coordination.mjs?v=birth-draw-20261024';
-import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=birth-draw-20261024';
-import {createDebtBrowser} from './debt-browser.mjs?v=birth-draw-20261024';
-import {repayDebt} from './engine.mjs?v=birth-draw-20261024';
-import {normalizeMilitaryPath} from './engine.mjs?v=birth-draw-20261024';
-import {personalFinanceOverview} from './finance-overview.mjs?v=birth-draw-20261024';
-import {lifeHistoryEvents} from './timeline-history.mjs?v=birth-draw-20261024';
-import {storyView} from './story-view.mjs?v=birth-draw-20261024';
-import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=birth-draw-20261024';
-import {chooseInjuryCare} from './engine.mjs?v=birth-draw-20261024';
-import {lifeHealthSummary} from './life-health.mjs?v=birth-draw-20261024';
-import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=birth-draw-20261024';
-import {livingCostSummary} from './engine.mjs?v=birth-draw-20261024';
-import {militaryPaySummary} from './military-pay.mjs?v=birth-draw-20261024';
-import {militaryFinanceView} from './military-finance-view.mjs?v=birth-draw-20261024';
-import {displayCopy,displayLines} from './ui-copy.mjs?v=birth-draw-20261024';
-import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=birth-draw-20261024';
-import {focusEffects} from './focus-effects.mjs?v=birth-draw-20261024';
-import {militarySavingsSummary} from './military-savings.mjs?v=birth-draw-20261024';
-import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=birth-draw-20261024';
-import {validateEstateRules} from './family-estate.mjs?v=birth-draw-20261024';
-import {validateParentRules} from './parent-careers.mjs?v=birth-draw-20261024';
-import {protagonistGender} from './person-identity.mjs?v=birth-draw-20261024';
-import {validateHouseholdRules} from './household-finance.mjs?v=birth-draw-20261024';
-import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=birth-draw-20261024';
-import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=birth-draw-20261024';
-import {createFamilyBrowser} from './family-browser.mjs?v=birth-draw-20261024';
-import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=birth-draw-20261024';
-import {createEducationBrowser} from './education-browser.mjs?v=birth-draw-20261024';
-import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=birth-draw-20261024';
-import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=birth-draw-20261024';
-import {validEducationCatalog} from './education.mjs?v=birth-draw-20261024';
-import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=birth-draw-20261024';
-import {createEmploymentBrowser} from './employment-browser.mjs?v=birth-draw-20261024';
-import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=birth-draw-20261024';
-import {occupationModelIndex} from './career-economy.mjs?v=birth-draw-20261024';
-import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=birth-draw-20261024';
-import {createAssetLoader} from './asset-loader.mjs?v=birth-draw-20261024';
-import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=birth-draw-20261024';
-import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=birth-draw-20261024';
-import {birthPresentation} from './birth-presentation.mjs?v=birth-draw-20261024';
-import {createMobileDashboard} from './mobile-dashboard.mjs?v=birth-draw-20261024';
-import {createCashGlanceLayout} from './mobile-cash-layout.mjs?v=birth-draw-20261024';
-import {initResponsiveLayout} from './responsive.mjs?v=birth-draw-20261024';
-import {initTextSize} from './text-size.mjs?v=birth-draw-20261024';
-import {createLifeScene} from './life-scene.mjs?v=birth-draw-20261024';
-import {randomKoreanName,resolveLifeName} from './names.mjs?v=birth-draw-20261024';
-import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=birth-draw-20261024';
+import {createBirthReel} from './birth-reel.mjs?v=birth-speed-20261024';
+import {createPortableSaveDownload} from './portable-save.mjs?v=birth-speed-20261024';
+import {enableContinuity,enableRefinements,participateReserve,setReserveAutomation,settleAutomaticReserve} from './engine.mjs?v=birth-speed-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=birth-speed-20261024';
+import {createMilitaryDutyBrowser} from './military-duty-browser.mjs?v=birth-speed-20261024';
+import {serviceDeferralSummary} from './service-deferral.mjs?v=birth-speed-20261024';
+import {reserveSummary} from './reserve-service.mjs?v=birth-speed-20261024';
+import {serviceReviewMessage} from './service-review-view.mjs?v=birth-speed-20261024';
+import {encodeSaveRecord,decodeSaveRecord} from './save-codec.mjs?v=birth-speed-20261024';
+import {checkPlayEnvironment,renderPlayEnvironmentNotice} from './play-environment.mjs?v=birth-speed-20261024';
+import {freezeSaveSnapshot} from './immutable-save.mjs?v=birth-speed-20261024';
+import {laterLifeCard} from './later-life.mjs?v=birth-speed-20261024';
+import {chooseLaterLife} from './engine.mjs?v=birth-speed-20261024';
+import {eventGuidance} from './event-guidance.mjs?v=birth-speed-20261024';
+import {focusScreen,focusBirthResult} from './screen-focus.mjs?v=birth-speed-20261024';
+import {createBootLoadStatus} from './boot-load-status.mjs?v=birth-speed-20261024';
+import {careerMilestone} from './career-milestone.mjs?v=birth-speed-20261024';
+import {serviceReadiness} from './service-readiness.mjs?v=birth-speed-20261024';
+import {enableRemedies,enlistAfterRecovery,declineDeferredService,completeCareerMilestone} from './engine.mjs?v=birth-speed-20261024';
+import {createCareFundingView} from './care-funding-browser.mjs?v=birth-speed-20261024';
+import {renderDecisionRecommendations} from './decision-recommendations.mjs?v=birth-speed-20261024';
+import {createFocusedLife} from './focused-life.mjs?v=birth-speed-20261024';
+import {createTimelineFeed} from './timeline-feed.mjs?v=birth-speed-20261024';
+import {renderActionMenu} from './action-menu.mjs?v=birth-speed-20261024';
+import {clockPresentation,playbackShortcutAllowed} from './clock-status.mjs?v=birth-speed-20261024';
+import {enableFormedFamily,familyAction,enableMarket,investmentAction,enableEconomicLife} from './engine.mjs?v=birth-speed-20261024';
+import {createInvestmentBrowser} from './investment-browser.mjs?v=birth-speed-20261024';
+import {economicAnnualSalaryWan,validateEconomicRules} from './economic-life.mjs?v=birth-speed-20261024';
+import {investmentSummary,validateMarketScenarios} from './market-economy.mjs?v=birth-speed-20261024';
+import {createFormedFamilyBrowser} from './formed-family-browser.mjs?v=birth-speed-20261024';
+import {createSaveTransferBrowser} from './save-transfer-browser.mjs?v=birth-speed-20261024';
+import {readSaveFile,inspectSaveText,commitSaveTransfer,previewStoredBackup,createBackupDownload,recoverSaveTransfer,getPendingRecoveryDownloads,listStoredBackups,removeStoredBackup,IMPORT_BACKUP_KEY,PREVIOUS_BACKUP_KEY} from './save-transfer.mjs?v=birth-speed-20261024';
+import {createSaveCoordinator} from './save-coordination.mjs?v=birth-speed-20261024';
+import {saveStorageUsage,isStorageQuotaError,formatStorageBytes} from './save-capacity.mjs?v=birth-speed-20261024';
+import {createDebtBrowser} from './debt-browser.mjs?v=birth-speed-20261024';
+import {repayDebt} from './engine.mjs?v=birth-speed-20261024';
+import {normalizeMilitaryPath} from './engine.mjs?v=birth-speed-20261024';
+import {personalFinanceOverview} from './finance-overview.mjs?v=birth-speed-20261024';
+import {lifeHistoryEvents} from './timeline-history.mjs?v=birth-speed-20261024';
+import {storyView} from './story-view.mjs?v=birth-speed-20261024';
+import {pendingInjuryCare,injuryCareOptions,injuryImpact} from './injury-care.mjs?v=birth-speed-20261024';
+import {chooseInjuryCare} from './engine.mjs?v=birth-speed-20261024';
+import {lifeHealthSummary} from './life-health.mjs?v=birth-speed-20261024';
+import {lifeHealthFacts,lifeHealthHistory,lifeEndingReason} from './life-health-view.mjs?v=birth-speed-20261024';
+import {livingCostSummary} from './engine.mjs?v=birth-speed-20261024';
+import {militaryPaySummary} from './military-pay.mjs?v=birth-speed-20261024';
+import {militaryFinanceView} from './military-finance-view.mjs?v=birth-speed-20261024';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=birth-speed-20261024';
+import {timelineParts,timelineContextKey} from './timeline-parts.mjs?v=birth-speed-20261024';
+import {focusEffects} from './focus-effects.mjs?v=birth-speed-20261024';
+import {militarySavingsSummary} from './military-savings.mjs?v=birth-speed-20261024';
+import {createDecisionDialog,decisionKey} from './decision-dialog.mjs?v=birth-speed-20261024';
+import {validateEstateRules} from './family-estate.mjs?v=birth-speed-20261024';
+import {validateParentRules} from './parent-careers.mjs?v=birth-speed-20261024';
+import {protagonistGender} from './person-identity.mjs?v=birth-speed-20261024';
+import {validateHouseholdRules} from './household-finance.mjs?v=birth-speed-20261024';
+import {enableHouseholdFinance,setUniversityFundingPause} from './engine.mjs?v=birth-speed-20261024';
+import {generateBirthFamily,validBirthFamily,validateFamilyRules} from './birth-family.mjs?v=birth-speed-20261024';
+import {createFamilyBrowser} from './family-browser.mjs?v=birth-speed-20261024';
+import {createLifestyleBrowser} from './lifestyle-browser.mjs?v=birth-speed-20261024';
+import {createEducationBrowser} from './education-browser.mjs?v=birth-speed-20261024';
+import {formatMoney,spend,validateCatalog as validateSpendingCatalog} from './spending.mjs?v=birth-speed-20261024';
+import {setHobbies,activateHobbies,setHobbyPlan,setHobbyMonthlyBudget} from './hobby-rules.mjs?v=birth-speed-20261024';
+import {validEducationCatalog} from './education.mjs?v=birth-speed-20261024';
+import {applyToSchool,applyToUniversity,deferUniversity} from './engine.mjs?v=birth-speed-20261024';
+import {createEmploymentBrowser} from './employment-browser.mjs?v=birth-speed-20261024';
+import {applyForJob,trainForCareer,moveForCareer,deferEmployment} from './engine.mjs?v=birth-speed-20261024';
+import {occupationModelIndex} from './career-economy.mjs?v=birth-speed-20261024';
+import {lifeLimitMonths,mortalitySnapshot} from './mortality.mjs?v=birth-speed-20261024';
+import {createAssetLoader} from './asset-loader.mjs?v=birth-speed-20261024';
+import {createCareerBrowser,validateCareerCatalog} from './career-browser.mjs?v=birth-speed-20261024';
+import {cityProfileIndex,currentAreaCaption} from './city-profiles.mjs?v=birth-speed-20261024';
+import {birthPresentation} from './birth-presentation.mjs?v=birth-speed-20261024';
+import {createMobileDashboard} from './mobile-dashboard.mjs?v=birth-speed-20261024';
+import {createCashGlanceLayout} from './mobile-cash-layout.mjs?v=birth-speed-20261024';
+import {initResponsiveLayout} from './responsive.mjs?v=birth-speed-20261024';
+import {initTextSize} from './text-size.mjs?v=birth-speed-20261024';
+import {createLifeScene} from './life-scene.mjs?v=birth-speed-20261024';
+import {randomKoreanName,resolveLifeName} from './names.mjs?v=birth-speed-20261024';
+import {createLife,advanceLife,choose,choicesFor,nextDecision,validSave,migrateSave,headline,setFocus,drawBirthCity} from './engine.mjs?v=birth-speed-20261024';
 const $=id=>document.getElementById(id), KEY='koreanlife-save-v2', OLD_KEY='koreanlife-save-v1', BIRTH_KEY=KEY+'-pending-birth';
 const playEnvironment=checkPlayEnvironment({getStorage:()=>globalThis.localStorage,getLocks:()=>navigator.locks}),saveStorage=playEnvironment.storage;
 const environmentNotice=document.createElement('section');environmentNotice.id='play-environment-notice';$('welcome').before(environmentNotice);renderPlayEnvironmentNotice(environmentNotice,playEnvironment,{document,onRetry:()=>location.reload()});
@@ -202,7 +202,7 @@ function stopSpin(){spinToken++;birthReel.stop();}
 function persistBirth(){try{saveStorage.setItem(BIRTH_KEY,JSON.stringify({seed:pendingBirth.seed,name:pendingBirth.name,city:pendingBirth.city,family:pendingBirth.family,dataVersion:data.version,weightVersion:data.birthCitySource.rawSha256}));}catch{storageIssue=true;message('');}}
 function readBirth(){try{const raw=saveStorage.getItem(BIRTH_KEY);if(!raw)return null;const p=JSON.parse(raw);if(typeof p.seed!=='string'||!p.seed||p.seed.length>64||typeof p.name!=='string'||p.name.length>16||p.dataVersion!==data.version||(p.weightVersion??p.populationVersion)!==data.birthCitySource.rawSha256)throw new Error('pending');const city=drawBirthCity(p.seed,data);if(JSON.stringify(p.city)!==JSON.stringify(city))throw new Error('pending city');if(!p.name.trim()){p.name=suggestedName;try{saveStorage.setItem(BIRTH_KEY,JSON.stringify(p));}catch{storageIssue=true;}}const family=Object.hasOwn(p,'family')?p.family:generateBirthFamily(p.seed,city,data);if(!validBirthFamily(family,p.seed,city.id))throw new Error('pending family');return {...p,city,family};}catch{try{saveStorage.removeItem(BIRTH_KEY);}catch{}message('저장된 추첨 자료가 현재 자료와 달라 새로 추첨할 수 있습니다.');return null;}}
 function revealBirth(){if(!pendingBirth)return;stopSpin();$('birth-name').textContent=`${pendingBirth.name}님의 첫 번째 주소`;const c=pendingBirth.city,profile=cityProfiles.get(c.id),current=currentAreaCaption(profile);$('birth-current-area').textContent=current;$('birth-current-area').hidden=!current;$('city-reel').setAttribute('aria-live','polite');$('city-reel').textContent=c.name;renderCityMap(c);$('birth-region').textContent=c.sourceRegion||c.region;$('birth').classList.add('revealed');$('birth').setAttribute('aria-busy','false');$('birth-probability').textContent=(c.probability*100).toLocaleString('ko-KR',{minimumFractionDigits:4,maximumFractionDigits:4})+'%';const info=birthPresentation(c,data.birthCitySource);$('birth-probability-label').textContent=info.probabilityLabel;$('birth-weight-label').textContent=info.weightLabel;$('birth-population').textContent=info.weightText;$('birth-source-date').textContent=info.periodText;$('birth-method').textContent=info.method;$('birth-features').textContent=profile.summary;persistBirth();$('birth-result').hidden=false;$('begin-life').disabled=!playEnvironment.supported;$('birth-redraw').disabled=!playEnvironment.supported;message('');focusBirthResult(document);}
-function startBirthDraw({redraw=false}={}){if(!playEnvironment.supported)return;if(busy||(redraw&&(!pendingBirth||view!=='birth'||$('birth').getAttribute('aria-busy')==='true')))return;stopClock();if(pendingBirth&&!redraw){show('birth');void finishBirthDraw();window.scrollTo({top:0,behavior:'instant'});return;}busy=true;try{const seed=crypto.getRandomValues(new Uint32Array(2)).join('-'),name=redraw?pendingBirth.name:resolveLifeName($('name').value,suggestedName),city=drawBirthCity(seed,data);if(!city)throw new Error('cities');pendingBirth={seed,name,city,family:generateBirthFamily(seed,city,data)};$('birth-name').textContent=`${name}님의 첫 번째 주소`;persistBirth();stopSpin();show('birth');$('birth').classList.remove('revealed');$('birth').setAttribute('aria-busy','true');$('birth-result').hidden=true;$('city-map').style.visibility='hidden';$('city-reel').textContent='어디에서 태어날까요?';$('birth-current-area').hidden=true;$('city-reel').setAttribute('aria-live','off');$('begin-life').disabled=true;$('birth-redraw').disabled=true;$('birth-region').textContent='대한민국 어딘가에서';message('');window.scrollTo({top:0,behavior:'instant'});if(matchMedia('(prefers-reduced-motion: reduce)').matches){void finishBirthDraw();return;}birthReel.start(data.birthCities,Number(seed.split('-')[0])%data.birthCities.length);}catch{pendingBirth=null;show('welcome');message('출생도시를 추첨하지 못했습니다. 자료를 다시 불러와주세요.');}finally{busy=false;}}
+function startBirthDraw({redraw=false}={}){if(!playEnvironment.supported)return;if(busy||(redraw&&(!pendingBirth||view!=='birth'||$('birth').getAttribute('aria-busy')==='true')))return;stopClock();if(pendingBirth&&!redraw){show('birth');void finishBirthDraw();window.scrollTo({top:0,behavior:'instant'});return;}busy=true;try{const seed=crypto.getRandomValues(new Uint32Array(2)).join('-'),name=redraw?pendingBirth.name:resolveLifeName($('name').value,suggestedName),city=drawBirthCity(seed,data);if(!city)throw new Error('cities');pendingBirth={seed,name,city,family:generateBirthFamily(seed,city,data)};$('birth-name').textContent=`${name}님의 첫 번째 주소`;persistBirth();stopSpin();show('birth');$('birth').classList.remove('revealed');$('birth').setAttribute('aria-busy','true');$('birth-result').hidden=true;$('city-map').style.visibility='hidden';$('city-reel').textContent='어디에서 태어날까요?';$('birth-current-area').hidden=true;$('city-reel').setAttribute('aria-live','off');$('begin-life').disabled=true;$('birth-redraw').disabled=true;$('birth-region').textContent='대한민국 어딘가에서';message('');window.scrollTo({top:0,behavior:'instant'});if(matchMedia('(prefers-reduced-motion: reduce)').matches){void finishBirthDraw();return;}birthReel.start(data.birthCities,Number(seed.split('-')[0])%data.birthCities.length,city);}catch{pendingBirth=null;show('welcome');message('출생도시를 추첨하지 못했습니다. 자료를 다시 불러와주세요.');}finally{busy=false;}}
 async function startLife(){if(!playEnvironment.supported)return;if(saveBlocked()){showSaveConflict();return;}if(transferRecoveryError){message(transferRecoveryError);return;}if(busy||!pendingBirth||$('begin-life').disabled)return;busy=true;stopSpin();stopClock();try{const fresh=createLife(pendingBirth.seed,data,pendingBirth.name,{birthCity:pendingBirth.city,birthFamily:pendingBirth.family});if(!validSave(fresh))throw new Error('새 삶의 기록을 확인하지 못해 기존 기록을 유지합니다.');if(!saveCoordinator)throw new Error('안전한 저장을 준비하지 못했습니다.');const preview=inspectSaveText(JSON.stringify(fresh));const result=await saveCoordinator.run(({beforePrimary,metadata})=>{checkTransferRecovery();return commitSaveTransfer(saveStorage,preview,{confirmed:true,life:fresh,backupKey:PREVIOUS_BACKUP_KEY,settings:{paused:false,speed:1},saveMetadata:metadata,expectedPrimary:beforePrimary});});state=freezeSaveSnapshot(result.life);hideSaveConflict();storageQuotaBlocked=false;storageIssue=false;paused=false;fastForward=false;speed=1;feedLimit=16;moneyFeedLimit=16;endingFeedLimit=80;lastChanges=[];try{saveStorage.removeItem(BIRTH_KEY);}catch{}pendingBirth=null;renderStorageCapacity();message('새로운 삶이 시작되었습니다. 시간이 자동으로 흐르며, 갈림길에서는 선택을 기다립니다.');render();window.scrollTo({top:0,behavior:'instant'});}catch(error){if(error?.code==='SAVE_CONFLICT')showSaveConflict(error);else{handleStorageQuota(error);if(error?.recoveryRequired){transferRecoveryError=error.message;storageIssue=true;}message(error?.message||'추첨 결과를 확인하지 못했습니다. 새로고침 후 다시 확인해주세요.');}}finally{busy=false;}}
 function residenceLabel(r){const city=data.birthCities?.find(c=>c.region===r.region&&c.name===r.city);if(city)return cityLabel(city);return ["특별시","광역시","특별자치시"].some(s=>r.city===r.region+s)?r.city:[r.region,r.city].filter(Boolean).join(" ");}
 function ageText(s){return `${s.age}세 ${s.month||0}개월`;}
@@ -313,7 +313,7 @@ function openFormedFamily(){investmentBrowser?.close();if($('military-info').ope
 $('formed-family-open').addEventListener('click',openFormedFamily);
 function openFamily(){investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();if(!familyBrowser||!['game','ending'].includes(view))return;cancelPendingAssetOpen();if(!closeOtherToolDialogs(familyBrowser))return;debtBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();if($('info').open)$('info').close();familyBrowser.open(state?.profile?.birthFamily);}
 $('family-open').addEventListener('click',openFamily);$('ending-family-open').addEventListener('click',openFamily);
-async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=birth-draw-20261024',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
+async function openInfo(which='terms'){const ticket=beginAssetOpen();if(!closeOtherToolDialogs('info')){cancelPendingAssetOpen();return;}debtBrowser?.close();investmentBrowser?.close();if($('military-info').open)$('military-info').close();formedFamilyBrowser?.close();decisionDialog.suspend();injuryDialog.suspend();familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();careerBrowser?.close();stopClock();if(state)lifeScene.update(state,data,{running:false});try{const policy=await assetLoader.json('./policies.json?v=birth-speed-20261024',{label:'서비스 정책',validate:value=>!!value.documents?.terms&&!!value.documents?.privacy&&!!value.documents?.contact});if(ticket!==assetOpenSerial)return;policyData=policy;assetBusy=!bootReady;if(bootReady)$('asset-load-panel').hidden=true;renderPolicy(which);renderRuntimeStatus();if(!$('info').open)$('info').showModal();$('policy-title').focus({preventScroll:true});}catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openInfo(which),true);}}
 
 $('careers').addEventListener('click',()=>{familyBrowser?.close();employmentBrowser?.close();lifestyleBrowser?.close();educationBrowser?.close();if($('info').open)$('info').close();openCareerReference(state?.job?.occupationId);});$('start').addEventListener('click',startBirthDraw);$('begin-life').addEventListener('click',startLife);$('birth-redraw').addEventListener('click',()=>startBirthDraw({redraw:true}));$('birth-back').addEventListener('click',goHome);$('resume').addEventListener('click',()=>resumeLatest());
 async function setPlayback(options){if(saveBlocked()||busy)return;busy=true;stopClock();try{fastForward=false;await updateSavedLife(current=>current,options);render();message(options.nextSpeed?`진행 속도를 ${speed}배로 바꿨습니다.`:paused?'시간을 잠시 멈췄습니다.':'시간이 다시 흐릅니다.');}catch(error){message(error.message);}finally{busy=false;}}
@@ -346,13 +346,13 @@ $('asset-load-retry').addEventListener('click',async()=>{if(!assetRetryAction)re
 $('asset-load-dismiss').addEventListener('click',()=>{if(!bootReady)return;cancelPendingAssetOpen();syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();});
 async function openCareerReference(id){
  if(!bootReady)return;const ticket=beginAssetOpen();if(!closeOtherToolDialogs(careerBrowser)){cancelPendingAssetOpen();return;}debtBrowser?.close();if($('info').open)$('info').close();decisionDialog.suspend();injuryDialog.suspend();
- try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=birth-draw-20261024',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
+ try{if(!careerBrowser){const catalog=await assetLoader.json('./occupations.json?v=birth-speed-20261024',{label:'직업 원자료',validate:validateCareerCatalog});if(ticket!==assetOpenSerial)return;if(!careerBrowser)careerBrowser=createCareerBrowser({catalog,onOpen:()=>{decisionDialog.suspend();injuryDialog.suspend();stopClock();if(state)lifeScene.update(state,data,{running:false});},onClose:()=>{syncDecisionDialog();if(view==='game'&&state)lifeScene.update(state,data,{running:canRun()});schedule();}});}if(ticket!==assetOpenSerial)return;assetBusy=false;$('asset-load-panel').hidden=true;careerBrowser.open(id);}
  catch(error){if(ticket===assetOpenSerial)showAssetFailure(error,()=>openCareerReference(id),true);}
 }
 async function initializeGame(){
  if(initializing)return;initializing=true;assetBusy=true;$('asset-load-panel').hidden=false;$('asset-load-retry').hidden=true;$('asset-load-dismiss').hidden=true;
  try{
- const base=await assetLoader.json('./game-data.json?v=birth-draw-20261024',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
+ const base=await assetLoader.json('./game-data.json?v=birth-speed-20261024',{label:'기본 게임 자료',validate:value=>!!value.tuition?.length&&!!value.service?.army&&!!value.birthCities?.length&&!!drawBirthCity('data-readiness',value)});
  const entries=await Promise.all([
   ['marketScenarios','market-scenarios.json','국내외 정세',validateMarketScenarios],['economicRules','economic-rules.json','경제 규칙',validateEconomicRules],
   ['mortality','mortality.json','생명표',value=>mortalitySnapshot(value,'data-readiness')],['spendingCatalog','spending.json','돈쓰기 활동',validateSpendingCatalog],
@@ -362,7 +362,7 @@ async function initializeGame(){
   ['profileCatalog','city-profiles.json','도시 특징',value=>cityProfileIndex(value,base.birthCities)],
   ['mapManifest','assets/city-maps-runtime.json','지도 안내',value=>value.schemaVersion===1&&value.cityCount===base.birthCities.length&&!!value.licenseUrl&&!!value.attribution],
   ['catalog','occupations-runtime.json','직업 실행 자료',value=>{validateCareerCatalog(value);return value.occupations.length===537&&!!value.sourceCatalog?.sha256;}]
- ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=birth-draw-20261024`,{label,validate})]));
+ ].map(async([key,file,label,validate])=>[key,await assetLoader.json(`./${file}?v=birth-speed-20261024`,{label,validate})]));
  const loaded=Object.fromEntries(entries),catalog=loaded.catalog;profileCatalog=loaded.profileCatalog;mapManifest=loaded.mapManifest;delete loaded.catalog;delete loaded.profileCatalog;delete loaded.mapManifest;
  data={...base,...loaded,lifeHealthEvents:true,injuryCareChoices:true,lifeHealthRisk:true,childPlanningRules:true,employmentContracts:true,remedyRules:true,continuityRules:true,refinementsRules:true,childSupportRules:true,occupations:catalog.occupations,occupationModels:occupationModelIndex(catalog)};
  cityProfiles=cityProfileIndex(profileCatalog,data.birthCities);

@@ -1,5 +1,5 @@
-import {careerModelFieldViews} from './career-model-views.mjs?v=birth-draw-20261024';
-import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=birth-draw-20261024';
+import {careerModelFieldViews} from './career-model-views.mjs?v=birth-speed-20261024';
+import {displayCopy,displayLines,appendUiFacts} from './ui-copy.mjs?v=birth-speed-20261024';
 const PAGE_SIZE = 20;
 const FIELD_DEFINITIONS = Object.freeze([
   ['occupation', '직업명'], ['education', '학력·훈련'], ['salary', '임금'],

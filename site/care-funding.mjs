@@ -1,7 +1,7 @@
-import {injuryCareOptions,pendingInjuryCare,selectInjuryCare} from './injury-care.mjs?v=birth-draw-20261024';
-import {applyCareLiquidation,investmentSummary,validMarket} from './market-economy.mjs?v=birth-draw-20261024';
-import {familySupportEligible,personalLivingWan,activeHobbyCost} from './household-finance.mjs?v=birth-draw-20261024';
-import {economicCostWan} from './economic-life.mjs?v=birth-draw-20261024';
+import {injuryCareOptions,pendingInjuryCare,selectInjuryCare} from './injury-care.mjs?v=birth-speed-20261024';
+import {applyCareLiquidation,investmentSummary,validMarket} from './market-economy.mjs?v=birth-speed-20261024';
+import {familySupportEligible,personalLivingWan,activeHobbyCost} from './household-finance.mjs?v=birth-speed-20261024';
+import {economicCostWan} from './economic-life.mjs?v=birth-speed-20261024';
 const clone=x=>structuredClone(x),q=n=>Math.round(n*10000)/10000,money=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0&&Math.abs(q(n)-n)<1e-8,same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 export const CARE_FUNDING_VERSION='care-funding-v1';
 function planOf(plan={}){if(!plan||typeof plan!=='object'||Array.isArray(plan)||Object.keys(plan).some(k=>!['sales','useFamilySupport','allowLoan'].includes(k)))throw new TypeError('치료비 마련 계획을 확인해 주세요.');const p={sales:[],useFamilySupport:false,allowLoan:false,...clone(plan)};if(!Array.isArray(p.sales)||p.sales.length>3||typeof p.useFamilySupport!=='boolean'||typeof p.allowLoan!=='boolean'||new Set(p.sales.map(r=>r?.productId)).size!==p.sales.length||p.sales.some(r=>!r||Object.keys(r).length!==2||!['property','stock','fund'].includes(r.productId)||!Number.isSafeInteger(r.units)||r.units<1))throw new TypeError('매각 수량과 자금 동의를 확인해 주세요.');return p;}

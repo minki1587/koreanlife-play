@@ -1,8 +1,8 @@
-import {parentDeathCheck} from './family-estate.mjs?v=birth-draw-20261024';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=birth-draw-20261024';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=birth-draw-20261024';
-import {careerProgressionAssessment} from './career-progression.mjs?v=birth-draw-20261024';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=birth-draw-20261024';
+import {parentDeathCheck} from './family-estate.mjs?v=birth-speed-20261024';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=birth-speed-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=birth-speed-20261024';
+import {careerProgressionAssessment} from './career-progression.mjs?v=birth-speed-20261024';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=birth-speed-20261024';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

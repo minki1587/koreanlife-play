@@ -1,6 +1,6 @@
 // Explicit gameplay prerequisites, separate from verified source/legal fields.
 // Durations and a 24-month preparation course are game design, not license rules.
-import {completedDegrees} from './degree-history.mjs?v=birth-draw-20261024';
+import {completedDegrees} from './degree-history.mjs?v=birth-speed-20261024';
 export const PROFESSION_RULES_VERSION='profession-paths-v1';
 const entries=[
  ...Array.from({length:13},(_,index)=>[`know-3011${String(index+1).padStart(2,'0')}`,'medicine','의학',72]),
