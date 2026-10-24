@@ -1,9 +1,9 @@
-import {schoolChoices,universityOptions} from './education.mjs?v=popup-auto-20261024';
-import {evaluateEmployment} from './employment.mjs?v=popup-auto-20261024';
-import {employmentTypeOptions} from './employment-contract.mjs?v=popup-auto-20261024';
-import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=popup-auto-20261024';
-import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
-import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=popup-auto-20261024';
+import {schoolChoices,universityOptions} from './education.mjs?v=living-costs-20261024';
+import {evaluateEmployment} from './employment.mjs?v=living-costs-20261024';
+import {employmentTypeOptions} from './employment-contract.mjs?v=living-costs-20261024';
+import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=living-costs-20261024';
+import {formatMoney} from './spending.mjs?v=living-costs-20261024';
+import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=living-costs-20261024';
 
 /** Same real support checks as the full browsers; presentation consumes no RNG. */
 export function decisionRecommendations(state,data){
@@ -38,7 +38,7 @@ export function renderDecisionRecommendations({document=globalThis.document,host
   const add=text=>{const li=document.createElement('li');li.textContent=displayCopy(text);facts.append(li);};
   if(model.kind==='jobs'){
    const assessment=evaluateEmployment(state,row),contract=data.employmentContracts?employmentTypeOptions(row)[0]:null;
-   add(Number.isFinite(assessment.offeredAnnualWan)?`제시 연봉 ${formatMoney(assessment.offeredAnnualWan)}`:'제시 연봉 미확인');if(contract)add(`고용형태 ${contract.label}`);
+   add(Number.isFinite(assessment.offeredAnnualWan)?`제시 세후 연봉 ${formatMoney(assessment.offeredAnnualWan)}`:'제시 세후 연봉 미확인');if(contract)add(`고용형태 ${contract.label}`);
    if(assessment.economicContext?.activated)add(`합격 가능성 ${Math.round(assessment.hiringProbability*1000)/10}% · 월 1회 지원`);
    if(row.modeled?.workingTime?.weeklyHours)add(`근무시간 주 ${row.modeled.workingTime.weeklyHours}시간`);
    if(Number.isFinite(row.modeled?.occupationalRisks?.level))add(`업무 위험도 ${row.modeled.occupationalRisks.level}/5`);

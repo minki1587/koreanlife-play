@@ -1,10 +1,10 @@
-import {militaryObligation} from './military-obligation.mjs?v=popup-auto-20261024';
-import {careerMilestone} from './career-milestone.mjs?v=popup-auto-20261024';
-import {displayCopy} from './ui-copy.mjs?v=popup-auto-20261024';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=popup-auto-20261024';
-import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
-import {focusedImportantEvents} from './history-digest.mjs?v=popup-auto-20261024';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=popup-auto-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=living-costs-20261024';
+import {careerMilestone} from './career-milestone.mjs?v=living-costs-20261024';
+import {displayCopy} from './ui-copy.mjs?v=living-costs-20261024';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=living-costs-20261024';
+import {formatMoney} from './spending.mjs?v=living-costs-20261024';
+import {focusedImportantEvents} from './history-digest.mjs?v=living-costs-20261024';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=living-costs-20261024';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},
@@ -37,7 +37,7 @@ export function milestoneGuide(state,{initialMonth=state?.totalMonths??0,seen=[]
  if(task?.kind==='school')return make(state.pendingDecision,'학비와 배움 효과를 비교해 학교를 선택하세요. 추천부터 보고 전체 학교도 확인할 수 있어요.');
  if(task?.kind==='university')return make('university','현재 배움과 준비 가능한 학비에 맞는 경로부터 살펴보세요. 지역과 전공을 직접 찾아볼 수도 있어요.');
  if(task?.kind==='career-context')return make('career-context','지금의 학업과 일을 이어가거나 다음 방향을 살펴보세요. 현재 일상을 유지해도 괜찮아요.');
- if(task?.kind==='jobs')return make('jobs','현재 지원 가능한 일자리부터 추천해요. 제시 연봉과 필요한 조건을 비교한 뒤 지원하세요.');
+ if(task?.kind==='jobs')return make('jobs','현재 지원 가능한 일자리부터 추천해요. 제시 세후 연봉과 필요한 조건을 비교한 뒤 지원하세요.');
  if(state.pendingDecision==='school-ready')return make('school-ready','어떤 습관으로 자랄지 골라보세요. 삶의 초점은 일상 화면에서 언제든 바꿀 수 있어요.');
  if(state.totalMonths===0&&initialMonth===0)return make('birth','시간은 한 달씩 흘러요. 중요한 갈림길에서는 멈추고, 필요한 관리는 ‘삶 관리’에서 할 수 있어요.');
  if(state.totalMonths<=initialMonth)return null;
@@ -88,12 +88,12 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   panel.append(node);
  }}}
  const future=$('future-actions');if(future)$('manager-help').append(future);
- const extra=$('manager-profile');for(const id of ['status-tags','profile-details','health-status-panel']){const node=$(id);if(node)extra.append(node);}
+ const extra=$('manager-profile');for(const id of ['status-tags','profile-details','lifestyle-settings','health-status-panel']){const node=$(id);if(node)extra.append(node);}
  $('profile-details-content').hidden=false;$('profile-details-toggle').hidden=true;
  for(const id of ['restart','quick-download','game-import-save','about']){const node=$(id);if(node)$('manager-save-actions').append(node);}
  // Existing tool dialogs receive a return route, without stacking dialogs.
  function installBackLinks(){for(const dialog of document.querySelectorAll('dialog')){
- if(['life-manager','records-dialog','decision-dialog','injury-care-dialog','info'].includes(dialog.id))continue;
+ if(['life-manager','records-dialog','decision-dialog','injury-care-dialog','info','sources-dialog'].includes(dialog.id))continue;
  const existing=dialog.querySelector('[data-return-manager]');
  if(existing){const label=getState()?.phase==='ended'?'‹ 돌아가기':'‹ 삶 관리';if(existing.textContent!==label)existing.textContent=label;continue;}
   const header=dialog.querySelector('.dialog-top,.employment-top,.family-dialog-top,.family-top')||dialog.firstElementChild;

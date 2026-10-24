@@ -1,9 +1,9 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
-import {randomKoreanName} from './names.mjs?v=popup-auto-20261024';
-import {employmentRequirements} from './employment.mjs?v=popup-auto-20261024';
-import {entryCareerAllowed} from './career-progression.mjs?v=popup-auto-20261024';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=popup-auto-20261024';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=popup-auto-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=living-costs-20261024';
+import {randomKoreanName} from './names.mjs?v=living-costs-20261024';
+import {employmentRequirements} from './employment.mjs?v=living-costs-20261024';
+import {entryCareerAllowed} from './career-progression.mjs?v=living-costs-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=living-costs-20261024';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=living-costs-20261024';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property

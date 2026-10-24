@@ -89,3 +89,12 @@ body p,button,summary,.life-feed b,.when{word-break:keep-all;overflow-wrap:break
 .timeline-new-records[hidden]{display:none}
 .finance-panel .life-feed>.timeline-event{grid-template-columns:minmax(0,1fr)}
 @media(max-width:599px){.life-scene-map-label{display:none}.life-scene-home svg,.life-scene-activity svg{filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff)}.life-feed li{grid-template-columns:67px minmax(0,1fr)}}
+
+/* Lifestyle level and collected sources */
+.lifestyle-settings{margin-top:12px}
+.lifestyle-options{display:flex;flex-wrap:wrap;gap:8px}
+.lifestyle-options button[aria-pressed="true"]{font-weight:700;outline:2px solid currentColor;outline-offset:-2px}
+#sources-body .source-group h3{margin:16px 0 6px}
+#sources-body .source-list{margin:0;padding-left:18px}
+#sources-body .source-list li{margin:6px 0;overflow-wrap:anywhere}
+#sources-body .source-list p{margin:2px 0 0}

@@ -1,5 +1,5 @@
-import {appendLifeEvent} from './timeline-history.mjs?v=popup-auto-20261024';
-import {pendingInjuryCare,recoveryActivityPolicy} from './injury-care.mjs?v=popup-auto-20261024';
+import {appendLifeEvent} from './timeline-history.mjs?v=living-costs-20261024';
+import {pendingInjuryCare,recoveryActivityPolicy} from './injury-care.mjs?v=living-costs-20261024';
 // All prices/effects are fictional game settings. This module does no I/O.
 export const EFFECT_LIMITS=Object.freeze({health:Object.freeze([-5,8]),learn:Object.freeze([0,8]),bond:Object.freeze([0,8]),joy:Object.freeze([-3,10]),skill:Object.freeze([0,.5])});
 const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');

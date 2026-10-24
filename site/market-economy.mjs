@@ -1,4 +1,4 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=living-costs-20261024';
 const clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),q=n=>Math.round((n+Number.EPSILON)*10000)/10000,prob=n=>typeof n==='number'&&Number.isFinite(n),text=s=>typeof s==='string'&&s.length>0&&s.length<=1000;
 export const MARKET_VERSION='market-economy-v1';
 export const MARKET_RULES=Object.freeze({version:MARKET_VERSION,kind:'game_assumption',minimumAge:19,minimumBuyWan:10,feeRate:0,initialUnits:0,maximumUnits:1000000000,minimumPriceWon:1,maximumPriceWon:1000000,maximumActions:10000});

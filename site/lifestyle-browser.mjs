@@ -1,12 +1,12 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=popup-auto-20261024';
-import {militarySavingsSummary} from './military-savings.mjs?v=popup-auto-20261024';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=popup-auto-20261024';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=popup-auto-20261024';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=popup-auto-20261024';
-import {createPixelIcon} from './pixel-icons.mjs?v=popup-auto-20261024';
-import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=popup-auto-20261024';
-import {investmentSummary} from './market-economy.mjs?v=popup-auto-20261024';
-import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=popup-auto-20261024';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=living-costs-20261024';
+import {militarySavingsSummary} from './military-savings.mjs?v=living-costs-20261024';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=living-costs-20261024';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=living-costs-20261024';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=living-costs-20261024';
+import {createPixelIcon} from './pixel-icons.mjs?v=living-costs-20261024';
+import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=living-costs-20261024';
+import {investmentSummary} from './market-economy.mjs?v=living-costs-20261024';
+import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=living-costs-20261024';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const FOCUS_METRICS={learning:['learn'],health:['health'],relationships:['bond'],career:['skill','learn'],balance:['joy','health','learn','bond']};

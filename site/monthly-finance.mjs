@@ -1,4 +1,4 @@
-import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {formatMoney} from './spending.mjs?v=living-costs-20261024';
 const q=n=>Math.round(n*10000)/10000;
 export function financeMonthOpening(s){return{atMonth:s.totalMonths,cashWan:s.cash,debtWan:s.debt,ledger:structuredClone(s.ledger)};}
 /** Report actual cash movements after the month, including discharge and death. */

@@ -1,11 +1,12 @@
-import {createDecisionDialog} from './decision-dialog.mjs?v=popup-auto-20261024';
+import {createDecisionDialog} from './decision-dialog.mjs?v=living-costs-20261024';
 
-export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose,decorate=model=>model}={}){
+/** Generic one-question dialog; the defaults keep the military duty ids. */
+export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose,decorate=model=>model,id='military-duty',category:categoryLabel='복무와 예비군',reopenLabel='복무·예비군 선택 다시 열기'}={}){
  const node=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=text;return n;};
- const dialog=node('dialog');dialog.id='military-duty-dialog';dialog.className='decision-dialog';dialog.setAttribute('aria-labelledby','military-duty-title');dialog.setAttribute('aria-describedby','military-duty-text');
- const top=node('div');top.className='decision-dialog-top';const category=node('span','복무와 예비군'),fold=node('button','− 잠시 접고 게임 보기');fold.type='button';fold.className='secondary';top.append(category,fold);
- const body=node('section');body.className='story-card';const heading=node('h2');heading.id='military-duty-title';heading.tabIndex=-1;const text=node('p');text.id='military-duty-text';const choices=node('div'),error=node('p');error.setAttribute('role','alert');body.append(heading,text,choices,error);dialog.append(top,body);
- const reminder=node('aside');reminder.className='decision-reminder';reminder.hidden=true;const reopen=node('button','복무·예비군 선택 다시 열기');reopen.id='military-duty-reopen';reopen.type='button';reopen.className='secondary';reopen.setAttribute('aria-controls',dialog.id);reminder.append(reopen);document.getElementById('game').append(reminder);document.body.append(dialog);
+ const dialog=node('dialog');dialog.id=`${id}-dialog`;dialog.className='decision-dialog';dialog.setAttribute('aria-labelledby',`${id}-title`);dialog.setAttribute('aria-describedby',`${id}-text`);
+ const top=node('div');top.className='decision-dialog-top';const category=node('span',categoryLabel),fold=node('button','− 잠시 접고 게임 보기');fold.type='button';fold.className='secondary';top.append(category,fold);
+ const body=node('section');body.className='story-card';const heading=node('h2');heading.id=`${id}-title`;heading.tabIndex=-1;const text=node('p');text.id=`${id}-text`;const choices=node('div'),error=node('p');error.setAttribute('role','alert');body.append(heading,text,choices,error);dialog.append(top,body);
+ const reminder=node('aside');reminder.className='decision-reminder';reminder.hidden=true;const reopen=node('button',reopenLabel);reopen.id=`${id}-reopen`;reopen.type='button';reopen.className='secondary';reopen.setAttribute('aria-controls',dialog.id);reminder.append(reopen);document.getElementById('game').append(reminder);document.body.append(dialog);
  const control=createDecisionDialog({dialog,reminder,reopen,fold,heading});let current=null,working=false,blockedNow=false;
  async function act(action){
   if(working)return;working=true;error.textContent='';for(const b of choices.children)b.disabled=true;fold.disabled=true;

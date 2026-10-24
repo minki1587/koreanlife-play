@@ -25,7 +25,7 @@ const different=(field,a,b,chosen)=>{
 };
 export function recommendJobs(candidates){return pick(candidates,[
  {kind:'fit',compare:(a,b)=>number(b.assessment.hiringProbability)-number(a.assessment.hiringProbability),reason:'현재 학력·능력·거주 조건을 충족합니다.'},
- {kind:'pay',compare:(a,b)=>number(b.assessment.offeredAnnualWan)-number(a.assessment.offeredAnnualWan),reason:'지원 가능한 직업 중 제시 연봉이 높은 경로입니다.'},
+ {kind:'pay',compare:(a,b)=>number(b.assessment.offeredAnnualWan)-number(a.assessment.offeredAnnualWan),reason:'지원 가능한 직업 중 제시 세후 연봉이 높은 경로입니다.'},
  {kind:'alternative',compare:(a,b,chosen)=>different(row=>row.occupation?.classification?.middleGroupName||'',a,b,chosen),reason:'지원 가능한 다른 직업 경로를 함께 비교해보세요.'}
 ]);}
 export function recommendEducation(candidates,{university=false}={}){return pick(candidates,[

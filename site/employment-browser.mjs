@@ -1,11 +1,11 @@
-import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=popup-auto-20261024';
-import {searchOccupations} from './career-browser.mjs?v=popup-auto-20261024';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=popup-auto-20261024';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=popup-auto-20261024';
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=popup-auto-20261024';
-import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=popup-auto-20261024';
-import {recommendJobs} from './choice-recommendations.mjs?v=popup-auto-20261024';
+import {formatMoney} from './spending.mjs?v=living-costs-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=living-costs-20261024';
+import {searchOccupations} from './career-browser.mjs?v=living-costs-20261024';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=living-costs-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=living-costs-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=living-costs-20261024';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=living-costs-20261024';
+import {recommendJobs} from './choice-recommendations.mjs?v=living-costs-20261024';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));
@@ -33,7 +33,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
  function act(callback,argument,anchor){return completeModalAction(dialog,status,callback,argument,'지금은 처리할 수 없습니다. 조건을 확인해주세요.',{anchor});}
  function renderSummary(){
   const s=getState();summary.replaceChildren();if(!s){summary.append(el('p','게임을 시작하면 취업과 준비를 선택할 수 있습니다.'));return;}
-  const p=employmentProfile(s);summary.append(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['거주지역',s.residence.region],['학력',p.educationLabel],['현재 직업',s.job.title],['현재 연봉',cash(economicAnnualSalaryWan(s))]]);
+  const p=employmentProfile(s);summary.append(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['거주지역',s.residence.region],['학력',p.educationLabel],['현재 직업',s.job.title],['현재 세후 연봉',cash(economicAnnualSalaryWan(s))]]);
   const contract=employmentContractSummary(s);if(contract){facts(summary,[['고용형태',contract.label],...(contract.remainingMonths!==null?[['계약 남은 기간',`${contract.remainingMonths}개월`]]:[]),...(contract.workState==='gap'||contract.workState==='closed'?[['활동 상태',contract.workState==='gap'?'일감 대기 중':'이번 달 영업 휴식']]:[])]);const extra=disclosure('고용·수입 세부');facts(extra,[['기준 연수입',cash(economicAnnualSalaryWan(s))],...(contract.lastIncomeFactor!==null?[['이번 달 수입 계수',`${Math.round(contract.lastIncomeFactor*100)}%`]]:[])]);summary.append(extra);}
   const abilities=disclosure('내 능력 상세');facts(abilities,Object.entries(ABILITIES).map(([key,label])=>[label,`${Math.round(p.abilities[key]??0)}/100`]));summary.append(abilities);
   if(p.training)facts(summary,[['준비 중',p.training.label||p.training.type],['남은 훈련',`${p.training.remainingMonths??'—'}개월`]]);
@@ -42,7 +42,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
  function selectedDetails(target){
   const row=current(),s=getState(),evaluation=evaluateEmployment(s,row);target.replaceChildren();
   target.append(el('h3',row.occupation.name),el('p',row.occupation.classification.middleGroupName,'small'));
-  facts(target,[...(evaluation.offeredAnnualWan===null?[]:[['제시 연봉',`${cash(evaluation.offeredAnnualWan)} / 년`]]),...(evaluation.economicContext.activated?[['합격 확률',percent(evaluation.hiringProbability)],['이달 정세',evaluation.economicContext.scenarioTitle],['지원 횟수','합격·불합격과 관계없이 한 달에 한 번']]:[]),...(evaluation.experienceMonths?[['인정 경력',`${evaluation.experienceMonths}개월`]]:[])]);
+  facts(target,[...(evaluation.offeredAnnualWan===null?[]:[['제시 세후 연봉',`${cash(evaluation.offeredAnnualWan)} / 년`]]),...(evaluation.economicContext.activated?[['합격 확률',percent(evaluation.hiringProbability)],['이달 정세',evaluation.economicContext.scenarioTitle],['지원 횟수','합격·불합격과 관계없이 한 달에 한 번']]:[]),...(evaluation.experienceMonths?[['인정 경력',`${evaluation.experienceMonths}개월`]]:[])]);
   facts(target,[['지원 비용','없음'],['채용 후','취업·이직 상태 유지'],...(Number.isFinite(row.modeled?.workingTime?.weeklyHours)?[['근무시간',`주 ${row.modeled.workingTime.weeklyHours}시간`]]:[]),...(Number.isFinite(row.modeled?.occupationalRisks?.level)?[['업무 위험도',`${row.modeled.occupationalRisks.level}/5`]]:[])]);
   if(evaluation.vacancy)facts(target,[['공고 근무지',`${evaluation.vacancy.label} · ${evaluation.vacancyRegions.join(' · ')}`],['지역 준비',evaluation.vacancyRegions.includes(s.residence.region)?'현재 거주지역에서 지원 가능':'공고 근무지역으로 이사 후 지원 가능']]);
   if(s.employment?.progressionLedger?.hasUnknownEarlierMonths&&evaluation.progression.rule){const note=disclosure('이전 경력 안내');note.append(el('p','직종을 확인할 수 없는 이전 근무 기간은 선행 경력에서 제외했습니다.','small'));target.append(note);}

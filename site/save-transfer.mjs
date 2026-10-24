@@ -1,7 +1,7 @@
-import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=popup-auto-20261024';
-import {validSave,migrateSave,VERSION} from './engine.mjs?v=popup-auto-20261024';
-import {validCareerModel} from './career-economy.mjs?v=popup-auto-20261024';
-import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=popup-auto-20261024';
+import {SAVE_CODEC,encodeSaveRecord,unpackParsedSaveRecord} from './save-codec.mjs?v=living-costs-20261024';
+import {validSave,migrateSave,VERSION} from './engine.mjs?v=living-costs-20261024';
+import {validCareerModel} from './career-economy.mjs?v=living-costs-20261024';
+import {storedSaveMetadata,validSavedAt} from './save-coordination.mjs?v=living-costs-20261024';
 
 export const SAVE_KEY='koreanlife-save-v2';
 export const IMPORT_BACKUP_KEY=SAVE_KEY+'-import-backup';

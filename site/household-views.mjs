@@ -1,7 +1,7 @@
-import {estateSummary} from './family-estate.mjs?v=popup-auto-20261024';
-import {currentParents} from './parent-careers.mjs?v=popup-auto-20261024';
-import {householdSummary} from './household-finance.mjs?v=popup-auto-20261024';
-import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {estateSummary} from './family-estate.mjs?v=living-costs-20261024';
+import {currentParents} from './parent-careers.mjs?v=living-costs-20261024';
+import {householdSummary} from './household-finance.mjs?v=living-costs-20261024';
+import {formatMoney} from './spending.mjs?v=living-costs-20261024';
 export function householdFacts(s){
  const h=householdSummary(s);if(!h)return [];
  const m=h.lastMonth,estate=estateSummary(s);

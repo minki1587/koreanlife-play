@@ -1,4 +1,4 @@
-import {pendingInjuryCare,injuryCareOptions} from './injury-care.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare,injuryCareOptions} from './injury-care.mjs?v=living-costs-20261024';
 
 // Optional per-severity preference: "handle the next injury like this one".
 // Critical injuries always ask, because they can change the rest of a life.
