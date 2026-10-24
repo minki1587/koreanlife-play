@@ -1,4 +1,4 @@
-import {injuryImpact} from './injury-care.mjs?v=living-costs-20261024';
+import {injuryImpact} from './injury-care.mjs?v=home-20261024';
 /** Screen guidance is authored separately from historical source records and
  * model notices. Only known active decision IDs receive a presentation copy. */
 const GUIDANCE=Object.freeze({

@@ -1,10 +1,11 @@
-import {militaryObligation} from './military-obligation.mjs?v=living-costs-20261024';
-import {careerMilestone} from './career-milestone.mjs?v=living-costs-20261024';
-import {displayCopy} from './ui-copy.mjs?v=living-costs-20261024';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=living-costs-20261024';
-import {formatMoney} from './spending.mjs?v=living-costs-20261024';
-import {focusedImportantEvents} from './history-digest.mjs?v=living-costs-20261024';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=living-costs-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=home-20261024';
+import {totalDebtWan} from './home-ownership.mjs?v=home-20261024';
+import {careerMilestone} from './career-milestone.mjs?v=home-20261024';
+import {displayCopy} from './ui-copy.mjs?v=home-20261024';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=home-20261024';
+import {formatMoney} from './spending.mjs?v=home-20261024';
+import {focusedImportantEvents} from './history-digest.mjs?v=home-20261024';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=home-20261024';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},
@@ -88,7 +89,7 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   panel.append(node);
  }}}
  const future=$('future-actions');if(future)$('manager-help').append(future);
- const extra=$('manager-profile');for(const id of ['status-tags','profile-details','lifestyle-settings','health-status-panel']){const node=$(id);if(node)extra.append(node);}
+ const extra=$('manager-profile');for(const id of ['status-tags','profile-details','home-settings','lifestyle-settings','health-status-panel']){const node=$(id);if(node)extra.append(node);}
  $('profile-details-content').hidden=false;$('profile-details-toggle').hidden=true;
  for(const id of ['restart','quick-download','game-import-save','about']){const node=$(id);if(node)$('manager-save-actions').append(node);}
  // Existing tool dialogs receive a return route, without stacking dialogs.
@@ -106,7 +107,7 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   const task=currentLifeTask(state),taskButton=$('current-life-task');taskButton.hidden=!task;taskButton.textContent=task?.label||'';
   $('current-focus-label').textContent=FOCUS_NAMES[state.focus]||FOCUS_NAMES.balance;
   $('personal-cash').textContent=formatMoney(state.cash);
-  $('debt-balance').textContent=`대출금 · ${formatMoney(state.debt)}`;$('record-debt-value').textContent=formatMoney(state.debt);
+  $('debt-balance').textContent=`대출금 · ${formatMoney(totalDebtWan(state))}`;$('record-debt-value').textContent=formatMoney(totalDebtWan(state));
   const cash=cashFlowSummary(state);$('cash-month-change').textContent=cash?`이번 달 ${cash.deltaWan>=0?'+':''}${formatMoney(cash.deltaWan)}`:'이번 달 정산 전';
   const pendingGuide=activeGuide&&(['school-primary','school-middle','school-high','school-ready','university','jobs','career-context'].includes(activeGuide.id));
   const expected=activeGuide?.id==='university'?'education':['jobs','career-context'].includes(activeGuide?.id)?'first-job':activeGuide?.id;

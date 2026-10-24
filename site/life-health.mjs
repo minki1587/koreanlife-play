@@ -1,6 +1,6 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=living-costs-20261024';
-import {applyCareRecord} from './injury-care.mjs?v=living-costs-20261024';
-import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=living-costs-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=home-20261024';
+import {applyCareRecord} from './injury-care.mjs?v=home-20261024';
+import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=home-20261024';
 // Explicit game rules. No medical diagnosis, external data, DOM or I/O.
 export const LIFE_HEALTH_RULES=Object.freeze({version:'life-health-v1',monthlyFatalProbability:.00001,monthlyInjuryProbability:.01,severities:Object.freeze([
  Object.freeze({id:'minor',label:'경상',probability:.85,healthLoss:8,recoveryMonths:2}),

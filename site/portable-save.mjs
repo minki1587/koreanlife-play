@@ -1,6 +1,6 @@
-import {validSave} from './engine.mjs?v=living-costs-20261024';
-import {encodeSaveRecord} from './save-codec.mjs?v=living-costs-20261024';
-import {inspectSaveText,SaveTransferError} from './save-transfer.mjs?v=living-costs-20261024';
+import {validSave} from './engine.mjs?v=home-20261024';
+import {encodeSaveRecord} from './save-codec.mjs?v=home-20261024';
+import {inspectSaveText,SaveTransferError} from './save-transfer.mjs?v=home-20261024';
 
 /** Prepare a portable file before creating a Blob or download link. The same
  * importer verifies the exact output bytes, expanded size and complete graph.

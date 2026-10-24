@@ -1,4 +1,5 @@
-import {LIVING_COST_RULES} from './living-costs.mjs?v=living-costs-20261024';
+import {LIVING_COST_RULES} from './living-costs.mjs?v=home-20261024';
+import {HOME_RULES} from './home-ownership.mjs?v=home-20261024';
 
 // Sources are collected here instead of being shown inside the game screens.
 const item=row=>{
@@ -24,6 +25,7 @@ export function collectSourceGroups({data={},catalog=null,mapManifest=null,profi
  ].map(group=>({...group,items:unique(group.items)})).filter(group=>group.items.length);
  const assumptions=[
   ['생활비 · 생활 수준',LIVING_COST_RULES.note],
+  ['내 집 마련',HOME_RULES.note],
   ['돈쓰기 활동',data.spendingCatalog?.priceNote],
   ['경제 규칙',data.economicRules?.note],
   ['국내외 정세',data.marketScenarios?.note],

@@ -1,4 +1,4 @@
-import {pendingInjuryCare} from './injury-care.mjs?v=living-costs-20261024';
+import {pendingInjuryCare} from './injury-care.mjs?v=home-20261024';
 
 // Optional suggestions only. All actual spending, moves and jobs use existing APIs.
 const TOPICS=['budget','experience','care'],INTERVAL=60,MIN_MONTH=73*12,MAX_MONTH=120*12;

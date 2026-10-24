@@ -1,7 +1,7 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=living-costs-20261024';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=living-costs-20261024';
-import {recoveryStudyAllowed} from './injury-care.mjs?v=living-costs-20261024';
-import {completedDegrees,canStartSecondDegree,prepareDegreeJourney} from './degree-history.mjs?v=living-costs-20261024';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=home-20261024';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=home-20261024';
+import {recoveryStudyAllowed} from './injury-care.mjs?v=home-20261024';
+import {completedDegrees,canStartSecondDegree,prepareDegreeJourney} from './degree-history.mjs?v=home-20261024';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([

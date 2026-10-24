@@ -1,12 +1,13 @@
-import {hobbyInjuryAllowed} from './injury-care.mjs?v=living-costs-20261024';
-import {militarySavingsSummary} from './military-savings.mjs?v=living-costs-20261024';
-import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=living-costs-20261024';
-import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=living-costs-20261024';
-import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=living-costs-20261024';
-import {createPixelIcon} from './pixel-icons.mjs?v=living-costs-20261024';
-import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=living-costs-20261024';
-import {investmentSummary} from './market-economy.mjs?v=living-costs-20261024';
-import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=living-costs-20261024';
+import {hobbyInjuryAllowed} from './injury-care.mjs?v=home-20261024';
+import {homeEquityWan,totalDebtWan} from './home-ownership.mjs?v=home-20261024';
+import {militarySavingsSummary} from './military-savings.mjs?v=home-20261024';
+import {formatMoney,spendingStatus,spendingActivity} from './spending.mjs?v=home-20261024';
+import {hobbyProfile,hobbyAssessment} from './hobby-rules.mjs?v=home-20261024';
+import {hasHouseholdSupport,effectiveHobbyAge,householdSummary} from './household-finance.mjs?v=home-20261024';
+import {createPixelIcon} from './pixel-icons.mjs?v=home-20261024';
+import {completeModalAction,reportActionError,clearActionError} from './ui-copy.mjs?v=home-20261024';
+import {investmentSummary} from './market-economy.mjs?v=home-20261024';
+import {recommendHobbies,recommendSpending} from './choice-recommendations.mjs?v=home-20261024';
 
 const LABELS={health:'건강',learn:'배움',bond:'관계',joy:'만족',skill:'기술'};
 const FOCUS_METRICS={learning:['learn'],health:['health'],relationships:['bond'],career:['skill','learn'],balance:['joy','health','learn','bond']};
@@ -30,7 +31,7 @@ export function createLifestyleBrowser({spendingCatalog,hobbyCatalog,getState,on
  let tab='spending',query='',category='',page=0,selectedId=spendingCatalog.choices[0].id,spendingShowAll=false,hobbyShowAll=false,hobbyQuery='',hobbyType='',hobbyDraft=null,budgetDraft,lifeKey,hobbyBudgetOpen=false;const spendingViews=new Map();
   const tabButtons=new Map();for(const[id,title]of [['spending','돈쓰기'],['hobbies','취미활동']]){const b=button(title,()=>{tab=id;clearActionError(status);render();});tabs.append(b);tabButtons.set(id,b);}
  function act(callback,value,options){return completeModalAction(dialog,status,callback,value,'지금은 이 선택을 할 수 없습니다.',options);}
- function renderSummary(){const s=getState();summary.replaceChildren();if(!s)return;summary.append(el('strong',`${s.name} · ${s.age}세 ${s.month}개월`),facts([['내 현금',formatMoney(s.cash)]]),disclosure('재산 자세히',facts([['차입금',formatMoney(s.debt)],['순자산',formatMoney(s.cash-s.debt+(militarySavingsSummary(s)?.lockedPrincipalWan||0)+investmentSummary(s).totals.totalValueWan)]])));}
+ function renderSummary(){const s=getState();summary.replaceChildren();if(!s)return;summary.append(el('strong',`${s.name} · ${s.age}세 ${s.month}개월`),facts([['내 현금',formatMoney(s.cash)]]),disclosure('재산 자세히',facts([['차입금',formatMoney(totalDebtWan(s))],['순자산',formatMoney(s.cash-s.debt+homeEquityWan(s)+(militarySavingsSummary(s)?.lockedPrincipalWan||0)+investmentSummary(s).totals.totalValueWan)]])));}
  function renderSpending(){
   const s=getState();body.append(el('p','이번 달 단기 활동입니다. 비용과 효과를 한 번 반영하며 다음 달 자동 갱신하지 않습니다. 한 달에 한 번, 보유 현금 안에서 선택할 수 있습니다.','life-tool-notice'));
   const controls=el('div',undefined,'life-tool-search'),label=el('label','활동 검색'),input=el('input');input.type='search';input.value=query;input.placeholder='예: 책, 여행, 주거';input.setAttribute('aria-label','활동 검색');label.append(input);const categoryLabel=el('label','활동 분류'),select=el('select');select.setAttribute('aria-label','활동 분류');select.append(new Option('전체 분류',''));for(const row of spendingCatalog.categories)select.append(new Option(row.id==='housing-asset'?'한 달 주거 체험':row.id==='vehicle-asset'?'한 달 이동수단 이용':row.title,row.id));select.value=category;categoryLabel.append(select);controls.append(label,categoryLabel);

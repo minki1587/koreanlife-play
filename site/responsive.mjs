@@ -1,4 +1,4 @@
-import {initScrollHints} from './scroll-hints.mjs?v=living-costs-20261024';
+import {initScrollHints} from './scroll-hints.mjs?v=home-20261024';
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 

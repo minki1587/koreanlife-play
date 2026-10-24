@@ -1,11 +1,12 @@
-import {formatMoney} from './spending.mjs?v=living-costs-20261024';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=living-costs-20261024';
-import {searchOccupations} from './career-browser.mjs?v=living-costs-20261024';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=living-costs-20261024';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=living-costs-20261024';
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=living-costs-20261024';
-import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=living-costs-20261024';
-import {recommendJobs} from './choice-recommendations.mjs?v=living-costs-20261024';
+import {formatMoney} from './spending.mjs?v=home-20261024';
+import {homeMoveNotice} from './home-ownership.mjs?v=home-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=home-20261024';
+import {searchOccupations} from './career-browser.mjs?v=home-20261024';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=home-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=home-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=home-20261024';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=home-20261024';
+import {recommendJobs} from './choice-recommendations.mjs?v=home-20261024';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));
@@ -93,7 +94,7 @@ export function createEmploymentBrowser({catalog,getState,data,onApply,onTrain,o
   select.addEventListener('change',()=>{selectedId=select.value;updatePreparation();});updatePreparation();prep.append(el('h4','직업별 자격 준비'),label,courseInfo,el('p','학력 조건을 갖춘 뒤 준비 과정을 이수합니다.'),prepButton);cards.append(prep);body.append(cards);
  }
  function renderMove(){
-  const s=getState();body.append(el('h3','새 거주지역 선택하기'));appendList(body,['이사비 300만원을 한 번 지출합니다.','자금이 부족하면 차입합니다.']);
+  const s=getState();body.append(el('h3','새 거주지역 선택하기'));appendList(body,['이사비 300만원을 한 번 지출합니다.','자금이 부족하면 차입합니다.',...(homeMoveNotice(s)?[homeMoveNotice(s)]:[])]);
   if(!s){body.append(el('p','먼저 게임을 시작해주세요.'));return;}
   const label=el('label','새 거주지역'),select=el('select');select.setAttribute('aria-label','새 거주지역');for(const region of data.regions)select.append(new Option(region,region));select.value=s.residence.region;label.append(select);facts(body,[['현재 거주지역',s.residence.region],['주거 형태',s.residence.housing]]);body.append(label,button('선택한 지역으로 이사하기',event=>act(onMove,select.value,event.currentTarget)));
  }
