@@ -1,10 +1,10 @@
-import {renderEstateDetails} from './estate-views.mjs?v=review-20261024';
-import {currentParents} from './parent-careers.mjs?v=review-20261024';
-import {householdSummary} from './household-finance.mjs?v=review-20261024';
-import {householdFacts} from './household-views.mjs?v=review-20261024';
-import {formatMoney} from './spending.mjs?v=review-20261024';
-import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=review-20261024';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=review-20261024';
+import {renderEstateDetails} from './estate-views.mjs?v=birth-draw-20261024';
+import {currentParents} from './parent-careers.mjs?v=birth-draw-20261024';
+import {householdSummary} from './household-finance.mjs?v=birth-draw-20261024';
+import {householdFacts} from './household-views.mjs?v=birth-draw-20261024';
+import {formatMoney} from './spending.mjs?v=birth-draw-20261024';
+import {displayCopy,appendUiFacts} from './ui-copy.mjs?v=birth-draw-20261024';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=birth-draw-20261024';
 const money=n=>formatMoney(n);
 export function familyLocationLabel(place,profiles){
  const original=place.sourceRegion===place.name?place.name:`${place.sourceRegion} ${place.name}`;

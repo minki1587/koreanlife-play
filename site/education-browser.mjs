@@ -1,10 +1,10 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=review-20261024';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=review-20261024';
-import {formatMoney} from './spending.mjs?v=review-20261024';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=review-20261024';
-import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=review-20261024';
-import {recommendEducation} from './choice-recommendations.mjs?v=review-20261024';
-import {completedDegrees} from './degree-history.mjs?v=review-20261024';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=birth-draw-20261024';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=birth-draw-20261024';
+import {formatMoney} from './spending.mjs?v=birth-draw-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=birth-draw-20261024';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=birth-draw-20261024';
+import {recommendEducation} from './choice-recommendations.mjs?v=birth-draw-20261024';
+import {completedDegrees} from './degree-history.mjs?v=birth-draw-20261024';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
