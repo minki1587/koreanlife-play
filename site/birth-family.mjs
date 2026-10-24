@@ -1,6 +1,6 @@
-import {randomKoreanName} from './names.mjs?v=refinements-2';
-import {employmentRequirements} from './employment.mjs?v=refinements-2';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=refinements-2';
+import {randomKoreanName} from './names.mjs?v=review-20261024';
+import {employmentRequirements} from './employment.mjs?v=review-20261024';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=review-20261024';
 
 const VERSION='birth-family-1',round=n=>Math.round(n*100)/100;
 const positive=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
@@ -27,7 +27,7 @@ function context(data){
   if(caches.has(data))return caches.get(data);
   const rules=validateFamilyRules(data.familyRules);
   if(!Array.isArray(data.birthCities)||!data.birthCities.length||!Array.isArray(data.occupations)||!data.occupations.length)throw new TypeError('출생 가족의 지역·직업 자료가 없습니다.');
-  const cities=[...data.birthCities].sort((a,b)=>a.id.localeCompare(b.id)),jobs=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row),model:careerModelSnapshot(row)}));
+  const cities=[...data.birthCities].sort((a,b)=>a.id.localeCompare(b.id)),jobs=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row,{actor:'parent'}),model:careerModelSnapshot(row)}));
   if(jobs.some(j=>!j.model))throw new TypeError('부모 직업의 임금 모형을 확인해 주세요.');
   const value={rules,cities,jobs};caches.set(data,value);return value;
 }

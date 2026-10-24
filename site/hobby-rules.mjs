@@ -1,7 +1,7 @@
-import {hobbyInjuryAllowed,pendingInjuryCare} from './injury-care.mjs?v=refinements-2';
-import {validHobbyActivity} from './hobby-activity.mjs?v=refinements-2';
-import {hasHouseholdSupport,effectiveHobbyAge,hobbyFunding} from './household-finance.mjs?v=refinements-2';
-import {validHobbyMonthlyBudget,hobbyMonthlyBudget,hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=refinements-2';
+import {hobbyInjuryAllowed,pendingInjuryCare} from './injury-care.mjs?v=review-20261024';
+import {validHobbyActivity} from './hobby-activity.mjs?v=review-20261024';
+import {hasHouseholdSupport,effectiveHobbyAge,hobbyFunding} from './household-finance.mjs?v=review-20261024';
+import {validHobbyMonthlyBudget,hobbyMonthlyBudget,hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=review-20261024';
 // All benefit values and age gates are explicit game assumptions.
 const clone=x=>structuredClone(x),round=x=>Math.round((x+Number.EPSILON)*10000)/10000;
 const METRICS=['health','learn','bond','joy','skill'];

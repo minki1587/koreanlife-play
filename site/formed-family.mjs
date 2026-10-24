@@ -1,9 +1,9 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=refinements-2';
-import {randomKoreanName} from './names.mjs?v=refinements-2';
-import {employmentRequirements} from './employment.mjs?v=refinements-2';
-import {entryCareerAllowed} from './career-progression.mjs?v=refinements-2';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=refinements-2';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=refinements-2';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=review-20261024';
+import {randomKoreanName} from './names.mjs?v=review-20261024';
+import {employmentRequirements} from './employment.mjs?v=review-20261024';
+import {entryCareerAllowed} from './career-progression.mjs?v=review-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=review-20261024';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=review-20261024';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property
@@ -17,6 +17,13 @@ const CHILD_SUPPORT_VERSION='child-support-v2';
 // Legacy monthly records keep the original 216-month rule. New actions at the
 // activation month use the new limit only after the saved legacy action count.
 function childSupportCutoff(f,atMonth,{action=false}={}){const p=f.childSupportPolicy;return p&&(atMonth>p.activatedAtMonth||action&&atMonth===p.activatedAtMonth&&f.actions.length>=p.legacyActionCount)?CHILD_SUPPORT_RULES.childCostEndsAtMonths:FORMED_FAMILY_RULES.childCostEndsAtMonths;}
+// Only new user choices use this guard. Historical actionCore replay stays
+// unchanged so a previously accepted final-month parenting action remains valid.
+function parentingChangeReason(f,atMonth,request){
+ if(request.type!=='parenting')return null;
+ const child=f.children.find(c=>c.id===request.childId),nextCutoff=childSupportCutoff(f,atMonth+1);
+ return child&&child.ageMonths<nextCutoff&&child.ageMonths+1>=nextCutoff?`다음 달 ${nextCutoff/12}세가 되어 정기 양육지원이 끝납니다. 지금 양육방식을 바꿔도 다음 달 비용과 효과가 적용되지 않습니다.`:null;
+}
 export const PARENTING_MODES=Object.freeze({balanced:{label:'균형 있게 돌보기',extraWan:0,health:.1,learn:.15,bond:.15,joy:.01,playerBond:.03},learning:{label:'배움 활동 함께하기',extraWan:20,health:.05,learn:.45,bond:.1,joy:.02,playerBond:.02},active:{label:'몸을 움직이며 놀기',extraWan:10,health:.45,learn:.1,bond:.18,joy:.02,playerBond:.03},connection:{label:'대화와 교감 나누기',extraWan:0,health:.12,learn:.08,bond:.35,joy:.03,playerBond:.06}});
 for(const mode of Object.values(PARENTING_MODES))Object.freeze(mode);
 const effects=()=>({health:0,learn:0,bond:0,joy:0}),clamp=n=>Math.max(0,Math.min(100,q(n)));
@@ -100,7 +107,7 @@ function actionCore(original,seed,atMonth,request,cashBeforeWan,snapshot,{mutate
  }
  if(cashBeforeWan+1e-7<costWan)throw new Error('소지금이 부족합니다. 비용 없는 경로를 선택할 수 있습니다.');if(f.activityStartedAtMonth===null)f.activityStartedAtMonth=atMonth;f.lastActionMonth=atMonth;const record={atMonth,request:clone(request),cashBeforeWan,partnerSnapshot:request.type==='meet'?clone(snapshot):null,costWan,effects:fx};f.actions.push(record);f.events.push(...events);return{formedFamily:f,family:f,costWan,effects:fx,events};
 }
-export function applyFormedFamilyAction(s,request,data){checkHost(s);if(s.phase!=='running')throw new Error('현재 갈림길을 마친 뒤 가족 활동을 선택해 주세요.');if(!validFormedFamily(s))throw new TypeError('가족의 저장 기록을 확인해 주세요.');const f=ensureFormedFamily(s,data),r=canonicalRequest(request),snapshot=r.type==='meet'?partnerSnapshot(s,f,data):null;return actionCore(f,s.seed,s.totalMonths,r,s.cash,snapshot);}
+export function applyFormedFamilyAction(s,request,data){checkHost(s);if(s.phase!=='running')throw new Error('현재 갈림길을 마친 뒤 가족 활동을 선택해 주세요.');if(!validFormedFamily(s))throw new TypeError('가족의 저장 기록을 확인해 주세요.');const f=ensureFormedFamily(s,data),r=canonicalRequest(request),reason=parentingChangeReason(f,s.totalMonths,r);if(reason)throw new Error(reason);const snapshot=r.type==='meet'?partnerSnapshot(s,f,data):null;return actionCore(f,s.seed,s.totalMonths,r,s.cash,snapshot);}
 export function progressFormedFamily(s,atMonth=s.totalMonths+1){checkHost(s);if(!s.formedFamily||s.phase==='ended')return null;const f=s.formedFamily;if(atMonth<=f.lastProcessedMonth)return null;return monthCore(f,s.seed,atMonth,s.cash);}
 export const prepareFormedFamilyMonth=progressFormedFamily;
 export function formedFamilyMonthlyBudget(s){if(!s?.formedFamily)return{childCostWan:0,spouseContributionWan:0,personalCostWan:0,mandatoryPersonalCostWan:0,requestedPersonalCostWan:0,extraPersonalCostWan:0};return monthCore(s.formedFamily,s.seed,s.formedFamily.lastProcessedMonth+1,Number.MAX_SAFE_INTEGER,{projection:true}).settlement;}
@@ -133,7 +140,7 @@ function fullvalidFormedFamily(s){try{
 export function formedFamilySummary(s){const f=s?.formedFamily||empty(s),budget=formedFamilyMonthlyBudget(s);return{relationshipStatus:f.relationshipStatus,married:f.relationshipStatus==='married',spouse:f.spouse?{...clone(f.spouse),age:Math.floor(f.spouse.ageMonths/12),month:f.spouse.ageMonths%12}:null,children:f.children.map(c=>({...clone(c),age:Math.floor(c.ageMonths/12),month:c.ageMonths%12,supportUntilAge:childSupportCutoff(f,s.totalMonths,{action:true})/12,supportActive:s.phase!=='ended'&&c.ageMonths<childSupportCutoff(f,s.totalMonths,{action:true}),parentingStyleLabel:PARENTING_MODES[c.parentingStyle].label})),plan:f.plan?{...clone(f.plan),remainingMonths:Math.max(0,f.plan.dueAtMonth-s.totalMonths),cancellable:true}:null,budget:{totalChildCostWan:budget.childCostWan,spouseContributionWan:budget.spouseContributionWan,personalShareWan:budget.requestedPersonalCostWan,mandatoryPersonalCostWan:budget.mandatoryPersonalCostWan,extraPersonalCostWan:budget.extraPersonalCostWan},estate:spouseEstateSummary(f),lastMonth:clone(f.lastMonth),events:clone(f.events),totals:clone(f.totals),activatedAtMonth:f.activatedAtMonth};}
 export const familySummary=formedFamilySummary;
 export function formedFamilyOptions(s,data){
- const f=ensureFormedFamily(s,data),options=[],add=(id,request,label,costWan=0,monthlyCostWan=0,details=[])=>{let reasons=[];if(s.phase!=='running')reasons.push('현재 갈림길을 먼저 마쳐 주세요.');if(s.age<19)reasons.push('19세부터 선택할 수 있습니다.');if(f.lastActionMonth===s.totalMonths)reasons.push('이번 달 가족 활동을 이미 선택했습니다.');try{const snap=request.type==='meet'?partnerSnapshot(s,f,data):null;actionCore(f,s.seed,s.totalMonths,request,s.cash,snap);}catch(e){reasons.push(e.message);}options.push({id,action:request,label,eligible:!reasons.length,reasons:[...new Set(reasons)],costWan,monthlyCostWan,effects:details});};
+ const f=ensureFormedFamily(s,data),options=[],add=(id,request,label,costWan=0,monthlyCostWan=0,details=[])=>{let reasons=[];if(s.phase!=='running')reasons.push('현재 갈림길을 먼저 마쳐 주세요.');if(s.age<19)reasons.push('19세부터 선택할 수 있습니다.');if(f.lastActionMonth===s.totalMonths)reasons.push('이번 달 가족 활동을 이미 선택했습니다.');const parentingReason=parentingChangeReason(f,s.totalMonths,request);if(parentingReason)reasons.push(parentingReason);try{const snap=request.type==='meet'?partnerSnapshot(s,f,data):null;actionCore(f,s.seed,s.totalMonths,request,s.cash,snap);}catch(e){reasons.push(e.message);}options.push({id,action:request,label,eligible:!reasons.length,reasons:[...new Set(reasons)],costWan,monthlyCostWan,effects:details});};
  if(['single','separated','widowed','bereaved'].includes(f.relationshipStatus))add('meet',{type:'meet'},'새로운 인연 만나기',0,0,['교제 시작','관계 +2','만족 +1']);
  if(['dating','married'].includes(f.relationshipStatus)){add('date',{type:'date'},'함께 시간 보내기',0,0,['관계 +2','만족 +1']);if(f.relationshipStatus==='dating'){add('marry-simple',{type:'marry',style:'simple'},'소박하게 결혼하기',0,0,['교제 3개월 이후','관계 +4','만족 +3']);add('marry-celebration',{type:'marry',style:'celebration'},'축하 자리와 함께 결혼하기',300,0,['교제 3개월 이후','관계 +4','만족 +3']);}add('separate',{type:'separate'},'현재 관계 정리하기',0,0,['자녀와 성장 기록 유지','배우자 양육비 기여 종료']);}
  if(f.plan)add('cancel-plan',{type:'cancel-plan'},'진행 중인 자녀 계획 멈추기',0,0,['준비 비용 반환 없음']);else for(const kind of ['birth','adopt'])for(const preparation of ['basic','supported'])add(`plan-${kind}-${preparation}`,{type:'plan-child',kind,preparation},`${kind==='birth'?'출생 계획 세우기':'입양 준비 시작하기'} · ${preparation==='basic'?'기본 준비':'지원 활동과 준비'}`,preparation==='supported'?150:0,0,[`${kind==='birth'?9:6}개월 준비`,...(f.childPlanningPolicy?[kind==='birth'?'나와 배우자 19~49세 · 혼인 중':'19~64세 · 혼인 여부와 관계없이 준비 가능','기본 양육비 3개월분 135만원 보유 필요 · 지금 차감하지 않음']:[]),...(preparation==='supported'?['맞이할 때 자녀 건강 +5','맞이할 때 자녀 배움 +5']:[]),'자녀 최대 3명']);

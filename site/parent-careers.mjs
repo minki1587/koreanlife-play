@@ -1,8 +1,8 @@
-import {parentDeathCheck} from './family-estate.mjs?v=refinements-2';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=refinements-2';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=refinements-2';
-import {careerProgressionAssessment} from './career-progression.mjs?v=refinements-2';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=refinements-2';
+import {parentDeathCheck} from './family-estate.mjs?v=review-20261024';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=review-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=review-20261024';
+import {careerProgressionAssessment} from './career-progression.mjs?v=review-20261024';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=review-20261024';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
@@ -13,7 +13,7 @@ const caches=new WeakMap();
 function ticket(seed,id,month,kind){let h=2166136261;for(const c of `${VERSION}|${seed}|${id}|${month}|${kind}`)h=Math.imul(h^c.charCodeAt(0),16777619);h+=0x6D2B79F5;let t=Math.imul(h^h>>>15,1|h);t^=t+Math.imul(t^t>>>7,61|t);return((t^t>>>14)>>>0)/4294967296;}
 const verified=(v,key)=>v&&String(v.status||'').startsWith('verified')&&Array.isArray(v.sourceURLs)&&v.sourceURLs.length&&v[key]!==undefined;
 function restrictions(row){return {min:verified(row.ageRestriction,'minAge')?row.ageRestriction.minAge:null,max:verified(row.ageRestriction,'maxAge')?row.ageRestriction.maxAge:null,sex:!!verified(row.sexRestriction,'allowedSexes')};}
-function rows(data){if(caches.has(data))return caches.get(data);if(!Array.isArray(data?.occupations)||!data.occupations.length)throw new TypeError('부모의 직업 자료가 없습니다.');const result=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row),model:careerModelSnapshot(row),limits:restrictions(row)}));if(result.some(r=>!r.model))throw new TypeError('부모 직업의 경력 임금 자료를 확인해 주세요.');caches.set(data,result);return result;}
+function rows(data){if(caches.has(data))return caches.get(data);if(!Array.isArray(data?.occupations)||!data.occupations.length)throw new TypeError('부모의 직업 자료가 없습니다.');const result=[...data.occupations].sort((a,b)=>a.id.localeCompare(b.id)).map(row=>({row,requirements:employmentRequirements(row,{actor:'parent'}),model:careerModelSnapshot(row),limits:restrictions(row)}));if(result.some(r=>!r.model))throw new TypeError('부모 직업의 경력 임금 자료를 확인해 주세요.');caches.set(data,result);return result;}
 export function validateParentRules(r){if(r?.version!==VERSION||r.kind!=='game_assumption'||!Number.isInteger(r.retirementAge)||r.retirementAge<50||r.retirementAge>80||!Number.isInteger(r.historyLimit)||r.historyLimit<1||r.historyLimit>240||!['monthlyLossChance','monthlyChangeChance','monthlyHireChance','monthlySearchChance'].every(k=>nn(r[k])&&r[k]<=1))throw new TypeError('부모 생애 규칙을 확인해 주세요.');return r;}
 function career(entry,months,scale,workplace){const {row,requirements:q,model,limits}=entry;return {id:row.id,name:row.occupation.name,model:clone(model),experienceMonths:months,incomeScale:scale,annualIncomeWan:careerModelIncome(model,months,scale),educationMinimum:q.educationLevel,requiredRegions:[...q.requiredRegions],qualificationRequired:q.qualificationRequired,limits:clone(limits),workplace:clone(workplace),employmentType:model.employmentTypes[0]||'게임 근무 설정',weeklyHours:model.weeklyHours};}
 const statusFor=g=>g.activity==='구직 중'?'unemployed':g.activity==='은퇴·돌봄'?'retired':'homemaking';
@@ -23,7 +23,7 @@ export function createParentLife(s,data){
   const ageMonths=g.ageAtBirth*12+s.totalMonths,entry=g.occupation?jobs.find(j=>j.row.id===g.occupation.id):null;if(g.occupation&&!entry)throw new TypeError('저장된 부모 직업을 찾지 못했습니다.');
   const o=entry?career(entry,g.occupation.experienceMonths+s.totalMonths,g.occupation.incomeScale,g.occupation.workplace):null,retired=ageMonths>=r.retirementAge*12||(o?.limits.max!==null&&o?.limits.max!==undefined&&Math.floor(ageMonths/12)>o.limits.max),status=retired?'retired':o?'employed':statusFor(g),preparedOccupationIds=entry?.requirements.qualificationRequired?[entry.row.id]:[],abilities={};
   for(const a of ABILITY_AXES)abilities[a.id]=Math.min(100,Math.max(55+g.education.level*4,entry?.requirements.requiredAbilities[a.id]||0));
-  return {id:g.id,ageMonths,status,occupation:status==='employed'?o:null,lastOccupation:o,experienceByOccupation:o?{[o.id]:o.experienceMonths}:{},preparedOccupationIds,abilities,searchMonths:0,lastChangeMonth:s.totalMonths,annualIncomeWan:status==='employed'?o.annualIncomeWan:0};
+  return {id:g.id,ageMonths,status,occupation:status==='employed'?o:null,lastOccupation:o?clone(o):null,experienceByOccupation:o?{[o.id]:o.experienceMonths}:{},preparedOccupationIds,abilities,searchMonths:0,lastChangeMonth:s.totalMonths,annualIncomeWan:status==='employed'?o.annualIncomeWan:0};
  });
  return {version:VERSION,familyFingerprint:f.fingerprint,activatedAtMonth:s.totalMonths,lastProcessedMonth:s.totalMonths,rules:clone(r),guardians,events:[]};
 }
@@ -36,6 +36,8 @@ export function advanceParentLife(s,data){
  if(!s.familyLife)return null;
  const life=clone(s.familyLife),atMonth=s.totalMonths+1;if(life.lastProcessedMonth!==s.totalMonths)throw new Error('부모 생애의 정산 월이 일치하지 않습니다.');const events=[];
  for(const p of life.guardians){
+  // Preserve the stored snapshot when an older in-memory life shares its current job.
+  if(p.occupation&&p.lastOccupation===p.occupation)p.lastOccupation=clone(p.lastOccupation);
   if(p.status==='deceased')continue;
   const birth=s.profile.birthFamily.guardians.find(g=>g.id===p.id),before=p.status,oldJob=p.occupation?.name||'',oldIncome=p.annualIncomeWan;p.ageMonths++;
   const draw=kind=>ticket(s.seed,p.id,atMonth,kind),age=Math.floor(p.ageMonths/12),emit=(type,title)=>{p.lastChangeMonth=atMonth;events.push({id:`${p.id}-${atMonth}-${type}`,atMonth,guardianId:p.id,type,title,fromStatus:before,toStatus:p.status,fromOccupation:oldJob,toOccupation:p.occupation?.name||'',fromAnnualIncomeWan:oldIncome,annualIncomeWan:p.annualIncomeWan});};

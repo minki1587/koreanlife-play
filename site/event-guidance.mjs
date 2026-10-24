@@ -1,4 +1,4 @@
-import {injuryImpact} from './injury-care.mjs?v=refinements-2';
+import {injuryImpact} from './injury-care.mjs?v=review-20261024';
 /** Screen guidance is authored separately from historical source records and
  * model notices. Only known active decision IDs receive a presentation copy. */
 const GUIDANCE=Object.freeze({

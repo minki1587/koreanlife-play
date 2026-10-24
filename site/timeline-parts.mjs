@@ -1,6 +1,6 @@
-import {displayCopy,displayLines} from './ui-copy.mjs?v=refinements-2';
-import {timelinePresentation} from './timeline-copy.mjs?v=refinements-2';
-export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=refinements-2';
+import {displayCopy,displayLines} from './ui-copy.mjs?v=review-20261024';
+import {timelinePresentation} from './timeline-copy.mjs?v=review-20261024';
+export {timelineContextKey,timelineFamilyCopy,timelinePresentation} from './timeline-copy.mjs?v=review-20261024';
 
 const MONEY=/수입|소득|연봉|임금|급여|월급|지원금|용돈|지출|비용|예산|생활비|양육비|등록금|학비|이자|부채|차입|상환|현금|순자산|상속|장례비|납입|적금|원금|만기|매칭|[\d,.]+\s*(?:만|억)?원/;
 const FINANCIAL_TYPES=new Set(['monthly-finance','family-allowance','family-estate','military-savings','military-pay','formed-family-finance','formed-family-estate','family-medical-support','medical-loan','child-inheritance']);
@@ -18,6 +18,8 @@ export function timelineParts(original,state){
   // have explicit financial event types, including quantity/percentage facts.
   if(ECONOMIC_LIFE_TYPES.has(event.type))return{life:{title,text:sentences,changes:facts},money:null};
   if(MARKET_FINANCIAL_TYPES.has(event.type))return{life:null,money:{title,text:sentences,changes:facts}};
+  // Keep the reason for paused paid activities beside the child-care costs.
+  if(event.type==='formed-family-finance')return{life:null,money:{title,text:sentences,changes:facts}};
   const moneyFacts=facts.filter(text=>MONEY.test(text));
   const lifeFacts=facts.filter(text=>!MONEY.test(text));
   const moneyText=sentences.filter(text=>MONEY.test(text));

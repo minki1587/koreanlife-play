@@ -1,11 +1,11 @@
-import {formatMoney} from './spending.mjs?v=refinements-2';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=refinements-2';
-import {searchOccupations} from './career-browser.mjs?v=refinements-2';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=refinements-2';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=refinements-2';
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=refinements-2';
-import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=refinements-2';
-import {recommendJobs} from './choice-recommendations.mjs?v=refinements-2';
+import {formatMoney} from './spending.mjs?v=review-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=review-20261024';
+import {searchOccupations} from './career-browser.mjs?v=review-20261024';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=review-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=review-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=review-20261024';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=review-20261024';
+import {recommendJobs} from './choice-recommendations.mjs?v=review-20261024';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

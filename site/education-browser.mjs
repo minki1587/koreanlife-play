@@ -1,10 +1,10 @@
-import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=refinements-2';
-import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=refinements-2';
-import {formatMoney} from './spending.mjs?v=refinements-2';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=refinements-2';
-import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=refinements-2';
-import {recommendEducation} from './choice-recommendations.mjs?v=refinements-2';
-import {completedDegrees} from './degree-history.mjs?v=refinements-2';
+import {educationFunding,householdSummary,activeHobbyCost} from './household-finance.mjs?v=review-20261024';
+import {schoolChoices,universityOptions,schoolManagementSummary} from './education.mjs?v=review-20261024';
+import {formatMoney} from './spending.mjs?v=review-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=review-20261024';
+import {recoveryStudyAllowed,recoveryActivityNotes} from './injury-care.mjs?v=review-20261024';
+import {recommendEducation} from './choice-recommendations.mjs?v=review-20261024';
+import {completedDegrees} from './degree-history.mjs?v=review-20261024';
 function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=displayCopy(text);if(cls)node.className=cls;return node;}
 function button(text,handler,cls='life-tool-button'){const node=el('button',text,cls);node.type='button';node.addEventListener('click',handler);return node;}
 function list(host,values,cls='education-notes'){const ul=el('ul',undefined,cls);for(const value of values)for(const text of displayLines(value))ul.append(el('li',text));if(ul.children.length)host.append(ul);}
@@ -17,7 +17,11 @@ export function createEducationBrowser({getState,data,onSchool,onUniversity,onDe
  const summary=el('div',undefined,'life-tool-summary'),status=el('p','','life-tool-status'),body=el('div',undefined,'life-tool-body');status.setAttribute('role','status');dialog.append(top,summary,status,body);document.body.append(dialog);
  let mode='overview',universityPath='university',filters={ownership:'',location:'',field:''},showAll=false;
  const act=(callback,id,anchor)=>completeModalAction(dialog,status,callback,id,'지원 조건을 확인해주세요.',{anchor});
- const fundingFacts=(host,funding)=>facts(host,[['월 학비',formatMoney(funding.monthlyTuitionWan)],['가족 지원 예상',formatMoney(funding.familyMonthlyWan)],['월 내 준비액',formatMoney(funding.personalMonthlyWan)],...(funding.commitmentMonths?[['예산 확인 기간',`${funding.commitmentMonths}개월`]]:[])],'education-facts funding-note');
+ const fundingFacts=(host,funding)=>{
+  const average=Array.isArray(funding.forecastMonths)&&funding.forecastMonths.length&&funding.commitmentMonths?` (${funding.commitmentMonths}개월 평균)`:'',supportEnd=funding.scheduledSupportEnd;
+  facts(host,[['월 학비',formatMoney(funding.monthlyTuitionWan)],[`가족 지원 예상${average}`,formatMoney(funding.familyMonthlyWan)],[`월 내 준비액${average}`,formatMoney(funding.personalMonthlyWan)],...(funding.commitmentMonths?[['예산 확인 기간',`${funding.commitmentMonths}개월`]]:[])],'education-facts funding-note');
+  if(supportEnd)list(host,[`${supportEnd.monthsUntil}개월째부터 ${supportEnd.age}세 가구 지원 종료`],'education-notes funding-note');
+ };
  function render(){
   clearActionError(status);
   const s=getState();summary.replaceChildren(el('strong',s.name));facts(summary,[['나이',`${s.age}세 ${s.month}개월`],['배움',`${Math.round(s.learn)}/100`],['학업',s.education]]);body.replaceChildren();

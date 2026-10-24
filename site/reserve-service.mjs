@@ -1,5 +1,5 @@
-import {activeUniversity} from './service-deferral.mjs?v=refinements-2';
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=refinements-2';
+import {activeUniversity} from './service-deferral.mjs?v=review-20261024';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=review-20261024';
 const clone=value=>structuredClone(value),month=value=>Number.isInteger(value)&&value>=0&&value<=1800;
 const same=(a,b)=>{if(a===b)return true;if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)!==Array.isArray(b))return false;const keys=Object.keys(a);return keys.length===Object.keys(b).length&&keys.every(key=>Object.hasOwn(b,key)&&same(a[key],b[key]));};
 const KEYS=['version','activatedAtMonth','dischargedAtMonth','lastProcessedMonth','calendarAnchor','legacyExemptYears','years','actions'];

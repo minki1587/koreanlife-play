@@ -16,7 +16,9 @@ export function lifeEndingReason(ending){
   'military-health':'군 복무 중 건강이 소진되어 삶을 마쳤습니다.',
   'daily-health':'건강이 소진되어 삶을 마쳤습니다.',
  };
- return labels[ending?.cause]||'';
+ if(labels[ending?.cause])return labels[ending.cause];
+ if(ending?.type==='death'&&!ending.cause&&Number.isFinite(ending.annualProbability))return '연령대별 사망률에 따른 추첨으로 삶을 마쳤습니다.';
+ return '';
 }
 
 export function lifeHealthHistory(summary){

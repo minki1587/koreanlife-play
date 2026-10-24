@@ -213,3 +213,8 @@ dialog{width:calc(100% - max(12px,env(safe-area-inset-left,0px)) - max(12px,env(
   .name-shuffle:hover{background:#edf0e7}
   .dialog-close:hover{background:var(--paper)}
 }
+
+/* Ending summaries preserve complete number/score tokens at every text scale. */
+.ending-metrics{grid-template-columns:repeat(auto-fit,minmax(min(100%,calc(9rem * var(--base-text-scale,1.44) * var(--user-text-scale,1))),1fr))}
+.ending-metrics strong{overflow-wrap:normal;word-break:normal}
+.ending-metrics strong .ending-number-token{display:inline-block;white-space:nowrap;font:inherit;color:inherit;line-height:inherit;letter-spacing:inherit}

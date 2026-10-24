@@ -1,4 +1,4 @@
-import {formatMoney} from './spending.mjs?v=refinements-2';
+import {formatMoney} from './spending.mjs?v=review-20261024';
 /** Relationship labels are a view of the save; names stay in family details. */
 function relations(state){
  const rows=[],add=(name,role)=>{if(typeof name==='string'&&name&&typeof role==='string'&&role)rows.push([name,role]);};
@@ -39,6 +39,7 @@ export function timelineFamilyCopy(value,state){
 }
 export function timelinePresentation(event,state){
  if(event?.type==='birth')return{...event,changes:[...(event.changes||[])]};
+ if(event?.type==='event'&&event.title==='예상 밖의 생활 지출이 생겼다')event={...event,text:String(event.text||'').replace('수리·교통·생활 정비를 묶은 가상 사건이다.','수리·교통·생활 정비에 일회 비용을 썼다.')};
  if(['formed-family','formed-family-finance'].includes(event?.type)&&event.title==='가족과 양육의 한 달을 보냈다')event={...event,type:'formed-family-finance',title:'자녀 양육비를 지급했다'};
  const text=String(event?.text||'').replace('장례비·채무를 처리하고 남은 순재산을 게임 규칙으로 분배했습니다.','장례비와 채무를 처리하고 남은 재산을 나누었다.')
   .replace('동일 학년도에는 같은 난수를 유지하며 더 낮은 문턱의 경로로 지원하거나 다음 해를 준비할 수 있다.','같은 학년도에는 지원 기준이 낮은 경로를 고르거나 다음 해를 준비할 수 있다.');

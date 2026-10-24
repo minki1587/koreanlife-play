@@ -1,40 +1,40 @@
-import {activeUniversity,beginServiceDeferral,enableServiceDeferral,progressServiceDeferral,resolveServiceDeferral,serviceDeferralSummary,validServiceDeferral} from './service-deferral.mjs?v=refinements-2';
-import {setReserveAutomation as reserveAutomationPolicy,validReserveAutomation,reserveAutomaticChoice} from './reserve-automation.mjs?v=refinements-2';
-import {enableReserveService,progressReserveService,reserveAction,validReserveService} from './reserve-service.mjs?v=refinements-2';
-import {ensureDegreeHistory,recordDegreeCompletion,prepareDegreeJourney,validDegreeHistory} from './degree-history.mjs?v=refinements-2';
-import {militaryObligation} from './military-obligation.mjs?v=refinements-2';
-import {createFrozenValidationCache} from './immutable-save.mjs?v=refinements-2';
-import {enableChildInheritance,progressChildInheritance,childInheritanceAction,validChildInheritance} from './child-inheritance.mjs?v=refinements-2';
-import {createLaterLife,acknowledgeLaterLifeCard,validLaterLife,laterLifeCard} from './later-life.mjs?v=refinements-2';
-import {serviceReadiness,deferServiceReview,progressServiceReview,resolveServiceReview,validServiceReview} from './service-readiness.mjs?v=refinements-2';
-import {careerMilestone,assessCareerMilestoneAction} from './career-milestone.mjs?v=refinements-2';
-import {cashFlowSnapshot,validLastCashFlow} from './cash-flow-summary.mjs?v=refinements-2';
-import {applyFundedCare,validCareFunding} from './care-funding.mjs?v=refinements-2';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=refinements-2';
-import {debtRepaymentQuote,PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=refinements-2';
-import {createEmploymentContract,employmentTypeStatus,progressEmploymentContract,employmentIncomeFactor,validEmploymentContracts} from './employment-contract.mjs?v=refinements-2';
-import {financeMonthOpening,monthlyFinanceEvent} from './monthly-finance.mjs?v=refinements-2';
-import {createEconomicLife,ensureEconomicLife,validEconomicLife,progressEconomicLife,economicJobApplication,economicLifeSummary,economicCostWan,economicAnnualSalaryWan} from './economic-life.mjs?v=refinements-2';
-import {createMarket,ensureMarket,validMarket,progressMarket,applyInvestmentAction} from './market-economy.mjs?v=refinements-2';
-import {protagonistGender} from './person-identity.mjs?v=refinements-2';
-import {academySupportActive,academyOfficerJob,validAcademyState} from './academy.mjs?v=refinements-2';
-import {ensureFormedFamily,validFormedFamily,progressFormedFamily,applyFormedFamilyAction,formedFamilyMonthlyBurden} from './formed-family.mjs?v=refinements-2';
-import {appendLifeEvent,validTimelineHistory} from './timeline-history.mjs?v=refinements-2';
-import {pendingInjuryCare,injuryImpact,selectInjuryCare,recoveryActivityPolicy,recoveryStudyAllowed} from './injury-care.mjs?v=refinements-2';
-import {createLifeHealth,progressLifeHealth,validLifeHealth,validLifeDeath} from './life-health.mjs?v=refinements-2';
-import {createMilitaryPay,progressMilitaryPay,validMilitaryPay} from './military-pay.mjs?v=refinements-2';
-import {createMilitarySavings,fundMilitarySavingsMonth,settleMilitarySavings,validMilitarySavings} from './military-savings.mjs?v=refinements-2';
-import {createFamilyEstate,settleFamilyDeaths,validFamilyEstate} from './family-estate.mjs?v=refinements-2';
-import {createParentLife,advanceParentLife,validParentLife} from './parent-careers.mjs?v=refinements-2';
-import {createHouseholdFinance,validHouseholdFinance,hasHouseholdSupport,settleHouseholdMonth,activeHobbyCost,educationFunding} from './household-finance.mjs?v=refinements-2';
-import {generateBirthFamily,validBirthFamily,familySummary} from './birth-family.mjs?v=refinements-2';
-import {validSpendingState,formatMoney} from './spending.mjs?v=refinements-2';
-import {validHobbyState,progressHobbies} from './hobby-rules.mjs?v=refinements-2';
-import {mortalitySnapshot,validMortality,annualDeathProbability,lifeLimitMonths} from './mortality.mjs?v=refinements-2';
-import {careerModelIncome,careerModelSnapshot,validCareerModel} from './career-economy.mjs?v=refinements-2';
-import {employmentProfile,employmentState,evaluateEmployment,careerTrainingPlan,progressCareerTraining,validEmploymentState,CAREER_REGIONS} from './employment.mjs?v=refinements-2';
-import {createSchoolJourney,educationEvent,schoolDecisionDue,schoolChoices,universityOptions,admissionResult,progressSchoolJourney,schoolTuitionMonth,schoolLearningMonth,schoolMonthlyEffects,schoolJourneyLabel,validSchoolJourney} from './education.mjs?v=refinements-2';
-export {schoolChoices,universityOptions} from './education.mjs?v=refinements-2';
+import {activeUniversity,beginServiceDeferral,enableServiceDeferral,progressServiceDeferral,resolveServiceDeferral,serviceDeferralSummary,validServiceDeferral} from './service-deferral.mjs?v=review-20261024';
+import {setReserveAutomation as reserveAutomationPolicy,validReserveAutomation,reserveAutomaticChoice} from './reserve-automation.mjs?v=review-20261024';
+import {enableReserveService,progressReserveService,reserveAction,validReserveService} from './reserve-service.mjs?v=review-20261024';
+import {ensureDegreeHistory,recordDegreeCompletion,prepareDegreeJourney,validDegreeHistory} from './degree-history.mjs?v=review-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=review-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=review-20261024';
+import {enableChildInheritance,progressChildInheritance,childInheritanceAction,validChildInheritance} from './child-inheritance.mjs?v=review-20261024';
+import {createLaterLife,acknowledgeLaterLifeCard,validLaterLife,laterLifeCard} from './later-life.mjs?v=review-20261024';
+import {serviceReadiness,deferServiceReview,progressServiceReview,resolveServiceReview,validServiceReview} from './service-readiness.mjs?v=review-20261024';
+import {careerMilestone,assessCareerMilestoneAction} from './career-milestone.mjs?v=review-20261024';
+import {cashFlowSnapshot,validLastCashFlow} from './cash-flow-summary.mjs?v=review-20261024';
+import {applyFundedCare,validCareFunding} from './care-funding.mjs?v=review-20261024';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=review-20261024';
+import {debtRepaymentQuote,PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=review-20261024';
+import {createEmploymentContract,employmentTypeStatus,progressEmploymentContract,employmentIncomeFactor,validEmploymentContracts} from './employment-contract.mjs?v=review-20261024';
+import {financeMonthOpening,monthlyFinanceEvent} from './monthly-finance.mjs?v=review-20261024';
+import {createEconomicLife,ensureEconomicLife,validEconomicLife,progressEconomicLife,economicJobApplication,economicLifeSummary,economicCostWan,economicAnnualSalaryWan} from './economic-life.mjs?v=review-20261024';
+import {createMarket,ensureMarket,validMarket,progressMarket,applyInvestmentAction} from './market-economy.mjs?v=review-20261024';
+import {protagonistGender} from './person-identity.mjs?v=review-20261024';
+import {academySupportActive,academyOfficerJob,validAcademyState} from './academy.mjs?v=review-20261024';
+import {ensureFormedFamily,validFormedFamily,progressFormedFamily,applyFormedFamilyAction,formedFamilyMonthlyBurden} from './formed-family.mjs?v=review-20261024';
+import {appendLifeEvent,validTimelineHistory} from './timeline-history.mjs?v=review-20261024';
+import {pendingInjuryCare,injuryImpact,selectInjuryCare,recoveryActivityPolicy,recoveryStudyAllowed} from './injury-care.mjs?v=review-20261024';
+import {createLifeHealth,progressLifeHealth,validLifeHealth,validLifeDeath} from './life-health.mjs?v=review-20261024';
+import {createMilitaryPay,progressMilitaryPay,validMilitaryPay} from './military-pay.mjs?v=review-20261024';
+import {createMilitarySavings,fundMilitarySavingsMonth,settleMilitarySavings,validMilitarySavings} from './military-savings.mjs?v=review-20261024';
+import {createFamilyEstate,settleFamilyDeaths,validFamilyEstate} from './family-estate.mjs?v=review-20261024';
+import {createParentLife,advanceParentLife,validParentLife} from './parent-careers.mjs?v=review-20261024';
+import {createHouseholdFinance,validHouseholdFinance,hasHouseholdSupport,settleHouseholdMonth,activeHobbyCost,educationFunding} from './household-finance.mjs?v=review-20261024';
+import {generateBirthFamily,validBirthFamily,familySummary} from './birth-family.mjs?v=review-20261024';
+import {validSpendingState,formatMoney} from './spending.mjs?v=review-20261024';
+import {validHobbyState,progressHobbies} from './hobby-rules.mjs?v=review-20261024';
+import {mortalitySnapshot,validMortality,annualDeathProbability,lifeLimitMonths} from './mortality.mjs?v=review-20261024';
+import {careerModelIncome,careerModelSnapshot,validCareerModel} from './career-economy.mjs?v=review-20261024';
+import {employmentProfile,employmentState,evaluateEmployment,careerTrainingPlan,progressCareerTraining,validEmploymentState,CAREER_REGIONS} from './employment.mjs?v=review-20261024';
+import {createSchoolJourney,educationEvent,schoolDecisionDue,schoolChoices,universityOptions,admissionResult,progressSchoolJourney,schoolTuitionMonth,schoolLearningMonth,schoolMonthlyEffects,schoolJourneyLabel,validSchoolJourney} from './education.mjs?v=review-20261024';
+export {schoolChoices,universityOptions} from './education.mjs?v=review-20261024';
 export const VERSION = 2;
 export const clamp = (n,lo=0,hi=100) => Math.min(hi,Math.max(lo,n));
 const round=n=>Math.round(n*100)/100, clone=value=>structuredClone(value);
@@ -282,7 +282,7 @@ export function repayDebt(original,amountWan){
  const interestText=n=>n>0&&n<1?`${Math.round(n*10000).toLocaleString('ko-KR')}원`:formatMoney(n);
  log(s,'debt-repayment','대출 원금을 상환했다','',[`상환 원금 ${formatMoney(quote.amountWan)}`,`남은 대출금 ${formatMoney(s.debt)}`,`내 소지금 ${formatMoney(s.cash)}`,`다음 달 예상 이자 ${interestText(quote.afterInterestWan)}`,`월 이자 감소 ${interestText(quote.monthlyInterestSavingWan)}`]);labels(s);return s;
 }
-export function setFocus(original,focus){if(!FOCUSES.includes(focus))throw new RangeError('유효하지 않은 생활 방향입니다.');if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');const s=clone(original);if(s.focus!==focus){s.focus=focus;log(s,'focus',`${FOCUS_NAMES[focus]}에 시간을 더 쓰기로 했다`,'시간을 건너뛰지 않고 다음 월부터 생활 습관과 일의 성장에 반영한다.',[`${FOCUS_NAMES[focus]} 중심`]);}return s;}
+export function setFocus(original,focus){if(!FOCUSES.includes(focus))throw new RangeError('유효하지 않은 생활 방향입니다.');if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');const s=clone(original);if(s.phase==='ended')return s;if(s.focus!==focus){s.focus=focus;log(s,'focus',`${FOCUS_NAMES[focus]}에 시간을 더 쓰기로 했다`,'시간을 건너뛰지 않고 다음 월부터 생활 습관과 일의 성장에 반영한다.',[`${FOCUS_NAMES[focus]} 중심`]);}return s;}
 
 function careerRow(id,data){const key=typeof id==='string'?id:id?.id;const row=Array.isArray(data?.occupations)?data.occupations.find(value=>value.id===key):null;if(!row)throw new TypeError('수집한 537개 직업 목록에서 지원 대상을 선택해 주세요.');return row;}
 function careerActionState(original,{allowFirstJob=false,minimumAge=16,allowRecovery=false,allowAcademy=false}={}){if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');if(original.phase==='ended')throw new Error('종료된 삶의 기록에는 활동을 추가할 수 없습니다.');if(original.phase!=='running'&&!(allowFirstJob&&original.phase==='decision'&&original.pendingDecision==='first-job'))throw new Error('현재 갈림길을 먼저 선택해 주세요.');if(pendingInjuryCare(original)||!allowRecovery&&injuryImpact(original).workFactor===0)throw new Error('부상 대응과 회복을 먼저 마쳐 주세요.');if(original.service.active)throw new Error('복무 중에는 이 활동을 할 수 없습니다.');if(!allowAcademy&&academySupportActive(original))throw new Error('사관학교 학업 중에는 이 활동을 할 수 없습니다.');if(original.age<minimumAge)throw new Error(`${minimumAge}세 이상부터 가능한 게임 활동입니다.`);return clone(original);}
