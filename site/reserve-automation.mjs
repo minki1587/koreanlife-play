@@ -1,6 +1,6 @@
-import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=birth-timing-20261024';
-import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=birth-timing-20261024';
-import {militaryObligation} from './military-obligation.mjs?v=birth-timing-20261024';
+import {pendingInjuryCare,injuryImpact} from './injury-care.mjs?v=popup-auto-20261024';
+import {reserveTrainingDue,validReserveService} from './reserve-service.mjs?v=popup-auto-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=popup-auto-20261024';
 
 const month=value=>Number.isInteger(value)&&value>=0&&value<=1800;
 const FIELDS=['version','activatedAtMonth','updatedAtMonth','enabled'];
@@ -16,6 +16,15 @@ export function setReserveAutomation(s,enabled){
  if(typeof enabled!=='boolean')throw new TypeError('예비군 자동 참여 여부를 확인해 주세요.');
  if(!s||!month(s.totalMonths)||s.phase!=='running'||!validReserveAutomation(s))throw new Error('진행 중인 유효한 기록에서 예비군 자동 참여를 설정해 주세요.');
  return{version:1,activatedAtMonth:s.reserveAutomation?.activatedAtMonth??s.totalMonths,updatedAtMonth:s.totalMonths,enabled};
+}
+
+/** Adds a one-click "attend and automate" choice to the reserve dialog when
+ * automation would cover this exact training. Other duties pass through unchanged. */
+export function reserveDutyWithAutoOption(s,duty){
+ if(duty?.kind!=='reserve'||s?.reserveAutomation?.enabled===true)return duty;
+ const trial={...s,reserveAutomation:{version:1,activatedAtMonth:s.reserveAutomation?.activatedAtMonth??s.totalMonths,updatedAtMonth:s.totalMonths,enabled:true}};
+ if(!reserveAutomaticChoice(trial))return duty;
+ return{...duty,actions:[...duty.actions,{kind:'reserve-auto',type:'attend',label:'참여하고 다음부터 자동 참여',facts:['남은 정상 훈련은 묻지 않고 참여','삶 관리 → 복무 정보에서 끌 수 있음']}]};
 }
 
 /** Auto-confirm only the current year's single visible, enabled attend choice.

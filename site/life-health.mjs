@@ -1,6 +1,6 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=birth-timing-20261024';
-import {applyCareRecord} from './injury-care.mjs?v=birth-timing-20261024';
-import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=birth-timing-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
+import {applyCareRecord} from './injury-care.mjs?v=popup-auto-20261024';
+import {INCIDENT_RISK_RULES,incidentRiskProfile,validIncidentRisk} from './incident-risk.mjs?v=popup-auto-20261024';
 // Explicit game rules. No medical diagnosis, external data, DOM or I/O.
 export const LIFE_HEALTH_RULES=Object.freeze({version:'life-health-v1',monthlyFatalProbability:.00001,monthlyInjuryProbability:.01,severities:Object.freeze([
  Object.freeze({id:'minor',label:'경상',probability:.85,healthLoss:8,recoveryMonths:2}),
@@ -49,7 +49,7 @@ function step(seed,atMonth,context,before,currentInjury,risk=null){
 function presentation(record){
  const where=record.context==='military'?'군 복무 중':'일상 중',rule=LIFE_HEALTH_RULES.severities.find(row=>row.id===record.severity),severity=rule?.label||'';
  const title=record.type==='death'?(record.deathCause==='health'?'건강이 다해 삶을 마쳤다':record.deathCause==='injury'?`${where} 입은 부상으로 삶을 마쳤다`:`${where} 사고로 삶을 마쳤다`):record.type==='injury'?`${where} ${severity} 부상을 입었다`:record.type==='recovered'?'부상 회복을 마쳤다':'몸을 회복하고 있다';
- const changes=record.healthDelta?[`건강 ${record.healthDelta>0?'+':''}${Number(record.healthDelta.toFixed(6))}`]:[];
+ const shown=Number((record.healthDelta||0).toFixed(1)),changes=shown?[`건강 ${shown>0?'+':''}${shown}`]:[];
  return{id:record.type==='recovery'||record.type==='recovered'?`${record.incidentId}-recovery-${record.atMonth}`:record.incidentId,atMonth:record.atMonth,type:record.type,title,context:record.context,healthDelta:record.healthDelta,severity:record.severity,injuryLabel:severity,cause:record.deathCause,changes};
 }
 

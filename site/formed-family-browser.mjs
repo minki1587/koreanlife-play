@@ -1,9 +1,9 @@
-import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=birth-timing-20261024';
-import {renderFormedFamilySummary} from './formed-family-views.mjs?v=birth-timing-20261024';
-import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
-import {clearActionError,reportActionError} from './ui-copy.mjs?v=birth-timing-20261024';
-import {childInheritanceAssessment} from './child-inheritance.mjs?v=birth-timing-20261024';
-export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=birth-timing-20261024';
+import {formedFamilySummary,formedFamilyOptions} from './formed-family.mjs?v=popup-auto-20261024';
+import {renderFormedFamilySummary} from './formed-family-views.mjs?v=popup-auto-20261024';
+import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {clearActionError,reportActionError} from './ui-copy.mjs?v=popup-auto-20261024';
+import {childInheritanceAssessment} from './child-inheritance.mjs?v=popup-auto-20261024';
+export {renderFormedFamilyFinance} from './formed-family-views.mjs?v=popup-auto-20261024';
 
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}

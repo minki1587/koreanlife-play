@@ -1,9 +1,9 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=birth-timing-20261024';
-import {randomKoreanName} from './names.mjs?v=birth-timing-20261024';
-import {employmentRequirements} from './employment.mjs?v=birth-timing-20261024';
-import {entryCareerAllowed} from './career-progression.mjs?v=birth-timing-20261024';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=birth-timing-20261024';
-import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=birth-timing-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
+import {randomKoreanName} from './names.mjs?v=popup-auto-20261024';
+import {employmentRequirements} from './employment.mjs?v=popup-auto-20261024';
+import {entryCareerAllowed} from './career-progression.mjs?v=popup-auto-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=popup-auto-20261024';
+import {newSpouseLife,validSpouseLifeHeader,startSpouseAccount,exposeSpouseAccount,spouseDeathCheck,settleSpouseDeath,accrueSpouseMonth,spouseEstateSummary} from './spouse-life.mjs?v=popup-auto-20261024';
 
 const q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clone=x=>structuredClone(x),nn=n=>Number.isFinite(n)&&n>=0,int=(n,a,b)=>Number.isInteger(n)&&n>=a&&n<=b,text=s=>typeof s==='string'&&s.length>0&&s.length<=250;
 // Independent optional policies can activate in either order. JSON property
@@ -86,7 +86,7 @@ function canonicalRequest(request){
 }
 function childPlanningReasons(f,atMonth,cashBeforeWan,request){
  const rules=CHILD_PLANNING_RULES,age=Math.floor(atMonth/12),maximum=request.kind==='birth'?rules.birthMaximumAge:rules.adoptMaximumAge,reasons=[];
- if(age<rules.minimumAge||age>maximum)reasons.push(`${request.kind==='birth'?'출생 계획':'입양 준비'}은 ${rules.minimumAge}~${maximum}세에 시작할 수 있습니다.`);
+ if(age<rules.minimumAge||age>maximum)reasons.push(`${request.kind==='birth'?'출생 계획은':'입양 준비는'}${rules.minimumAge}~${maximum}세에 시작할 수 있습니다.`);
  if(request.kind==='birth'){
   if(f.relationshipStatus!=='married'||!f.spouse||f.spouse.status==='deceased')reasons.push('출생 계획은 살아 있는 배우자와 혼인 중에 시작할 수 있습니다.');
   else if(f.spouse.ageMonths<rules.minimumAge*12||f.spouse.ageMonths>=(rules.birthMaximumAge+1)*12)reasons.push('출생 계획은 배우자가 19~49세일 때 시작할 수 있습니다.');

@@ -1,6 +1,6 @@
-import {createDecisionDialog} from './decision-dialog.mjs?v=birth-timing-20261024';
+import {createDecisionDialog} from './decision-dialog.mjs?v=popup-auto-20261024';
 
-export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose}={}){
+export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose,decorate=model=>model}={}){
  const node=(tag,text)=>{const n=document.createElement(tag);if(text)n.textContent=text;return n;};
  const dialog=node('dialog');dialog.id='military-duty-dialog';dialog.className='decision-dialog';dialog.setAttribute('aria-labelledby','military-duty-title');dialog.setAttribute('aria-describedby','military-duty-text');
  const top=node('div');top.className='decision-dialog-top';const category=node('span','복무와 예비군'),fold=node('button','− 잠시 접고 게임 보기');fold.type='button';fold.className='secondary';top.append(category,fold);
@@ -19,5 +19,5 @@ export function createMilitaryDutyBrowser({document=globalThis.document,onAction
  dialog.addEventListener('cancel',event=>{if(working){event.preventDefault();event.stopImmediatePropagation();}},{capture:true});
  dialog.addEventListener('click',event=>{if(working&&event.target===dialog){event.preventDefault();event.stopImmediatePropagation();}},{capture:true});
  dialog.addEventListener('close',()=>onClose?.());
- return{get isOpen(){return dialog.open;},get isPending(){return working;},reopen(){if(current)reopen.click();},suspend(){control.suspend();},update(model,{blocked=false}={}){blockedNow=blocked;const changed=current?.id!==model?.id;current=model;if(changed)error.textContent='';if(current){heading.textContent=current.title;text.textContent=current.text;}paintChoices();const wasOpen=dialog.open;control.update(current?.id??null,{blocked});if(!wasOpen&&dialog.open)onOpen?.();},close(){if(working)return false;control.update(null);current=null;return true;},destroy(){control.update(null);dialog.remove();reminder.remove();}};
+ return{get isOpen(){return dialog.open;},get isPending(){return working;},reopen(){if(current)reopen.click();},suspend(){control.suspend();},update(model,{blocked=false}={}){model=model?decorate(model):model;blockedNow=blocked;const changed=current?.id!==model?.id;current=model;if(changed)error.textContent='';if(current){heading.textContent=current.title;text.textContent=current.text;}paintChoices();const wasOpen=dialog.open;control.update(current?.id??null,{blocked});if(!wasOpen&&dialog.open)onOpen?.();},close(){if(working)return false;control.update(null);current=null;return true;},destroy(){control.update(null);dialog.remove();reminder.remove();}};
 }

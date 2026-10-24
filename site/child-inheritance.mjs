@@ -1,6 +1,6 @@
-import {PARENTING_MODES} from './formed-family.mjs?v=birth-timing-20261024';
-import {pendingInjuryCare} from './injury-care.mjs?v=birth-timing-20261024';
-import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
+import {PARENTING_MODES} from './formed-family.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare} from './injury-care.mjs?v=popup-auto-20261024';
+import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
 
 // An overlay on the immutable spouse-estate grant ledger. Player cash is separate.
 export const CHILD_INHERITANCE_RULES=Object.freeze({schemaVersion:1,adultAgeMonths:228,educationCostWan:PARENTING_MODES.learning.extraWan,educationLearnGain:PARENTING_MODES.learning.learn});

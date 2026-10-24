@@ -1,4 +1,4 @@
-import {createFrozenValidationCache} from './immutable-save.mjs?v=birth-timing-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
 const clone=x=>structuredClone(x),same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),finite=n=>typeof n==='number'&&Number.isFinite(n),q=n=>Math.round((n+Number.EPSILON)*10000)/10000,clamp=(n,[lo,hi])=>Math.max(lo,Math.min(hi,n));
 export const ECONOMIC_LIFE_VERSION='economic-life-v1';
 const WORKING=new Set(['재직','계약직','시간제','프리랜서','자영업']);

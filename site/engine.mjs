@@ -1,40 +1,41 @@
-import {activeUniversity,beginServiceDeferral,enableServiceDeferral,progressServiceDeferral,resolveServiceDeferral,serviceDeferralSummary,validServiceDeferral} from './service-deferral.mjs?v=birth-timing-20261024';
-import {setReserveAutomation as reserveAutomationPolicy,validReserveAutomation,reserveAutomaticChoice} from './reserve-automation.mjs?v=birth-timing-20261024';
-import {enableReserveService,progressReserveService,reserveAction,validReserveService} from './reserve-service.mjs?v=birth-timing-20261024';
-import {ensureDegreeHistory,recordDegreeCompletion,prepareDegreeJourney,validDegreeHistory} from './degree-history.mjs?v=birth-timing-20261024';
-import {militaryObligation} from './military-obligation.mjs?v=birth-timing-20261024';
-import {createFrozenValidationCache} from './immutable-save.mjs?v=birth-timing-20261024';
-import {enableChildInheritance,progressChildInheritance,childInheritanceAction,validChildInheritance} from './child-inheritance.mjs?v=birth-timing-20261024';
-import {createLaterLife,acknowledgeLaterLifeCard,validLaterLife,laterLifeCard} from './later-life.mjs?v=birth-timing-20261024';
-import {serviceReadiness,deferServiceReview,progressServiceReview,resolveServiceReview,validServiceReview} from './service-readiness.mjs?v=birth-timing-20261024';
-import {careerMilestone,assessCareerMilestoneAction} from './career-milestone.mjs?v=birth-timing-20261024';
-import {cashFlowSnapshot,validLastCashFlow} from './cash-flow-summary.mjs?v=birth-timing-20261024';
-import {applyFundedCare,validCareFunding} from './care-funding.mjs?v=birth-timing-20261024';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=birth-timing-20261024';
-import {debtRepaymentQuote,PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=birth-timing-20261024';
-import {createEmploymentContract,employmentTypeStatus,progressEmploymentContract,employmentIncomeFactor,validEmploymentContracts} from './employment-contract.mjs?v=birth-timing-20261024';
-import {financeMonthOpening,monthlyFinanceEvent} from './monthly-finance.mjs?v=birth-timing-20261024';
-import {createEconomicLife,ensureEconomicLife,validEconomicLife,progressEconomicLife,economicJobApplication,economicLifeSummary,economicCostWan,economicAnnualSalaryWan} from './economic-life.mjs?v=birth-timing-20261024';
-import {createMarket,ensureMarket,validMarket,progressMarket,applyInvestmentAction} from './market-economy.mjs?v=birth-timing-20261024';
-import {protagonistGender} from './person-identity.mjs?v=birth-timing-20261024';
-import {academySupportActive,academyOfficerJob,validAcademyState} from './academy.mjs?v=birth-timing-20261024';
-import {ensureFormedFamily,validFormedFamily,progressFormedFamily,applyFormedFamilyAction,formedFamilyMonthlyBurden} from './formed-family.mjs?v=birth-timing-20261024';
-import {appendLifeEvent,validTimelineHistory} from './timeline-history.mjs?v=birth-timing-20261024';
-import {pendingInjuryCare,injuryImpact,selectInjuryCare,recoveryActivityPolicy,recoveryStudyAllowed} from './injury-care.mjs?v=birth-timing-20261024';
-import {createLifeHealth,progressLifeHealth,validLifeHealth,validLifeDeath} from './life-health.mjs?v=birth-timing-20261024';
-import {createMilitaryPay,progressMilitaryPay,validMilitaryPay} from './military-pay.mjs?v=birth-timing-20261024';
-import {createMilitarySavings,fundMilitarySavingsMonth,settleMilitarySavings,validMilitarySavings} from './military-savings.mjs?v=birth-timing-20261024';
-import {createFamilyEstate,settleFamilyDeaths,validFamilyEstate} from './family-estate.mjs?v=birth-timing-20261024';
-import {createParentLife,advanceParentLife,validParentLife} from './parent-careers.mjs?v=birth-timing-20261024';
-import {createHouseholdFinance,validHouseholdFinance,hasHouseholdSupport,settleHouseholdMonth,activeHobbyCost,educationFunding} from './household-finance.mjs?v=birth-timing-20261024';
-import {generateBirthFamily,validBirthFamily,familySummary} from './birth-family.mjs?v=birth-timing-20261024';
-import {validSpendingState,formatMoney} from './spending.mjs?v=birth-timing-20261024';
-import {validHobbyState,progressHobbies} from './hobby-rules.mjs?v=birth-timing-20261024';
-import {mortalitySnapshot,validMortality,annualDeathProbability,lifeLimitMonths} from './mortality.mjs?v=birth-timing-20261024';
-import {careerModelIncome,careerModelSnapshot,validCareerModel} from './career-economy.mjs?v=birth-timing-20261024';
-import {employmentProfile,employmentState,evaluateEmployment,careerTrainingPlan,progressCareerTraining,validEmploymentState,CAREER_REGIONS} from './employment.mjs?v=birth-timing-20261024';
-import {createSchoolJourney,educationEvent,schoolDecisionDue,schoolChoices,universityOptions,admissionResult,progressSchoolJourney,schoolTuitionMonth,schoolLearningMonth,schoolMonthlyEffects,schoolJourneyLabel,validSchoolJourney} from './education.mjs?v=birth-timing-20261024';
-export {schoolChoices,universityOptions} from './education.mjs?v=birth-timing-20261024';
+import {activeUniversity,beginServiceDeferral,enableServiceDeferral,progressServiceDeferral,resolveServiceDeferral,serviceDeferralSummary,validServiceDeferral} from './service-deferral.mjs?v=popup-auto-20261024';
+import {setReserveAutomation as reserveAutomationPolicy,validReserveAutomation,reserveAutomaticChoice} from './reserve-automation.mjs?v=popup-auto-20261024';
+import {enableReserveService,progressReserveService,reserveAction,validReserveService} from './reserve-service.mjs?v=popup-auto-20261024';
+import {ensureDegreeHistory,recordDegreeCompletion,prepareDegreeJourney,validDegreeHistory} from './degree-history.mjs?v=popup-auto-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=popup-auto-20261024';
+import {createFrozenValidationCache} from './immutable-save.mjs?v=popup-auto-20261024';
+import {enableChildInheritance,progressChildInheritance,childInheritanceAction,validChildInheritance} from './child-inheritance.mjs?v=popup-auto-20261024';
+import {createLaterLife,acknowledgeLaterLifeCard,validLaterLife,laterLifeCard} from './later-life.mjs?v=popup-auto-20261024';
+import {serviceReadiness,deferServiceReview,progressServiceReview,resolveServiceReview,validServiceReview} from './service-readiness.mjs?v=popup-auto-20261024';
+import {careerMilestone,assessCareerMilestoneAction} from './career-milestone.mjs?v=popup-auto-20261024';
+import {cashFlowSnapshot,validLastCashFlow} from './cash-flow-summary.mjs?v=popup-auto-20261024';
+import {applyFundedCare,validCareFunding} from './care-funding.mjs?v=popup-auto-20261024';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=popup-auto-20261024';
+import {debtRepaymentQuote,PERSONAL_DEBT_ANNUAL_RATE} from './debt-rules.mjs?v=popup-auto-20261024';
+import {createEmploymentContract,employmentTypeStatus,progressEmploymentContract,employmentIncomeFactor,validEmploymentContracts} from './employment-contract.mjs?v=popup-auto-20261024';
+import {financeMonthOpening,monthlyFinanceEvent} from './monthly-finance.mjs?v=popup-auto-20261024';
+import {createEconomicLife,ensureEconomicLife,validEconomicLife,progressEconomicLife,economicJobApplication,economicLifeSummary,economicCostWan,economicAnnualSalaryWan} from './economic-life.mjs?v=popup-auto-20261024';
+import {createMarket,ensureMarket,validMarket,progressMarket,applyInvestmentAction} from './market-economy.mjs?v=popup-auto-20261024';
+import {protagonistGender} from './person-identity.mjs?v=popup-auto-20261024';
+import {academySupportActive,academyOfficerJob,validAcademyState} from './academy.mjs?v=popup-auto-20261024';
+import {ensureFormedFamily,validFormedFamily,progressFormedFamily,applyFormedFamilyAction,formedFamilyMonthlyBurden} from './formed-family.mjs?v=popup-auto-20261024';
+import {appendLifeEvent,validTimelineHistory} from './timeline-history.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare,injuryImpact,selectInjuryCare,recoveryActivityPolicy,recoveryStudyAllowed} from './injury-care.mjs?v=popup-auto-20261024';
+import {validInjuryAutomation,injuryAutomationPolicy,injuryAutomaticChoice} from './injury-automation.mjs?v=popup-auto-20261024';
+import {createLifeHealth,progressLifeHealth,validLifeHealth,validLifeDeath} from './life-health.mjs?v=popup-auto-20261024';
+import {createMilitaryPay,progressMilitaryPay,validMilitaryPay} from './military-pay.mjs?v=popup-auto-20261024';
+import {createMilitarySavings,fundMilitarySavingsMonth,settleMilitarySavings,validMilitarySavings} from './military-savings.mjs?v=popup-auto-20261024';
+import {createFamilyEstate,settleFamilyDeaths,validFamilyEstate} from './family-estate.mjs?v=popup-auto-20261024';
+import {createParentLife,advanceParentLife,validParentLife} from './parent-careers.mjs?v=popup-auto-20261024';
+import {createHouseholdFinance,validHouseholdFinance,hasHouseholdSupport,settleHouseholdMonth,activeHobbyCost,educationFunding} from './household-finance.mjs?v=popup-auto-20261024';
+import {generateBirthFamily,validBirthFamily,familySummary} from './birth-family.mjs?v=popup-auto-20261024';
+import {validSpendingState,formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {validHobbyState,progressHobbies} from './hobby-rules.mjs?v=popup-auto-20261024';
+import {mortalitySnapshot,validMortality,annualDeathProbability,lifeLimitMonths} from './mortality.mjs?v=popup-auto-20261024';
+import {careerModelIncome,careerModelSnapshot,validCareerModel} from './career-economy.mjs?v=popup-auto-20261024';
+import {employmentProfile,employmentState,evaluateEmployment,careerTrainingPlan,progressCareerTraining,validEmploymentState,CAREER_REGIONS} from './employment.mjs?v=popup-auto-20261024';
+import {createSchoolJourney,educationEvent,schoolDecisionDue,schoolChoices,universityOptions,admissionResult,progressSchoolJourney,schoolTuitionMonth,schoolLearningMonth,schoolMonthlyEffects,schoolJourneyLabel,validSchoolJourney} from './education.mjs?v=popup-auto-20261024';
+export {schoolChoices,universityOptions} from './education.mjs?v=popup-auto-20261024';
 export const VERSION = 2;
 export const clamp = (n,lo=0,hi=100) => Math.min(hi,Math.max(lo,n));
 const round=n=>Math.round(n*100)/100, clone=value=>structuredClone(value);
@@ -254,7 +255,7 @@ function lifeHealthMonth(s,data,openingHealth){
  if(data?.injuryCareChoices===true){if(!s.lifeHealth)s.lifeHealth=createLifeHealth(s,{activatedAtMonth:s.totalMonths-1});if(s.lifeHealth.careEnabledAtMonth===undefined)Object.assign(s.lifeHealth,{careEnabledAtMonth:s.totalMonths-1,careActions:[],pendingCare:null});}
  const result=progressLifeHealth(openingHealth<=0?{...s,health:0}:s,s.totalMonths,{context:s.service.active||['cadet','officer'].includes(s.academy?.status)?'military':'daily',data});if(!result)return false;
  s.lifeHealth=result.lifeHealth;s.health=result.health;const event=result.event;
- if(!result.death){if(event)log(s,`life-${event.type}`,event.title,event.text||'',event.changes||[]);return false;}
+ if(!result.death){if(event)log(s,`life-${event.type}`,event.title,event.text||'',event.changes||[]);applyAutomaticInjuryCareDraft(s);return false;}
  const death=result.death;if(s.service.active){s.service.remainingMonths--;if(s.service.remainingMonths===0)s.service.active=false;}
  s.phase='ended';if(s.lifeHealth?.careEnabledAtMonth!==undefined)s.lifeHealth.pendingCare=null;s.pendingDecision=null;s.ending={type:'death',cause:`${death.context}-${death.cause==='accident'?'incident':death.cause}`,atMonth:s.totalMonths,age:s.age,incidentId:death.incidentId,modelVersion:death.modelVersion};
  settleServiceSavings(s,'death');if(!s.month)annual(s,{includeEvents:false});labels(s);log(s,'ending',event?.title||`${s.age}세, 삶의 이야기를 마쳤다`,event?.text||'',event?.changes||[]);return true;
@@ -353,7 +354,7 @@ function validateSave(s){try{
 if(s?.refinements!==undefined&&(!s.refinements||s.refinements.version!==1||Object.keys(s.refinements).length!==2||!Number.isInteger(s.refinements.activatedAtMonth)||s.refinements.activatedAtMonth<0||s.refinements.activatedAtMonth>s.totalMonths))return false;
 if(s?.remedies!==undefined&&(!s.remedies||s.remedies.version!==1||Object.keys(s.remedies).length!==2||!Number.isInteger(s.remedies.activatedAtMonth)||s.remedies.activatedAtMonth<0||s.remedies.activatedAtMonth>s.totalMonths))return false;
 if(s?.continuity!==undefined&&(!s.continuity||s.continuity.version!==1||Object.keys(s.continuity).length!==2||!Number.isInteger(s.continuity.activatedAtMonth)||s.continuity.activatedAtMonth<0||s.continuity.activatedAtMonth>s.totalMonths||!s.degreeHistory))return false;
-if(!validReserveAutomation(s)||!validServiceDeferral(s)||!validReserveService(s)||!validDegreeHistory(s))return false;
+if(!validReserveAutomation(s)||!validInjuryAutomation(s)||!validServiceDeferral(s)||!validReserveService(s)||!validDegreeHistory(s))return false;
 if(!validChildInheritance(s)||!validLaterLife(s)||!validServiceReview(s)||!validCareFunding(s)||!validLastCashFlow(s)||!validSpendingState(s)||!validHobbyState(s)||!validMarket(s)||!validEconomicLife(s)||!validEmploymentContracts(s))return false;
 if(!validFormedFamily(s)||!validAcademyState(s)||!validEmploymentState(s)||!validSchoolJourney(s)||!validMilitarySavings(s)||!validMilitaryPay(s)||!validLifeHealth(s))return false;
 if(!s||s.version!==VERSION||typeof s.seed!=='string'||!s.seed||s.seed.length>64||typeof s.name!=='string'||!s.name||!Number.isInteger(s.totalMonths)||s.totalMonths<0||s.totalMonths>lifeLimitMonths(s)||s.age!==Math.floor(s.totalMonths/12)||s.month!==s.totalMonths%12)return false;
@@ -434,7 +435,15 @@ export function chooseInjuryCare(original,id,plan=null,data){
  for(const trade of trades)log(s,'investment-trade','치료비 마련을 위해 보유 자산을 매도했다','',[`소지금 회수 ${formatMoney(trade.payoutWan||trade.record?.payoutWan||0)}`]);
  if(funding?.familySupportWan)log(s,'family-medical-support','가족이 치료비를 지원했다','',[`치료비 직접 지원 ${formatMoney(funding.familySupportWan)}`]);
  if(funding?.loanWan)log(s,'medical-loan','치료비 부족분을 대출로 마련했다','',[`대출 원금 ${formatMoney(funding.loanWan)}`,`남은 대출금 ${formatMoney(s.debt)}`]);
- log(s,'injury-care',`${({treatment:'치료받기로',rest:'충분히 쉬기로',rehab:'재활하기로'})[id]} 했다`,'',[`대응 비용 ${formatMoney(option.costWan)}`,`회복 기간 ${option.months}개월`,`건강 +${Number((action.healthAfter-action.healthBefore).toFixed(4))}`]);labels(s);return s;
+ logInjuryCare(s,id,option,action);labels(s);return s;
+}
+function logInjuryCare(s,id,option,action,automatic=false){log(s,'injury-care',`${({treatment:'치료받기로',rest:'충분히 쉬기로',rehab:'재활하기로'})[id]} 했다${automatic?' (자동)':''}`,automatic?'같은 정도의 부상에 지난번에 고른 방법을 그대로 적용했다.':'',[`대응 비용 ${formatMoney(option.costWan)}`,`회복 기간 ${option.months}개월`,`건강 +${Number((action.healthAfter-action.healthBefore).toFixed(1))}`]);}
+/** Applies a remembered care choice in place so the clock keeps running. */
+function applyAutomaticInjuryCareDraft(s){const mode=injuryAutomaticChoice(s);if(!mode)return false;const {state:next,option,action}=selectInjuryCare(s,mode);s.lifeHealth=next.lifeHealth;s.health=next.health;s.cash=next.cash;s.ledger=next.ledger;logInjuryCare(s,mode,option,action,true);return true;}
+/** Remember (mode) or forget (null) how to handle the next minor or major injury. */
+export function setInjuryAutomation(original,severity,mode){
+ if(!validSave(original))throw new TypeError('유효하지 않은 삶의 기록입니다.');
+ const s=clone(original);s.injuryAutomation=injuryAutomationPolicy(s,severity,mode);return s;
 }
 
 export function enlistAfterRecovery(original,branch,data){

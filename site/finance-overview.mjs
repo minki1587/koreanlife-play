@@ -1,7 +1,7 @@
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=birth-timing-20261024';
-import {livingCostSummary} from './engine.mjs?v=birth-timing-20261024';
-import {investmentSummary} from './market-economy.mjs?v=birth-timing-20261024';
-import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=birth-timing-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=popup-auto-20261024';
+import {livingCostSummary} from './engine.mjs?v=popup-auto-20261024';
+import {investmentSummary} from './market-economy.mjs?v=popup-auto-20261024';
+import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=popup-auto-20261024';
 
 /** The protagonist's portfolio is separate from parents, partners and child trusts. */
 export function personalFinanceOverview(state){

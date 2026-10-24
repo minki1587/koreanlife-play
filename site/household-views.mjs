@@ -1,7 +1,7 @@
-import {estateSummary} from './family-estate.mjs?v=birth-timing-20261024';
-import {currentParents} from './parent-careers.mjs?v=birth-timing-20261024';
-import {householdSummary} from './household-finance.mjs?v=birth-timing-20261024';
-import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
+import {estateSummary} from './family-estate.mjs?v=popup-auto-20261024';
+import {currentParents} from './parent-careers.mjs?v=popup-auto-20261024';
+import {householdSummary} from './household-finance.mjs?v=popup-auto-20261024';
+import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
 export function householdFacts(s){
  const h=householdSummary(s);if(!h)return [];
  const m=h.lastMonth,estate=estateSummary(s);
@@ -17,5 +17,5 @@ export function renderHouseholdPanel(host,s){
  if(h.parentsActive)note.textContent+=' 부모의 고용·은퇴·사망에 따라 소득과 지원이 달라집니다. 지원 대상이 아닌 기간에도 가구 수입·지출을 정산합니다.';
  if(s.familyEstate?.closed)note.textContent='가구 유산 정산이 끝났습니다. 부모 지원은 종료되며 상속 수령액은 내 소지금에서 관리합니다.';
  if(h.lastMonth?.fixedShortfallWan)note.textContent+=` 가구 기본 지출 미충당 ${formatMoney(h.lastMonth.fixedShortfallWan)}.`;
- if(h.lastMonth?.protectionWan)note.textContent+=` 기본생활 보호 ${formatMoney(h.lastMonth.protectionWan)}는 생활비에만 적용됩니다.`;
+ if(h.lastMonth?.protectionWan)note.textContent+=` 기본생활 보호 ${formatMoney(h.lastMonth.protectionWan)}은 생활비에만 적용됩니다.`;
 }

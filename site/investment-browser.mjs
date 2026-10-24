@@ -1,6 +1,6 @@
-import {investmentSummary,investmentAssessment} from './market-economy.mjs?v=birth-timing-20261024';
-import {appendUiFacts,clearActionError,reportActionError} from './ui-copy.mjs?v=birth-timing-20261024';
-import {pendingInjuryCare} from './injury-care.mjs?v=birth-timing-20261024';
+import {investmentSummary,investmentAssessment} from './market-economy.mjs?v=popup-auto-20261024';
+import {appendUiFacts,clearActionError,reportActionError} from './ui-copy.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare} from './injury-care.mjs?v=popup-auto-20261024';
 
 const TABS=Object.freeze([['property','부동산'],['stock','주식'],['fund','펀드']]);
 const units=value=>`${Number(value||0).toLocaleString('ko-KR',{maximumFractionDigits:0})}단위`;

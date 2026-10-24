@@ -1,10 +1,10 @@
-import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=birth-timing-20261024';
-import {academySupportActive} from './academy.mjs?v=birth-timing-20261024';
-import {formedFamilyMonthlyBurden,formedFamilyCommitment,formedFamilyCommitmentSchedule} from './formed-family.mjs?v=birth-timing-20261024';
-import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=birth-timing-20261024';
-import {currentFamilyIncome} from './parent-careers.mjs?v=birth-timing-20261024';
-import {economicCostWan} from './economic-life.mjs?v=birth-timing-20261024';
-import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=birth-timing-20261024';
+import {hobbyWithinMonthlyBudget} from './hobby-budget.mjs?v=popup-auto-20261024';
+import {academySupportActive} from './academy.mjs?v=popup-auto-20261024';
+import {formedFamilyMonthlyBurden,formedFamilyCommitment,formedFamilyCommitmentSchedule} from './formed-family.mjs?v=popup-auto-20261024';
+import {hobbyInjuryAllowed,recoveryStudyAllowed} from './injury-care.mjs?v=popup-auto-20261024';
+import {currentFamilyIncome} from './parent-careers.mjs?v=popup-auto-20261024';
+import {economicCostWan} from './economic-life.mjs?v=popup-auto-20261024';
+import {monthlyWorkIncomeWan,monthlyAutomaticConsumptionWan,monthlyMilitaryNetIncomeWan} from './income-rules.mjs?v=popup-auto-20261024';
 const clone=x=>structuredClone(x),round=n=>Math.round((n+Number.EPSILON)*10000)/10000;
 const nonnegative=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
 const VERSION='household-support-1';

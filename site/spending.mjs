@@ -1,5 +1,5 @@
-import {appendLifeEvent} from './timeline-history.mjs?v=birth-timing-20261024';
-import {pendingInjuryCare,recoveryActivityPolicy} from './injury-care.mjs?v=birth-timing-20261024';
+import {appendLifeEvent} from './timeline-history.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare,recoveryActivityPolicy} from './injury-care.mjs?v=popup-auto-20261024';
 // All prices/effects are fictional game settings. This module does no I/O.
 export const EFFECT_LIMITS=Object.freeze({health:Object.freeze([-5,8]),learn:Object.freeze([0,8]),bond:Object.freeze([0,8]),joy:Object.freeze([-3,10]),skill:Object.freeze([0,.5])});
 const KEYS=Object.keys(EFFECT_LIMITS),METRICS=KEYS.filter(k=>k!=='skill');
@@ -27,9 +27,12 @@ function validateRow(row){
 /** n is the existing game amount in 만원; round to one decimal, sign once. */
 export function formatMoney(n){
  if(!finite(n)||Math.abs(n)>Number.MAX_SAFE_INTEGER/10)throw new TypeError('표시할 금액이 올바르지 않습니다.');
- const tenths=Math.round((Math.abs(n)+Number.EPSILON)*10),negative=n<0&&tenths>0?'-':'',eok=Math.floor(tenths/100000),wan=(tenths%100000)/10;
+ const tenths=Math.round((Math.abs(n)+Number.EPSILON)*10),negative=n<0&&tenths>0?'-':'';
  const show=value=>value.toLocaleString('ko-KR',{minimumFractionDigits:0,maximumFractionDigits:1});
- return eok?`${negative}${show(eok)}억${wan?` ${show(wan)}만원`:'원'}`:`${negative}${show(wan)}만원`;
+ if(tenths<100000)return`${negative}${show(tenths/10)}만원`;
+ // From 1억 up, a tenth of 만원 is noise, so round to whole 만원.
+ const whole=Math.round(Math.abs(n)+Number.EPSILON),eok=Math.floor(whole/10000),wan=whole%10000;
+ return`${negative}${show(eok)}억${wan?` ${show(wan)}만원`:'원'}`;
 }
 
 /** Keep the source catalog/save IDs intact; new actions are one-month activities. */

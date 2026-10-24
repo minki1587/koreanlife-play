@@ -1,4 +1,5 @@
-import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
+import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {particle} from './korean-particle.mjs?v=popup-auto-20261024';
 /** Relationship labels are a view of the save; names stay in family details. */
 function relations(state){
  const rows=[],add=(name,role)=>{if(typeof name==='string'&&name&&typeof role==='string'&&role)rows.push([name,role]);};
@@ -15,15 +16,6 @@ function relations(state){
  return rows;
 }
 const escape=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-function particle(role,original){
- const code=role.charCodeAt(role.length-1)-0xac00,ending=code>=0&&code<=11171?code%28:0;
- if(['이','가'].includes(original))return ending?'이':'가';
- if(['은','는'].includes(original))return ending?'은':'는';
- if(['을','를'].includes(original))return ending?'을':'를';
- if(['과','와'].includes(original))return ending?'과':'와';
- if(['으로','로'].includes(original))return ending&&ending!==8?'으로':'로';
- return original||'';
-}
 export function timelineContextKey(state){return JSON.stringify(relations(state));}
 export function timelineFamilyCopy(value,state){
  let text=String(value??'');const rows=relations(state),roles=new Map();

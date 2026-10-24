@@ -1,11 +1,11 @@
-import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=birth-timing-20261024';
-import {searchOccupations} from './career-browser.mjs?v=birth-timing-20261024';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=birth-timing-20261024';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=birth-timing-20261024';
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=birth-timing-20261024';
-import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=birth-timing-20261024';
-import {recommendJobs} from './choice-recommendations.mjs?v=birth-timing-20261024';
+import {formatMoney} from './spending.mjs?v=popup-auto-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=popup-auto-20261024';
+import {searchOccupations} from './career-browser.mjs?v=popup-auto-20261024';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=popup-auto-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=popup-auto-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=popup-auto-20261024';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=popup-auto-20261024';
+import {recommendJobs} from './choice-recommendations.mjs?v=popup-auto-20261024';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

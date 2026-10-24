@@ -1,8 +1,9 @@
-import {parentDeathCheck} from './family-estate.mjs?v=birth-timing-20261024';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=birth-timing-20261024';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=birth-timing-20261024';
-import {careerProgressionAssessment} from './career-progression.mjs?v=birth-timing-20261024';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=birth-timing-20261024';
+import {parentDeathCheck} from './family-estate.mjs?v=popup-auto-20261024';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=popup-auto-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=popup-auto-20261024';
+import {careerProgressionAssessment} from './career-progression.mjs?v=popup-auto-20261024';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=popup-auto-20261024';
+import {particle} from './korean-particle.mjs?v=popup-auto-20261024';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
@@ -45,7 +46,7 @@ export function advanceParentLife(s,data){
   if(p.status!=='retired'&&(age>=life.rules.retirementAge||(p.occupation?.limits.max!==null&&p.occupation?.limits.max!==undefined&&age>p.occupation.limits.max))){p.lastOccupation=p.occupation||p.lastOccupation;p.occupation=null;p.status='retired';event=['retirement',`${birth.role} ${birth.name}님이 은퇴했다`];}
   else if(p.status==='employed'){
    if(draw('loss')<life.rules.monthlyLossChance){p.lastOccupation=p.occupation;p.occupation=null;p.status='unemployed';p.searchMonths=0;event=['job-loss',`${birth.role} ${birth.name}님이 실직해 구직을 시작했다`];}
-   else if(draw('change')<life.rules.monthlyChangeChance){const options=parentJobCandidates({...s,familyLife:life},p,data).filter(j=>j.row.id!==p.occupation.id);if(options.length){const entry=options[Math.floor(draw('vacancy')*options.length)];p.lastOccupation=p.occupation;p.occupation=career(entry,p.experienceByOccupation[entry.row.id]||0,p.occupation.incomeScale,birth.residence);event=['job-change',`${birth.role} ${birth.name}님이 ${p.occupation.name}(으)로 이직했다`];}}
+   else if(draw('change')<life.rules.monthlyChangeChance){const options=parentJobCandidates({...s,familyLife:life},p,data).filter(j=>j.row.id!==p.occupation.id);if(options.length){const entry=options[Math.floor(draw('vacancy')*options.length)];p.lastOccupation=p.occupation;p.occupation=career(entry,p.experienceByOccupation[entry.row.id]||0,p.occupation.incomeScale,birth.residence);event=['job-change',`${birth.role} ${birth.name}님이 ${p.occupation.name}${particle(p.occupation.name,'으로')} 이직했다`];}}
   }else if(p.status==='unemployed'){
    p.searchMonths++;if(draw('hire')<life.rules.monthlyHireChance){const options=parentJobCandidates({...s,familyLife:life},p,data);if(options.length){const entry=options[Math.floor(draw('vacancy')*options.length)];p.occupation=career(entry,p.experienceByOccupation[entry.row.id]||0,p.lastOccupation?.incomeScale||1,birth.residence);p.status='employed';p.searchMonths=0;event=['job-hire',`${birth.role} ${birth.name}님이 ${p.occupation.name} 일을 시작했다`];}}
   }else if(p.status==='homemaking'&&draw('search')<life.rules.monthlySearchChance){p.status='unemployed';p.searchMonths=0;event=['job-search',`${birth.role} ${birth.name}님이 구직을 시작했다`];}

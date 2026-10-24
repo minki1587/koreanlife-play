@@ -1,4 +1,4 @@
-import {hobbyActivity,hobbyAllowedDuringRecovery} from './hobby-activity.mjs?v=birth-timing-20261024';
+import {hobbyActivity,hobbyAllowedDuringRecovery} from './hobby-activity.mjs?v=popup-auto-20261024';
 // Explicit, versioned game choices; amounts are in ten thousand won.
 export const CARE_VERSION='injury-care-v1';
 const q=n=>Math.round(n*10000)/10000;
@@ -27,6 +27,18 @@ export function injuryCareOptions(s){
   {id:'rest',label:'충분히 쉬기',costWan:0,months:left+1,gain:0},
   {id:'rehab',label:'재활하기',costWan:[6,30,90][n],months:Math.max(1,Math.ceil(left*.75)),gain:[1,3,5][n]},
  ].map(r=>({...r,gain:Math.min(r.gain,i.healthLoss-i.allocatedHealth,100-s.health),affordable:s.cash+1e-9>=r.costWan,activityNotes:recoveryActivityNotes({...s,lifeHealth:{...s.lifeHealth,injury:{...i,care:{mode:r.id}}}})}));
+}
+// Study and income notes only matter to someone who is studying or earning.
+function studyingDuringRecovery(s){return!!s.schoolJourney?.current||s.schooling?.status==='enrolled'||s.academy?.status==='cadet'||!!s.employment?.training;}
+function earningDuringRecovery(s){return(s.job?.income||0)>0;}
+/** Facts shown under one care option, matched to the person's current life stage. */
+export function injuryCareFacts(s,option){
+ const work=injuryImpact({...s,lifeHealth:{...s.lifeHealth,injury:{...s.lifeHealth.injury,care:{mode:option.id}}}});
+ const income=s.service?.active?'군복무 월급은 회복 중에도 정상 지급':earningDuringRecovery(s)?work.workLabel:null;
+ // The last activity note is about hobbies and exercise; the ones before it are about school and training.
+ const higherStudy=s.schooling?.status==='enrolled'||s.academy?.status==='cadet'||!!s.employment?.training;
+ const notes=!studyingDuringRecovery(s)?option.activityNotes.slice(-1):higherStudy?option.activityNotes:option.activityNotes.filter(note=>!note.startsWith('대학 학비'));
+ return[`회복 ${option.months}개월`,`건강 +${option.gain}`,...(income?[income]:[]),...notes];
 }
 export function applyCareRecord(injury,action){
  const fake={phase:'running',cash:Infinity,health:action.healthBefore,lifeHealth:{injury,pendingCare:injury.id}},option=injuryCareOptions(fake).find(r=>r.id===action.mode);

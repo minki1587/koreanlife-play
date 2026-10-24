@@ -25,6 +25,6 @@ export function lifeHealthHistory(summary){
  return [...(summary?.incidentHistory||[])].reverse().map(event=>({
   when:`${Math.floor(event.atMonth/12)}세 ${event.atMonth%12}개월`,
   title:event.title,
-  facts:[event.context==='military'?'군 복무 중':'일상 중',...(Number.isFinite(event.healthDelta)&&event.healthDelta!==0?[`건강 ${event.healthDelta>0?'+':''}${Number(event.healthDelta.toFixed(4))}`]:[])],
+  facts:[event.context==='military'?'군 복무 중':'일상 중',...(Number.isFinite(event.healthDelta)&&Number(event.healthDelta.toFixed(1))!==0?[`건강 ${event.healthDelta>0?'+':''}${Number(event.healthDelta.toFixed(1))}`]:[])],
  }));
 }

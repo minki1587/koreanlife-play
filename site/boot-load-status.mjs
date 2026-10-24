@@ -1,3 +1,4 @@
+import {particle} from './korean-particle.mjs?v=popup-auto-20261024';
 /** Presentation-only boot progress. A failed file stays visible until that same
  * file is ready, even when unrelated requests finish or a manual retry starts. */
 export function createBootLoadStatus({onChange=()=>{}}={}){
@@ -9,7 +10,7 @@ export function createBootLoadStatus({onChange=()=>{}}={}){
  }
  function emit(){const value=snapshot();try{onChange(value);}catch{}return value;}
  return{
-  status(event){if(!event?.url)return emit();const previous=files.get(event.url)||{},row={...previous,...event};if(event.status==='failed')row.error=event.error||new Error(`${event.label||event.url}을 불러오지 못했습니다.`);else if(event.status==='ready'){row.error=null;if(lastError?.url===event.url)lastError=null;}else row.error=previous.error||null;files.set(event.url,row);return emit();},
+  status(event){if(!event?.url)return emit();const previous=files.get(event.url)||{},row={...previous,...event};if(event.status==='failed')row.error=event.error||new Error(`${event.label||event.url}${particle(event.label||event.url,'을')} 불러오지 못했습니다.`);else if(event.status==='ready'){row.error=null;if(lastError?.url===event.url)lastError=null;}else row.error=previous.error||null;files.set(event.url,row);return emit();},
   fail(error){const value=error instanceof Error?error:new Error(String(error||'자료를 불러오지 못했습니다.'));if(value.url){const previous=files.get(value.url)||{};files.set(value.url,{...previous,url:value.url,label:value.label||previous.label||value.url,status:'failed',error:value});}else lastError=value;return emit();},
   reset(){files.clear();lastError=null;return emit();},
   get snapshot(){return snapshot();},
