@@ -1,10 +1,10 @@
-import {militaryObligation} from './military-obligation.mjs?v=birth-speed-20261024';
-import {careerMilestone} from './career-milestone.mjs?v=birth-speed-20261024';
-import {displayCopy} from './ui-copy.mjs?v=birth-speed-20261024';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=birth-speed-20261024';
-import {formatMoney} from './spending.mjs?v=birth-speed-20261024';
-import {focusedImportantEvents} from './history-digest.mjs?v=birth-speed-20261024';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=birth-speed-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=birth-timing-20261024';
+import {careerMilestone} from './career-milestone.mjs?v=birth-timing-20261024';
+import {displayCopy} from './ui-copy.mjs?v=birth-timing-20261024';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=birth-timing-20261024';
+import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
+import {focusedImportantEvents} from './history-digest.mjs?v=birth-timing-20261024';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=birth-timing-20261024';
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},

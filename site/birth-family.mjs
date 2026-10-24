@@ -1,6 +1,6 @@
-import {randomKoreanName} from './names.mjs?v=birth-speed-20261024';
-import {employmentRequirements} from './employment.mjs?v=birth-speed-20261024';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=birth-speed-20261024';
+import {randomKoreanName} from './names.mjs?v=birth-timing-20261024';
+import {employmentRequirements} from './employment.mjs?v=birth-timing-20261024';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=birth-timing-20261024';
 
 const VERSION='birth-family-1',round=n=>Math.round(n*100)/100;
 const positive=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

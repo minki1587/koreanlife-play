@@ -1,7 +1,7 @@
-import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=birth-speed-20261024';
-import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=birth-speed-20261024';
-import {recoveryStudyAllowed} from './injury-care.mjs?v=birth-speed-20261024';
-import {completedDegrees,canStartSecondDegree,prepareDegreeJourney} from './degree-history.mjs?v=birth-speed-20261024';
+import {educationFunding,activeHobbyCost} from './household-finance.mjs?v=birth-timing-20261024';
+import {academyOptions,academyAssessment,validAcademyCatalog} from './academy.mjs?v=birth-timing-20261024';
+import {recoveryStudyAllowed} from './injury-care.mjs?v=birth-timing-20261024';
+import {completedDegrees,canStartSecondDegree,prepareDegreeJourney} from './degree-history.mjs?v=birth-timing-20261024';
 // Game education paths. No real admissions, legal licenses or child debt claims.
 const clone=x=>structuredClone(x),finite=x=>typeof x==='number'&&Number.isFinite(x),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 export const SCHOOL_EVENTS=Object.freeze([

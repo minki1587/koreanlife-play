@@ -1,5 +1,5 @@
-import {effectiveHobbyAge} from './household-finance.mjs?v=birth-speed-20261024';
-import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=birth-speed-20261024';
+import {effectiveHobbyAge} from './household-finance.mjs?v=birth-timing-20261024';
+import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=birth-timing-20261024';
 
 /** Discoverability only. The engine remains the authority for every action. */
 export function lifeActionMenu(state,data={}){

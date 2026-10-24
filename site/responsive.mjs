@@ -1,4 +1,4 @@
-import {initScrollHints} from './scroll-hints.mjs?v=birth-speed-20261024';
+import {initScrollHints} from './scroll-hints.mjs?v=birth-timing-20261024';
 const controllers = new WeakMap();
 const WIDE_QUERY = '(min-width: 1024px)';
 

@@ -1,10 +1,11 @@
 // Animate only decoded maps; network latency never adds to each frame interval.
-export function birthReelDelay(elapsed,duration=2800){
+export const BIRTH_REEL_TIMING=Object.freeze({fastInterval:35.2,fastDuration:1120,slowDuration:2016,duration:3136});
+export function birthReelDelay(elapsed,duration=BIRTH_REEL_TIMING.duration){
   const progress=Math.max(0,Math.min(1,elapsed/duration));
-  const slowdown=Math.max(0,(progress-.4)/.6);
-  return 32+750*slowdown**2;
+  const slowdown=Math.max(0,(progress-BIRTH_REEL_TIMING.fastDuration/BIRTH_REEL_TIMING.duration)/(BIRTH_REEL_TIMING.slowDuration/BIRTH_REEL_TIMING.duration));
+  return BIRTH_REEL_TIMING.fastInterval+750*slowdown**2;
 }
-export function createBirthReel({prepare,paint,finish,now=()=>performance.now(),schedule=setTimeout,cancel=clearTimeout,duration=2800}) {
+export function createBirthReel({prepare,paint,finish,now=()=>performance.now(),schedule=setTimeout,cancel=clearTimeout,duration=BIRTH_REEL_TIMING.duration}) {
   let serial=0,timer=null,warmup=null;
   function stop(){serial++;for(const id of [timer,warmup])if(id!==null)cancel(id);timer=warmup=null;}
   function start(cities,offset=0,resultCity=null){

@@ -1,5 +1,5 @@
-import {timelineImportance,groupHistoryEvents,historyGroupLabel,historyEventMatches,isRoutineHistoryEvent} from './history-digest.mjs?v=birth-speed-20261024';
-export {timelineImportance,latestImportantEvents,focusedImportantEvents} from './history-digest.mjs?v=birth-speed-20261024';
+import {timelineImportance,groupHistoryEvents,historyGroupLabel,historyEventMatches,isRoutineHistoryEvent} from './history-digest.mjs?v=birth-timing-20261024';
+export {timelineImportance,latestImportantEvents,focusedImportantEvents} from './history-digest.mjs?v=birth-timing-20261024';
 
 const eventId=(event,index)=>typeof event?.id==='string'&&event.id?event.id:`event-${event?.age||0}-${event?.month||0}-${event?.type||''}-${index}`;
 

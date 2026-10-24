@@ -1,9 +1,9 @@
-import {schoolChoices,universityOptions} from './education.mjs?v=birth-speed-20261024';
-import {evaluateEmployment} from './employment.mjs?v=birth-speed-20261024';
-import {employmentTypeOptions} from './employment-contract.mjs?v=birth-speed-20261024';
-import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=birth-speed-20261024';
-import {formatMoney} from './spending.mjs?v=birth-speed-20261024';
-import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=birth-speed-20261024';
+import {schoolChoices,universityOptions} from './education.mjs?v=birth-timing-20261024';
+import {evaluateEmployment} from './employment.mjs?v=birth-timing-20261024';
+import {employmentTypeOptions} from './employment-contract.mjs?v=birth-timing-20261024';
+import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=birth-timing-20261024';
+import {formatMoney} from './spending.mjs?v=birth-timing-20261024';
+import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=birth-timing-20261024';
 
 /** Same real support checks as the full browsers; presentation consumes no RNG. */
 export function decisionRecommendations(state,data){
