@@ -1,8 +1,8 @@
-import {injuryImpact} from './injury-care.mjs?v=home-20261024';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=home-20261024';
-import {progressMilitaryPay} from './military-pay.mjs?v=home-20261024';
-import {employmentIncomeFactor} from './employment-contract.mjs?v=home-20261024';
-import {lifestyleConsumptionFactor} from './living-costs.mjs?v=home-20261024';
+import {injuryImpact} from './injury-care.mjs?v=news-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=news-20261024';
+import {progressMilitaryPay} from './military-pay.mjs?v=news-20261024';
+import {employmentIncomeFactor} from './employment-contract.mjs?v=news-20261024';
+import {lifestyleConsumptionFactor} from './living-costs.mjs?v=news-20261024';
 export function monthlyWorkIncomeWan(s){
  return s.service?.active?0:economicAnnualSalaryWan(s)/12*injuryImpact(s).workFactor*employmentIncomeFactor(s);
 }

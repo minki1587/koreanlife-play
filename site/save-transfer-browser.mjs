@@ -1,5 +1,5 @@
-import {formatStorageBytes} from './save-capacity.mjs?v=home-20261024';
-import {reportActionError,clearActionError} from './ui-copy.mjs?v=home-20261024';
+import {formatStorageBytes} from './save-capacity.mjs?v=news-20261024';
+import {reportActionError,clearActionError} from './ui-copy.mjs?v=news-20261024';
 function el(tag,text,className){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
 function button(text,handler,className='secondary'){const node=el('button',text,className);node.type='button';node.addEventListener('click',handler);return node;}
 function facts(host,life,migration){

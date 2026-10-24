@@ -1,9 +1,9 @@
-import {parentDeathCheck} from './family-estate.mjs?v=home-20261024';
-import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=home-20261024';
-import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=home-20261024';
-import {careerProgressionAssessment} from './career-progression.mjs?v=home-20261024';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=home-20261024';
-import {particle} from './korean-particle.mjs?v=home-20261024';
+import {parentDeathCheck} from './family-estate.mjs?v=news-20261024';
+import {employmentRequirements,ABILITY_AXES} from './employment.mjs?v=news-20261024';
+import {careerModelSnapshot,careerModelIncome,validCareerModel} from './career-economy.mjs?v=news-20261024';
+import {careerProgressionAssessment} from './career-progression.mjs?v=news-20261024';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=news-20261024';
+import {particle} from './korean-particle.mjs?v=news-20261024';
 
 const VERSION='parent-life-1',clone=x=>structuredClone(x),round=n=>Math.round(n*100)/100;
 const nn=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;

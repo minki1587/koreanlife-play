@@ -1,11 +1,13 @@
-import {militaryObligation} from './military-obligation.mjs?v=home-20261024';
-import {totalDebtWan} from './home-ownership.mjs?v=home-20261024';
-import {careerMilestone} from './career-milestone.mjs?v=home-20261024';
-import {displayCopy} from './ui-copy.mjs?v=home-20261024';
-import {timelineFamilyCopy} from './timeline-copy.mjs?v=home-20261024';
-import {formatMoney} from './spending.mjs?v=home-20261024';
-import {focusedImportantEvents} from './history-digest.mjs?v=home-20261024';
-import {cashFlowSummary} from './cash-flow-summary.mjs?v=home-20261024';
+import {militaryObligation} from './military-obligation.mjs?v=news-20261024';
+import {totalDebtWan} from './home-ownership.mjs?v=news-20261024';
+import {careerMilestone} from './career-milestone.mjs?v=news-20261024';
+import {displayCopy} from './ui-copy.mjs?v=news-20261024';
+import {timelineFamilyCopy} from './timeline-copy.mjs?v=news-20261024';
+import {formatMoney} from './spending.mjs?v=news-20261024';
+import {focusedImportantEvents} from './history-digest.mjs?v=news-20261024';
+import {cashFlowSummary} from './cash-flow-summary.mjs?v=news-20261024';
+/** How many items the 최근 소식 panel keeps; the list scrolls with the wheel. */
+export const RECENT_NEWS_LIMIT=8;
 
 export const MANAGER_GROUPS=Object.freeze([
  {id:'learning',label:'학업·일',actions:['education-manage','employment-open','training-open','military-info-open','careers']},
@@ -115,7 +117,7 @@ export function createFocusedLife({document=globalThis.document,storage,getState
   const candidate=milestoneGuide(state,{initialMonth,seen:[...seen]});if(candidate&&candidate.id!==activeGuide?.id)activeGuide=candidate;
   if(activeGuide&&seen.has(activeGuide.id))activeGuide=null;
   $('milestone-guide').hidden=!activeGuide;if(activeGuide)$('guide-copy').textContent=activeGuide.text;
-  const rows=focusedImportantEvents(events,{state,limit:3,parts,channel:'all'}),host=$('recent-important');
+  const rows=focusedImportantEvents(events,{state,limit:RECENT_NEWS_LIMIT,parts,channel:'all'}),host=$('recent-important');
   const signature=JSON.stringify(rows.map(e=>[e.id,recentEventTitle(e,state),e.age,e.month]));
   if(host.dataset.signature!==signature){host.replaceChildren();for(const event of rows){
    const row=document.createElement('li'),time=document.createElement('span'),title=document.createElement('strong');time.textContent=`${event.age}세${event.month?' '+event.month+'개월':''}`;title.textContent=recentEventTitle(event,state);row.append(time,title);host.append(row);

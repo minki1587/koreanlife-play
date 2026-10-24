@@ -35,7 +35,7 @@
 .focus-panel #focus-effects{margin:0;font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
 .recent-panel{min-width:0;padding:18px 20px;border:1px solid var(--line);border-radius:9px;background:var(--paper)}
 .recent-panel h3{margin:0 0 12px;font-size:calc(15px * var(--base-text-scale,1.44) * var(--user-text-scale,1))}
-#recent-important{padding:0;margin:0;list-style:none}
+#recent-important{padding:0 6px 0 0;margin:0;list-style:none;max-height:min(62vh,560px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
 #recent-important li{display:grid;gap:7px;padding:14px 0;border-bottom:1px solid var(--line)}
 #recent-important li:last-child{border-bottom:0}
 #recent-important span{font-size:calc(10px * var(--base-text-scale,1.44) * var(--user-text-scale,1));color:var(--muted)}

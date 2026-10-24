@@ -1,4 +1,4 @@
-import {protagonistGender} from './person-identity.mjs?v=home-20261024';
+import {protagonistGender} from './person-identity.mjs?v=news-20261024';
 // Pure presentation model. It never changes life state, money or probabilities.
 // Biomes are representative art directions, not official settlement statistics.
 const AGE_STAGES = [

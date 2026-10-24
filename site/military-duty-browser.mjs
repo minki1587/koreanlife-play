@@ -1,4 +1,4 @@
-import {createDecisionDialog} from './decision-dialog.mjs?v=home-20261024';
+import {createDecisionDialog} from './decision-dialog.mjs?v=news-20261024';
 
 /** Generic one-question dialog; the defaults keep the military duty ids. */
 export function createMilitaryDutyBrowser({document=globalThis.document,onAction,onOpen,onClose,decorate=model=>model,id='military-duty',category:categoryLabel='복무와 예비군',reopenLabel='복무·예비군 선택 다시 열기'}={}){

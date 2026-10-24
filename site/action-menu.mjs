@@ -1,5 +1,5 @@
-import {effectiveHobbyAge} from './household-finance.mjs?v=home-20261024';
-import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=home-20261024';
+import {effectiveHobbyAge} from './household-finance.mjs?v=news-20261024';
+import {FORMED_FAMILY_RULES} from './formed-family.mjs?v=news-20261024';
 
 /** Discoverability only. The engine remains the authority for every action. */
 export function lifeActionMenu(state,data={}){

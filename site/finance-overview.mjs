@@ -1,8 +1,8 @@
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=home-20261024';
-import {livingCostSummary} from './engine.mjs?v=home-20261024';
-import {investmentSummary} from './market-economy.mjs?v=home-20261024';
-import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=home-20261024';
-import {homeValueWan,mortgageBalanceWan} from './home-ownership.mjs?v=home-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=news-20261024';
+import {livingCostSummary} from './engine.mjs?v=news-20261024';
+import {investmentSummary} from './market-economy.mjs?v=news-20261024';
+import {monthlyAutomaticConsumptionWan} from './income-rules.mjs?v=news-20261024';
+import {homeValueWan,mortgageBalanceWan} from './home-ownership.mjs?v=news-20261024';
 
 /** The protagonist's portfolio is separate from parents, partners and child trusts. */
 export function personalFinanceOverview(state){

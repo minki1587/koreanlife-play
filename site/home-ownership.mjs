@@ -1,4 +1,4 @@
-import {regionTier} from './living-costs.mjs?v=home-20261024';
+import {regionTier} from './living-costs.mjs?v=news-20261024';
 
 // Game assumptions for renting on jeonse and owning a home. Not market statistics.
 export const HOME_RULES=Object.freeze({

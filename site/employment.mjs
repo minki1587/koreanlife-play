@@ -1,10 +1,10 @@
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=home-20261024';
-import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=home-20261024';
-import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=home-20261024';
-import {economicLifeSummary,economicAnnualSalaryWan} from './economic-life.mjs?v=home-20261024';
-import {gameVacancyRegions} from './vacancy-regions.mjs?v=home-20261024';
-import {careerProgressionAssessment,recordedCareerMonths} from './career-progression.mjs?v=home-20261024';
-import {protagonistGender} from './person-identity.mjs?v=home-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=news-20261024';
+import {professionRule,professionFieldMet,professionFieldRequirement} from './profession-rules.mjs?v=news-20261024';
+import {careerModelSnapshot,careerModelIncome} from './career-economy.mjs?v=news-20261024';
+import {economicLifeSummary,economicAnnualSalaryWan} from './economic-life.mjs?v=news-20261024';
+import {gameVacancyRegions} from './vacancy-regions.mjs?v=news-20261024';
+import {careerProgressionAssessment,recordedCareerMonths} from './career-progression.mjs?v=news-20261024';
+import {protagonistGender} from './person-identity.mjs?v=news-20261024';
 // Public-source notes and fictional hiring rules are deliberately separate.
 export const CAREER_REGIONS=Object.freeze(['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주']);
 export const ABILITY_AXES=Object.freeze([{id:'analytical',label:'분석·문제해결'},{id:'communication',label:'의사소통·협업'},{id:'physical',label:'신체활동·지구력'},{id:'precision',label:'정밀·절차수행'},{id:'digital',label:'디지털·기술활용'}].map(Object.freeze));

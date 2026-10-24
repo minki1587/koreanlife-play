@@ -1,5 +1,5 @@
-import {LIVING_COST_RULES} from './living-costs.mjs?v=home-20261024';
-import {HOME_RULES} from './home-ownership.mjs?v=home-20261024';
+import {LIVING_COST_RULES} from './living-costs.mjs?v=news-20261024';
+import {HOME_RULES} from './home-ownership.mjs?v=news-20261024';
 
 // Sources are collected here instead of being shown inside the game screens.
 const item=row=>{

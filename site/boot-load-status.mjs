@@ -1,4 +1,4 @@
-import {particle} from './korean-particle.mjs?v=home-20261024';
+import {particle} from './korean-particle.mjs?v=news-20261024';
 /** Presentation-only boot progress. A failed file stays visible until that same
  * file is ready, even when unrelated requests finish or a manual retry starts. */
 export function createBootLoadStatus({onChange=()=>{}}={}){

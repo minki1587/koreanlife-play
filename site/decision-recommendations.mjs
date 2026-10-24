@@ -1,9 +1,9 @@
-import {schoolChoices,universityOptions} from './education.mjs?v=home-20261024';
-import {evaluateEmployment} from './employment.mjs?v=home-20261024';
-import {employmentTypeOptions} from './employment-contract.mjs?v=home-20261024';
-import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=home-20261024';
-import {formatMoney} from './spending.mjs?v=home-20261024';
-import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=home-20261024';
+import {schoolChoices,universityOptions} from './education.mjs?v=news-20261024';
+import {evaluateEmployment} from './employment.mjs?v=news-20261024';
+import {employmentTypeOptions} from './employment-contract.mjs?v=news-20261024';
+import {recommendEducation,recommendJobs} from './choice-recommendations.mjs?v=news-20261024';
+import {formatMoney} from './spending.mjs?v=news-20261024';
+import {displayCopy,completeModalAction,clearActionError} from './ui-copy.mjs?v=news-20261024';
 
 /** Same real support checks as the full browsers; presentation consumes no RNG. */
 export function decisionRecommendations(state,data){

@@ -50,7 +50,7 @@ export function latestImportantEvents(events,{limit=3,parts,channel='all'}={}){
 
 /** Personal milestones get overview space before broad news; the archive stays complete. */
 export function focusedImportantEvents(events,{state,limit=3,parts,channel='all'}={}){
- const source=Array.isArray(events)?events:[],count=Number.isFinite(limit)?Math.min(3,Math.max(0,Math.floor(limit))):3,personal=[],world=[];
+ const source=Array.isArray(events)?events:[],count=Number.isFinite(limit)?Math.min(8,Math.max(0,Math.floor(limit))):3,personal=[],world=[];
  const hasWork=['재직','계약직','시간제','프리랜서','자영업'].includes(state?.job?.status),hasIncome=Number(state?.salary||state?.job?.income||0)>0,hasInvestment=Object.values(state?.market?.holdings||{}).some(holding=>Number(holding?.units)>0);
  const youngUnexposed=Number.isFinite(state?.age)&&state.age<16&&!hasWork&&!hasIncome&&!hasInvestment;
  for(let index=source.length-1;index>=0;index--){

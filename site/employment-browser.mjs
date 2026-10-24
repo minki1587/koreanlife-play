@@ -1,12 +1,12 @@
-import {formatMoney} from './spending.mjs?v=home-20261024';
-import {homeMoveNotice} from './home-ownership.mjs?v=home-20261024';
-import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=home-20261024';
-import {searchOccupations} from './career-browser.mjs?v=home-20261024';
-import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=home-20261024';
-import {economicAnnualSalaryWan} from './economic-life.mjs?v=home-20261024';
-import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=home-20261024';
-import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=home-20261024';
-import {recommendJobs} from './choice-recommendations.mjs?v=home-20261024';
+import {formatMoney} from './spending.mjs?v=news-20261024';
+import {homeMoveNotice} from './home-ownership.mjs?v=news-20261024';
+import {displayCopy,displayLines,appendUiFacts,completeModalAction,clearActionError} from './ui-copy.mjs?v=news-20261024';
+import {searchOccupations} from './career-browser.mjs?v=news-20261024';
+import {employmentProfile,evaluateEmployment,careerTrainingPlan,employmentRequirements} from './employment.mjs?v=news-20261024';
+import {economicAnnualSalaryWan} from './economic-life.mjs?v=news-20261024';
+import {pendingInjuryCare,injuryImpact,recoveryActivityPolicy} from './injury-care.mjs?v=news-20261024';
+import {employmentTypeOptions,employmentContractSummary} from './employment-contract.mjs?v=news-20261024';
+import {recommendJobs} from './choice-recommendations.mjs?v=news-20261024';
 
 const ABILITIES={analytical:'분석·문제 해결',communication:'소통·협업',physical:'신체 활동',precision:'정밀·주의',digital:'디지털 활용'};
 const cash=n=>formatMoney(Number(n||0));

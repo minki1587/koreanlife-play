@@ -1,5 +1,5 @@
-import {protagonistGender} from './person-identity.mjs?v=home-20261024';
-import {injuryImpact,pendingInjuryCare} from './injury-care.mjs?v=home-20261024';
+import {protagonistGender} from './person-identity.mjs?v=news-20261024';
+import {injuryImpact,pendingInjuryCare} from './injury-care.mjs?v=news-20261024';
 const clone=value=>structuredClone(value),month=value=>Number.isInteger(value)&&value>=0&&value<=1800;
 export const SERVICE_DEFERRAL_RULES=Object.freeze({version:1,outsideUniversityLimitMonths:24,kind:'game_assumption'});
 export const activeUniversity=s=>s?.schooling?.status==='enrolled'&&!s.schooling.fundingPaused&&!s.academy;
